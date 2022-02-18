@@ -1,0 +1,23 @@
+[
+  {
+    "question": "<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>2</mn><mn>5</mn></mfrac><mo>+</mo><mfrac><mn>4</mn><mn>15</mn></mfrac><mo>=</mo><mi>x</mi></math><br></p>",
+    "answerA": "<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>6</mn><mn>15</mn></mfrac></math><br></p>",
+    "answerB": "<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>2</mn><mn>15</mn></mfrac></math><br></p>",
+    "answerC": "<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>4</mn><mn>15</mn></mfrac></math><br></p>",
+    "answerD": "<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>2</mn><mn>3</mn></mfrac></math><br></p>"
+  },
+  {
+    "question": "<p></p><p>Find all roots of<em>&nbsp;x</em></p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn><mi>x</mi><mo>+</mo><mn>6</mn><mo>=</mo><mn>0</mn></math><br><p></p>",
+    "answerA": "<p>x<sub>1</sub> = -2;&nbsp; x<sub>2</sub>= -1</p>",
+    "answerB": "<p>x<sub>1</sub> = -3;&nbsp; x<sub>2</sub>= -2</p>",
+    "answerC": "<p>x<sub>1</sub> = -4;&nbsp; x<sub>2</sub>= -2</p>",
+    "answerD": "<p>x<sub>1</sub> = -5;&nbsp; x<sub>2</sub>= -1</p>"
+  },
+  {
+    "question": "<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>2</mn><mn>5</mn></mfrac><mo>+</mo><mfrac><mn>4</mn><mn>15</mn></mfrac><mo>=</mo><mi>x</mi></math><br></p>",
+    "answerA": "<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>6</mn><mn>15</mn></mfrac></math><br></p>",
+    "answerB": "<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>2</mn><mn>15</mn></mfrac></math><br></p>",
+    "answerC": "<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>4</mn><mn>15</mn></mfrac></math><br></p>",
+    "answerD": "<p><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mfrac><mn>2</mn><mn>3</mn></mfrac></math><br></p>"
+  }
+]
