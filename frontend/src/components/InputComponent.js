@@ -57,7 +57,7 @@ const Input = (props) => {
           <MathJax.Provider
             
           >
-            <MathJax.Formula formula={'$$' + latex + '$$'} />
+            <MathJax.Formula formula={latex} />
           </MathJax.Provider>
         </Grid>
       </Grid>
