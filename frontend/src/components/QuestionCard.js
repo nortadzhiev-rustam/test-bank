@@ -3,14 +3,14 @@ import { Paper, Box, Grid } from '@mui/material';
 import { MathJax, MathJaxContext } from 'better-react-mathjax';
 import { Image } from '@mui/icons-material';
 const QuestionCard = ({ question, answer, img }) => {
-  const config = {
-    /* in theory, the MathML input processor should be activated if we add
-        an "mml" block to the config OR if "input/mml" (NOT "input/mathml" as stated 
-        in the docs) is in the load array. However, this is not necessary as MathML is 
-        ALWAYS enabled in MathJax */
-    loader: { load: ['input/mml', 'output/chtml'] },
-    mml: {},
-  };
+  // const config = {
+  //   /* in theory, the MathML input processor should be activated if we add
+  //       an "mml" block to the config OR if "input/mml" (NOT "input/mathml" as stated 
+  //       in the docs) is in the load array. However, this is not necessary as MathML is 
+  //       ALWAYS enabled in MathJax */
+  //   loader: { load: ['input/mml', 'output/chtml'] },
+  //   mml: {},
+  // };
 
   return (
     <MathJaxContext>
