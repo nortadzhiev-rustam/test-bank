@@ -1,18 +1,19 @@
-import React, { useRef } from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Paper from "@mui/material/Paper";
-import Draggable from "react-draggable";
-import { addStyles, EditableMathField, StaticMathField } from "react-mathquill";
-import { formulas } from "../constants/formulas";
-import { IconButton, Typography } from "@mui/material";
-import { CancelRounded } from "@mui/icons-material";
-import PropTypes from "prop-types";
-import { MathJax, MathJaxContext } from "better-react-mathjax";
-
+import React, { useRef } from 'react';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Paper from '@mui/material/Paper';
+import Draggable from 'react-draggable';
+import { addStyles, EditableMathField, StaticMathField } from 'react-mathquill';
+import { formulas } from '../constants/formulas';
+import { IconButton, Typography, Box } from '@mui/material';
+import { CancelRounded } from '@mui/icons-material';
+import PropTypes from 'prop-types';
+import { MathJax, MathJaxContext } from 'better-react-mathjax';
+import { MathFieldComponent } from 'react-mathlive';
+import('mathlive/dist/mathlive-static.css');
 addStyles();
 function PaperComponent(props) {
   return (
@@ -26,48 +27,25 @@ function PaperComponent(props) {
 }
 
 export default function MathDialog({ open, setOpen, latex, setLatex }) {
-  const [formule, setFormule] = React.useState("");
-  const [formuleLatex, setFormuleLatex] = React.useState("");
+  const [formule, setFormule] = React.useState('');
+  const [formuleLatex, setFormuleLatex] = React.useState('');
   const inputRef = useRef(null);
   React.useEffect(() => {
     if (latex) {
       setFormule(latex);
-    } else setFormule("");
+    } else setFormule('');
   }, [latex]);
 
   const handleClose = () => {
-    setFormule("");
+    setFormule('');
     setOpen(false);
   };
 
   const handleSubmit = () => {
     setLatex(formule);
-    setFormule("");
+    setFormule('');
     setOpen(false);
   };
-
-  function typeInTextarea(
-    newText,
-    el = document.getElementsByTagName("textarea")[2]
-  ) {
-    if (document.selection) {
-      el.focus();
-      let sel = document.selection.createRange();
-      sel.text = newText;
-    }
-    //MOZILLA and others
-    else if (el.selectionStart || el.selectionStart === 0) {
-      var startPos = el.selectionStart;
-      var endPos = el.selectionEnd;
-      el.value =
-        el.value.substring(0, startPos) +
-        newText +
-        el.value.substring(endPos, el.value.length);
-    } else {
-      el.value += newText;
-    }
-    setFormule(el.value);
-  }
 
   return (
     <div>
@@ -79,19 +57,19 @@ export default function MathDialog({ open, setOpen, latex, setLatex }) {
       >
         <DialogTitle
           style={{
-            cursor: "move",
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "space-between",
+            cursor: 'move',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
           }}
           id='draggable-dialog-title'
         >
           <Typography
             variant='body1'
-            sx={{ fontSize: "30px", fontWeight: "bold" }}
+            sx={{ fontSize: '30px', fontWeight: 'bold' }}
           >
             Formula
-          </Typography>{" "}
+          </Typography>{' '}
           <IconButton onClick={() => setOpen(false)}>
             <CancelRounded color='error' />
           </IconButton>
@@ -100,9 +78,9 @@ export default function MathDialog({ open, setOpen, latex, setLatex }) {
           <Paper
             style={{
               marginBlock: 20,
-              display: "flex",
-              alignItems: "end",
-              flexWrap: "wrap",
+              display: 'flex',
+              alignItems: 'end',
+              flexWrap: 'wrap',
             }}
           >
             {formulas.map((formula) => (
@@ -112,39 +90,55 @@ export default function MathDialog({ open, setOpen, latex, setLatex }) {
                 style={{
                   height: 40,
                   width: 40,
-                  textTransform: "lowerCase",
+                  textTransform: 'lowerCase',
                   fontSize: formula.fontSize,
                   marginInline: 2,
                   borderRadius: 5,
                   marginBlock: 5,
-                  dispaly: "flex",
-                  alignItems: "center",
+                  dispaly: 'flex',
+                  alignItems: 'center',
                   padding: 0,
-                  cursor: "pointer",
+                  cursor: 'pointer',
                 }}
                 size='large'
                 onClick={() => {
-                  typeInTextarea(formula.latex);
+                  setFormule((prevState) => prevState + formula.latex);
                 }}
               >
-                <StaticMathField style={{ cursor: "pointer" }}>
+                <StaticMathField style={{ cursor: 'pointer' }}>
                   {formula.formula}
                 </StaticMathField>
               </Button>
             ))}
           </Paper>
 
-          <EditableMathField
-            forwardref={inputRef}
-            mathquillDidMount={(mathField) => {
-              mathField.focus();
+          <Box
+            style={{
+              borderWidth: '1px',
+              borderStyle: 'solid',
+              borderColor: 'turquoise',
+              borderRadius: '5px',
+              padding: '10px',
             }}
-            style={{ height: "80px", width: "100%" }}
-            latex={formule}
-            onChange={(mathField) => {
-              setFormule(mathField.latex());
-            }}
-          />
+          >
+            <MathFieldComponent
+              ref={inputRef}
+              mathFieldConfig={{
+                defaultMode: 'text',
+                virtualKeyboardMode: 'off',
+              }}
+              style={{
+                borderWidth: '1px',
+                borderColor: '#e63946',
+                borderStyle: 'solid',
+                borderRadius: '5px',
+                padding: '5px',
+                width: '100%',
+              }}
+              latex={formule}
+              onChange={setFormule}
+            />
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose}>
