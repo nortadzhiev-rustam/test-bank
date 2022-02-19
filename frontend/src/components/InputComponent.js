@@ -1,18 +1,17 @@
 import React from 'react';
 import {
-  TextField,
-  Button,
+  // TextField,
+  // Button,
   InputBase,
   Box,
   IconButton,
   Grid,
 } from '@mui/material';
 import { styled } from '@mui/styles';
-import MathDialog from './MathDialog';
-import { EditableMathField, addStyles, StaticMathField } from 'react-mathquill';
+// import MathDialog from './MathDialog';
 import { FunctionsRounded } from '@mui/icons-material';
-import MathJax from 'mathjax3-react';
-addStyles();
+
+
 const StyledInput = styled(InputBase)({
   width: '100%',
   margin: '10px 10px',
@@ -53,20 +52,14 @@ const Input = (props) => {
             onChange={(e) => setLatex((prevState) => e.target.value)}
           />
         </Grid>
-        <Grid item xs={12} md={3} display='flex' justifyContent='start'>
-          <MathJax.Provider
-            
-          >
-            <MathJax.Formula formula={latex} />
-          </MathJax.Provider>
-        </Grid>
+        
       </Grid>
-      <MathDialog
+      {/* <MathDialog
         latex={latex}
         setLatex={(value) => setLatex(value)}
         setOpen={(status) => setOpen(status)}
         open={open}
-      />
+      /> */}
     </Box>
   );
 };

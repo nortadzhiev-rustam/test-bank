@@ -12,8 +12,7 @@ import { IconButton, Typography, Box } from '@mui/material';
 import { CancelRounded } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import { MathJax, MathJaxContext } from 'better-react-mathjax';
-import { MathFieldComponent } from 'react-mathlive';
-import('mathlive/dist/mathlive-static.css');
+
 addStyles();
 function PaperComponent(props) {
   return (
@@ -112,33 +111,7 @@ export default function MathDialog({ open, setOpen, latex, setLatex }) {
             ))}
           </Paper>
 
-          <Box
-            style={{
-              borderWidth: '1px',
-              borderStyle: 'solid',
-              borderColor: 'turquoise',
-              borderRadius: '5px',
-              padding: '10px',
-            }}
-          >
-            <MathFieldComponent
-              ref={inputRef}
-              mathFieldConfig={{
-                defaultMode: 'text',
-                virtualKeyboardMode: 'off',
-              }}
-              style={{
-                borderWidth: '1px',
-                borderColor: '#e63946',
-                borderStyle: 'solid',
-                borderRadius: '5px',
-                padding: '5px',
-                width: '100%',
-              }}
-              latex={formule}
-              onChange={setFormule}
-            />
-          </Box>
+         
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose}>
