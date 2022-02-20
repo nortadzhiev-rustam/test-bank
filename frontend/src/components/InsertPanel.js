@@ -90,7 +90,7 @@ const InsertPanel = () => {
           <Select
             labelId='demo-simple-select-label'
             id='demo-simple-select'
-            value={quest.category || ''}
+            value={quest.category}
             label='Category'
             onChange={handleChangeCategory}
           >
