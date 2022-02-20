@@ -13,6 +13,7 @@ import {
   Button,
   Tooltip,
   IconButton,
+  Checkbox,
 } from '@mui/material';
 import { styled } from '@mui/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,14 +24,38 @@ import {
   faMinus,
   faTimes,
   faUpRightAndDownLeftFromCenter,
-  faFunction,
+  faPlusCircle,
+  faTrashCan,
+  faCamera,
 } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
 import { FunctionsRounded, PhotoCameraTwoTone } from '@mui/icons-material';
 // import axios from "axios";
-
-// import InputComponent from "../components/InputComponent";
-import { MathFieldComponent } from 'react-mathlive';
+import { MathfieldElement } from 'mathlive';
+import AnswersCard from '../components/AnswersCard';
 import('mathlive/dist/mathlive-static.css');
+
+const styles = `
+:host(:focus), :host(:focus-within) {
+  outline: none !important;
+  border-color: rgba(73, 79, 117, 0.5) !important;
+  box-shadow: 0 0 0 2px rgba(73, 79, 117, 0.3);
+}
+:host {
+  border: 1px solid #eee !important;
+  border-radius: 4px;
+  cursor: text;
+}
+.ML__virtual-keyboard-toggle.is-visible {
+  color: rgba(73, 79, 117, 1) !important;
+}
+.ML__virtual-keyboard-toggle.is-visible:hover{
+  background: rgba(73, 79, 117, 0.3) !important;
+}
+.ML__mathlive {
+  padding-left: 10px;
+}
+`;
 
 const StyledBox = styled(Box)({
   display: 'flex',
@@ -79,6 +104,7 @@ const InsertWindow = () => {
   // const user = useSelector((state) => state.user.user);
   const [isOpen, setIsOpen] = React.useState(false);
   const [counter, setCounter] = React.useState(3);
+  const [isCardHover, setCardHover] = React.useState(false);
   const handleFullScreen = () => {
     dispatch(setFull(!isFull));
   };
@@ -92,6 +118,43 @@ const InsertWindow = () => {
     setMouseIn(false);
     dispatch(setFull(false));
   };
+
+  const mfe = React.useMemo(() => {
+    const mfe = new MathfieldElement();
+    const style = document.createElement('style');
+    style.innerHTML = styles;
+    style.setAttribute('data-id', 'custom');
+    style.setAttribute('data-refcount', 'custom');
+
+    mfe.setOptions({
+      virtualKeyboardMode: 'manual',
+      virtualKeyboards: 'numeric functions symbols greek',
+    });
+    mfe.value = latex;
+    mfe.setAttribute('id', 'MathID-1');
+    mfe.shadowRoot.appendChild(style);
+    return mfe;
+  }, [latex]);
+
+  React.useEffect(() => {
+    const mathfield = document.querySelector('#mathfield');
+    if (mathfield) {
+      if (mathfield.hasChildNodes()) {
+        const prev = document.querySelector('#MathID-1');
+        if (prev) {
+          mathfield.replaceChild(mfe, prev);
+        }
+      } else {
+        mathfield.appendChild(mfe);
+      }
+    }
+  }, [isOpen, mfe]);
+
+  React.useEffect(() => {
+    mfe.addEventListener('input', (event) => {
+      setLatex(event.target.value);
+    });
+  }, [mfe]);
 
   return (
     <Grid item xs={12} sm={12} md={isFull ? 12 : 8}>
@@ -236,19 +299,8 @@ const InsertWindow = () => {
                   height: '100px',
                   alignItems: 'center',
                 }}
-              >
-                <MathFieldComponent
-                  mathFieldConfig={{
-                    defaultMode: 'text',
-                    virtualKeyboardMode: 'onfocus',
-                    virtualKeyboardToggleGlyph: '',
-                    virtualKeyboards: 'numeric functions symbols',
-                  }}
-                  applyStyle={{ height: '50px' }}
-                  latex={latex}
-                  onChange={setLatex}
-                />
-              </Box>
+                id='mathfield'
+              ></Box>
               <Box mt={2} display='flex' justifyContent='flex-end'>
                 <Button variant='contained' sx={{ backgroundColor: '#2979ff' }}>
                   Submit
@@ -331,11 +383,47 @@ const InsertWindow = () => {
                   </Tooltip>
                 </Box>
               </Box>
-              <Box sx={{display: 'flex' , flexDirectoin: 'row', flexWrap: 'wrap', justifyContent: 'space-around'}}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirectoin: 'row',
+                  flexWrap: 'wrap',
+                  justifyContent: 'space-between',
+                  paddingTop: 5,
+                }}
+              >
                 {new Array(counter).fill(0).map((_, index) => (
-                  <Paper elevation= {5} style={{height: '250px', width: '350px', margin: 5}}>Hello world!</Paper>
+                  <AnswersCard key={index}/>
                 ))}
-                <Button onClick={()=> setCounter(prevState => prevState + 1)}>Add Hello world</Button>
+                <Tooltip placement='top' title={counter === 5 ? 'You can not add more then five options' : ''}>
+                  <Paper
+                  elevation={isCardHover && counter !== 5 ? 5 : 0}
+                  style={{
+                    height: '400px',
+                    width: '350px',
+                    margin: 5,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginBlock: 20,
+                    borderRadius: 20,
+                  }}
+                  onMouseEnter={() => setCardHover(true)}
+                  onMouseLeave={() => setCardHover(false)}
+                >
+                  <IconButton
+                    disabled={counter === 5}
+                    onClick={() =>
+                      counter !== 5
+                        ? setCounter((prevState) => prevState + 1)
+                        : null
+                    }
+                  >
+                    <FontAwesomeIcon icon={faPlusCircle} size='2x' />
+                  </IconButton>
+                </Paper>
+                </Tooltip>
+                
               </Box>
             </Box>
           )}
