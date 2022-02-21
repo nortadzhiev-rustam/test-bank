@@ -87,7 +87,7 @@ const AnswersCard = (props) => {
                 </IconButton>
               </label>
             </IconBox>
-            <IconBox variant='button'>
+            <IconBox variant='button' onClick={()=> props.onDelete()}>
               <FontAwesomeIcon size='sm' icon={faTrashCan} color='white' />
             </IconBox>
           </IconBoxContainer>
