@@ -13,7 +13,6 @@ import {
   Button,
   Tooltip,
   IconButton,
-  Checkbox,
 } from "@mui/material";
 import { styled } from "@mui/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,10 +24,9 @@ import {
   faTimes,
   faUpRightAndDownLeftFromCenter,
   faPlusCircle,
-  faTrashCan,
-  faCamera,
+  faDownLeftAndUpRightToCenter,
 } from "@fortawesome/free-solid-svg-icons";
-import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
+
 import { FunctionsRounded, PhotoCameraTwoTone } from "@mui/icons-material";
 // import axios from "axios";
 import { MathfieldElement } from "mathlive";
@@ -45,6 +43,9 @@ const styles = `
   border: 1px solid #eee !important;
   border-radius: 4px;
   cursor: text;
+  height: 100%;
+  justify-content: center;
+  alignItems: center;
 }
 .ML__virtual-keyboard-toggle.is-visible {
   color: rgba(73, 79, 117, 1) !important;
@@ -106,14 +107,65 @@ const InsertWindow = () => {
   const [counter, setCounter] = React.useState(3);
   const [isCardHover, setCardHover] = React.useState(false);
   const [itemNumber, setItemNumber] = React.useState();
-  const [arr, setArr] = React.useState([0,0,0]);
+
+  const [options, setOptions] = React.useState([
+    {
+      option: 1,
+      key: 0,
+    },
+    {
+      option: 2,
+      key: 1,
+    },
+    {
+      option: 3,
+      key: 2,
+    },
+  ]);
+
+  const getRandomOption = () => {
+    const set = new Set();
+    let randomNumber = Math.floor(Math.random() * 5) + 1;
+    options.map((item) => {
+      set.add(item.option);
+    });
+    while (set.has(randomNumber)) {
+      randomNumber = Math.floor(Math.random() * 5) + 1;
+    }
+    return randomNumber;
+  };
+
+  const getRandomKey = () => {
+    const set = new Set();
+    let randomNumber = Math.floor(Math.random() * 5) + 1;
+    options.map((item) => {
+      set.add(item.key);
+    });
+    while (set.has(randomNumber)) {
+      randomNumber = Math.floor(Math.random() * 5) + 1;
+    }
+    return randomNumber;
+  };
+
+  const addOption = () => {
+    setOptions([
+      ...options,
+      {
+        option: getRandomOption(),
+        key: getRandomKey(),
+      },
+    ]);
+    setCounter(counter + 1);
+  };
+
+  const deleteOption = (key) => {
+    setOptions(options.filter((item) => item.key !== key));
+    setCounter(counter - 1);
+  };
+
   const handleFullScreen = () => {
     dispatch(setFull(!isFull));
   };
-
-  // const handleMouseIn = () => {
-  //   setMouseIn(true);
-  // };
 
   const handleClose = () => {
     dispatch(setVisible(false));
@@ -150,8 +202,8 @@ const InsertWindow = () => {
         mathfield.appendChild(mfe);
       }
     }
-  }, [isOpen, mfe]);
-  
+  }, [isOpen]);
+
   React.useEffect(() => {
     mfe.addEventListener("input", (event) => {
       setLatex(event.target.value);
@@ -169,6 +221,9 @@ const InsertWindow = () => {
           transition: "all 0.3s ease-in-out",
           width: "100%",
           paddingBottom: 30,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
         }}
         className='animate__animated animate__zoomIn animate__faster'
       >
@@ -250,14 +305,25 @@ const InsertWindow = () => {
                   }}
                   onClick={handleFullScreen}
                 >
-                  <FontAwesomeIcon
-                    icon={faUpRightAndDownLeftFromCenter}
-                    size='xs'
-                    style={{
-                      borderRadius: "30%",
-                    }}
-                    color='#fff'
-                  />
+                  {!isFull ? (
+                    <FontAwesomeIcon
+                      icon={faUpRightAndDownLeftFromCenter}
+                      size='xs'
+                      style={{
+                        borderRadius: "30%",
+                      }}
+                      color='#fff'
+                    />
+                  ) : (
+                    <FontAwesomeIcon
+                      icon={faDownLeftAndUpRightToCenter}
+                      size='xs'
+                      style={{
+                        borderRadius: "30%",
+                      }}
+                      color='#fff'
+                    />
+                  )}
                 </div>
               ) : (
                 <FontAwesomeIcon
@@ -304,12 +370,13 @@ const InsertWindow = () => {
                 id='mathfield'
               ></Box>
               <Box mt={2} display='flex' justifyContent='flex-end'>
-                <Button variant='contained' sx={{ backgroundColor: "#2979ff" }}>
+                <Button variant='contained' color='primary'>
                   Submit
                 </Button>
                 <Button
                   variant='contained'
-                  sx={{ backgroundColor: "#f50057", marginLeft: 2 }}
+                  color='error'
+                  sx={{ marginLeft: 2 }}
                   onClick={() => setIsOpen(!isOpen)}
                 >
                   Cancel
@@ -390,28 +457,27 @@ const InsertWindow = () => {
                   display: "flex",
                   flexDirectoin: "row",
                   flexWrap: "wrap",
-                  justifyContent: "space-between",
+                  justifyContent: "space-around",
                   paddingTop: 5,
                 }}
               >
-                {arr
-                  .filter((_, i) => i !== itemNumber)
-                  .map((_, index) => (
-                    <AnswersCard
-                      key={index}
-                      onDelete={() => setItemNumber(index)}
-                    />
-                  ))}
+                {options.map((option) => (
+                  <AnswersCard
+                    option={option}
+                    key={option.key}
+                    onDelete={deleteOption}
+                  />
+                ))}
                 <Tooltip
                   placement='top'
                   title={
-                    arr.length === 5
+                    counter === 5
                       ? "You can not add more then five options"
                       : ""
                   }
                 >
                   <Paper
-                    elevation={isCardHover && arr.length !== 5 ? 5 : 0}
+                    elevation={isCardHover && counter !== 5 ? 5 : 0}
                     style={{
                       height: "400px",
                       width: "350px",
@@ -426,12 +492,9 @@ const InsertWindow = () => {
                     onMouseLeave={() => setCardHover(false)}
                   >
                     <IconButton
-                      disabled={arr.length === 5}
-                      onClick={() =>
-                        arr.length !== 5
-                          ? setArr([...arr, 0])
-                          : null
-                      }
+                      disabled={counter === 5}
+                      onClick={addOption}
+                      onMouseDown={() => setCardHover(false)}
                     >
                       <FontAwesomeIcon icon={faPlusCircle} size='2x' />
                     </IconButton>
