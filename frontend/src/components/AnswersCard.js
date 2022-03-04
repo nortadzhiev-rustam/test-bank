@@ -6,8 +6,8 @@ import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
 import { styled } from '@mui/styles';
 import { Functions } from '@mui/icons-material';
 const StyledPaper = styled(Paper)({
-  height: '400px',
-  width: '350px',
+  height: '270px',
+  width: '200px',
   marginInline: 5,
   marginBlock: 20,
   display: 'flex',
@@ -32,7 +32,7 @@ const IconBox = styled(Box)({
 
 const BoxContainer = styled(Box)({
   width: '100%',
-  height: '60px',
+  height: '40px',
   paddingInline: '10px',
   borderTopLeftRadius: '5px',
   borderTopRightRadius: '5px',
@@ -49,7 +49,7 @@ const UpperBox = styled(Box)({
 const AnswerBox = styled(Box)({
   display: 'flex',
   width: '90%',
-  height: '300px',
+  height: '200px',
   border: '1px solid #CCCCCC',
   borderRadius: 20,
   justifyContent: 'center',
@@ -87,7 +87,7 @@ const AnswersCard = (props) => {
                 </IconButton>
               </label>
             </IconBox>
-            <IconBox variant='button' onClick={()=> props.onDelete()}>
+            <IconBox variant='button' onClick={()=> props.onDelete(props.option.key)}>
               <FontAwesomeIcon size='sm' icon={faTrashCan} color='white' />
             </IconBox>
           </IconBoxContainer>
