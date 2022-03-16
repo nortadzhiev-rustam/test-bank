@@ -4,15 +4,10 @@ import {
   Paper,
   Box,
   Typography,
-  TextField,
-  // FormControl,
-  // FormLabel,
-  // RadioGroup,
-  // FormControlLabel,
-  // Radio,
   Button,
   Tooltip,
   IconButton,
+  useMediaQuery,
 } from "@mui/material";
 import { styled } from "@mui/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -26,64 +21,10 @@ import {
   faPlusCircle,
   faDownLeftAndUpRightToCenter,
 } from "@fortawesome/free-solid-svg-icons";
-
-import { FunctionsRounded, PhotoCameraTwoTone } from "@mui/icons-material";
-// import axios from "axios";
-import { MathfieldElement } from "mathlive";
+import { FunctionsRounded, PhotoCamera } from "@mui/icons-material";
 import AnswersCard from "../components/AnswersCard";
-import("mathlive/dist/mathlive-static.css");
-
-const styles = `
-:host(:focus), :host(:focus-within) {
-  outline: none !important;
-  border-color: rgba(73, 79, 117, 0.5) !important;
-  box-shadow: 0 0 0 2px rgba(73, 79, 117, 0.3);
-}
-:host {
-  border: 1px solid #eee !important;
-  border-radius: 4px;
-  cursor: text;
-  height: 100%;
-  justify-content: center;
-  alignItems: center;
-}
-.ML__virtual-keyboard-toggle.is-visible {
-  color: rgba(73, 79, 117, 1) !important;
-}
-.ML__virtual-keyboard-toggle.is-visible:hover{
-  background: rgba(73, 79, 117, 0.3) !important;
-}
-.ML__mathlive {
-  padding-left: 10px;
-}
-`;
-
-const StyledBox = styled(Box)({
-  display: "flex",
-  position: "relative",
-  margin: 0,
-  padding: 0,
-});
-
-const FormPaper = styled(Paper)({
-  width: "100%",
-  minHeight: 70,
-  backgroundColor: "#eceff1",
-  textAlign: "start",
-  borderTopRightRadius: 13,
-  borderTopLeftRadius: 13,
-  borderBottomRightRadius: 0,
-  borderBottomLeftRadius: 0,
-  paddingInline: 20,
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-});
-
-const Input = styled("input")({
-  display: "none",
-});
+import InputEditor from "../components/Editor";
+import MathInput from "../components/MathInput";
 
 const InsertWindow = () => {
   const [mouseIn, setMouseIn] = React.useState(false);
@@ -91,14 +32,14 @@ const InsertWindow = () => {
   // const [title, setTitle] = React.useState("");
   // const [radio, setRadio] = React.useState("True");
   // const [mark, setMark] = React.useState("");
-  // const [question, setQuestion] = React.useState("");
+  const [question, setQuestion] = React.useState();
   // const [answer, setAnswer] = React.useState({
   //   a: "",
   //   b: "",
   //   c: "",
   //   d: "",
   // });
-  const [latex, setLatex] = React.useState("f(x) = x^2");
+
   const dispatch = useDispatch();
   const isFull = useSelector((state) => state.questionsType.isFull);
   const quest = useSelector((state) => state.questionsType.value);
@@ -106,8 +47,6 @@ const InsertWindow = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [counter, setCounter] = React.useState(3);
   const [isCardHover, setCardHover] = React.useState(false);
-  const [itemNumber, setItemNumber] = React.useState();
-
   const [options, setOptions] = React.useState([
     {
       option: 1,
@@ -122,11 +61,11 @@ const InsertWindow = () => {
       key: 2,
     },
   ]);
-
+  const matches = useMediaQuery("(min-width:600px)");
   const getRandomOption = () => {
     const set = new Set();
     let randomNumber = Math.floor(Math.random() * 5) + 1;
-    options.map((item) => {
+    options.forEach((item) => {
       set.add(item.option);
     });
     while (set.has(randomNumber)) {
@@ -138,7 +77,7 @@ const InsertWindow = () => {
   const getRandomKey = () => {
     const set = new Set();
     let randomNumber = Math.floor(Math.random() * 5) + 1;
-    options.map((item) => {
+    options.forEach((item) => {
       set.add(item.key);
     });
     while (set.has(randomNumber)) {
@@ -173,58 +112,16 @@ const InsertWindow = () => {
     dispatch(setFull(false));
   };
 
-  const mfe = React.useMemo(() => {
-    const mfe = new MathfieldElement();
-    const style = document.createElement("style");
-    style.innerHTML = styles;
-    style.setAttribute("data-id", "custom");
-    style.setAttribute("data-refcount", "custom");
-
-    mfe.setOptions({
-      virtualKeyboardMode: "manual",
-      virtualKeyboards: "numeric functions symbols greek",
-    });
-    mfe.value = latex;
-    mfe.setAttribute("id", "MathID-1");
-    mfe.shadowRoot.appendChild(style);
-    return mfe;
-  }, [latex]);
-
-  React.useEffect(() => {
-    const mathfield = document.querySelector("#mathfield");
-    if (mathfield) {
-      if (mathfield.hasChildNodes()) {
-        const prev = document.querySelector("#MathID-1");
-        if (prev) {
-          mathfield.replaceChild(mfe, prev);
-        }
-      } else {
-        mathfield.appendChild(mfe);
-      }
-    }
-  }, [isOpen]);
-
-  React.useEffect(() => {
-    mfe.addEventListener("input", (event) => {
-      setLatex(event.target.value);
-    });
-  }, [mfe]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
 
   return (
     <Grid item xs={12} sm={12} md={isFull ? 12 : 8}>
-      <Paper
+      <PaperContainer
         elevation={isHover ? 10 : 2}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
-        sx={{
-          borderRadius: 3,
-          transition: "all 0.3s ease-in-out",
-          width: "100%",
-          paddingBottom: 30,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-        }}
         className='animate__animated animate__zoomIn animate__faster'
       >
         <StyledBox>
@@ -235,44 +132,22 @@ const InsertWindow = () => {
               onMouseOver={() => setMouseIn(true)}
             >
               {mouseIn ? (
-                <div
-                  style={{
-                    display: "inline-flex",
-                    backgroundColor: "#e63946",
-                    borderRadius: "50%",
-                    height: 20,
-                    width: 20,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                  onClick={handleClose}
-                >
+                <CloseButton onClick={handleClose}>
                   <FontAwesomeIcon
                     icon={faTimes}
                     size='sm'
                     style={{
-                      borderRadius: "30%",
+                      borderRadius: "50%",
                     }}
                     color='#fff'
                   />
-                </div>
+                </CloseButton>
               ) : (
                 <FontAwesomeIcon size='lg' color='#e63946' icon={faCircle} />
               )}
 
               {mouseIn ? (
-                <div
-                  style={{
-                    display: "inline-flex",
-                    backgroundColor: "#ee9b00",
-                    borderRadius: "50%",
-                    marginLeft: 5,
-                    height: 20,
-                    width: 20,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
+                <MinusButton>
                   <FontAwesomeIcon
                     icon={faMinus}
                     size='sm'
@@ -281,7 +156,7 @@ const InsertWindow = () => {
                     }}
                     color='#fff'
                   />
-                </div>
+                </MinusButton>
               ) : (
                 <FontAwesomeIcon
                   size='lg'
@@ -292,19 +167,7 @@ const InsertWindow = () => {
               )}
 
               {mouseIn ? (
-                <div
-                  style={{
-                    display: "inline-flex",
-                    backgroundColor: "#43aa8b",
-                    borderRadius: "50%",
-                    marginLeft: 5,
-                    height: 20,
-                    width: 20,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                  onClick={handleFullScreen}
-                >
+                <FullScreenButton onClick={handleFullScreen}>
                   {!isFull ? (
                     <FontAwesomeIcon
                       icon={faUpRightAndDownLeftFromCenter}
@@ -324,7 +187,7 @@ const InsertWindow = () => {
                       color='#fff'
                     />
                   )}
-                </div>
+                </FullScreenButton>
               ) : (
                 <FontAwesomeIcon
                   size='lg'
@@ -352,161 +215,246 @@ const InsertWindow = () => {
           }}
         >
           {isOpen && (
-            <Paper elevation={5} sx={{ padding: 2 }}>
-              <Typography variant='button' fontFamily='roboto'>
-                Formula
-              </Typography>
-              <Box
-                sx={{
-                  borderWidth: "1px",
-                  borderStyle: "solid",
-                  borderColor: "#ccc",
-                  borderRadius: "5px",
-                  padding: "10px",
-                  marginInline: "2px",
-                  height: "100px",
-                  alignItems: "center",
-                }}
-                id='mathfield'
-              ></Box>
-              <Box mt={2} display='flex' justifyContent='flex-end'>
-                <Button variant='contained' color='primary'>
-                  Submit
-                </Button>
-                <Button
-                  variant='contained'
-                  color='error'
-                  sx={{ marginLeft: 2 }}
-                  onClick={() => setIsOpen(!isOpen)}
-                >
-                  Cancel
-                </Button>
-              </Box>
-            </Paper>
+            <MathInput isOpen={isOpen} setIsOpen={() => setIsOpen(!isOpen)} />
           )}
           {!isOpen && (
-            <Box>
-              <Box
-                style={{
-                  borderWidth: "1px",
-                  borderStyle: "solid",
-                  borderColor: "#ccc",
-                  borderRadius: "5px",
-                  padding: "10px",
-                  marginInline: "2px",
-                }}
-              >
-                <Typography color='primary' variant='button' ml={0.5}>
-                  Question
-                </Typography>
-                <TextField
-                  multiline
-                  rows={3}
-                  sx={{ width: "100%", marginBlock: 1 }}
-                />
+            <form onSubmit={handleSubmit}>
+              <Box>
+                <QuestionPaper elevation={5}>
+                  <InputContainer>
+                    <InputEditor
+                      onChange={(qu) => setQuestion(qu)}
+                      placeholder={"Enter your question here..."}
+                    />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        marginBottom: "10px",
+                        justifyContent: "space-evenly",
+                        height: "100%",
+                      }}
+                    >
+                      <Tooltip
+                        title='Click here to inser Formula'
+                        arrow
+                        sx={{ marginBottom: "5px" }}
+                      >
+                        <StyledIcon>
+                          <IconButton
+                            sx={{ height: 60 }}
+                            variant='contained'
+                            onClick={() => setIsOpen(!isOpen)}
+                          >
+                            <FunctionsRounded />
+                          </IconButton>
+                        </StyledIcon>
+                      </Tooltip>
+                      <Tooltip title='Click to Upload picture' arrow>
+                        <label htmlFor='icon-button-file'>
+                          <Input
+                            accept='image/*'
+                            id='icon-button-file'
+                            type='file'
+                          />
+                          <label htmlFor='contained-button-file'>
+                            <Input
+                              accept='image/*'
+                              id='contained-button-file'
+                              multiple
+                              type='file'
+                            />
+                            <StyledIcon>
+                              <IconButton
+                                variant='contained'
+                                component='span'
+                                sx={{ height: 60 }}
+                              >
+                                <PhotoCamera />
+                              </IconButton>
+                            </StyledIcon>
+                          </label>
+                        </label>
+                      </Tooltip>
+                    </Box>
+                  </InputContainer>
+                </QuestionPaper>
                 <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    marginBottom: "10px",
+                    display: { md: "flex", sm: "block" },
+                    flexDirectoin: "row",
+                    flexWrap: "wrap",
+                    justifyContent: "space-around",
+                    paddingTop: 5,
                   }}
                 >
-                  <Tooltip
-                    title='Click here to inser Formula'
-                    arrow
-                    sx={{ marginBottom: "5px" }}
-                  >
-                    <Button
-                      sx={{ marginRight: "5px" }}
-                      color='primary'
-                      variant='contained'
-                      onClick={() => setIsOpen(!isOpen)}
-                      endIcon={<FunctionsRounded />}
-                    >
-                      Formula
-                    </Button>
-                  </Tooltip>
-                  <Tooltip title='Click to Upload picture' arrow>
-                    <label htmlFor='icon-button-file'>
-                      <Input
-                        accept='image/*'
-                        id='icon-button-file'
-                        type='file'
-                      />
-                      <label htmlFor='contained-button-file'>
-                        <Input
-                          accept='image/*'
-                          id='contained-button-file'
-                          multiple
-                          type='file'
+                  <Grid container spacing={3}>
+                    {options.map((option, idx) => (
+                      <Grid
+                        key={option.key}
+                        item
+                        xs={matches ? 12 / counter : 12}
+                      >
+                        <AnswersCard
+                          matches={matches}
+                          option={option}
+                          onDelete={deleteOption}
+                          counter={counter}
+                          index={idx + 1}
                         />
-                        <Button
-                          variant='contained'
-                          component='span'
-                          endIcon={<PhotoCameraTwoTone />}
+                      </Grid>
+                    ))}
+                    {counter !== 5 && (
+                      <Grid item xs={12}>
+                        <Tooltip
+                          placement='top'
+                          title={
+                            counter === 5
+                              ? "You can not add more then five options"
+                              : ""
+                          }
                         >
-                          Upload
-                        </Button>
-                      </label>
-                    </label>
-                  </Tooltip>
+                          <Paper
+                            elevation={isCardHover && counter !== 5 ? 5 : 0}
+                            style={{
+                              height: 150,
+                              width: "100%",
+                              margin: 5,
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              marginBlock: 20,
+                              borderRadius: 20,
+                            }}
+                            onMouseEnter={() => setCardHover(true)}
+                            onMouseLeave={() => setCardHover(false)}
+                          >
+                            <IconButton
+                              disabled={counter === 5}
+                              onClick={addOption}
+                              onMouseDown={() => setCardHover(false)}
+                            >
+                              <FontAwesomeIcon icon={faPlusCircle} size='2x' />
+                            </IconButton>
+                          </Paper>
+                        </Tooltip>
+                      </Grid>
+                    )}
+                  </Grid>
                 </Box>
               </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirectoin: "row",
-                  flexWrap: "wrap",
-                  justifyContent: "space-around",
-                  paddingTop: 5,
-                }}
-              >
-                {options.map((option) => (
-                  <AnswersCard
-                    option={option}
-                    key={option.key}
-                    onDelete={deleteOption}
-                  />
-                ))}
-                <Tooltip
-                  placement='top'
-                  title={
-                    counter === 5
-                      ? "You can not add more then five options"
-                      : ""
-                  }
-                >
-                  <Paper
-                    elevation={isCardHover && counter !== 5 ? 5 : 0}
-                    style={{
-                      height: "400px",
-                      width: "350px",
-                      margin: 5,
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginBlock: 20,
-                      borderRadius: 20,
-                    }}
-                    onMouseEnter={() => setCardHover(true)}
-                    onMouseLeave={() => setCardHover(false)}
-                  >
-                    <IconButton
-                      disabled={counter === 5}
-                      onClick={addOption}
-                      onMouseDown={() => setCardHover(false)}
-                    >
-                      <FontAwesomeIcon icon={faPlusCircle} size='2x' />
-                    </IconButton>
-                  </Paper>
-                </Tooltip>
-              </Box>
-            </Box>
+              <Button type='submit' variant='contained'>
+                Submit
+              </Button>
+            </form>
           )}
         </Box>
-      </Paper>
+      </PaperContainer>
     </Grid>
   );
 };
+
+const StyledBox = styled(Box)({
+  display: "flex",
+  position: "relative",
+  margin: 0,
+  padding: 0,
+});
+
+const FormPaper = styled(Paper)({
+  width: "100%",
+  minHeight: 70,
+  backgroundColor: "#eceff1",
+  textAlign: "start",
+  borderTopRightRadius: 13,
+  borderTopLeftRadius: 13,
+  borderBottomRightRadius: 0,
+  borderBottomLeftRadius: 0,
+  paddingInline: 20,
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+});
+
+const Input = styled("input")({
+  display: "none",
+});
+
+const PaperContainer = styled(Paper)({
+  borderRadius: 12,
+  transition: "all 0.3s ease-in-out",
+  width: "100%",
+  paddingBottom: 30,
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+});
+
+const InputContainer = styled("div")({
+  display: "flex",
+  flexDirection: "row-reverse",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "100%",
+});
+
+const StyledIcon = styled("div")({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  width: 60,
+  height: 60,
+  borderRadius: 10,
+  backgroundColor: "#eceff1",
+  margin: 10,
+  cursor: "pointer",
+  "&:hover": {
+    backgroundColor: "#dfe1e6",
+  },
+});
+
+const QuestionPaper = styled(Paper)({
+  borderWidth: "1px",
+  borderStyle: "solid",
+  borderColor: "#ccc",
+  borderRadius: "10px",
+  padding: "10px",
+  marginInline: "2px",
+  height: 250,
+  backgroundColor: "#2a9d8f",
+});
+
+const CloseButton = styled("div")({
+  display: "inline-flex",
+  backgroundColor: "#e63946",
+  borderRadius: "50%",
+  height: 20,
+  width: 20,
+  justifyContent: "center",
+  alignItems: "center",
+});
+
+const MinusButton = styled("div")({
+  display: "inline-flex",
+  backgroundColor: "#ee9b00",
+  borderRadius: "50%",
+  marginLeft: 5,
+  height: 20,
+  width: 20,
+  justifyContent: "center",
+  alignItems: "center",
+});
+
+const FullScreenButton = styled("div")({
+  display: "inline-flex",
+  backgroundColor: "#43aa8b",
+  marginLeft: 5,
+  borderRadius: "50%",
+  height: 20,
+  width: 20,
+  justifyContent: "center",
+  alignItems: "center",
+});
 
 export default InsertWindow;

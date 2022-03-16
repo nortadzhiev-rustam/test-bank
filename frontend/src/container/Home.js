@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Grid, Box } from '@mui/material';
+import { Grid, Box, useMediaQuery } from '@mui/material';
 import 'animate.css';
 import GeneratePanel from '../components/GeneratePanel';
 import InserPanel from '../components/InsertPanel';
@@ -24,7 +24,7 @@ const Home = () => {
   const isFull = useSelector((state) => state.questionsType.isFull);
   const open = useSelector((state) => state.questionsType.isOpen);
   const isVisible = useSelector((state) => state.questionsType.isVisible);
-
+const matches = useMediaQuery('(min-width:900px)');
   const openWindow = () => {
     if (open === 'insert') {
       return <InsertWindow />;
@@ -36,7 +36,7 @@ const Home = () => {
   return (
     <BoxContainer>
       <Grid container justifyContent={isVisible && 'space-around'} spacing={1}>
-        {!isFull && (
+        {!isFull && matches && (
           <Grid
             item
             xs={12}
