@@ -1,0 +1,15 @@
+.answer:empty:not(:focus)::before {
+content: attr(placeholder);
+color: #fff;
+}
+
+.answer{
+    display: block;
+    text-align: center;
+    margin-block: 0;
+    align-self: center;
+}
+
+.empty-answer {
+    
+}

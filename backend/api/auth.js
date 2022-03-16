@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/isAuth', (req, res) => {
+router.get('/isAuth', async (req, res) => {
 
-const {user, isAuth} = req.session;
+ const {user, isAuth} = await req.session;
 console.log(user);
 if (user) {
   res.json({

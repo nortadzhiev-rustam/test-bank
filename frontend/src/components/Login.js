@@ -88,7 +88,7 @@ const Login = ({ history }) => {
 
       dispatch(login(res.data));
 
-      window.location.replace("/");
+      navigate("/");
     } catch (err) {
       setError(err.message);
     }

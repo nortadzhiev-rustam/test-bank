@@ -21,7 +21,7 @@ router.post("/departments",  async (req, res) => {
 });
 
 //route that gets all departments
-router.get("/departments", isAuth, async (req, res) => {
+router.get("/departments", async (req, res) => {
     try {
       const departments = await Department.findAll({
         include: { model: User },
