@@ -2,6 +2,7 @@ import React from "react";
 import { EditorState, convertToRaw, convertFromRaw, Editor } from "draft-js";
 import { Box, styled } from "@mui/material";
 import "./Editor.css";
+
 export default function InputEditor({ onChange, placeholder }) {
   const [editorState, setEditorState] = React.useState(() =>
     EditorState.createEmpty()
@@ -31,7 +32,11 @@ export default function InputEditor({ onChange, placeholder }) {
   });
   React.useEffect(() => {
     onChange(convertToRaw(editorState.getCurrentContent()));
+    //eslint-disable-next-line
   }, [editorState]);
+
+  
+
 
   return (
     <EditorContainer onClick={focusEditor}>
@@ -40,6 +45,7 @@ export default function InputEditor({ onChange, placeholder }) {
         editorState={editorState}
         onChange={setEditorState}
         placeholder={placeholder}
+       
       />
     </EditorContainer>
   );

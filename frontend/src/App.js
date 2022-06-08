@@ -11,7 +11,7 @@ import SearchWindow from "./components/searchWindow";
 import Profile from "./container/Profile";
 import axios from "axios";
 import { getDepartmentSuccess } from "./store/departmentSlice";
-
+import MathDialog from "./components/MathDialog";
 function App() {
   const [openSearch, setOpenSearch] = React.useState(false);
   const dispatch = useDispatch();
@@ -57,6 +57,7 @@ function App() {
           <Route exact path='/' element={<ProtectedRoute component={Home} />} />
           <Route exact path='/login' element={<Login />} />
           <Route exact path='/register' element={<Register />} />
+          <Route exact path='/math' element={<MathDialog />} />
           <Route
             path='/profile'
             element={<ProtectedRoute component={Profile} />}
@@ -69,7 +70,18 @@ function App() {
 }
 
 const PageNotFound = () => {
-  return <div style={{height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}><h1>Page not found 404</h1></div>;
-}
+  return (
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <h1>Page not found 404</h1>
+    </div>
+  );
+};
 
 export default App;
