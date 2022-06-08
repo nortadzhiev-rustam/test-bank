@@ -8,7 +8,7 @@ import {
   Grid,
 } from '@mui/material';
 import { styled } from '@mui/styles';
-// import MathDialog from './MathDialog';
+import MathDialog from './MathDialog';
 import { FunctionsRounded } from '@mui/icons-material';
 
 
@@ -54,12 +54,12 @@ const Input = (props) => {
         </Grid>
         
       </Grid>
-      {/* <MathDialog
+      <MathDialog
         latex={latex}
         setLatex={(value) => setLatex(value)}
         setOpen={(status) => setOpen(status)}
         open={open}
-      /> */}
+      />
     </Box>
   );
 };

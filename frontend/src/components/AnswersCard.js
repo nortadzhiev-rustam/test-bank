@@ -44,7 +44,7 @@ const AnswerBox = styled("div")({
   overflowY: "auto",
   marginBottom: 10,
   "&:hover": {
-    border: "2px solid #2a9d8f",
+    border: "2px solid #006064",
   },
 });
 
@@ -80,7 +80,7 @@ const getRandomColor = (index) => {
       return "#bb3e03";
 
     default:
-      return "#2a9d8f";
+      return "#006064";
   }
 };
 
@@ -104,10 +104,10 @@ const AnswersCard = (props) => {
         }}
       >
         <IconBoxContainer>
-          <IconBox variant='button' sx={{ backgroundColor: "#2a9d8f" }}>
+          <IconBox variant='button' sx={{ backgroundColor: "#006064" }}>
             <Functions sx={{ color: "white" }} />
           </IconBox>
-          <IconBox variant='button' sx={{ backgroundColor: "#2a9d8f" }}>
+          <IconBox variant='button' sx={{ backgroundColor: "#006064" }}>
             <label htmlFor='icon-button-file'>
               <Input accept='image/*' id='icon-button-file' type='file' />
               <IconButton aria-label='upload picture' component='span'>
@@ -125,7 +125,7 @@ const AnswersCard = (props) => {
           >
             <IconBox
               variant='button'
-              sx={{ backgroundColor: props.counter === 2 ? "#999" : "#2a9d8f" }}
+              sx={{ backgroundColor: props.counter === 2 ? "#999" : "#006064" }}
             >
               <IconButton
                 disabled={props.counter === 2}
@@ -161,7 +161,7 @@ const AnswersCard = (props) => {
         }}
         sx={{
           "&:focus": {
-            border: "2px solid #2a9d8f",
+            border: "2px solid #006064",
           },
         }}
         contentEditable

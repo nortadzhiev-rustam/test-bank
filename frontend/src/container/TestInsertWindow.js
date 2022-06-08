@@ -148,14 +148,7 @@ const InsertWindow = () => {
 
               {mouseIn ? (
                 <MinusButton>
-                  <FontAwesomeIcon
-                    icon={faMinus}
-                    size='sm'
-                    style={{
-                      borderRadius: "30%",
-                    }}
-                    color='#fff'
-                  />
+                  <FontAwesomeIcon icon={faMinus} size='sm' color='#fff' />
                 </MinusButton>
               ) : (
                 <FontAwesomeIcon
@@ -231,14 +224,15 @@ const InsertWindow = () => {
                         display: "flex",
                         flexDirection: "column",
                         marginBottom: "10px",
-                        justifyContent: "space-evenly",
-                        height: "100%",
+                        justifyContent: "start",
+                        height: "85%",
                       }}
                     >
                       <Tooltip
                         title='Click here to inser Formula'
                         arrow
                         sx={{ marginBottom: "5px" }}
+                        placement='top'
                       >
                         <StyledIcon>
                           <IconButton
@@ -257,23 +251,16 @@ const InsertWindow = () => {
                             id='icon-button-file'
                             type='file'
                           />
-                          <label htmlFor='contained-button-file'>
-                            <Input
-                              accept='image/*'
-                              id='contained-button-file'
-                              multiple
-                              type='file'
-                            />
-                            <StyledIcon>
-                              <IconButton
-                                variant='contained'
-                                component='span'
-                                sx={{ height: 60 }}
-                              >
-                                <PhotoCamera />
-                              </IconButton>
-                            </StyledIcon>
-                          </label>
+
+                          <StyledIcon>
+                            <IconButton
+                              variant='contained'
+                              component='span'
+                              sx={{ height: 60 }}
+                            >
+                              <PhotoCamera />
+                            </IconButton>
+                          </StyledIcon>
                         </label>
                       </Tooltip>
                     </Box>
@@ -422,7 +409,7 @@ const QuestionPaper = styled(Paper)({
   padding: "10px",
   marginInline: "2px",
   height: 250,
-  backgroundColor: "#2a9d8f",
+  backgroundColor: "#006064",
 });
 
 const CloseButton = styled("div")({

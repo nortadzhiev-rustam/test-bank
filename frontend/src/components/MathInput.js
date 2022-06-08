@@ -1,6 +1,7 @@
 import React from "react";
 import { Paper, Box, Typography, Button } from "@mui/material";
 import { MathfieldElement } from "mathlive";
+
 import("mathlive/dist/mathlive-static.css");
 const styles = `
 :host(:focus), :host(:focus-within) {
