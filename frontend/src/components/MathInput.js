@@ -15,7 +15,9 @@ const styles = `
   cursor: text;
   height: 100%;
   justify-content: center;
-  alignItems: center;
+  align-items: center;
+  padding: 30px 0;
+  font-size: 32px;
 }
 .ML__virtual-keyboard-toggle.is-visible {
   color: rgba(73, 79, 117, 1) !important;
@@ -25,7 +27,9 @@ const styles = `
 }
 .ML__mathlive {
   padding-left: 10px;
+
 }
+
 `;
 export default function MathInput({ isOpen, setIsOpen }) {
   const [latex, setLatex] = React.useState("f(x) = x^2");

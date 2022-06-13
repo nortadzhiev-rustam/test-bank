@@ -29,6 +29,7 @@
     "katex": "^0.15.3",
     "mathjax3-react": "^1.1.0",
     "mathlive": "^0.60.1",
+    "mathquill": "^0.10.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-draggable": "^4.4.4",
