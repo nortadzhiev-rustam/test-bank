@@ -12,6 +12,7 @@ import Profile from "./container/Profile";
 import axios from "axios";
 import { getDepartmentSuccess } from "./store/departmentSlice";
 import MathDialog from "./components/MathDialog";
+import EditorV2 from './components/EditorV2';
 function App() {
   const [openSearch, setOpenSearch] = React.useState(false);
   const dispatch = useDispatch();
@@ -58,6 +59,7 @@ function App() {
           <Route exact path='/login' element={<Login />} />
           <Route exact path='/register' element={<Register />} />
           <Route exact path='/math' element={<MathDialog />} />
+          <Route exact path='/editor' element={<EditorV2 />} />
           <Route
             path='/profile'
             element={<ProtectedRoute component={Profile} />}
