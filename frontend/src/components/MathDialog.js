@@ -6,13 +6,18 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Paper from "@mui/material/Paper";
 import Draggable from "react-draggable";
-import { addStyles, EditableMathField, StaticMathField } from "react-mathquill";
+import {
+  addStyles,
+  EditableMathField,
+  StaticMathField,
+  MathField,
+} from "react-mathquill";
 import { formulas } from "../constants/formulas";
 import { IconButton, Typography, Box, TextField } from "@mui/material";
 import { CancelRounded } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
-
+const MathQuill = require("mathquill/build/mathquill");
 addStyles();
 function PaperComponent(props) {
   return (
@@ -51,14 +56,12 @@ export default function MathDialog({ open, setOpen, latex, setLatex }) {
     setFormule(value);
   };
 
-  const handleMathType = (type) => {
-    if (formuleLatex === "") {
-      setFormuleLatex(type);
-      document.querySelector("#math-field").focus();
-    } else {
-      const el = document.querySelector("#math-field");
-      console.log(el);
-    }
+  const handleMathType = (e, type) => {
+    e.preventDefault();
+
+    inputRef.current = type;
+
+    console.log(inputRef);
   };
   return (
     <div>
@@ -90,11 +93,29 @@ export default function MathDialog({ open, setOpen, latex, setLatex }) {
         </DialogTitle>
         <DialogContent>
           <EditableMathField
+            config={`spaceBehavesLikeTab: true,
+          leftRightIntoCmdGoes: 'up',
+          restrictMismatchedBrackets: true,
+          sumStartsWithNEquals: true,
+          supSubsRequireOperand: true,
+          charsThatBreakOutOfSupSub: '+-=<>',
+          autoSubscriptNumerals: true,
+          autoCommands: 'pi theta sqrt sum',
+          autoOperatorNames: 'sin cos',
+          maxDepth: 10,
+          substituteTextarea: function() {
+            return document.createElement('textarea');
+          },
+          handlers: {
+            edit: function(mathField) { ... },
+            upOutOf: function(mathField) { ... },
+            moveOutOf: function(dir, mathField) { if (dir === MQ.L) ... else ... }
+          }`}
             mathquillDidMount={(mathField) => {
               mathField.focus();
-              
             }}
             id='math-field'
+            ref={inputRef}
             style={{
               width: "98%",
               height: "60px",
@@ -106,7 +127,7 @@ export default function MathDialog({ open, setOpen, latex, setLatex }) {
             }}
             latex={formuleLatex}
             onChange={(mathField) => {
-              setFormuleLatex(mathField.write(ltx));
+              setFormuleLatex(mathField.latex());
             }}
           />
           <Paper
@@ -135,8 +156,8 @@ export default function MathDialog({ open, setOpen, latex, setLatex }) {
                   cursor: "pointer",
                 }}
                 size='large'
-                onClick={() => {
-                  setLtx(formula.latex);
+                onClick={(e) => {
+                  handleMathType(e, formula.latex);
                 }}
               >
                 <StaticMathField style={{ cursor: "pointer" }}>
@@ -157,9 +178,9 @@ export default function MathDialog({ open, setOpen, latex, setLatex }) {
   );
 }
 
-MathDialog.propTypes = {
-  open: PropTypes.bool.isRequired,
-  setOpen: PropTypes.func.isRequired,
-  latex: PropTypes.string.isRequired,
-  setLatex: PropTypes.func.isRequired,
-};
+// MathDialog.propTypes = {
+//   open: PropTypes.bool.isRequired,
+//   setOpen: PropTypes.func.isRequired,
+//   latex: PropTypes.string.isRequired,
+//   setLatex: PropTypes.func.isRequired,
+// };
