@@ -21,31 +21,18 @@ import {
   faPlusCircle,
   faDownLeftAndUpRightToCenter,
 } from "@fortawesome/free-solid-svg-icons";
-import { FunctionsRounded, PhotoCamera } from "@mui/icons-material";
+
 import AnswersCard from "../components/AnswersCard";
-import InputEditor from "../components/Editor";
-import MathInput from "../components/MathInput";
+
+import EditorV2 from "../components/EditorV2";
 
 const InsertWindow = () => {
   const [mouseIn, setMouseIn] = React.useState(false);
   const [isHover, setHover] = React.useState(false);
-  // const [title, setTitle] = React.useState("");
-  // const [radio, setRadio] = React.useState("True");
-  // const [mark, setMark] = React.useState("");
-  const [question, setQuestion] = React.useState();
-  // const [answer, setAnswer] = React.useState({
-  //   a: "",
-  //   b: "",
-  //   c: "",
-  //   d: "",
-  // });
-
   const dispatch = useDispatch();
   const isFull = useSelector((state) => state.questionsType.isFull);
   const quest = useSelector((state) => state.questionsType.value);
-  // const user = useSelector((state) => state.user.user);
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [counter, setCounter] = React.useState(3);
+  const [counter, setCounter] = React.useState(2);
   const [isCardHover, setCardHover] = React.useState(false);
   const [options, setOptions] = React.useState([
     {
@@ -55,10 +42,6 @@ const InsertWindow = () => {
     {
       option: 2,
       key: 1,
-    },
-    {
-      option: 3,
-      key: 2,
     },
   ]);
   const matches = useMediaQuery("(min-width:600px)");
@@ -207,134 +190,80 @@ const InsertWindow = () => {
             padding: 5,
           }}
         >
-          {isOpen && (
-            <MathInput isOpen={isOpen} setIsOpen={() => setIsOpen(!isOpen)} />
-          )}
-          {!isOpen && (
-            <form onSubmit={handleSubmit}>
-              <Box>
-                <QuestionPaper elevation={5}>
-                  <InputContainer>
-                    <InputEditor
-                      onChange={(qu) => setQuestion(qu)}
-                      placeholder={"Enter your question here..."}
-                    />
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        marginBottom: "10px",
-                        justifyContent: "start",
-                        height: "85%",
-                      }}
-                    >
+          <form onSubmit={handleSubmit}>
+            <Box>
+              <QuestionPaper elevation={5}>
+                <InputContainer>
+                  <EditorV2
+                    height='200px'
+                    placeholder='Enter your question here...'
+                  />
+                </InputContainer>
+              </QuestionPaper>
+              <Box
+                sx={{
+                  display: { md: "flex", sm: "block" },
+                  flexDirectoin: "row",
+                  flexWrap: "wrap",
+                  justifyContent: "space-around",
+                  paddingTop: 5,
+                }}
+              >
+                <Grid container spacing={3}>
+                  {options.map((option, idx) => (
+                    <Grid key={option.key} item xs={matches ? 6 : 12}>
+                      <AnswersCard
+                        matches={matches}
+                        option={option}
+                        onDelete={deleteOption}
+                        counter={counter}
+                        index={idx + 1}
+                      />
+                    </Grid>
+                  ))}
+                  {counter !== 5 && (
+                    <Grid item xs={12}>
                       <Tooltip
-                        title='Click here to inser Formula'
-                        arrow
-                        sx={{ marginBottom: "5px" }}
                         placement='top'
+                        title={
+                          counter === 5
+                            ? "You can not add more then five options"
+                            : ""
+                        }
                       >
-                        <StyledIcon>
-                          <IconButton
-                            sx={{ height: 60 }}
-                            variant='contained'
-                            onClick={() => setIsOpen(!isOpen)}
-                          >
-                            <FunctionsRounded />
-                          </IconButton>
-                        </StyledIcon>
-                      </Tooltip>
-                      <Tooltip title='Click to Upload picture' arrow>
-                        <label htmlFor='icon-button-file'>
-                          <Input
-                            accept='image/*'
-                            id='icon-button-file'
-                            type='file'
-                          />
-
-                          <StyledIcon>
-                            <IconButton
-                              variant='contained'
-                              component='span'
-                              sx={{ height: 60 }}
-                            >
-                              <PhotoCamera />
-                            </IconButton>
-                          </StyledIcon>
-                        </label>
-                      </Tooltip>
-                    </Box>
-                  </InputContainer>
-                </QuestionPaper>
-                <Box
-                  sx={{
-                    display: { md: "flex", sm: "block" },
-                    flexDirectoin: "row",
-                    flexWrap: "wrap",
-                    justifyContent: "space-around",
-                    paddingTop: 5,
-                  }}
-                >
-                  <Grid container spacing={3}>
-                    {options.map((option, idx) => (
-                      <Grid
-                        key={option.key}
-                        item
-                        xs={matches ? 12 / counter : 12}
-                      >
-                        <AnswersCard
-                          matches={matches}
-                          option={option}
-                          onDelete={deleteOption}
-                          counter={counter}
-                          index={idx + 1}
-                        />
-                      </Grid>
-                    ))}
-                    {counter !== 5 && (
-                      <Grid item xs={12}>
-                        <Tooltip
-                          placement='top'
-                          title={
-                            counter === 5
-                              ? "You can not add more then five options"
-                              : ""
-                          }
+                        <Paper
+                          elevation={isCardHover && counter !== 5 ? 5 : 0}
+                          style={{
+                            height: 150,
+                            width: "100%",
+                            margin: 5,
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            marginBlock: 20,
+                            borderRadius: 20,
+                          }}
+                          onMouseEnter={() => setCardHover(true)}
+                          onMouseLeave={() => setCardHover(false)}
                         >
-                          <Paper
-                            elevation={isCardHover && counter !== 5 ? 5 : 0}
-                            style={{
-                              height: 150,
-                              width: "100%",
-                              margin: 5,
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              marginBlock: 20,
-                              borderRadius: 20,
-                            }}
-                            onMouseEnter={() => setCardHover(true)}
-                            onMouseLeave={() => setCardHover(false)}
+                          <IconButton
+                            disabled={counter === 5}
+                            onClick={addOption}
+                            onMouseDown={() => setCardHover(false)}
                           >
-                            <IconButton
-                              disabled={counter === 5}
-                              onClick={addOption}
-                              onMouseDown={() => setCardHover(false)}
-                            >
-                              <FontAwesomeIcon icon={faPlusCircle} size='2x' />
-                            </IconButton>
-                          </Paper>
-                        </Tooltip>
-                      </Grid>
-                    )}
-                  </Grid>
-                </Box>
+                            <FontAwesomeIcon icon={faPlusCircle} size='2x' />
+                          </IconButton>
+                        </Paper>
+                      </Tooltip>
+                    </Grid>
+                  )}
+                </Grid>
               </Box>
-              <Button type='submit' variant='contained'>
-                Submit
-              </Button>
-            </form>
-          )}
+            </Box>
+            <Button type='submit' variant='contained'>
+              Submit
+            </Button>
+          </form>
         </Box>
       </PaperContainer>
     </Grid>
@@ -406,7 +335,7 @@ const QuestionPaper = styled(Paper)({
   borderStyle: "solid",
   borderColor: "#ccc",
   borderRadius: "10px",
-  padding: "10px",
+
   marginInline: "2px",
   height: 250,
   backgroundColor: "#006064",

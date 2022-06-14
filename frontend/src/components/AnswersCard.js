@@ -7,17 +7,20 @@ import { styled } from "@mui/styles";
 import { Functions } from "@mui/icons-material";
 import InputEditor from "./Editor";
 import "./style.css";
+import EditorV2 from './EditorV2';
 
 const StyledPaper = styled(Paper)({
   height: 370,
-  width: "100%",
-  marginInline: 5,
-  marginBlock: 20,
+  width: "95%",
+  
+
   display: "flex",
   flexDirection: "column",
   justifyContent: "start",
   alignItems: "center",
   borderRadius: 15,
+  paddingLeft: 10,
+  paddingRight: 10,
   
 });
 
@@ -104,17 +107,7 @@ const AnswersCard = (props) => {
         }}
       >
         <IconBoxContainer>
-          <IconBox variant='button' sx={{ backgroundColor: "#006064" }}>
-            <Functions sx={{ color: "white" }} />
-          </IconBox>
-          <IconBox variant='button' sx={{ backgroundColor: "#006064" }}>
-            <label htmlFor='icon-button-file'>
-              <Input accept='image/*' id='icon-button-file' type='file' />
-              <IconButton aria-label='upload picture' component='span'>
-                <FontAwesomeIcon size='xs' icon={faCamera} color='white' />
-              </IconButton>
-            </label>
-          </IconBox>
+          
 
           <Tooltip
             placement='top'
@@ -148,28 +141,8 @@ const AnswersCard = (props) => {
         </Box>
       </Box>
 
-      {/* <AnswerBox
-        onInput={(e) => {
-          var pElement = document.createElement("p");
-          var bodyText = document.querySelector(".answer");
-          var firstLine = bodyText.firstChild;
-
-          pElement.appendChild(firstLine);
-          bodyText.prepend(pElement);
-
-          console.log(bodyText.outerHTML);
-        }}
-        sx={{
-          "&:focus": {
-            border: "2px solid #006064",
-          },
-        }}
-        contentEditable
-        suppressContentEditableWarning
-      >
-        <p className='answer' id='answer' placeholder='Insert Answer here'></p>
-      </AnswerBox> */}
-      <InputEditor onChange={(ans) => setAnswer(ans)} placeholder={'Enter your answers here...'}/>
+      
+      <EditorV2 height='265px' placeholder='Enter your answer here...'/>
     </StyledPaper>
   );
 };

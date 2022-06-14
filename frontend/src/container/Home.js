@@ -24,7 +24,7 @@ const Home = () => {
   const isFull = useSelector((state) => state.questionsType.isFull);
   const open = useSelector((state) => state.questionsType.isOpen);
   const isVisible = useSelector((state) => state.questionsType.isVisible);
-const matches = useMediaQuery('(min-width:900px)');
+
   const openWindow = () => {
     if (open === 'insert') {
       return <InsertWindow />;
@@ -36,7 +36,7 @@ const matches = useMediaQuery('(min-width:900px)');
   return (
     <BoxContainer>
       <Grid container justifyContent={isVisible && 'space-around'} spacing={1}>
-        {!isFull && matches && (
+        {!isFull && (
           <Grid
             item
             xs={12}
