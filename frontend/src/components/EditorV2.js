@@ -6,38 +6,55 @@ function EditorV2(props) {
   const [model, setMoodel] = React.useState("");
 
   return (
-    <div style={{ marginTop: 40 }}>
+    <div style={{ width: "100%", marginInline: 5 }}>
       <CKEditor
+      
         editor={ClassicEditor}
         config={{
           toolbar: {
             items: [
-              "heading",
+              "imageUpload",
               "MathType",
               "ChemType",
-              "|",
+              "|", 
+              "heading",
               "bold",
               "italic",
-              "link",
               "bulletedList",
               "numberedList",
-              "imageUpload",
-              "mediaEmbed",
               "insertTable",
-              "blockQuote",
               "undo",
               "redo",
             ],
+            
           },
+          ckfinder: {
+            uploadUrl: "http://localhost:3000/upload",
+            // uploadUrl: "http://localhost:5000/api/v1/upload",
+            // uploadUrl: "http://localhost:5000/api/v1/upload",
+            // uploadUrl: "http://localhost:5000/api/v1/upload",
+            // uploadUrl: "http://localhost:5000/api/v1/upload",
+            // uploadUrl: "http://localhost:5000/api/v1/upload",
+          },
+          placeholder: `${props.placeholder}`,
+          language: "en-us",
+          toolbarStartupExpanded: true,
         }}
-        data='<p>Hello from CKEditor 5!</p>'
+        data={model}
         onReady={(editor) => {
           // You can store the "editor" and use when it is needed.
           console.log("Editor is ready to use!", editor);
+          editor.editing.view.change((writer) => {
+            writer.setStyle(
+              "height",
+              ` ${props.height}`,
+              editor.editing.view.document.getRoot()
+            );
+          });
         }}
         onChange={(event, editor) => {
           const data = editor.getData();
-          console.log({ event, editor, data });
+          setMoodel(data);
         }}
         onBlur={(event, editor) => {
           console.log("Blur.", editor);
