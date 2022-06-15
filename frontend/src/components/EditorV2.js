@@ -2,21 +2,21 @@ import React from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "ckeditor5-classic-with-mathtype";
 
+
 function EditorV2(props) {
   const [model, setMoodel] = React.useState("");
 
   return (
-    <div style={{ width: "100%", marginInline: 5 }}>
+    <div style={{ width: "100%" }}>
       <CKEditor
-      
         editor={ClassicEditor}
         config={{
           toolbar: {
             items: [
-              "imageUpload",
+              "ImageUpload",
               "MathType",
               "ChemType",
-              "|", 
+              "|",
               "heading",
               "bold",
               "italic",
@@ -26,19 +26,18 @@ function EditorV2(props) {
               "undo",
               "redo",
             ],
-            
           },
-          ckfinder: {
-            uploadUrl: "http://localhost:3000/upload",
-            // uploadUrl: "http://localhost:5000/api/v1/upload",
-            // uploadUrl: "http://localhost:5000/api/v1/upload",
-            // uploadUrl: "http://localhost:5000/api/v1/upload",
-            // uploadUrl: "http://localhost:5000/api/v1/upload",
-            // uploadUrl: "http://localhost:5000/api/v1/upload",
-          },
-          placeholder: `${props.placeholder}`,
-          language: "en-us",
-          toolbarStartupExpanded: true,
+          // extraPlugins: [MathType],
+          // image: {
+          //   toolbar: ["imageTextAlternative", "|", "imageStyle", 'imageResize'],
+          // },
+          // ckfinder: {
+          //   //ckfinder options
+          //   uploadUrl: "http://localhost:5000/api/v1/upload", //define the url of the upload script
+          // },
+          placeholder: `${props.placeholder || "Digite aqui..."}`,
+          language: "en-gb",
+         
         }}
         data={model}
         onReady={(editor) => {

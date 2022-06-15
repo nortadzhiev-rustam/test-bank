@@ -97,6 +97,7 @@ const InsertWindow = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(e)
   };
 
   return (
@@ -195,7 +196,7 @@ const InsertWindow = () => {
               <QuestionPaper elevation={5}>
                 <InputContainer>
                   <EditorV2
-                    height='200px'
+                    height='190px'
                     placeholder='Enter your question here...'
                   />
                 </InputContainer>
@@ -293,9 +294,7 @@ const FormPaper = styled(Paper)({
   alignItems: "center",
 });
 
-const Input = styled("input")({
-  display: "none",
-});
+
 
 const PaperContainer = styled(Paper)({
   borderRadius: 12,
@@ -313,29 +312,12 @@ const InputContainer = styled("div")({
   justifyContent: "center",
   alignItems: "center",
   height: "100%",
+  paddingInline: 10,
 });
 
-const StyledIcon = styled("div")({
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  width: 60,
-  height: 60,
-  borderRadius: 10,
-  backgroundColor: "#eceff1",
-  margin: 10,
-  cursor: "pointer",
-  "&:hover": {
-    backgroundColor: "#dfe1e6",
-  },
-});
 
 const QuestionPaper = styled(Paper)({
-  borderWidth: "1px",
-  borderStyle: "solid",
-  borderColor: "#ccc",
   borderRadius: "10px",
-
   marginInline: "2px",
   height: 250,
   backgroundColor: "#006064",
