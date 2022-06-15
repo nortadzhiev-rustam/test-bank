@@ -6,7 +6,7 @@ const department = require("./department");
 const test = require("./test");
 const logout = require("./logout");
 const isAuth =require("./auth");
-
+const imageUpload = require("./imageUpload");
 const router = express.Router();
 
 router.use(registerApi);
@@ -16,5 +16,6 @@ router.use(department);
 router.use(test);
 router.use(logout);
 router.use(isAuth);
+router.use(imageUpload);
 
 module.exports = router;
