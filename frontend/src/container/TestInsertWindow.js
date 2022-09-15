@@ -29,7 +29,7 @@ import { FunctionsRounded, PhotoCameraTwoTone } from "@mui/icons-material";
 // import axios from "axios";
 
 // import InputComponent from "../components/InputComponent";
-import { MathFieldComponent } from "react-mathlive";
+import { MathfieldComponent } from "react-mathlive";
 import("mathlive/dist/mathlive-static.css");
 const StyledBox = styled(Box)({
   display: "flex",
@@ -277,12 +277,9 @@ const InsertWindow = () => {
                   marginInline: "2px",
                 }}
               >
-                <MathFieldComponent
-                  mathFieldConfig={{
-                    defaultMode: "text",
-                    virtualKeyboardMode: "onfocus",
-                    virtualKeyboardToggleGlyph: "",
-                    virtualKeyboards: "numeric functions symbols",
+                <MathfieldComponent
+                  mathfieldConfig={{
+                    virtualKeyboardMode:"manual"
                   }}
                   latex={latex}
                   onChange={setLatex}
