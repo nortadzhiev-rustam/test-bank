@@ -236,7 +236,13 @@ const InsertWindow = () => {
               rows={3}
               sx={{ width: "100%", marginBlock: 1 }}
             />
-            <Box sx={{ display: "flex", flexDirection: "row", marginBottom: "10px" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                marginBottom: "10px",
+              }}
+            >
               <Tooltip
                 title='Click here to inser Formula'
                 arrow
@@ -279,11 +285,19 @@ const InsertWindow = () => {
               >
                 <MathfieldComponent
                   mathfieldConfig={{
-                    virtualKeyboardMode:"manual"
+                    virtualKeyboardMode: "manual",
                   }}
                   latex={latex}
                   onChange={setLatex}
                 />
+                <Box>
+                  <Button variant='outlined' color='error'>
+                    Cancel
+                  </Button>
+                  <Button variant='outlined' color='info'>
+                    Add
+                  </Button>
+                </Box>
               </Box>
             )}
           </Box>
