@@ -144,7 +144,7 @@ const NavBar = (props) => {
       withCredentials: true,
     });
     if (res.status === 200) {
-      history("/");
+      history("/login");
     }
   };
 
@@ -275,7 +275,7 @@ const NavBar = (props) => {
                     Test Generator
                   </Typography>
                 </div>
-
+                
                 <Box sx={{ flexGrow: 1 }} />
 
                 <Box

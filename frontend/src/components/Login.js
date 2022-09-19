@@ -56,9 +56,9 @@ const Login = ({ history }) => {
 
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   React.useEffect(() => {
-    const isLogged = async (status) => {
+    const isLogged = (status) => {
       if (status) {
-        await navigate("/");
+         navigate(-1);
       }
     };
 
@@ -88,7 +88,7 @@ const Login = ({ history }) => {
 
       dispatch(login(res.data));
 
-      window.location.replace("/");
+      navigate("/test/create");
     } catch (err) {
       setError(err.message);
     }

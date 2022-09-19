@@ -1,41 +1,42 @@
-import React from 'react';
+import React from "react";
 
-import { Grid, Box } from '@mui/material';
-import 'animate.css';
-import GeneratePanel from '../components/GeneratePanel';
-import InserPanel from '../components/InsertPanel';
-import { useSelector } from 'react-redux';
-import InsertWindow from '../container/TestInsertWindow';
-import GenerateWindow from '../container/TestGenerateWindow';
-import { styled } from '@mui/styles';
-import Switcher from '../components/Switcher';
+import { Grid, Box } from "@mui/material";
+import "animate.css";
+import GeneratePanel from "../components/GeneratePanel";
+import InserPanel from "../components/InsertPanel";
+import { useSelector } from "react-redux";
+import InsertWindow from "../container/TestInsertWindow";
+import GenerateWindow from "../container/TestGenerateWindow";
+import { styled } from "@mui/styles";
+import Switcher from "../components/Switcher";
+import { Navigate, useParams } from "react-router-dom";
 
 const BoxContainer = styled(Box)({
-  display: 'flex',
-  justifyContent: 'space-between',
+  display: "flex",
+  justifyContent: "space-between",
   flexGrow: 1,
-  flexDirection: 'column',
-  marginInline: '2%',
+  flexDirection: "column",
+  marginInline: "2%",
   marginBlock: 40,
 });
 
-const Home = () => {
-  const [isSwitch, setSwitch] = React.useState('generate');
+const Home = (props) => {
+  let { swt } = useParams();
   const isFull = useSelector((state) => state.questionsType.isFull);
   const open = useSelector((state) => state.questionsType.isOpen);
   const isVisible = useSelector((state) => state.questionsType.isVisible);
 
   const openWindow = () => {
-    if (open === 'insert') {
+    if (open === "insert" && swt === "create") {
       return <InsertWindow />;
-    } else if (open === 'generate') {
+    } else if (open === "generate" && swt === "generate") {
       return <GenerateWindow />;
     } else return;
   };
 
   return (
     <BoxContainer>
-      <Grid container justifyContent={isVisible && 'space-around'} spacing={1}>
+      <Grid container justifyContent={isVisible && "space-around"} spacing={1}>
         {!isFull && (
           <Grid
             item
@@ -47,8 +48,19 @@ const Home = () => {
             style={{ paddingInline: 20, paddingBottom: 25 }}
             overflow='hidden'
           >
-            {<Switcher setSwitch={(sw) => setSwitch(sw)} isSwitch={isSwitch}/>}
-            {isSwitch === 'insert' ? <GeneratePanel /> : <InserPanel />}
+            {
+              <Switcher
+                
+                navigation={props.navigation}
+              />
+            }
+            {swt === "generate" ? (
+              <GeneratePanel />
+            ) : swt === "create" ? (
+              <InserPanel />
+            ) : (
+              <Navigate to='*' />
+            )}
           </Grid>
         )}
 

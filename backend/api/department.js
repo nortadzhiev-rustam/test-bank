@@ -1,7 +1,7 @@
 const express = require('express');
 const { Department, User } = require('../models/');
 const router = express.Router();
-const {isAuth} = require('../middlewares');
+
 //route that registers departments
 router.post("/departments",  async (req, res) => {
   const { name } = req.body;
@@ -21,7 +21,7 @@ router.post("/departments",  async (req, res) => {
 });
 
 //route that gets all departments
-router.get("/departments", isAuth, async (req, res) => {
+router.get("/departments", async (req, res) => {
     try {
       const departments = await Department.findAll({
         include: { model: User },

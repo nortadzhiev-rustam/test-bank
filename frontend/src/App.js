@@ -1,17 +1,9 @@
 import React from "react";
-import Home from "./container/Home";
-import NavBar from "./container/NavBar";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import ProtectedRoute from "./routes/ProtectedRoute";
 import { useDispatch } from "react-redux";
 import { login } from "./store/userSlice";
-import SearchWindow from "./components/searchWindow";
-import Profile from "./container/Profile";
 import axios from "axios";
 import { getDepartmentSuccess } from "./store/departmentSlice";
-
+import Routess from "./routes/route";
 function App() {
   const [openSearch, setOpenSearch] = React.useState(false);
   const dispatch = useDispatch();
@@ -26,7 +18,9 @@ function App() {
       }
     };
     fetchLogin();
-  }, [dispatch]);
+  });
+
+ 
 
   React.useEffect(() => {
     //add event listener that listens for ctrl+k and changes openSearch to true
@@ -48,28 +42,13 @@ function App() {
 
   return (
     <div className='App'>
-      <Router>
-        <NavBar setOpenSearch={(o) => setOpenSearch(o)} />
-        {openSearch && (
-          <SearchWindow open={openSearch} setOpen={(e) => setOpenSearch(e)} />
-        )}
-        <Routes>
-          <Route exact path='/' element={<ProtectedRoute component={Home} />} />
-          <Route exact path='/login' element={<Login />} />
-          <Route exact path='/register' element={<Register />} />
-          <Route
-            path='/profile'
-            element={<ProtectedRoute component={Profile} />}
-          />
-          <Route path='*' element={<PageNotFound />} />
-        </Routes>
-      </Router>
+      <Routess
+        openSearch={openSearch}
+        setOpenSearch={(e) => setOpenSearch(e)}
+        
+      />
     </div>
   );
-}
-
-const PageNotFound = () => {
-  return <div style={{height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}><h1>Page not found 404</h1></div>;
 }
 
 export default App;

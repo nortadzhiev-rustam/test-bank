@@ -1,33 +1,28 @@
-import React from 'react';
+import React from "react";
 import {
-  // TextField,
-  // Button,
+  TextField,
+  Button,
   InputBase,
   Box,
   IconButton,
   Grid,
-} from '@mui/material';
-import { styled } from '@mui/styles';
-// import MathDialog from './MathDialog';
-import { FunctionsRounded } from '@mui/icons-material';
+} from "@mui/material";
+import { styled } from "@mui/styles";
 
-
+import { FunctionsRounded } from "@mui/icons-material";
+import { MathFieldComponent } from "react-mathlive";
 const StyledInput = styled(InputBase)({
-  width: '100%',
-  margin: '10px 10px',
-  border: '1px solid #ccc',
-  borderRadius: '6px',
-  padding: '10px',
-  height: '150px'
+  width: "100%",
+  margin: "10px 10px",
+  border: "1px solid #ccc",
+  borderRadius: "6px",
+  padding: "10px",
+  height: "150px",
 });
 
-const Input = (props) => {
-  const [latex, setLatex] = React.useState('');
-  const [open, setOpen] = React.useState(false);
-
-  React.useEffect(() => {
-    props.onChange(latex);
-  }, [latex]);
+const Input = ({setOpen}) => {
+  const [latex, setLatex] = React.useState("");
+  
 
   return (
     <Box display='flex' component='div' flexDirection='column'>
@@ -37,29 +32,35 @@ const Input = (props) => {
         display='flex'
         flexDirection='row'
         alignItems='center'
-      >
-        <Grid item xs={12} md={12} mr={5}>
-          <StyledInput
-            endAdornment={
-              <IconButton onClick={() => setOpen(true)}>
-                <FunctionsRounded />
-              </IconButton>
-            }
-            multiline
-            rows={3}
-            placeholder='Enter your question here'
-            value={latex}
-            onChange={(e) => setLatex((prevState) => e.target.value)}
+      ></Grid>
+      <Box sx={{marginTop: '5px'}}>
+        <Box
+          sx={{
+            borderWidth: "1px",
+            borderStyle: "solid",
+            borderColor: "#ccc",
+            borderRadius: "5px",
+            padding: "10px",
+            marginInline: "2px",
+            marginBlock: '10px'
+          }}
+        >
+          <MathFieldComponent
+            mathFieldConfig={{ virtualKeyboardMode: "manual" }}
+            latex={latex}
+            onChange={setLatex}
+            style={{ border: 1, borderColor: "#666" }}
           />
-        </Grid>
-        
-      </Grid>
-      {/* <MathDialog
-        latex={latex}
-        setLatex={(value) => setLatex(value)}
-        setOpen={(status) => setOpen(status)}
-        open={open}
-      /> */}
+        </Box>
+        <Box width={210} display='flex' justifyContent='space-between'>
+          <Button onClick={() => setOpen(false)} sx={{width: 100}} variant='contained' color='error'>
+            Cancel
+          </Button>
+          <Button sx={{width: 100}} variant='contained' color='info'>
+            Add
+          </Button>
+        </Box>
+      </Box>
     </Box>
   );
 };

@@ -26,10 +26,10 @@ import {
   faFunction,
 } from "@fortawesome/free-solid-svg-icons";
 import { FunctionsRounded, PhotoCameraTwoTone } from "@mui/icons-material";
-// import axios from "axios";
 
-// import InputComponent from "../components/InputComponent";
-import { MathfieldComponent } from "react-mathlive";
+
+import InputComponent from "../components/InputComponent";
+
 import("mathlive/dist/mathlive-static.css");
 const StyledBox = styled(Box)({
   display: "flex",
@@ -236,7 +236,7 @@ const InsertWindow = () => {
               rows={3}
               sx={{ width: "100%", marginBlock: 1 }}
             />
-            <Box
+            {!isOpen && <Box
               sx={{
                 display: "flex",
                 flexDirection: "row",
@@ -270,36 +270,9 @@ const InsertWindow = () => {
                   </Button>
                 </label>
               </Tooltip>
-            </Box>
+            </Box>}
 
-            {isOpen && (
-              <Box
-                sx={{
-                  borderWidth: "1px",
-                  borderStyle: "solid",
-                  borderColor: "#ccc",
-                  borderRadius: "5px",
-                  padding: "10px",
-                  marginInline: "2px",
-                }}
-              >
-                <MathfieldComponent
-                  mathfieldConfig={{
-                    virtualKeyboardMode: "manual",
-                  }}
-                  latex={latex}
-                  onChange={setLatex}
-                />
-                <Box>
-                  <Button variant='outlined' color='error'>
-                    Cancel
-                  </Button>
-                  <Button variant='outlined' color='info'>
-                    Add
-                  </Button>
-                </Box>
-              </Box>
-            )}
+            {isOpen && <InputComponent setOpen={(o)=> setIsOpen(o)} />}
           </Box>
         </Box>
       </Paper>

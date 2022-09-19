@@ -2,6 +2,7 @@ import React from 'react';
 import Paper from '@mui/material/Paper';
 import { Grid } from '@mui/material';
 import { styled } from '@mui/styles';
+import { useNavigate, useParams } from 'react-router-dom';
 const GridContainer = styled(Grid)({
   display: 'flex',
   flexDirection: 'row',
@@ -26,11 +27,17 @@ const PaperItem = styled(Paper)({
   padding: 5,
 });
 
-const Switcher = ({ setSwitch, isSwitch }) => {
+const Switcher = () => {
   const [isMouseIn, setMouseIn] = React.useState(false);
-
+const history = useNavigate();
+let {swt} = useParams()
   const handleSwitch = (sw) => {
-    setSwitch(sw);
+   
+    if(sw === 'generate') {
+      history('/test/create')
+    } else {
+      history('/test/generate')
+    }
   };
 
   return (
@@ -43,22 +50,22 @@ const Switcher = ({ setSwitch, isSwitch }) => {
         <Grid item xs={6}>
           <TextDiv
             style={{
-              backgroundColor: isSwitch === 'generate' ? '#006064' : 'white',
+              backgroundColor: swt === 'create' ? '#006064' : 'white',
             }}
             onClick={() => handleSwitch('generate')}
           >
-            <h2 style={{ color: isSwitch === 'generate' && '#fff' }}>Insert</h2>
+            <h2 style={{ color: swt === 'create' && '#fff' }}>Insert</h2>
           </TextDiv>
         </Grid>
         <Grid item xs={6}>
           <TextDiv
             style={{
-              backgroundColor: isSwitch === 'insert' ? '#006064' : 'white',
+              backgroundColor: swt === 'generate' ? '#006064' : 'white',
               paddingInline: 5,
             }}
             onClick={() => handleSwitch('insert')}
           >
-            <h2 style={{ color: isSwitch === 'insert' && '#fff' }}>Generate</h2>
+            <h2 style={{ color: swt === 'generate' && '#fff' }}>Generate</h2>
           </TextDiv>
         </Grid>
       </GridContainer>

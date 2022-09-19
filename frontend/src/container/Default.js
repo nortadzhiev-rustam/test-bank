@@ -1,44 +1,47 @@
-import React from 'react';
-import axios from 'axios';
-import CardComponent from './CardComponent';
-import { Box } from '@mui/material';
-import {useSelector} from 'react-redux';
+import React from "react";
 
-const Default = ({history}) => {
-  const [posts, setPosts] = React.useState([]);
-const isLoggedIn = useSelector(state => state.user.isLoggedIn);
-  React.useEffect(() => {
-    const fetchData = async () => {
-      const res = await axios.get(
-        'https://newsapi.org/v2/top-headlines?country=us&apiKey=83e354ab3ab64bc197bc20a8fe574793'
-      );
-      setPosts(res.data.articles);
-    };
-    fetchData();
-    return () => {
-      setPosts([]);
-    };
-  }, []);
+import CardComponent from "../components/CardComponent";
+import { Box, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
 
-  React.useEffect(() => {
-     const isLogged = async (status) => {
-        if (status) {
-           await history.push('/index');
-        }
-      }
+import CardSlider from "../components/CardSlider";
 
-      isLogged(isLoggedIn);
-
-    }, [history, isLoggedIn]);
-
-
- return (
-    <Box component='div' sx={{display:{ md : 'flex', xs : 'block'}, flexWrap: 'wrap', justifyContent:{md:  'space-around', xs: 'center'}, marginTop: 10}}>
-        
-        {posts.map((post, idx) => <CardComponent key={idx} post={post} />)}
-        
+const Default = () => {
+  const departments = useSelector((state) => state.department.department);
+  const options = [
+    { name: "Create" },
+    { name: "Generate" },
+    { name: "Past Papers" },
+  ];
+  return (
+    <Box sx={{ padding: 10 }}>
+      <Typography variant='h4'>SUBJECTS</Typography>
+      <Box sx={{ marginBottom: 10 }}>
+        <CardSlider items={departments} />
+      </Box>
+      <Typography variant='h4'>OPTIONS</Typography>
+      <Box>
+        <Box
+          sx={{
+            display: "inline-flex",
+            justifyContent: "space-around",
+            padding: 2,
+          }}
+        >
+          {options.map((option, idx) => (
+            <CardComponent
+              key={idx}
+              item={option}
+              width={300}
+              height={400}
+              top={300}
+              route={`/test/${option.name.toLowerCase()}`}
+            />
+          ))}
+        </Box>
+      </Box>
     </Box>
-);
+  );
 };
 
 export default Default;
