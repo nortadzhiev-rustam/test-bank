@@ -1,19 +1,5 @@
 import React from "react";
-import {
-  Grid,
-  Paper,
-  Box,
-  Typography,
-  TextField,
-  // FormControl,
-  // FormLabel,
-  // RadioGroup,
-  // FormControlLabel,
-  // Radio,
-  Button,
-  Tooltip,
-  IconButton,
-} from "@mui/material";
+import { Grid, Paper, Box, Typography } from "@mui/material";
 import { styled } from "@mui/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,14 +9,9 @@ import {
   faMinus,
   faTimes,
   faUpRightAndDownLeftFromCenter,
-  faFunction,
 } from "@fortawesome/free-solid-svg-icons";
-import { FunctionsRounded, PhotoCameraTwoTone } from "@mui/icons-material";
+import QuestionInput from "../components/QuestionInput";
 
-
-import InputComponent from "../components/InputComponent";
-
-import("mathlive/dist/mathlive-static.css");
 const StyledBox = styled(Box)({
   display: "flex",
   position: "relative",
@@ -54,10 +35,6 @@ const FormPaper = styled(Paper)({
   alignItems: "center",
 });
 
-const Input = styled("input")({
-  display: "none",
-});
-
 const InsertWindow = () => {
   const [mouseIn, setMouseIn] = React.useState(false);
   const [isHover, setHover] = React.useState(false);
@@ -71,19 +48,15 @@ const InsertWindow = () => {
   //   c: "",
   //   d: "",
   // });
-  const [latex, setLatex] = React.useState("");
+
   const dispatch = useDispatch();
   const isFull = useSelector((state) => state.questionsType.isFull);
   const quest = useSelector((state) => state.questionsType.value);
   // const user = useSelector((state) => state.user.user);
-  const [isOpen, setIsOpen] = React.useState(false);
+
   const handleFullScreen = () => {
     dispatch(setFull(!isFull));
   };
-
-  // const handleMouseIn = () => {
-  //   setMouseIn(true);
-  // };
 
   const handleClose = () => {
     dispatch(setVisible(false));
@@ -218,62 +191,7 @@ const InsertWindow = () => {
             padding: 2,
           }}
         >
-          <Box
-            style={{
-              borderWidth: "1px",
-              borderStyle: "solid",
-              borderColor: "#ccc",
-              borderRadius: "5px",
-              padding: "10px",
-              marginInline: "2px",
-            }}
-          >
-            <Typography color='primary' variant='button' ml={0.5}>
-              Question
-            </Typography>
-            <TextField
-              multiline
-              rows={3}
-              sx={{ width: "100%", marginBlock: 1 }}
-            />
-            {!isOpen && <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                marginBottom: "10px",
-              }}
-            >
-              <Tooltip
-                title='Click here to inser Formula'
-                arrow
-                sx={{ marginBottom: "5px" }}
-              >
-                <Button
-                  sx={{ marginRight: "5px" }}
-                  color='primary'
-                  variant='contained'
-                  onClick={() => setIsOpen(!isOpen)}
-                  endIcon={<FunctionsRounded />}
-                >
-                  Formula
-                </Button>
-              </Tooltip>
-              <Tooltip title='Click to Upload picture' arrow>
-                <label htmlFor='icon-button-file'>
-                  <Input accept='image/*' id='icon-button-file' type='file' />
-                  <Button
-                    variant='contained'
-                    endIcon={<PhotoCameraTwoTone />}
-                    sx={{ marginRight: "5px" }}
-                  >
-                    Image
-                  </Button>
-                </label>
-              </Tooltip>
-            </Box>}
-
-            {isOpen && <InputComponent setOpen={(o)=> setIsOpen(o)} />}
-          </Box>
+          <QuestionInput />
         </Box>
       </Paper>
     </Grid>

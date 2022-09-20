@@ -1,0 +1,15 @@
+.DraftEditor-root {
+  border: solid 1px #cccccc;
+  min-height: 150px;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  text-overflow: ellipsis;
+  padding-inline: 10px;
+}
+
+.DraftEditor-editor .public-DraftStyleDefault-pre pre {
+  white-space: normal;
+}
