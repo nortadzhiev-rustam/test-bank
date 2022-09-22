@@ -8,8 +8,25 @@
   border-radius: 5px;
   text-overflow: ellipsis;
   padding-inline: 10px;
+  white-space: normal;
+  overflow: auto;
 }
 
-.DraftEditor-editor .public-DraftStyleDefault-pre pre {
-  white-space: normal;
+[data-placeholder]:empty:before {
+  content: attr(data-placeholder);
+  color: #888;
+  font-style: italic;
 }
+[contenteditable]:focus{
+  outline: 0px solid transparent;
+}
+
+.math {
+  cursor: pointer;
+  padding: 5px 20px;
+  border: #888 1px dashed;
+  border-radius: 5px;
+}
+
+
+

@@ -12,11 +12,12 @@ const StyledInput = styled(InputBase)({
   height: "150px",
 });
 
-const FormulaEditor = ({ setOpen, setEquation }) => {
-  const [latex, setLatex] = React.useState("");
+const FormulaEditor = ({ setOpen, setEquation, equation }) => {
+  const [latex, setLatex] = React.useState(equation);
 
   const handleSubmit = () => {
     setEquation(latex);
+    setOpen(false)
   };
 
   return (

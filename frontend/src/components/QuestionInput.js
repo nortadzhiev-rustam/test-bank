@@ -68,9 +68,15 @@ const QuestionInput = () => {
           </Box>
         )}
       </Box>
-      <MyEditor latex={equation} />
+      <MyEditor setOpen={(o) => setIsOpen(o)} latex={equation} />
 
-      {isOpen && <FormulaEditor setEquation={(eq) => setEquation(eq)} setOpen={(o) => setIsOpen(o)} />}
+      {isOpen && (
+        <FormulaEditor
+          setEquation={(eq) => setEquation(eq)}
+          setOpen={(o) => setIsOpen(o)}
+          equation={equation}
+        />
+      )}
     </Box>
   );
 };
