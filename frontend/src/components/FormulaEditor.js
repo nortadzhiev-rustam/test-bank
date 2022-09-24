@@ -1,16 +1,8 @@
 import React from "react";
-import { Button, InputBase, Box, Grid } from "@mui/material";
-import { styled } from "@mui/styles";
+import { Button, Box, Grid } from "@mui/material";
+
 import { MathFieldComponent } from "react-mathlive";
 import("mathlive/dist/mathlive-static.css");
-const StyledInput = styled(InputBase)({
-  width: "100%",
-  margin: "10px 10px",
-  border: "1px solid #ccc",
-  borderRadius: "6px",
-  padding: "10px",
-  height: "150px",
-});
 
 const FormulaEditor = ({ setOpen, setEquation, equation }) => {
   const [latex, setLatex] = React.useState(equation);

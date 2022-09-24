@@ -9,7 +9,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
-export default ({ items }) => {
+const Slider = ({ items }) => {
   const matches = useMediaQuery("(min-width: 600px)");
   return (
     <Swiper
@@ -36,3 +36,5 @@ export default ({ items }) => {
     </Swiper>
   );
 };
+
+export default Slider;

@@ -3,6 +3,7 @@
   min-height: 150px;
   margin-top: 5px;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   border-radius: 5px;
@@ -10,6 +11,7 @@
   padding-inline: 10px;
   white-space: normal;
   overflow: auto;
+
 }
 
 [data-placeholder]:empty:before {
@@ -26,7 +28,17 @@
   padding: 5px 20px;
   border: #888 1px dashed;
   border-radius: 5px;
+  
+ 
 }
 
 
 
+.close{
+  position: absolute;
+  
+  top: -20px;
+  right: -20px;
+  color: rgb(117, 112, 112);
+  
+}

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { Box, Typography, TextField, Tooltip, IconButton } from "@mui/material";
+import { Box, Typography, Tooltip, IconButton } from "@mui/material";
 import { PhotoCamera } from "@mui/icons-material";
 import { faReact } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FormulaEditor from "../components/FormulaEditor";
 import MyEditor from "./DraftEditor";
 const QuestionInput = () => {
-  const [equation, setEquation] = React.useState("");
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [equation, setEquation] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <Box
       style={{
@@ -68,7 +68,11 @@ const QuestionInput = () => {
           </Box>
         )}
       </Box>
-      <MyEditor setOpen={(o) => setIsOpen(o)} latex={equation} />
+      <MyEditor
+        setOpen={(o) => setIsOpen(o)}
+        latex={equation}
+        setLatex={(eq) => setEquation(eq)}
+      />
 
       {isOpen && (
         <FormulaEditor

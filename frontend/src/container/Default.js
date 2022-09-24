@@ -4,7 +4,7 @@ import CardComponent from "../components/CardComponent";
 import { Box, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 
-import CardSlider from "../components/CardSlider";
+import Slider from "../components/CardSlider";
 
 const Default = () => {
   const departments = useSelector((state) => state.department.department);
@@ -17,7 +17,7 @@ const Default = () => {
     <Box sx={{ padding: 10 }}>
       <Typography variant='h4'>SUBJECTS</Typography>
       <Box sx={{ marginBottom: 10 }}>
-        <CardSlider items={departments} />
+        <Slider items={departments} />
       </Box>
       <Typography variant='h4'>OPTIONS</Typography>
       <Box>
