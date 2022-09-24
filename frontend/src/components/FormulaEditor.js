@@ -5,11 +5,12 @@ import { MathFieldComponent } from "react-mathlive";
 import("mathlive/dist/mathlive-static.css");
 
 const FormulaEditor = ({ setOpen, setEquation, equation }) => {
-  const [latex, setLatex] = React.useState(equation);
+  const [latex, setLatex] = React.useState("");
 
   const handleSubmit = () => {
     setEquation(latex);
-    setOpen(false)
+    setOpen(false);
+    setLatex("");
   };
 
   return (

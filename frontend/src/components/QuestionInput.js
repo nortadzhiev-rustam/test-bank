@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Box, Typography, Tooltip, IconButton } from "@mui/material";
+import { Box, Typography, Tooltip, IconButton, Button } from "@mui/material";
 import { PhotoCamera } from "@mui/icons-material";
-import { faReact } from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Formula from "../formula-fx-icon.svg";
 import FormulaEditor from "../components/FormulaEditor";
 import MyEditor from "./DraftEditor";
+import { blue, green } from "@mui/material/colors";
 const QuestionInput = () => {
   const [equation, setEquation] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -20,17 +20,7 @@ const QuestionInput = () => {
       }}
     >
       <Box display='flex' flexDirection='row' alignItems='center'>
-        <Typography
-          mr={1}
-          color='primary'
-          fontSize={18}
-          textTransform='uppercase'
-          variant='body1'
-          ml={0.5}
-          pb={1}
-        >
-          Question
-        </Typography>
+       
         {!isOpen && (
           <Box
             sx={{
@@ -44,14 +34,17 @@ const QuestionInput = () => {
               arrow
               sx={{ marginBottom: "5px" }}
             >
-              <IconButton
-                sx={{ marginRight: "5px" }}
+              <Button
+                sx={{ marginRight: "0px" }}
                 color='primary'
-                variant='contained'
                 onClick={() => setIsOpen(!isOpen)}
               >
-                <FontAwesomeIcon icon={faReact} />
-              </IconButton>
+                <img
+                  style={{ height: 25 }}
+                  src={Formula}
+                  alt='formula'
+                />
+              </Button>
             </Tooltip>
             <Tooltip title='Click to Upload picture' arrow>
               <IconButton

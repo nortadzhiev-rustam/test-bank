@@ -46,45 +46,52 @@ export default function MyEditor({ setOpen, latex, setLatex }) {
         contentEditable
         ref={editor}
       >
-        {latex === "" ? null : isMathHover ? (
-          equationarray.map((equation) => (
-            <span
-              style={{ position: "relative", display: "flex", marginInline: 5 }}
-              contentEditable={false}
-              onMouseEnter={() => setIsMathHover(true)}
-              onMouseLeave={() => setIsMathHover(false)}
-            >
-              <IconButton
-                sx={{
-                  position: "absolute",
-
-                  top: "-20px",
-                  right: "-20px",
-                  color: "rgb(117, 112, 112)",
-                }}
-                onClick={() => handleDeleteMath(equation.id)}
-              >
-                <Cancel fontSize='medium' color='default' />
-              </IconButton>
+        {latex === ""
+          ? null
+          : isMathHover
+          ? equationarray.map((equation) => (
               <span
-                className={isMathHover ? "math" : null}
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  marginInline: 5,
+                }}
+                contentEditable={false}
+                onMouseEnter={() => setIsMathHover(true)}
+                onMouseLeave={() => setIsMathHover(false)}
+              >
+                <IconButton
+                  sx={{
+                    position: "absolute",
+
+                    top: "-20px",
+                    right: "-20px",
+                    color: "rgb(117, 112, 112)",
+                  }}
+                  onClick={() => handleDeleteMath(equation.id)}
+                >
+                  <Cancel fontSize='medium' color='default' />
+                </IconButton>
+                <span
+                  className={isMathHover ? "math" : null}
+                  onClick={handleClickMath}
+                >
+                  <BlockMath math={equation.equation} />
+                </span>
+              </span>
+            ))
+          : equationarray.map((equation) => (
+              <span
+                style={{ display: "flex", marginInline: 5 }}
+                contentEditable={false}
                 onClick={handleClickMath}
+                className={isMathHover ? "math" : null}
+                onMouseEnter={() => setIsMathHover(true)}
+                onMouseLeave={() => setIsMathHover(false)}
               >
                 <BlockMath math={equation.equation} />
               </span>
-            </span>
-          ))
-        ) : (
-          <span
-            contentEditable={false}
-            onClick={handleClickMath}
-            className={isMathHover ? "math" : null}
-            onMouseEnter={() => setIsMathHover(true)}
-            onMouseLeave={() => setIsMathHover(false)}
-          >
-            <BlockMath math={latex} />
-          </span>
-        )}
+            ))}
       </div>
     </div>
   );
