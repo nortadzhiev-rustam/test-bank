@@ -15,7 +15,7 @@ const Slider = ({ items }) => {
     <Swiper
       // install Swiper modules
       modules={[Pagination, Navigation, Autoplay]}
-      spaceBetween={0}
+      spaceBetween={3}
       slidesPerView={matches ? 5 : 1}
       navigation
       pagination={{ clickable: true }}

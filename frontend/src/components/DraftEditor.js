@@ -53,7 +53,13 @@ export default function MyEditor({ setOpen, latex, setLatex }) {
         onChange={(e) => console.log(e.currentTarget.textContent)}
       >
         {latex === "" ? null : isMathHover ? (
-          <div style={{ display: "flex", flexDirection: "row" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+             
+            }}
+          >
             {equationarray.map((equation) => (
               <span
                 key={equation.id}

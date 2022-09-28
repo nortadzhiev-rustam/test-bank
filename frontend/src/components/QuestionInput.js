@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Tooltip, IconButton, Button, ImageListItem } from "@mui/material";
+import { Box, Tooltip,  Button, } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { PhotoCamera } from "@mui/icons-material";
 import Formula from "../formula-fx-icon.svg";
@@ -91,14 +91,23 @@ const QuestionInput = () => {
         )}
       </Box>
 
-      <Grid container spacing={1}>
+      <Grid
+        container
+        spacing={1}
+        sx={{ maxHeight: 200, alignItems: "center", justifyContent: "center" }}
+      >
         {tempImageURL !== "" && (
           <Grid xs={12} md={4}>
             <Box maxWidth='100%' maxHeight='100%'>
               <img
                 src={tempImageURL}
-                alt='image'
-                style={{width: '100%', height: '100%' ,objectFit: 'contain'}}
+                alt='inputImage'
+                style={{
+                  width: "100%",
+                  height: "150px",
+                  objectFit: "contain",
+                  borderRadius: '15px',
+                }}
               />
             </Box>
           </Grid>

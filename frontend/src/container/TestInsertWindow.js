@@ -9,6 +9,7 @@ import {
   faMinus,
   faTimes,
   faUpRightAndDownLeftFromCenter,
+  faDownLeftAndUpRightToCenter,
 } from "@fortawesome/free-solid-svg-icons";
 import QuestionInput from "../components/QuestionInput";
 
@@ -86,18 +87,7 @@ const InsertWindow = () => {
               onMouseOver={() => setMouseIn(true)}
             >
               {mouseIn ? (
-                <div
-                  style={{
-                    display: "inline-flex",
-                    backgroundColor: "#e63946",
-                    borderRadius: "50%",
-                    height: 20,
-                    width: 20,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                  onClick={handleClose}
-                >
+                <CloseButton onClick={handleClose}>
                   <FontAwesomeIcon
                     icon={faTimes}
                     size='sm'
@@ -106,24 +96,13 @@ const InsertWindow = () => {
                     }}
                     color='#fff'
                   />
-                </div>
+                </CloseButton>
               ) : (
                 <FontAwesomeIcon size='lg' color='#e63946' icon={faCircle} />
               )}
 
               {mouseIn ? (
-                <div
-                  style={{
-                    display: "inline-flex",
-                    backgroundColor: "#ee9b00",
-                    borderRadius: "50%",
-                    marginLeft: 5,
-                    height: 20,
-                    width: 20,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
+                <MinusButton>
                   <FontAwesomeIcon
                     icon={faMinus}
                     size='sm'
@@ -132,7 +111,7 @@ const InsertWindow = () => {
                     }}
                     color='#fff'
                   />
-                </div>
+                </MinusButton>
               ) : (
                 <FontAwesomeIcon
                   size='lg'
@@ -143,28 +122,27 @@ const InsertWindow = () => {
               )}
 
               {mouseIn ? (
-                <div
-                  style={{
-                    display: "inline-flex",
-                    backgroundColor: "#43aa8b",
-                    borderRadius: "50%",
-                    marginLeft: 5,
-                    height: 20,
-                    width: 20,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                  onClick={handleFullScreen}
-                >
-                  <FontAwesomeIcon
-                    icon={faUpRightAndDownLeftFromCenter}
-                    size='xs'
-                    style={{
-                      borderRadius: "30%",
-                    }}
-                    color='#fff'
-                  />
-                </div>
+                <FullScreenButton onClick={handleFullScreen}>
+                  {!isFull ? (
+                    <FontAwesomeIcon
+                      icon={faUpRightAndDownLeftFromCenter}
+                      size='xs'
+                      style={{
+                        borderRadius: "30%",
+                      }}
+                      color='#fff'
+                    />
+                  ) : (
+                    <FontAwesomeIcon
+                      icon={faDownLeftAndUpRightToCenter}
+                      size='xs'
+                      style={{
+                        borderRadius: "30%",
+                      }}
+                      color='#fff'
+                    />
+                  )}
+                </FullScreenButton>
               ) : (
                 <FontAwesomeIcon
                   size='lg'
@@ -197,5 +175,63 @@ const InsertWindow = () => {
     </Grid>
   );
 };
+
+const PaperContainer = styled(Paper)({
+  borderRadius: 12,
+  transition: "all 0.3s ease-in-out",
+  width: "100%",
+  paddingBottom: 30,
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+});
+
+const InputContainer = styled("div")({
+  display: "flex",
+  flexDirection: "row-reverse",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "100%",
+  paddingInline: 10,
+});
+
+const QuestionPaper = styled(Paper)({
+  borderRadius: "10px",
+  marginInline: "2px",
+  height: 250,
+  backgroundColor: "#006064",
+});
+
+const CloseButton = styled("div")({
+  display: "inline-flex",
+  backgroundColor: "#e63946",
+  borderRadius: "50%",
+  height: 20,
+  width: 20,
+  justifyContent: "center",
+  alignItems: "center",
+});
+
+const MinusButton = styled("div")({
+  display: "inline-flex",
+  backgroundColor: "#ee9b00",
+  borderRadius: "50%",
+  marginLeft: 5,
+  height: 20,
+  width: 20,
+  justifyContent: "center",
+  alignItems: "center",
+});
+
+const FullScreenButton = styled("div")({
+  display: "inline-flex",
+  backgroundColor: "#43aa8b",
+  marginLeft: 5,
+  borderRadius: "50%",
+  height: 20,
+  width: 20,
+  justifyContent: "center",
+  alignItems: "center",
+});
 
 export default InsertWindow;
