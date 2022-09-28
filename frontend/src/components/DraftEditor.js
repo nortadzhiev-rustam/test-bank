@@ -5,6 +5,7 @@ import { Cancel } from "@mui/icons-material";
 import "./DraftEditor.css";
 import "katex/dist/katex.min.css";
 import { IconButton } from "@mui/material";
+import renderMathInElement from "katex/contrib/auto-render";
 
 export default function MyEditor({ setOpen, latex, setLatex }) {
   const [isMathHover, setIsMathHover] = useState(false);
@@ -13,8 +14,11 @@ export default function MyEditor({ setOpen, latex, setLatex }) {
 
   const editor = useRef(null);
 
-  const handleClickMath = () => {
+  const handleClickMath = (eq) => {
     setOpen(true);
+    setLatex(eq.equation);
+    const newEq = equationarray.filter((equation) => eq.id !== equation.id);
+    setEquationarray(newEq);
   };
 
   function focusEditor() {
@@ -39,18 +43,20 @@ export default function MyEditor({ setOpen, latex, setLatex }) {
   };
 
   return (
-    <div onClick={focusEditor}>
+    <div style={{ width: "100%" }} onClick={focusEditor}>
       <div
         className='DraftEditor-root'
+        id='editor'
         data-placeholder='Please write your question here'
         contentEditable
         ref={editor}
+        onChange={(e) => console.log(e.currentTarget.textContent)}
       >
-        {latex === ""
-          ? null
-          : isMathHover
-          ? equationarray.map((equation) => (
+        {latex === "" ? null : isMathHover ? (
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            {equationarray.map((equation) => (
               <span
+                key={equation.id}
                 style={{
                   position: "relative",
                   display: "flex",
@@ -63,7 +69,6 @@ export default function MyEditor({ setOpen, latex, setLatex }) {
                 <IconButton
                   sx={{
                     position: "absolute",
-
                     top: "-20px",
                     right: "-20px",
                     color: "rgb(117, 112, 112)",
@@ -74,15 +79,19 @@ export default function MyEditor({ setOpen, latex, setLatex }) {
                 </IconButton>
                 <span
                   className={isMathHover ? "math" : null}
-                  onClick={handleClickMath}
+                  onClick={() => handleClickMath(equation)}
                 >
                   <BlockMath math={equation.equation} />
                 </span>
               </span>
-            ))
-          : equationarray.map((equation) => (
+            ))}
+          </div>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            {equationarray.map((equation) => (
               <span
-                style={{ display: "flex", marginInline: 5 }}
+                key={equation.id}
+                style={{ display: "flex", margin: 10 }}
                 contentEditable={false}
                 onClick={handleClickMath}
                 className={isMathHover ? "math" : null}
@@ -92,6 +101,8 @@ export default function MyEditor({ setOpen, latex, setLatex }) {
                 <BlockMath math={equation.equation} />
               </span>
             ))}
+          </div>
+        )}
       </div>
     </div>
   );

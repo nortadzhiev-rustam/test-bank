@@ -4,8 +4,8 @@ import { Button, Box, Grid } from "@mui/material";
 import { MathFieldComponent } from "react-mathlive";
 import("mathlive/dist/mathlive-static.css");
 
-const FormulaEditor = ({ setOpen, setEquation, equation }) => {
-  const [latex, setLatex] = React.useState("");
+const FormulaEditor = ({ setOpen, setEquation, equation, setEditEquation }) => {
+  const [latex, setLatex] = React.useState(equation || "");
 
   const handleSubmit = () => {
     setEquation(latex);
