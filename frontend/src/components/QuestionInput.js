@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Tooltip,  Button, } from "@mui/material";
+import { Box, Tooltip, Button } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { PhotoCamera } from "@mui/icons-material";
 import Formula from "../formula-fx-icon.svg";
@@ -11,7 +11,7 @@ const QuestionInput = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [toEdit, setToEdit] = useState("");
   const [tempImageURL, setTempImageURL] = useState("");
-
+  const [isEditing, setEditing] = useState(false);
   const handleOpen = () => {
     setIsOpen(true);
     setToEdit("");
@@ -106,7 +106,7 @@ const QuestionInput = () => {
                   width: "100%",
                   height: "150px",
                   objectFit: "contain",
-                  borderRadius: '15px',
+                  borderRadius: "15px",
                 }}
               />
             </Box>
@@ -117,6 +117,8 @@ const QuestionInput = () => {
             setOpen={(o) => setIsOpen(o)}
             latex={equation}
             setLatex={(eq) => setToEdit(eq)}
+            setEditing={(e) => setEditing(e)}
+            edited={toEdit}
           />
         </Grid>
       </Grid>
@@ -126,6 +128,8 @@ const QuestionInput = () => {
           setEquation={(eq) => setEquation(eq)}
           setOpen={(o) => setIsOpen(o)}
           equation={toEdit}
+          isEditing={isEditing}
+          setEditEquation={(eq) => setToEdit(eq)}
         />
       )}
     </Box>

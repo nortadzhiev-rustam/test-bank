@@ -5,9 +5,15 @@ import { Cancel } from "@mui/icons-material";
 import "./DraftEditor.css";
 import "katex/dist/katex.min.css";
 import { IconButton } from "@mui/material";
-import renderMathInElement from "katex/contrib/auto-render";
 
-export default function MyEditor({ setOpen, latex, setLatex }) {
+export default function MyEditor({
+  setOpen,
+  latex,
+  setLatex,
+  setEditing,
+  isEditing,
+  toEdit,
+}) {
   const [isMathHover, setIsMathHover] = useState(false);
 
   const [equationarray, setEquationarray] = useState([]);
@@ -16,9 +22,8 @@ export default function MyEditor({ setOpen, latex, setLatex }) {
 
   const handleClickMath = (eq) => {
     setOpen(true);
-    setLatex(eq.equation);
-    const newEq = equationarray.filter((equation) => eq.id !== equation.id);
-    setEquationarray(newEq);
+    setLatex(eq);
+    setEditing(true);
   };
 
   function focusEditor() {
@@ -26,16 +31,27 @@ export default function MyEditor({ setOpen, latex, setLatex }) {
   }
 
   useEffect(() => {
-    if (latex !== "")
-      setEquationarray((prevState) => [
-        ...prevState,
-        { id: Date.now(), equation: latex },
-      ]);
+    if (isEditing) {
+      const newArr = equationarray.map((item) => {
+        if (item.id === toEdit.id) {
+          return { ...item, equation: toEdit.equation };
+        } else {
+          return item;
+        }
+      });
+      setEquationarray(newArr);
+      setEditing(false);
+    } else {
+      if (latex !== "") {
+        setEquationarray((prevState) => [
+          ...prevState,
+          { id: Date.now(), equation: latex },
+        ]);
+      }
+    }
   }, [latex]);
 
-  useEffect(() => {
-    focusEditor();
-  }, []);
+ 
 
   const handleDeleteMath = (id) => {
     const newArray = equationarray.filter((eq) => eq.id !== id);
@@ -57,7 +73,6 @@ export default function MyEditor({ setOpen, latex, setLatex }) {
             style={{
               display: "flex",
               flexDirection: "row",
-             
             }}
           >
             {equationarray.map((equation) => (

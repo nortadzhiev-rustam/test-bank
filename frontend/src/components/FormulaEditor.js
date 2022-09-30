@@ -4,13 +4,25 @@ import { Button, Box, Grid } from "@mui/material";
 import { MathFieldComponent } from "react-mathlive";
 import("mathlive/dist/mathlive-static.css");
 
-const FormulaEditor = ({ setOpen, setEquation, equation, setEditEquation }) => {
-  const [latex, setLatex] = React.useState(equation || "");
+const FormulaEditor = ({
+  setOpen,
+  setEquation,
+  equation,
+  setEditEquation,
+  isEditing,
+}) => {
+  const [latex, setLatex] = React.useState(equation.equation || "");
 
   const handleSubmit = () => {
     setEquation(latex);
     setOpen(false);
     setLatex("");
+  };
+
+  const handleEditSubmit = () => {
+    setEditEquation({ id: equation.id, equation: latex });
+    setEquation("");
+    setOpen(false);
   };
 
   return (
@@ -50,7 +62,7 @@ const FormulaEditor = ({ setOpen, setEquation, equation, setEditEquation }) => {
             Cancel
           </Button>
           <Button
-            onClick={handleSubmit}
+            onClick={isEditing ? handleEditSubmit : handleSubmit}
             sx={{ width: 100 }}
             variant='contained'
             color='info'
