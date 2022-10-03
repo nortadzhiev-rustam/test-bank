@@ -176,31 +176,7 @@ const InsertWindow = () => {
   );
 };
 
-const PaperContainer = styled(Paper)({
-  borderRadius: 12,
-  transition: "all 0.3s ease-in-out",
-  width: "100%",
-  paddingBottom: 30,
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-});
 
-const InputContainer = styled("div")({
-  display: "flex",
-  flexDirection: "row-reverse",
-  justifyContent: "center",
-  alignItems: "center",
-  height: "100%",
-  paddingInline: 10,
-});
-
-const QuestionPaper = styled(Paper)({
-  borderRadius: "10px",
-  marginInline: "2px",
-  height: 250,
-  backgroundColor: "#006064",
-});
 
 const CloseButton = styled("div")({
   display: "inline-flex",

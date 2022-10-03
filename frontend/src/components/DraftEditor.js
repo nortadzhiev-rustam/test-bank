@@ -12,7 +12,7 @@ export default function MyEditor({
   setLatex,
   setEditing,
   isEditing,
-  toEdit,
+  edited,
 }) {
   const [isMathHover, setIsMathHover] = useState(false);
 
@@ -21,9 +21,10 @@ export default function MyEditor({
   const editor = useRef(null);
 
   const handleClickMath = (eq) => {
+    setEditing(true);
     setOpen(true);
     setLatex(eq);
-    setEditing(true);
+    
   };
 
   function focusEditor() {
@@ -31,27 +32,25 @@ export default function MyEditor({
   }
 
   useEffect(() => {
-    if (isEditing) {
-      const newArr = equationarray.map((item) => {
-        if (item.id === toEdit.id) {
-          return { ...item, equation: toEdit.equation };
-        } else {
-          return item;
-        }
-      });
-      setEquationarray(newArr);
-      setEditing(false);
-    } else {
-      if (latex !== "") {
-        setEquationarray((prevState) => [
-          ...prevState,
-          { id: Date.now(), equation: latex },
-        ]);
-      }
+    if (latex !== "") {
+      setEquationarray((prevState) => [
+        ...prevState,
+        { id: Date.now(), equation: latex },
+      ]);
     }
   }, [latex]);
 
- 
+  useEffect(() => {
+    const newArr = equationarray.map((item) => {
+      if (item.id === edited.id) {
+        return { ...item, equation: edited.equation };
+      } else {
+        return item;
+      }
+    });
+    setEquationarray(newArr);
+    setEditing(false);
+  }, []);
 
   const handleDeleteMath = (id) => {
     const newArray = equationarray.filter((eq) => eq.id !== id);
@@ -68,7 +67,7 @@ export default function MyEditor({
         ref={editor}
         onChange={(e) => console.log(e.currentTarget.textContent)}
       >
-        {latex === "" ? null : isMathHover ? (
+        {equationarray.length === 0 ? null : isMathHover ? (
           <div
             style={{
               display: "flex",
@@ -82,6 +81,7 @@ export default function MyEditor({
                   position: "relative",
                   display: "flex",
                   marginInline: 5,
+                  marginBlock: 5,
                 }}
                 contentEditable={false}
                 onMouseEnter={() => setIsMathHover(true)}
@@ -114,7 +114,7 @@ export default function MyEditor({
                 key={equation.id}
                 style={{ display: "flex", margin: 10 }}
                 contentEditable={false}
-                onClick={handleClickMath}
+                onClick={() => handleClickMath(equation)}
                 className={isMathHover ? "math" : null}
                 onMouseEnter={() => setIsMathHover(true)}
                 onMouseLeave={() => setIsMathHover(false)}

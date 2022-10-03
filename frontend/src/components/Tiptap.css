@@ -1,0 +1,24 @@
+.ProseMirror {
+  margin-top: 0.75em;
+  height: 150px;
+  border: #adb5bd 1px solid;
+  padding-inline: 20px;
+  border-radius: 5px;
+}
+
+/* Placeholder (at the top) */
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Placeholder (on every new line) */
+/*.ProseMirror p.is-empty::before {
+    color: #adb5bd;
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;*/
