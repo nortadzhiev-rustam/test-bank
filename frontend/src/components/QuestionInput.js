@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Box, Tooltip, Button, Typography } from "@mui/material";
+import { Box, Tooltip, Button, Typography, IconButton } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { PhotoCamera } from "@mui/icons-material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Formula from "../formula-fx-icon.svg";
 import FormulaEditor from "../components/FormulaEditor";
 import MyEditor from "./DraftEditor";
@@ -82,7 +83,7 @@ const QuestionInput = () => {
             </Button>
           </Tooltip>
           <Tooltip
-            title='Click here to inser Formula'
+            title='Click here to inser Equation'
             arrow
             sx={{ marginBottom: "5px" }}
           >
@@ -105,16 +106,34 @@ const QuestionInput = () => {
       <Grid
         container
         spacing={1}
-        sx={{ maxHeight: 200, alignItems: "center", justifyContent: "center" }}
+        sx={{
+          maxHeight: 200,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
         {tempImageURL !== "" && (
-          <Grid xs={12} md={4} sx={{ cursor: "pointer" }}>
+          <Grid xs={12} md={4}>
             <Box
               maxWidth='100%'
               maxHeight='100%'
               component='div'
-              onClick={() => setTempImageURL("")}
+              sx={{
+                
+                border: "1px",
+                borderStyle: "dashed",
+                borderColor: "#888",
+                borderRadius: 2,
+                position: "relative",
+              }}
             >
+              <IconButton
+                sx={{ position: "absolute", top: 0, right: 0 }}
+                onClick={() => setTempImageURL("")}
+              >
+                <DeleteIcon color='disabled' />
+              </IconButton>
               <img
                 src={tempImageURL}
                 alt='inputImage'
@@ -137,7 +156,7 @@ const QuestionInput = () => {
             edited={toEdit}
             isEditing={isEditing}
           /> */}
-          <Tiptap />
+          <Tiptap equation={equation} />
         </Grid>
       </Grid>
 

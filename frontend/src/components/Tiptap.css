@@ -1,9 +1,8 @@
 .ProseMirror {
   margin-top: 0.75em;
-  height: 150px;
-  border: #adb5bd 1px solid;
+  height: 160px;
+  
   padding-inline: 20px;
-  border-radius: 5px;
 }
 
 /* Placeholder (at the top) */
@@ -14,6 +13,14 @@
   height: 0;
   pointer-events: none;
 }
+
+.ProseMirror:focus {
+  border: #adb5bd 1px solid;
+  padding-inline: 20px;
+  border-radius: 5px;
+}
+
+
 
 /* Placeholder (on every new line) */
 /*.ProseMirror p.is-empty::before {
