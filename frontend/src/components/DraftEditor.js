@@ -13,6 +13,12 @@ export default function MyEditor({
   setEditing,
   isEditing,
   edited,
+  setEquation,
+  placeholder,
+  className,
+  handleOpen,
+  isFlip,
+  setFlip,
 }) {
   const [isMathHover, setIsMathHover] = useState(false);
 
@@ -22,9 +28,15 @@ export default function MyEditor({
 
   const handleClickMath = (eq) => {
     setEditing(true);
-    setOpen(true);
+    if (setFlip) {
+      setFlip();
+    }
+    if (handleOpen) {
+      handleOpen();
+    } else {
+      setOpen(true);
+    }
     setLatex(eq);
-    
   };
 
   function focusEditor() {
@@ -32,46 +44,62 @@ export default function MyEditor({
   }
 
   useEffect(() => {
-    if (latex !== "") {
-      setEquationarray((prevState) => [
-        ...prevState,
-        { id: Date.now(), equation: latex },
-      ]);
+    focusEditor();
+  }, []);
+
+  useEffect(() => {
+    if (
+      latex.equation !== "" &&
+      latex.equation !== undefined &&
+      latex.equation !== null
+    ) {
+      setEquationarray((prevState) => [...prevState, latex]);
+      setEquation("");
     }
   }, [latex]);
 
   useEffect(() => {
-    const newArr = equationarray.map((item) => {
-      if (item.id === edited.id) {
-        return { ...item, equation: edited.equation };
-      } else {
-        return item;
-      }
-    });
-    setEquationarray(newArr);
-    setEditing(false);
-  }, []);
+    if (isEditing) {
+      const newArr = equationarray
+        .filter((item) => item.id !== edited.id)
+        .map((item) => item);
+
+      setEquationarray(newArr);
+      setEditing(false);
+    }
+  }, [isEditing]);
 
   const handleDeleteMath = (id) => {
     const newArray = equationarray.filter((eq) => eq.id !== id);
     setEquationarray(newArray);
   };
 
+  const handleInput = () => {
+    const editor = document.querySelector("#editor");
+    console.log(editor.innerHTML);
+  };
+
   return (
-    <div style={{ width: "100%" }} onClick={focusEditor}>
+    <div
+      style={{ width: "100%" }}
+      className={className || ""}
+      onClick={focusEditor}
+    >
       <div
         className='DraftEditor-root'
         id='editor'
-        data-placeholder='Please write your question here'
+        data-placeholder={placeholder}
         contentEditable
         ref={editor}
-        onChange={(e) => console.log(e.currentTarget.textContent)}
+        onInput={handleInput}
       >
         {equationarray.length === 0 ? null : isMathHover ? (
           <div
             style={{
               display: "flex",
               flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             {equationarray.map((equation) => (
@@ -92,7 +120,7 @@ export default function MyEditor({
                     position: "absolute",
                     top: "-20px",
                     right: "-20px",
-                    color: "rgb(117, 112, 112)",
+                    color: "rgb(255, 255, 255)",
                   }}
                   onClick={() => handleDeleteMath(equation.id)}
                 >
@@ -108,7 +136,14 @@ export default function MyEditor({
             ))}
           </div>
         ) : (
-          <div style={{ display: "flex", flexDirection: "row" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             {equationarray.map((equation) => (
               <span
                 key={equation.id}

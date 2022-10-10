@@ -6,9 +6,9 @@ import MathExtension from "./MathExtension";
 import InlineMath from "./InlineMath";
 import "./Tiptap.css";
 
+
 const Tiptap = ({ equation }) => {
-  const editorRef = useRef(null);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(`<math-block content="\\sqrt{a^2+b^2}"></math-block`);
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -24,21 +24,8 @@ const Tiptap = ({ equation }) => {
       setContent(html);
     },
   });
-  useEffect(() => {
-    editorRef.current.focus();
-  }, []);
 
-  useEffect(() => {
-    if (equation !== "") {
-      setContent((prevState) => prevState + `<math-block content=${equation}></math-block>`);
-    }
-  }, [equation]);
-
-  return (
-    <div ref={editorRef}>
-      <EditorContent editor={editor} />
-    </div>
-  );
+  return <EditorContent editor={editor} />;
 };
 
 export default Tiptap;

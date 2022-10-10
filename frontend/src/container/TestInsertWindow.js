@@ -12,7 +12,7 @@ import {
   faDownLeftAndUpRightToCenter,
 } from "@fortawesome/free-solid-svg-icons";
 import QuestionInput from "../components/QuestionInput";
-
+import AnswersContainer from "../components/AnswersContainer";
 const StyledBox = styled(Box)({
   display: "flex",
   position: "relative",
@@ -75,7 +75,7 @@ const InsertWindow = () => {
           borderRadius: 3,
           transition: "all 0.3s ease-in-out",
           width: "100%",
-          paddingBottom: 30,
+          paddingBottom: 5,
         }}
         className='animate__animated animate__zoomIn animate__faster'
       >
@@ -170,13 +170,12 @@ const InsertWindow = () => {
           }}
         >
           <QuestionInput />
+          <AnswersContainer isFull={isFull} isHover={isHover} />
         </Box>
       </Paper>
     </Grid>
   );
 };
-
-
 
 const CloseButton = styled("div")({
   display: "inline-flex",

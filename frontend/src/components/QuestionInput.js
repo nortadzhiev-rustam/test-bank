@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { Box, Tooltip, Button, Typography, IconButton } from "@mui/material";
+import { Box, Tooltip, Button, IconButton, duration } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { PhotoCamera } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import Formula from "../formula-fx-icon.svg";
 import FormulaEditor from "../components/FormulaEditor";
 import MyEditor from "./DraftEditor";
-import Tiptap from "./TipTap";
+
 import axios from "axios";
 const QuestionInput = () => {
   const [equation, setEquation] = useState("");
@@ -14,10 +15,12 @@ const QuestionInput = () => {
   const [toEdit, setToEdit] = useState("");
   const [tempImageURL, setTempImageURL] = useState("");
   const [isEditing, setEditing] = useState(false);
+
   const handleOpen = () => {
     setIsOpen(!isOpen);
     setToEdit("");
   };
+
 
   const uploadFile = async (e) => {
     e.preventDefault();
@@ -43,15 +46,22 @@ const QuestionInput = () => {
   };
 
   return (
+   
     <Box
       style={{
         borderWidth: "1px",
         borderStyle: "solid",
         borderColor: "#ccc",
-        borderRadius: "5px",
-        padding: "10px",
+        borderRadius: "10px",
+        paddingBlock: "10px",
+        paddingInline: "20px",
         marginInline: "2px",
+        backgroundColor: "#006064",
+        minHeight: 280,
+        height: "100%",
+        transition: "all 2s ease-in-out",
       }}
+      boxShadow={10}
     >
       <Box display='flex' flexDirection='row' alignItems='center'>
         <Box
@@ -60,12 +70,13 @@ const QuestionInput = () => {
             flexDirection: "row",
             marginBottom: "10px",
             justifyContent: "space-between",
+
             width: "100%",
           }}
         >
           <Tooltip title='Click to Upload picture' arrow>
             <Button
-              color='primary'
+              color='warning'
               variant='contained'
               sx={{ marginRight: "5px" }}
               aria-label='upload picture'
@@ -89,7 +100,7 @@ const QuestionInput = () => {
           >
             <Button
               sx={{ marginRight: "0px" }}
-              color='warning'
+              color='error'
               onClick={handleOpen}
               variant='contained'
               startIcon={
@@ -107,7 +118,6 @@ const QuestionInput = () => {
         container
         spacing={1}
         sx={{
-          maxHeight: 200,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -117,22 +127,35 @@ const QuestionInput = () => {
           <Grid xs={12} md={4}>
             <Box
               maxWidth='100%'
-              maxHeight='100%'
+              height='100%'
               component='div'
               sx={{
-                
                 border: "1px",
                 borderStyle: "dashed",
                 borderColor: "#888",
                 borderRadius: 2,
                 position: "relative",
+                backgroundColor: "white",
               }}
             >
               <IconButton
-                sx={{ position: "absolute", top: 0, right: 0 }}
+                sx={{ position: "absolute", top: -5, right: -8 }}
                 onClick={() => setTempImageURL("")}
               >
-                <DeleteIcon color='disabled' />
+                <DeleteIcon color='action' fontSize='small' />
+              </IconButton>
+              <IconButton
+                sx={{ position: "absolute", top: 20, right: -8 }}
+                aria-label='upload picture'
+                component='label'
+              >
+                <EditIcon color='action' fontSize='small' />
+                <input
+                  hidden
+                  accept='image/*'
+                  type='file'
+                  onChange={handleImageUpload}
+                />
               </IconButton>
               <img
                 src={tempImageURL}
@@ -148,15 +171,16 @@ const QuestionInput = () => {
           </Grid>
         )}
         <Grid xs={12} md={tempImageURL !== "" ? 8 : 12}>
-          {/* <MyEditor
+          <MyEditor
             setOpen={(o) => setIsOpen(o)}
-            latex={equation}
+            latex={{ id: Date.now(), equation }}
             setLatex={(eq) => setToEdit(eq)}
             setEditing={(e) => setEditing(e)}
             edited={toEdit}
             isEditing={isEditing}
-          /> */}
-          <Tiptap equation={equation} />
+            setEquation={(eq) => setEquation(eq)}
+            placeholder='Please write your question here'
+          />
         </Grid>
       </Grid>
 
@@ -170,6 +194,7 @@ const QuestionInput = () => {
         />
       )}
     </Box>
+    
   );
 };
 

@@ -1,25 +1,33 @@
 .DraftEditor-root {
-  border: solid 1px #cccccc;
   min-height: 150px;
   margin-top: 5px;
+  margin-bottom: 20;
+  height: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 5px;
+  border-radius: 10px;
   text-overflow: ellipsis;
   padding-inline: 10px;
   white-space: normal;
   overflow: auto;
+  padding-block: 10px;
+  color: white;
+}
 
+.DraftEditor-root:focus {
+  border: solid 4px #00000048;
+  background-color: rgba(49, 49, 49, 0.493);
+  
 }
 
 [data-placeholder]:empty:before {
   content: attr(data-placeholder);
-  color: #888;
+  color: rgb(255, 255, 255);
   font-style: italic;
 }
-[contenteditable]:focus{
+[contenteditable]:focus {
   outline: 0px solid transparent;
 }
 
@@ -28,17 +36,12 @@
   padding: 5px 20px;
   border: #888 1px dashed;
   border-radius: 5px;
-  
- 
 }
 
-
-
-.close{
+.close {
   position: absolute;
-  
+
   top: -20px;
   right: -20px;
-  color: rgb(117, 112, 112);
-  
+  color: rgb(255, 255, 255);
 }
