@@ -1,5 +1,6 @@
 // import Swiper core and required modules
 import { Navigation, Pagination, Autoplay } from "swiper";
+import React from 'react';
 import { useMediaQuery } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CardComponent from "./CardComponent";
@@ -27,11 +28,11 @@ const Slider = ({ items }) => {
       onSlideChange={() => console.log("slide change")}
     >
       {items.map((item, idx) => (
-        <>
-          <SwiperSlide style={{ justifyContent: "center" }} key={idx}>
+        <React.Fragment key={item.id}>
+          <SwiperSlide style={{ justifyContent: "center" }}>
             <CardComponent item={item} width={220} height={280} top={200} />
           </SwiperSlide>
-        </>
+        </React.Fragment>
       ))}
     </Swiper>
   );

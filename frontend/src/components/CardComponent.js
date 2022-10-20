@@ -81,6 +81,7 @@ const CardComponent = (props) => {
         marginBottom: 5,
         height: height,
         borderRadius: 5,
+        transition: 'all 0.3s ease-in'
       }}
     >
       <CardActionArea onClick={()=> history(route || '#')}>

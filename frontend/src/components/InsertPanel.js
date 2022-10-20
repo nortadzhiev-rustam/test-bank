@@ -29,7 +29,7 @@ import {
 
 
 const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
+  ...theme.typography.caption,
   paddingBlock: theme.spacing(4),
   paddingInline: theme.spacing(4),
   textAlign: 'center',
@@ -79,8 +79,8 @@ const InsertPanel = () => {
       <div style={{ overflow: 'hidden' }}>
         <Typography
           style={{ marginBottom: 5, textAlign: 'start' }}
-          variant='body2'
-          fontWeight={900}
+          variant='caption'
+          fontWeight={600}
           color='initial'
         >
           CHOOSE CATEGORY
@@ -89,10 +89,11 @@ const InsertPanel = () => {
           <InputLabel id='demo-simple-select-label'>Category</InputLabel>
           <Select
             labelId='demo-simple-select-label'
-            id='demo-simple-select'
+            id='category'
             value={quest.category || ''}
             label='Category'
             onChange={handleChangeCategory}
+            defaultValue={quest.category || ""}
           >
             {category.map((item, idx) => {
               return (
@@ -107,8 +108,8 @@ const InsertPanel = () => {
           <div className='animate__animated animate__fadeInUp'>
             <Typography
               style={{ marginBottom: 5, textAlign: 'start' }}
-              variant='body2'
-              fontWeight={900}
+              variant='caption'
+              fontWeight={600}
               color='initial'
             >
               CHOOSE TYPE
@@ -117,9 +118,9 @@ const InsertPanel = () => {
               <InputLabel id='demo-simple-select-label'>Type</InputLabel>
               <Select
                 labelId='demo-simple-select-label'
-                id='demo-simple-select'
+                id='type'
                 value={quest.questionType}
-                label='Category'
+                label='Difficulty'
                 onChange={handleChangeType}
               >
                 {types.map((tp, idx) => {
@@ -137,8 +138,8 @@ const InsertPanel = () => {
           <div className='animate__animated animate__fadeInUp'>
             <Typography
               style={{ marginBottom: 5, textAlign: 'start' }}
-              variant='body2'
-              fontWeight={900}
+              variant='caption'
+              fontWeight={600}
               color='initial'
             >
               CHOOSE DIFFICULTY
@@ -147,9 +148,9 @@ const InsertPanel = () => {
               <InputLabel id='demo-simple-select-label'>Difficulty</InputLabel>
               <Select
                 labelId='demo-simple-select-label'
-                id='demo-simple-select'
+                id='difficulty'
                 value={quest.difficulty}
-                label='Category'
+                label='Difficulty'
                 onChange={handleChangeDifficulty}
               >
                 {difficulties.map((dif, idx) => {

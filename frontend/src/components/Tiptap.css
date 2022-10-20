@@ -1,8 +1,12 @@
 .ProseMirror {
   margin-top: 0.75em;
-  height: 160px;
-  
+  min-height: 200px;
+  height: auto;
   padding-inline: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: aliceblue;
 }
 
 /* Placeholder (at the top) */
@@ -15,12 +19,19 @@
 }
 
 .ProseMirror:focus {
-  border: #adb5bd 1px solid;
+  border: #54565842 2px solid;
   padding-inline: 20px;
   border-radius: 5px;
+  background-color: rgba(51, 51, 51, 0.301);
 }
 
-
+.math-block-preview:hover {
+  display: flex;
+  border: solid blue;
+  text-align: center;
+  padding-inline: 20px;
+  cursor: pointer;
+}
 
 /* Placeholder (on every new line) */
 /*.ProseMirror p.is-empty::before {

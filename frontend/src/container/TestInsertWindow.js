@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Paper, Box, Typography } from "@mui/material";
+import { Grid, Paper, Box, Typography, Button } from "@mui/material";
 import { styled } from "@mui/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch, useSelector } from "react-redux";
@@ -66,7 +66,7 @@ const InsertWindow = () => {
   };
 
   return (
-    <Grid item xs={12} sm={12} md={isFull ? 12 : 8}>
+    <Grid item xs={12} sm={12} md={isFull ? 12 : 9.5}>
       <Paper
         elevation={isHover ? 10 : 2}
         onMouseEnter={() => setHover(true)}
@@ -171,6 +171,14 @@ const InsertWindow = () => {
         >
           <QuestionInput />
           <AnswersContainer isFull={isFull} isHover={isHover} />
+        </Box>
+        <Box m={3} width='95%' textAlign='right'>
+          <Button onClick={handleClose} color='error' variant='contained'>
+            Cancel
+          </Button>
+          <Button sx={{ marginLeft: 2 }} color='success' variant='contained'>
+            Submit
+          </Button>
         </Box>
       </Paper>
     </Grid>

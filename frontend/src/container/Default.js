@@ -30,7 +30,7 @@ const Default = () => {
         >
           {options.map((option, idx) => (
             <CardComponent
-              key={idx}
+              key={idx+1}
               item={option}
               width={300}
               height={400}

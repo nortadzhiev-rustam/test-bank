@@ -42,10 +42,10 @@ const Home = (props) => {
             item
             xs={12}
             sm={6}
-            md={4}
-            lg={3}
-            xl={2.5}
-            style={{ paddingInline: 20, paddingBottom: 25 }}
+            md={2.5}
+            
+           
+            style={{ paddingRight: 5, paddingBottom: 25 }}
             overflow='hidden'
           >
             {

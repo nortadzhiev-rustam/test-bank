@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Tooltip, Button, IconButton, duration } from "@mui/material";
+import { Box, Tooltip, Button, IconButton, Paper } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { PhotoCamera } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -15,12 +15,21 @@ const QuestionInput = () => {
   const [toEdit, setToEdit] = useState("");
   const [tempImageURL, setTempImageURL] = useState("");
   const [isEditing, setEditing] = useState(false);
-
+  const [isClosing, setClosing] = useState(false);
   const handleOpen = () => {
-    setIsOpen(!isOpen);
+    setClosing(false);
+    setIsOpen(true);
     setToEdit("");
   };
 
+  const handleClose = () => {
+    setClosing(true);
+    setTimeout(() => {
+      setIsOpen(false);
+    }, 1500);
+
+    setToEdit("");
+  };
 
   const uploadFile = async (e) => {
     e.preventDefault();
@@ -46,22 +55,18 @@ const QuestionInput = () => {
   };
 
   return (
-   
-    <Box
+    <Paper
       style={{
-        borderWidth: "1px",
-        borderStyle: "solid",
-        borderColor: "#ccc",
         borderRadius: "10px",
-        paddingBlock: "10px",
+        paddingBlock: "20px",
         paddingInline: "20px",
         marginInline: "2px",
         backgroundColor: "#006064",
         minHeight: 280,
-        height: "100%",
-        transition: "all 2s ease-in-out",
+        height: isOpen && 510,
+        transition: "all 0.5s ease-in",
       }}
-      boxShadow={10}
+      elevation={10}
     >
       <Box display='flex' flexDirection='row' alignItems='center'>
         <Box
@@ -101,7 +106,7 @@ const QuestionInput = () => {
             <Button
               sx={{ marginRight: "0px" }}
               color='error'
-              onClick={handleOpen}
+              onClick={isOpen ? handleClose : handleOpen}
               variant='contained'
               startIcon={
                 <img style={{ height: 25 }} src={Formula} alt='formula' />
@@ -172,7 +177,6 @@ const QuestionInput = () => {
         )}
         <Grid xs={12} md={tempImageURL !== "" ? 8 : 12}>
           <MyEditor
-            setOpen={(o) => setIsOpen(o)}
             latex={{ id: Date.now(), equation }}
             setLatex={(eq) => setToEdit(eq)}
             setEditing={(e) => setEditing(e)}
@@ -180,21 +184,25 @@ const QuestionInput = () => {
             isEditing={isEditing}
             setEquation={(eq) => setEquation(eq)}
             placeholder='Please write your question here'
+            editorId='question'
+            handleOpen={handleOpen}
           />
         </Grid>
       </Grid>
-
       {isOpen && (
-        <FormulaEditor
-          setEquation={(eq) => setEquation(eq)}
-          setOpen={(o) => setIsOpen(o)}
-          equation={toEdit}
-          isEditing={isEditing}
-          setEditEquation={(eq) => setToEdit(eq)}
-        />
+        <Box width={"100%"} pl={0}>
+          <FormulaEditor
+            setEquation={(eq) => setEquation(eq)}
+            setOpen={(o) => setIsOpen(o)}
+            equation={toEdit}
+            isEditing={isEditing}
+            setEditEquation={(eq) => setToEdit(eq)}
+            isClosing={isClosing}
+            setClosing={(e) => setClosing(e)}
+          />
+        </Box>
       )}
-    </Box>
-    
+    </Paper>
   );
 };
 

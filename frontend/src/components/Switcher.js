@@ -65,7 +65,7 @@ let {swt} = useParams()
             }}
             onClick={() => handleSwitch('insert')}
           >
-            <h2 style={{ color: swt === 'generate' && '#fff' }}>Generate</h2>
+            <h3 style={{ color: swt === 'generate' && '#fff' }}>Generate</h3>
           </TextDiv>
         </Grid>
       </GridContainer>

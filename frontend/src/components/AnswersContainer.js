@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import AnswersCard from "./AnswerCard";
-import { IconButton, Paper, Tooltip } from "@mui/material";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  IconButton,
+  Paper,
+  Tooltip,
+  Radio,
+  RadioGroup,
+  FormControl,
+  FormLabel,
+  FormControlLabel,
+} from "@mui/material";
+import { indigo } from "@mui/material/colors";
+import { faL, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function AnswersContainer({ isHover, isFull }) {
@@ -17,7 +27,12 @@ export default function AnswersContainer({ isHover, isFull }) {
       key: 1,
     },
   ]);
-
+  const [correctAnswer, setCorrectAnswer] = React.useState(0);
+  const [isDeleted, setDeleted] = React.useState(false);
+  const [checked1, setChecked1] = React.useState(false);
+  const [checked2, setChecked2] = React.useState(false);
+  const [checked3, setChecked3] = React.useState(false);
+  const [checked4, setChecked4] = React.useState(false);
   const getRandomOption = () => {
     const set = new Set();
     let randomNumber = Math.floor(Math.random() * 4) + 1;
@@ -57,13 +72,39 @@ export default function AnswersContainer({ isHover, isFull }) {
     setOptions(options.filter((item) => item.key !== key));
     setCounter(counter - 1);
   };
+  useEffect(() => {
+    if (checked1) {
+      setChecked2(false);
+      setChecked3(false);
+      setChecked4(false);
+    } else if (checked2) {
+      setChecked1(false);
+      setChecked3(false);
+      setChecked4(false);
+    } else if (checked3) {
+      setChecked2(false);
+      setChecked1(false);
+      setChecked4(false);
+    } else if (checked4) {
+      setChecked1(false);
+      setChecked2(false);
+      setChecked3(false);
+    }
+    //  else {
+    //   setChecked1(false);
+    //   setChecked2(false);
+    //   setChecked3(false);
+    //   setChecked4(false);
+    // }
+  }, [checked1, checked2, checked3, checked4]);
+
   return (
     <Grid
       container
-      spacing={3}
+      spacing={1}
       sx={{
         marginTop: 10,
-        marginInline: 3,
+        marginInline: 1,
 
         display: "flex",
         alignItems: "center",
@@ -76,18 +117,29 @@ export default function AnswersContainer({ isHover, isFull }) {
             key={idx}
             xs={12}
             sm={6}
-            lg={isFull ? 3 : 4}
-            xl={isFull ? 2 : 3}
+            lg={12 / counter}
+            xl={12 / counter}
+            sx={{ position: "relative" }}
           >
             <AnswersCard
               index={idx + 1}
               onDelete={deleteOption}
               option={option}
               counter={counter}
+              setDeleted={(e) => setDeleted(e)}
+              isDeleted={isDeleted}
+              isChecked={{ a: checked1, b: checked2, c: checked3, d: checked4 }}
+              setChecked={{
+                a: setChecked1,
+                b: setChecked2,
+                c: setChecked3,
+                d: setChecked4,
+              }}
             />
           </Grid>
         );
       })}
+
       <Tooltip
         placement='left'
         arrow
@@ -108,7 +160,7 @@ export default function AnswersContainer({ isHover, isFull }) {
             <FontAwesomeIcon
               size='2x'
               icon={faPlusCircle}
-              color={counter !== 4 && "#006064"}
+              color={counter !== 4 ? "#006064" : undefined}
             />
           </IconButton>
         </Paper>

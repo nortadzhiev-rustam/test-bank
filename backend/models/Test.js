@@ -15,19 +15,19 @@ module.exports = (sequelize, DataTypes) => {
     },
     answerA: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     answerB: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     answerC: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     answerD: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     correctAnswer: {
       type: DataTypes.STRING,
@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
     }, 
     image: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
   });
   Test.associate = (models) => {

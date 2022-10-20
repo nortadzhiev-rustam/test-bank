@@ -1,47 +1,47 @@
-import React from 'react';
+import React from "react";
 import {
   FormControl,
   InputLabel,
   Select,
   MenuItem,
   Typography,
-} from '@mui/material';
-import { useDispatch } from 'react-redux';
-import { openWindow, setVisible } from '../store/questionTypeSlice';
-import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
-import Button from '@mui/material/Button';
-import 'animate.css';
+} from "@mui/material";
+import { useDispatch } from "react-redux";
+import { openWindow, setVisible } from "../store/questionTypeSlice";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
+import Button from "@mui/material/Button";
+import "animate.css";
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   paddingBlock: theme.spacing(4),
   paddingInline: theme.spacing(4),
-  textAlign: 'center',
+  textAlign: "center",
   color: theme.palette.text.secondary,
-  transition: 'all 0.5s ease-in',
+  transition: "all 0.5s ease-in",
   borderRadius: 15,
 }));
 
 const categories = [
-  'English',
-  'Protuguese',
-  'Mathematics',
-  'Physics',
-  'Chemistry',
-  'French',
+  "English",
+  "Protuguese",
+  "Mathematics",
+  "Physics",
+  "Chemistry",
+  "French",
 ];
 
-const difficulties = ['Easy', 'Medium', 'Hard', 'Challenge'];
+const difficulties = ["Easy", "Medium", "Hard", "Challenge"];
 
 const GeneratePanel = () => {
   const [isMouseIn, setMouseIn] = React.useState(false);
-  const [category, setCategory] = React.useState('');
-  const [difficulty, setDifficulty] = React.useState('');
+  const [category, setCategory] = React.useState("");
+  const [difficulty, setDifficulty] = React.useState("");
   const dispatch = useDispatch();
   const handleVisibility = () => {
-    if (category !== '') {
+    if (category !== "") {
       dispatch(setVisible(true));
-      dispatch(openWindow('generate'));
+      dispatch(openWindow("generate"));
     } else {
       dispatch(setVisible(false));
     }
@@ -55,9 +55,15 @@ const GeneratePanel = () => {
   };
 
   return (
-    <Item elevation={isMouseIn ? 10 : 2} onMouseEnter={()=> setMouseIn(true)} onMouseLeave={()=> setMouseIn(false)} className='animate__animated animate__fadeInLeft' sx={{transition: 'all 0.5s ease-in'}}>
+    <Item
+      elevation={isMouseIn ? 10 : 2}
+      onMouseEnter={() => setMouseIn(true)}
+      onMouseLeave={() => setMouseIn(false)}
+      className='animate__animated animate__fadeInLeft'
+      sx={{ transition: "all 0.5s ease-in" }}
+    >
       <Typography
-        style={{ marginBottom: 5, textAlign: 'start' }}
+        style={{ marginBottom: 5, textAlign: "start" }}
         variant='body2'
         fontWeight={900}
         color='initial'
@@ -83,7 +89,7 @@ const GeneratePanel = () => {
         </Select>
       </FormControl>
       <Typography
-        style={{ marginBottom: 5, textAlign: 'start' }}
+        style={{ marginBottom: 5, textAlign: "start" }}
         variant='body2'
         fontWeight={900}
         color='initial'
@@ -109,7 +115,7 @@ const GeneratePanel = () => {
         </Select>
       </FormControl>
       <Typography
-        style={{ marginBottom: 5, textAlign: 'start' }}
+        style={{ marginBottom: 5, textAlign: "start" }}
         variant='body2'
         fontWeight={900}
         color='initial'
