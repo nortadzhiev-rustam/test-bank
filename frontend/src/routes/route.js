@@ -8,6 +8,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import SearchWindow from "../components/searchWindow";
 import Profile from "../container/Profile";
 import Default from "../container/Default";
+import Admin from "../container/Admin"; // import the component
 const Routess = ({ openSearch, setOpenSearch }) => {
   return (
     <Router>
@@ -24,7 +25,7 @@ const Routess = ({ openSearch, setOpenSearch }) => {
         </Route>
         <Route exact path='/login' element={<Login />} />
         <Route exact path='/register' element={<Register />} />
-
+        <Route exact path='/admin' element={<Admin />} />
         <Route path='*' element={<PageNotFound />} />
       </Routes>
     </Router>
