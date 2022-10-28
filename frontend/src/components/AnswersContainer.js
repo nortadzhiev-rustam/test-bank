@@ -1,22 +1,14 @@
 import React, { useEffect } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import AnswersCard from "./AnswerCard";
-import {
-  IconButton,
-  Paper,
-  Tooltip,
-  Radio,
-  RadioGroup,
-  FormControl,
-  FormLabel,
-  FormControlLabel,
-} from "@mui/material";
-import { indigo } from "@mui/material/colors";
-import { faL, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { IconButton, Paper, Tooltip } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import { tooltipClasses } from "@mui/material/Tooltip";
+import { Box } from "@mui/system";
 export default function AnswersContainer({ isHover, isFull }) {
-  const [counter, setCounter] = React.useState(2);
+  const [counter, setCounter] = React.useState(4);
   const [options, setOptions] = React.useState([
     {
       option: 1,
@@ -26,13 +18,33 @@ export default function AnswersContainer({ isHover, isFull }) {
       option: 2,
       key: 1,
     },
+    {
+      option: 3,
+      key: 2,
+    },
+    {
+      option: 4,
+      key: 3,
+    },
   ]);
-  const [correctAnswer, setCorrectAnswer] = React.useState(0);
+  // const [correctAnswer, setCorrectAnswer] = React.useState(0);
   const [isDeleted, setDeleted] = React.useState(false);
   const [checked1, setChecked1] = React.useState(false);
   const [checked2, setChecked2] = React.useState(false);
   const [checked3, setChecked3] = React.useState(false);
   const [checked4, setChecked4] = React.useState(false);
+
+  const BootstrapTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} arrow classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+      color: counter === 4 ? "#d50000" : "#000000",
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: counter === 4 ? "#d50000" : "#000000",
+    },
+  }));
+
   const getRandomOption = () => {
     const set = new Set();
     let randomNumber = Math.floor(Math.random() * 4) + 1;
@@ -69,8 +81,10 @@ export default function AnswersContainer({ isHover, isFull }) {
   };
 
   const deleteOption = (key) => {
-    setOptions(options.filter((item) => item.key !== key));
-    setCounter(counter - 1);
+    setTimeout(() => {
+      setOptions(options.filter((item) => item.key !== key));
+      setCounter(counter - 1);
+    }, 800);
   };
   useEffect(() => {
     if (checked1) {
@@ -89,13 +103,12 @@ export default function AnswersContainer({ isHover, isFull }) {
       setChecked1(false);
       setChecked2(false);
       setChecked3(false);
+    } else {
+      setChecked1(false);
+      setChecked2(false);
+      setChecked3(false);
+      setChecked4(false);
     }
-    //  else {
-    //   setChecked1(false);
-    //   setChecked2(false);
-    //   setChecked3(false);
-    //   setChecked4(false);
-    // }
   }, [checked1, checked2, checked3, checked4]);
 
   return (
@@ -111,36 +124,51 @@ export default function AnswersContainer({ isHover, isFull }) {
         justifyContent: "center",
       }}
     >
-      {options.map((option, idx) => {
-        return (
-          <Grid
-            key={idx}
-            xs={12}
-            sm={6}
-            lg={12 / counter}
-            xl={12 / counter}
-            sx={{ position: "relative" }}
-          >
-            <AnswersCard
-              index={idx + 1}
-              onDelete={deleteOption}
-              option={option}
-              counter={counter}
-              setDeleted={(e) => setDeleted(e)}
-              isDeleted={isDeleted}
-              isChecked={{ a: checked1, b: checked2, c: checked3, d: checked4 }}
-              setChecked={{
-                a: setChecked1,
-                b: setChecked2,
-                c: setChecked3,
-                d: setChecked4,
-              }}
-            />
-          </Grid>
-        );
-      })}
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          alignItems: "end",
+          justifyContent: "center",
+         
+        }}
+      >
+        {options.map((option, idx) => {
+          return (
+            <Grid
+              key={option.key}
+              xs={12}
+              sm={6}
+              lg={12 / counter}
+              xl={12 / counter}
+              sx={{ position: "relative" }}
+            >
+              <AnswersCard
+                index={idx + 1}
+                onDelete={deleteOption}
+                option={option}
+                counter={counter}
+                setDeleted={(e) => setDeleted(e)}
+                isDeleted={isDeleted}
+                isChecked={{
+                  a: checked1,
+                  b: checked2,
+                  c: checked3,
+                  d: checked4,
+                }}
+                setChecked={{
+                  a: setChecked1,
+                  b: setChecked2,
+                  c: setChecked3,
+                  d: setChecked4,
+                }}
+              />
+            </Grid>
+          );
+        })}
+      </Box>
 
-      <Tooltip
+      <BootstrapTooltip
         placement='left'
         arrow
         title={counter === 4 ? "You can not add more then four options" : ""}
@@ -164,7 +192,7 @@ export default function AnswersContainer({ isHover, isFull }) {
             />
           </IconButton>
         </Paper>
-      </Tooltip>
+      </BootstrapTooltip>
     </Grid>
   );
 }

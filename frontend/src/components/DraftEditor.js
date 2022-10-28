@@ -19,7 +19,7 @@ export default function MyEditor({
   setContent,
 }) {
   const [isMathHover, setIsMathHover] = useState(false);
- 
+
   const [equationarray, setEquationarray] = useState([]);
 
   const editor = useRef(null);
@@ -47,7 +47,7 @@ export default function MyEditor({
       setEquationarray((prevState) => [...prevState, latex]);
       setEquation("");
     }
-  }, [latex]);
+  }, [latex, setEquation]);
   //watches for the editing if the equation is edited updates the equation array
   useEffect(() => {
     if (isEditing) {
@@ -58,7 +58,7 @@ export default function MyEditor({
       setEquationarray(newArr);
       setEditing(false);
     }
-  }, [isEditing]);
+  }, [isEditing, edited.id, equationarray, setEditing]);
 
   const handleDeleteMath = (id) => {
     const newArray = equationarray.filter((eq) => eq.id !== id);
@@ -94,6 +94,9 @@ export default function MyEditor({
               alignItems: "center",
             }}
           >
+            <p>
+              <br/>
+            </p>
             {equationarray.map((equation) => (
               <span
                 key={equation.id}

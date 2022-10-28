@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Box, Grid, Paper, backdropClasses } from "@mui/material";
+import { Button, Box, Grid, Paper } from "@mui/material";
 
 import { MathFieldComponent } from "react-mathlive";
 import("mathlive/dist/mathlive-static.css");
@@ -53,11 +53,10 @@ const FormulaEditor = ({
       mt={0.1}
       mb={0.1}
       py={2}
-      
       width='100%'
     >
       <Paper
-      elevation={6}
+        elevation={6}
         style={{
           display: "flex",
           flexDirection: "column",
@@ -65,7 +64,6 @@ const FormulaEditor = ({
           padding: 10,
           borderRadius: 10,
           overflow: "hidden",
-
         }}
         className={
           className !== "" && className !== null && className !== undefined
@@ -112,7 +110,13 @@ const FormulaEditor = ({
               Cancel
             </Button>
             <Button
-              onClick={isEditing ? handleEditSubmit : handleSubmit}
+              onClick={
+                latex !== ""
+                  ? isEditing
+                    ? handleEditSubmit
+                    : handleSubmit
+                  : null
+              }
               sx={{ width: 90 }}
               variant='contained'
               color='info'

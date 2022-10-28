@@ -8,7 +8,7 @@ import Formula from "../formula-fx-icon.svg";
 import FormulaEditor from "../components/FormulaEditor";
 import MyEditor from "./DraftEditor";
 
-import axios from "axios";
+// import axios from "axios";
 const QuestionInput = () => {
   const [equation, setEquation] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -31,24 +31,24 @@ const QuestionInput = () => {
     setToEdit("");
   };
 
-  const uploadFile = async (e) => {
-    e.preventDefault();
-    let file = e.target.files[0];
-    let fileName = file.name;
-    console.log(file);
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("fileName", fileName);
-    try {
-      const res = await axios.post(
-        "http://localhost:5000/api/v1/upload",
-        formData
-      );
-      console.log(res);
-    } catch (ex) {
-      console.log(ex);
-    }
-  };
+  // const uploadFile = async (e) => {
+  //   e.preventDefault();
+  //   let file = e.target.files[0];
+  //   let fileName = file.name;
+  //   console.log(file);
+  //   const formData = new FormData();
+  //   formData.append("file", file);
+  //   formData.append("fileName", fileName);
+  //   try {
+  //     const res = await axios.post(
+  //       "http://localhost:5000/api/v1/upload",
+  //       formData
+  //     );
+  //     console.log(res);
+  //   } catch (ex) {
+  //     console.log(ex);
+  //   }
+  // };
 
   const handleImageUpload = (e) => {
     setTempImageURL(URL.createObjectURL(e.target.files[0]));
@@ -63,7 +63,7 @@ const QuestionInput = () => {
         marginInline: "2px",
         backgroundColor: "#006064",
         minHeight: 280,
-        height: isOpen && 510,
+        height: isOpen && 450,
         transition: "all 0.5s ease-in",
       }}
       elevation={10}

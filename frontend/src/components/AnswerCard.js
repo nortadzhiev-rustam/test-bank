@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Paper, Box, Checkbox, IconButton, Tooltip } from "@mui/material";
+import { tooltipClasses } from "@mui/material/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTrashCan,
@@ -8,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
 
-import { styled } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 import "animate.css";
 import MyEditor from "./DraftEditor";
 import formula from "../formula-fx-icon.svg";
@@ -38,7 +39,7 @@ const getRandomColor = (index) => {
 
 const AnswersCard = (props) => {
   // const [image, setImage] = React.useState('');
-  // const [answer, setAnswer] = useState([]);
+  //const [answer, setAnswer] = useState([]);
   const [equation, setEquation] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [toEdit, setToEdit] = useState("");
@@ -48,6 +49,27 @@ const AnswersCard = (props) => {
   const [isDeleted, setDeleted] = useState(false);
   const [content, setContent] = useState("");
   const [isHover, setHover] = useState(false);
+
+  const BootstrapTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} arrow classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+      color: content ? "#000000" : "#d50000",
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: content ? "#000000" : "#d50000",
+    },
+  }));
+  const BootstrapTooltip2 = styled(({ className, ...props }) => (
+    <Tooltip {...props} arrow classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+      color: props.counter > 2 ? "#000000" : "#d50000",
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: props.counter > 2 ? "#000000" : "#d50000",
+    },
+  }));
   const handleOpen = () => {
     setClosing(false);
     setIsOpen(true);
@@ -62,21 +84,22 @@ const AnswersCard = (props) => {
   };
 
   const setCheckBox = (e, key) => {
+    props.setChecked.a(false);
+    props.setChecked.b(false);
+    props.setChecked.c(false);
+    props.setChecked.d(false);
+
     switch (key) {
       case 1:
-        return props.setChecked.a(e.target.checked);
-        break;
+        return content && props.setChecked.a(e.target.checked);
       case 2:
-        return props.setChecked.b(e.target.checked);
-        break;
+        return content && props.setChecked.b(e.target.checked);
       case 3:
-        return props.setChecked.c(e.target.checked);
-        break;
+        return content && props.setChecked.c(e.target.checked);
       case 4:
-        return props.setChecked.d(e.target.checked);
-        break;
+        return content && props.setChecked.d(e.target.checked);
       default:
-        return null;
+        return false;
     }
   };
 
@@ -84,18 +107,14 @@ const AnswersCard = (props) => {
     switch (key) {
       case 1:
         return props.isChecked.a;
-        break;
       case 2:
         return props.isChecked.b;
-        break;
       case 3:
         return props.isChecked.c;
-        break;
       case 4:
         return props.isChecked.d;
-        break;
       default:
-        return null;
+        return false;
     }
   };
 
@@ -103,6 +122,12 @@ const AnswersCard = (props) => {
     <StyledPaper
       elevation={10}
       sx={{ backgroundColor: getRandomColor(props.index) }}
+      id={props.index}
+      className={
+        isDeleted
+          ? "animate__animated animate__fadeOutDown"
+          : "animate__animated animate__fadeInRight"
+      }
     >
       {isOpen && (
         <Box sx={{ width: "95%" }}>
@@ -134,11 +159,11 @@ const AnswersCard = (props) => {
         }}
       >
         <IconBoxContainer>
-          <Tooltip
+          <BootstrapTooltip2
             placement='top'
             arrow
             title={
-              props.counter === 2 ? "You should have at least two optoins" : ""
+              props.counter < 3 ? "You should have at least two optoins" : ""
             }
           >
             <IconBox
@@ -156,7 +181,7 @@ const AnswersCard = (props) => {
                 <FontAwesomeIcon size='xs' icon={faTrashCan} color='white' />
               </IconButton>
             </IconBox>
-          </Tooltip>
+          </BootstrapTooltip2>
           <Tooltip
             placement='top'
             arrow
@@ -173,20 +198,17 @@ const AnswersCard = (props) => {
             </IconBox>
           </Tooltip>
         </IconBoxContainer>
-        <Tooltip
+        <BootstrapTooltip
           placement='top'
-          arrow
           title={
-            content === ""
-              ? "editor can't be empty"
-              : "check the coorect answer"
+            content === "" ? "Editor can't be empty" : "Mark the coorect answer"
           }
         >
           <Box sx={{ height: "100%" }}>
             <Checkbox
-              disabled={content == ""}
+              disabled={content === ""}
               onChange={(e) => setCheckBox(e, props.index)}
-              checked={getCheckBox(props.index)}
+              checked={content !=="" && getCheckBox(props.index)}
               onMouseEnter={() => setHover(true)}
               onMouseLeave={() => setHover(false)}
               icon={
@@ -201,7 +223,7 @@ const AnswersCard = (props) => {
               }
             />
           </Box>
-        </Tooltip>
+        </BootstrapTooltip>
       </Box>
 
       <Box width={"90%"}>

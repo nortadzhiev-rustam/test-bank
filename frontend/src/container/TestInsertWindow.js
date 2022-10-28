@@ -173,10 +173,21 @@ const InsertWindow = () => {
           <AnswersContainer isFull={isFull} isHover={isHover} />
         </Box>
         <Box m={3} width='95%' textAlign='right'>
-          <Button onClick={handleClose} color='error' variant='contained'>
+          <Button
+            sx={{ borderRadius: 10 }}
+            onClick={handleClose}
+            color='error'
+            variant='contained'
+            size='large'
+          >
             Cancel
           </Button>
-          <Button sx={{ marginLeft: 2 }} color='success' variant='contained'>
+          <Button
+            sx={{ marginLeft: 2, borderRadius: 10 }}
+            color='success'
+            variant='contained'
+            size='large'
+          >
             Submit
           </Button>
         </Box>
