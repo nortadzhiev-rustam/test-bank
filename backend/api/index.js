@@ -7,7 +7,7 @@ const test = require("./test");
 const logout = require("./logout");
 const isAuth =require("./auth");
 const image = require('./imageUpload')
-const users = require("./users");
+const users = require('./users')
 const router = express.Router();
 
 router.use(registerApi);
