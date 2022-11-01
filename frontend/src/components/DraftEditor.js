@@ -45,9 +45,10 @@ export default function MyEditor({
       latex.equation !== null
     ) {
       setEquationarray((prevState) => [...prevState, latex]);
+      setContent((prevState) => prevState + latex.equation);
       setEquation("");
     }
-  }, [latex, setEquation]);
+  }, [latex, setEquation, setContent]);
   //watches for the editing if the equation is edited updates the equation array
   useEffect(() => {
     if (isEditing) {

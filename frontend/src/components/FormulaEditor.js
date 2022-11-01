@@ -14,6 +14,7 @@ const FormulaEditor = ({
   handleOpen,
   setClosing,
   isClosing,
+  
 }) => {
   const [latex, setLatex] = React.useState(equation.equation || "");
 

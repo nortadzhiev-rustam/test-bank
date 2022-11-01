@@ -24,9 +24,22 @@ router.post("/departments",  async (req, res) => {
 router.get("/departments", async (req, res) => {
     try {
       const departments = await Department.findAll({
-        include: { model: User },
+        include: { model: User, as: 'Users' },
       });
       res.json(departments);
+    } catch (error) {
+      res.status(400).json({
+        error: error.message,
+      });
+    }
+  });
+
+  //route for delete department
+router.delete("/departments/:id", async (req, res) => {
+    try {
+      const department = await Department.findByPk(req.params.id);
+      await department.destroy();
+      res.json({ message: "Department deleted" });
     } catch (error) {
       res.status(400).json({
         error: error.message,

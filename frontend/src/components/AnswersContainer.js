@@ -33,7 +33,7 @@ export default function AnswersContainer({ isHover, isFull }) {
   const [checked2, setChecked2] = React.useState(false);
   const [checked3, setChecked3] = React.useState(false);
   const [checked4, setChecked4] = React.useState(false);
-
+  const [answers, setAnswers] = React.useState([]);
   const BootstrapTooltip = styled(({ className, ...props }) => (
     <Tooltip {...props} arrow classes={{ popper: className }} />
   ))(({ theme }) => ({
@@ -86,6 +86,15 @@ export default function AnswersContainer({ isHover, isFull }) {
       setCounter(counter - 1);
     }, 800);
   };
+
+  //add answers to the array if previous answer key is same as the current answer key then replace the answer
+  const addAnswer = (answer) => {
+    const newArr = answers
+      .filter((item) => item.key !== answer.key)
+      .map((item) => item);
+    setAnswers([...newArr, answer]);
+  };
+
   useEffect(() => {
     if (checked1) {
       setChecked2(false);
@@ -111,6 +120,20 @@ export default function AnswersContainer({ isHover, isFull }) {
     }
   }, [checked1, checked2, checked3, checked4]);
 
+  const getCorrectAnswer = () => {
+    if (checked1) {
+      return 1;
+    } else if (checked2) {
+      return 2;
+    } else if (checked3) {
+      return 3;
+    } else if (checked4) {
+      return 4;
+    } else {
+      return 0;
+    }
+  };
+
   return (
     <Grid
       container
@@ -130,7 +153,6 @@ export default function AnswersContainer({ isHover, isFull }) {
           display: "flex",
           alignItems: "end",
           justifyContent: "center",
-         
         }}
       >
         {options.map((option, idx) => {
@@ -162,6 +184,12 @@ export default function AnswersContainer({ isHover, isFull }) {
                   c: setChecked3,
                   d: setChecked4,
                 }}
+                addAnswer={(answer, isCorrect) =>
+                  addAnswer({
+                    answer,
+                    key: idx + 1,
+                  })
+                }
               />
             </Grid>
           );

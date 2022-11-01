@@ -83,6 +83,12 @@ const AnswersCard = (props) => {
     }, 1500);
   };
 
+  //method for watching content change and settitng it to props.answer
+  const handleContentChange = (content) => {
+    setContent(content);
+    props.addAnswer(content, getCheckBox(props.index));
+  };
+
   const setCheckBox = (e, key) => {
     props.setChecked.a(false);
     props.setChecked.b(false);
@@ -208,7 +214,7 @@ const AnswersCard = (props) => {
             <Checkbox
               disabled={content === ""}
               onChange={(e) => setCheckBox(e, props.index)}
-              checked={content !=="" && getCheckBox(props.index)}
+              checked={content !== "" && getCheckBox(props.index)}
               onMouseEnter={() => setHover(true)}
               onMouseLeave={() => setHover(false)}
               icon={
@@ -237,7 +243,7 @@ const AnswersCard = (props) => {
           placeholder='Your answer goes here'
           handleOpen={handleOpen}
           editorId={`answer${props.option.key}`}
-          setContent={setContent}
+          setContent={handleContentChange}
         />
       </Box>
     </StyledPaper>
