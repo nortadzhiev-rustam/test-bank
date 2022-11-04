@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Paper, Box, Checkbox, IconButton, Tooltip } from "@mui/material";
 import { tooltipClasses } from "@mui/material/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

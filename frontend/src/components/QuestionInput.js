@@ -7,7 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import Formula from "../formula-fx-icon.svg";
 import FormulaEditor from "../components/FormulaEditor";
 import MyEditor from "./DraftEditor";
-
+import ImageUpload from "./imageDialog";
 // import axios from "axios";
 const QuestionInput = () => {
   const [equation, setEquation] = useState("");
@@ -16,6 +16,7 @@ const QuestionInput = () => {
   const [tempImageURL, setTempImageURL] = useState("");
   const [isEditing, setEditing] = useState(false);
   const [isClosing, setClosing] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const handleOpen = () => {
     setClosing(false);
     setIsOpen(true);
@@ -68,6 +69,8 @@ const QuestionInput = () => {
       }}
       elevation={10}
     >
+      <ImageUpload open={dialogOpen} setOpen={(e) => setDialogOpen(e)} />
+
       <Box display='flex' flexDirection='row' alignItems='center'>
         <Box
           sx={{
@@ -88,13 +91,8 @@ const QuestionInput = () => {
               component='label'
               startIcon={<PhotoCamera />}
               size='small'
+              onClick={() => setDialogOpen(true)}
             >
-              <input
-                hidden
-                accept='image/*'
-                type='file'
-                onChange={handleImageUpload}
-              />
               photo
             </Button>
           </Tooltip>

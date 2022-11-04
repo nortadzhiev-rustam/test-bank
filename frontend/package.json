@@ -48,6 +48,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-draggable": "^4.4.4",
+    "react-dropzone": "^14.2.3",
     "react-katex": "^3.0.1",
     "react-mathlive": "^2.0.5",
     "react-mathquill": "^1.0.2",
