@@ -27,7 +27,7 @@ export default function AnswersContainer({ isHover, isFull }) {
       key: 3,
     },
   ]);
-  // const [correctAnswer, setCorrectAnswer] = React.useState(0);
+  const [correctAnswer, setCorrectAnswer] = React.useState({});
   const [isDeleted, setDeleted] = React.useState(false);
   const [checked1, setChecked1] = React.useState(false);
   const [checked2, setChecked2] = React.useState(false);
@@ -120,19 +120,23 @@ export default function AnswersContainer({ isHover, isFull }) {
     }
   }, [checked1, checked2, checked3, checked4]);
 
-  const getCorrectAnswer = () => {
-    if (checked1) {
-      return 1;
-    } else if (checked2) {
-      return 2;
-    } else if (checked3) {
-      return 3;
-    } else if (checked4) {
-      return 4;
-    } else {
-      return 0;
-    }
-  };
+  useEffect(() => {
+    const getCorrectAnswer = () => {
+      if (checked1) {
+        return 0;
+      } else if (checked2) {
+        return 1;
+      } else if (checked3) {
+        return 2;
+      } else if (checked4) {
+        return 3;
+      } else {
+        return null;
+      }
+    };
+
+    setCorrectAnswer(answers[getCorrectAnswer()]);
+  }, [checked1, checked2, checked3, checked4, answers]);
 
   return (
     <Grid

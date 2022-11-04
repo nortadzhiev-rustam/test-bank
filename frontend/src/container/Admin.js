@@ -13,7 +13,8 @@ import {
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
-
+import PersonalCard from "../components/PersonalCard";
+import DepartmentCard from "../components/DepartmentCard";
 const Admin = () => {
   //departments
   const [departments, setDepartments] = React.useState([]);
@@ -59,7 +60,7 @@ const Admin = () => {
   return (
     <Box
       style={{
-        width: "90%",
+        width: "98%",
         height: "100vh",
         display: "flex",
         justifyContent: "center",
@@ -69,7 +70,7 @@ const Admin = () => {
         transition: "all 0.5s ease",
       }}
     >
-      <Grid container spacing={3}>
+      <Grid container spacing={2}>
         <Grid item xs={6}>
           <Paper elevation={10} style={{ padding: 20 }}>
             <Typography variant='h6'>Departments</Typography>
@@ -99,28 +100,7 @@ const Admin = () => {
             </Box>
             <List>
               {departments.map((department) => (
-                <Box
-                  component='li'
-                  key={department.id}
-                  display='flex'
-                  justifyContent='space-between'
-                  alignItems='center'
-                  mt={2}
-                  onMouseEnter={() => setHover(true)}
-                  onMouseLeave={() => setHover(false)}
-                  id={department.id}
-                >
-                  <Typography>{department.name}</Typography>
-                  {isHover && (
-                    <IconButton
-                      size='small'
-                      color='error'
-                      onClick={() => deleteDepartment(department.id)}
-                    >
-                      <FontAwesomeIcon icon={faTrashCan} />
-                    </IconButton>
-                  )}
-                </Box>
+                <DepartmentCard key={department.id} department={department} onDelete={deleteDepartment} />
               ))}
             </List>
           </Paper>
@@ -130,19 +110,7 @@ const Admin = () => {
             <Typography variant='h6'>Users</Typography>
             <List>
               {users.map((user) => (
-                <Box
-                  component='li'
-                  key={user.id}
-                  display='flex'
-                  justifyContent='space-between'
-                  alignItems='center'
-                  mt={2}
-                >
-                  <Typography>
-                    {user.firstName + " " + user.lastName}
-                  </Typography>
-                  <Typography>{user.department.name}</Typography>
-                </Box>
+                <PersonalCard key={user.id} user={user} />
               ))}
             </List>
           </Paper>
