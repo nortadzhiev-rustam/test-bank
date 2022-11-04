@@ -20,7 +20,7 @@ export default function PersonalCard({ user }) {
   const { firstName, lastName, department, email, createdAt } = user;
 const newDate = new Date(createdAt);
   return (
-    <Card elevation={4} sx={{ marginBlock: 5, borderRadius: 3 }}>
+    <Card elevation={4} sx={{ marginBlock: 5, borderRadius: 3, width: '90%', marginLeft: 2 }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label='recipe'>

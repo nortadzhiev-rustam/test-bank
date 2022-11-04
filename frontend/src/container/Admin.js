@@ -98,9 +98,13 @@ const Admin = () => {
                 Add
               </Button>
             </Box>
-            <List>
+            <List sx={{ maxHeight: 345, overflow: "auto" }}>
               {departments.map((department) => (
-                <DepartmentCard key={department.id} department={department} onDelete={deleteDepartment} />
+                <DepartmentCard
+                  key={department.id}
+                  department={department}
+                  onDelete={deleteDepartment}
+                />
               ))}
             </List>
           </Paper>
@@ -108,7 +112,7 @@ const Admin = () => {
         <Grid item xs={6}>
           <Paper elevation={10} style={{ padding: 20 }}>
             <Typography variant='h6'>Users</Typography>
-            <List>
+            <List sx={{ maxHeight: 400, overflow: "auto" }}>
               {users.map((user) => (
                 <PersonalCard key={user.id} user={user} />
               ))}

@@ -11,6 +11,7 @@ const DepartmentCard = ({ department, onDelete }) => {
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
       elevation={5}
+      sx={{ width: "90%", marginLeft: 2 }}
     >
       <Box
         display='flex'
