@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, Box, Typography } from "@mui/material";
+import { Paper, Box, Typography, Tooltip, IconButton } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
@@ -23,12 +23,25 @@ const DepartmentCard = ({ department, onDelete }) => {
       >
         <Typography>{department.name}</Typography>
         {isHover && (
-          <FontAwesomeIcon
-            style={{ cursor: "pointer" }}
-            onClick={() => onDelete(department.id)}
-            icon={faTrash}
-            color='red'
-          />
+          <Tooltip
+            title={
+              department.Users.length !== 0
+                ? "This department has dependency you cannot delete it"
+                : ""
+            }
+            arrow
+            placement='top'
+          >
+            <Box>
+              <IconButton disabled={department.Users.length !== 0}>
+                <FontAwesomeIcon
+                  onClick={() => onDelete(department.id)}
+                  icon={faTrash}
+                  color={department.Users.length !== 0 ? "#c8c8c8" : "red"}
+                />
+              </IconButton>
+            </Box>
+          </Tooltip>
         )}
       </Box>
     </Paper>
