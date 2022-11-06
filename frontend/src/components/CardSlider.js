@@ -11,13 +11,13 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
 const Slider = ({ items }) => {
-  const matches = useMediaQuery("(min-width: 600px)");
+  const matches = useMediaQuery("(min-width: 1200px)");
   return (
     <Swiper
       // install Swiper modules
       modules={[Pagination, Navigation, Autoplay]}
       spaceBetween={3}
-      slidesPerView={matches ? 5 : 1}
+      slidesPerView={matches ? 5 : 3}
       navigation
       pagination={{ clickable: true }}
       autoplay={{

@@ -1,5 +1,5 @@
 // Admin panel to ad department and see all users with jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Grid,
   Paper,
@@ -8,11 +8,10 @@ import {
   Box,
   TextField,
   List,
-  IconButton,
+  
 } from "@mui/material";
 import axios from "axios";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+
 import PersonalCard from "../components/PersonalCard";
 import DepartmentCard from "../components/DepartmentCard";
 const Admin = () => {
@@ -21,7 +20,7 @@ const Admin = () => {
   const [department, setDepartment] = React.useState("");
   //users
   const [users, setUsers] = React.useState([]);
-  const [isHover, setHover] = useState(false);
+  
 
   //get departments
   useEffect(() => {

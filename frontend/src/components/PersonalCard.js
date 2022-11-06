@@ -4,17 +4,14 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 
 import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
+
 
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
-
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { PropTypes } from "prop-types";
+
 
 export default function PersonalCard({ user }) {
   const { firstName, lastName, department, email, createdAt } = user;

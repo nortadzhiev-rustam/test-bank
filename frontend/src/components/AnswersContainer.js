@@ -27,6 +27,7 @@ export default function AnswersContainer({ isHover, isFull }) {
       key: 3,
     },
   ]);
+  //eslint-disable-next-line
   const [correctAnswer, setCorrectAnswer] = React.useState({});
   const [isDeleted, setDeleted] = React.useState(false);
   const [checked1, setChecked1] = React.useState(false);
