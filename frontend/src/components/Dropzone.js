@@ -27,11 +27,18 @@ const rejectStyle = {
   borderColor: "#ff1744",
 };
 
-function DropzoneComponent({open}) {
+function DropzoneComponent({ open, setImage }) {
   const [files, setFiles] = useState([]);
 
   const onDrop = useCallback((acceptedFiles) => {
     setFiles(
+      acceptedFiles.map((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        })
+      )
+    );
+    setImage(
       acceptedFiles.map((file) =>
         Object.assign(file, {
           preview: URL.createObjectURL(file),
@@ -76,10 +83,10 @@ function DropzoneComponent({open}) {
   );
 
   useEffect(() => {
-    if(!open){
-        setFiles([])
+    if (!open) {
+      setFiles([]);
     }
-  },[open])
+  }, [open]);
 
   return (
     <section>
