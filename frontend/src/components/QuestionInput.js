@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Tooltip, Button, IconButton, Paper } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { PhotoCamera } from "@mui/icons-material";
@@ -8,15 +8,18 @@ import Formula from "../formula-fx-icon.svg";
 import FormulaEditor from "../components/FormulaEditor";
 import MyEditor from "./DraftEditor";
 import ImageUpload from "./imageDialog";
+import axios from "axios";
+import Alert from "@mui/material/Alert";
 // import axios from "axios";
 const QuestionInput = () => {
   const [equation, setEquation] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [toEdit, setToEdit] = useState("");
-  const [tempImageURL, setTempImageURL] = useState("");
   const [isEditing, setEditing] = useState(false);
   const [isClosing, setClosing] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [image, setImage] = useState("");
+  const [message, setMessage] = useState("");
   const handleOpen = () => {
     setClosing(false);
     setIsOpen(true);
@@ -30,6 +33,14 @@ const QuestionInput = () => {
     }, 1500);
 
     setToEdit("");
+  };
+
+  const handleDelete = async () => {
+    const res = await axios.delete(
+      "http://localhost:5000/api/v1/files/" + image
+    );
+    setMessage(res.data.message);
+    setImage("");
   };
 
   // const uploadFile = async (e) => {
@@ -51,9 +62,13 @@ const QuestionInput = () => {
   //   }
   // };
 
-  const handleImageUpload = (e) => {
-    setTempImageURL(URL.createObjectURL(e.target.files[0]));
-  };
+  useEffect(() => {
+    if (message.length !== 0) {
+      setTimeout(() => {
+        setMessage("");
+      }, 2000);
+    }
+  }, [message]);
 
   return (
     <Paper
@@ -69,7 +84,12 @@ const QuestionInput = () => {
       }}
       elevation={10}
     >
-      <ImageUpload open={dialogOpen} setOpen={(e) => setDialogOpen(e)} />
+      {message !== "" && <Alert sx={{margin: 2}} severity='success'>{message}</Alert>}
+      <ImageUpload
+        setImage={(iamge) => setImage(iamge)}
+        open={dialogOpen}
+        setOpen={(e) => setDialogOpen(e)}
+      />
 
       <Box display='flex' flexDirection='row' alignItems='center'>
         <Box
@@ -126,11 +146,11 @@ const QuestionInput = () => {
           justifyContent: "center",
         }}
       >
-        {tempImageURL !== "" && (
+        {image !== "" && (
           <Grid xs={12} md={4}>
             <Box
               maxWidth='100%'
-              height='100%'
+              height={220}
               component='div'
               sx={{
                 border: "1px",
@@ -139,11 +159,13 @@ const QuestionInput = () => {
                 borderRadius: 2,
                 position: "relative",
                 backgroundColor: "white",
+                display: "flex",
+                alignItems: "center",
               }}
             >
               <IconButton
                 sx={{ position: "absolute", top: -5, right: -8 }}
-                onClick={() => setTempImageURL("")}
+                onClick={handleDelete}
               >
                 <DeleteIcon color='action' fontSize='small' />
               </IconButton>
@@ -151,21 +173,16 @@ const QuestionInput = () => {
                 sx={{ position: "absolute", top: 20, right: -8 }}
                 aria-label='upload picture'
                 component='label'
+                onClick={() => setDialogOpen(true)}
               >
                 <EditIcon color='action' fontSize='small' />
-                <input
-                  hidden
-                  accept='image/*'
-                  type='file'
-                  onChange={handleImageUpload}
-                />
               </IconButton>
               <img
-                src={tempImageURL}
+                src={process.env.PUBLIC_URL + "/uploads/" + image}
                 alt='inputImage'
                 style={{
                   width: "100%",
-                  maxHeight: "150px",
+                  maxHeight: "210px",
                   objectFit: "contain",
                   borderRadius: "15px",
                 }}
@@ -173,7 +190,7 @@ const QuestionInput = () => {
             </Box>
           </Grid>
         )}
-        <Grid xs={12} md={tempImageURL !== "" ? 8 : 12}>
+        <Grid xs={12} md={image !== "" ? 8 : 12}>
           <MyEditor
             latex={{ id: Date.now(), equation }}
             setLatex={(eq) => setToEdit(eq)}

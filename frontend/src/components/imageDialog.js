@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -7,12 +7,28 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import DropzoneComponent from "./Dropzone";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faImages } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />;
 });
 
-export default function AlertDialogSlide({ open, setOpen }) {
+export default function AlertDialogSlide({ open, setOpen, setImage }) {
+  const [file, setFile] = useState([]);
   const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSubmit = async () => {
+    let data = new FormData();
+    data.append("file", file[0]);
+    let req = await axios.post("http://localhost:5000/api/v1/upload", data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    setImage(req.data);
     setOpen(false);
   };
 
@@ -25,7 +41,10 @@ export default function AlertDialogSlide({ open, setOpen }) {
         onClose={handleClose}
         aria-describedby='alert-dialog-slide-description'
       >
-        <DialogTitle>{"Insert an image here"}</DialogTitle>
+        <DialogTitle>
+          <FontAwesomeIcon color='#888888' icon={faImages} />
+          {" Insert an image here"}
+        </DialogTitle>
         <DialogContent
           sx={{
             height: 400,
@@ -35,11 +54,15 @@ export default function AlertDialogSlide({ open, setOpen }) {
             alignItems: "center",
           }}
         >
-          <DropzoneComponent open={open} />
+          <DropzoneComponent setImage={setFile} open={open} />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Disagree</Button>
-          <Button onClick={handleClose}>Agree</Button>
+          <Button variant='contained' color='error' onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant='contained' color='primary' onClick={handleSubmit}>
+            Submit
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
