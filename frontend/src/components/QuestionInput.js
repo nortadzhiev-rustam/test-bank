@@ -109,7 +109,7 @@ const QuestionInput = ({
             display: "flex",
             flexDirection: "row",
             marginBottom: "10px",
-            justifyContent: "space-between",
+            justifyContent: "flex-start",
             width: "100%",
           }}
         >
@@ -117,6 +117,7 @@ const QuestionInput = ({
             display='flex'
             alignItems='center'
             justifyContent='space-between'
+            width='100%'
           >
             <Tooltip title='Click to Upload picture' arrow>
               <Button
@@ -133,7 +134,7 @@ const QuestionInput = ({
               </Button>
             </Tooltip>
             <TextField
-              sx={{ backgroundColor: "white", borderRadius: 1, width: 650 }}
+              sx={{ backgroundColor: "white", borderRadius: 1, width: "100%" }}
               label='Title'
               id='outlined-size-small'
               value={title}

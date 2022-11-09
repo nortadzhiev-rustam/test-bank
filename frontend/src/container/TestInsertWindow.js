@@ -103,7 +103,7 @@ const InsertWindow = ({ setData, setMessage, questionData }) => {
           width: "100%",
           paddingBottom: 5,
         }}
-        className='animate__animated animate__zoomIn animate__faster'
+        className='animate__animated animate__fadeInUp animate__faster'
       >
         <StyledBox>
           <FormPaper>
