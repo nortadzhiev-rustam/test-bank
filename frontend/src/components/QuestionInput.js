@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Box, Tooltip, Button, IconButton, Paper } from "@mui/material";
+import {
+  Box,
+  Tooltip,
+  Button,
+  IconButton,
+  Paper,
+  FormControl,
+  Select,
+  MenuItem,
+  InputLabel,
+  TextField,
+} from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { PhotoCamera } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -11,15 +22,27 @@ import ImageUpload from "./imageDialog";
 import axios from "axios";
 import Alert from "@mui/material/Alert";
 // import axios from "axios";
-const QuestionInput = () => {
+const QuestionInput = ({
+  setTitle,
+  title,
+  mark,
+  setMark,
+  setQuestion,
+  image,
+  setImage,
+}) => {
   const [equation, setEquation] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [toEdit, setToEdit] = useState("");
   const [isEditing, setEditing] = useState(false);
   const [isClosing, setClosing] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [image, setImage] = useState("");
   const [message, setMessage] = useState("");
+
+  const handleChange = (event) => {
+    setMark(event.target.value);
+  };
+
   const handleOpen = () => {
     setClosing(false);
     setIsOpen(true);
@@ -43,25 +66,6 @@ const QuestionInput = () => {
     setImage("");
   };
 
-  // const uploadFile = async (e) => {
-  //   e.preventDefault();
-  //   let file = e.target.files[0];
-  //   let fileName = file.name;
-  //   console.log(file);
-  //   const formData = new FormData();
-  //   formData.append("file", file);
-  //   formData.append("fileName", fileName);
-  //   try {
-  //     const res = await axios.post(
-  //       "http://localhost:5000/api/v1/upload",
-  //       formData
-  //     );
-  //     console.log(res);
-  //   } catch (ex) {
-  //     console.log(ex);
-  //   }
-  // };
-
   useEffect(() => {
     if (message.length !== 0) {
       setTimeout(() => {
@@ -84,7 +88,15 @@ const QuestionInput = () => {
       }}
       elevation={10}
     >
-      {message !== "" && <Alert sx={{margin: 2}} severity='success'>{message}</Alert>}
+      {message !== "" && (
+        <Alert
+          className='animate__animated animate__fadeInDown'
+          sx={{ margin: 2 }}
+          severity='success'
+        >
+          {message}
+        </Alert>
+      )}
       <ImageUpload
         setImage={(iamge) => setImage(iamge)}
         open={dialogOpen}
@@ -98,42 +110,89 @@ const QuestionInput = () => {
             flexDirection: "row",
             marginBottom: "10px",
             justifyContent: "space-between",
-
             width: "100%",
           }}
         >
-          <Tooltip title='Click to Upload picture' arrow>
-            <Button
-              color='warning'
-              variant='contained'
-              sx={{ marginRight: "5px" }}
-              aria-label='upload picture'
-              component='label'
-              startIcon={<PhotoCamera />}
-              size='small'
-              onClick={() => setDialogOpen(true)}
-            >
-              photo
-            </Button>
-          </Tooltip>
-          <Tooltip
-            title='Click here to inser Equation'
-            arrow
-            sx={{ marginBottom: "5px" }}
+          <Box
+            display='flex'
+            alignItems='center'
+            justifyContent='space-between'
           >
-            <Button
-              sx={{ marginRight: "0px" }}
-              color='error'
-              onClick={isOpen ? handleClose : handleOpen}
-              variant='contained'
-              startIcon={
-                <img style={{ height: 25 }} src={Formula} alt='formula' />
-              }
+            <Tooltip title='Click to Upload picture' arrow>
+              <Button
+                color='warning'
+                variant='contained'
+                sx={{ marginRight: "5px" }}
+                aria-label='upload picture'
+                component='label'
+                startIcon={<PhotoCamera />}
+                size='medium'
+                onClick={() => setDialogOpen(true)}
+              >
+                photo
+              </Button>
+            </Tooltip>
+            <TextField
+              sx={{ backgroundColor: "white", borderRadius: 1, width: 650 }}
+              label='Title'
+              id='outlined-size-small'
+              value={title}
+              size='small'
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <FormControl
+              sx={{
+                marginRight: 2,
+                width: 80,
+                backgroundColor: "white",
+                borderRadius: 1,
+              }}
               size='small'
             >
-              Equation
-            </Button>
-          </Tooltip>
+              <InputLabel id='demo-select-small'>Mark</InputLabel>
+              <Select
+                labelId='demo-select-small'
+                id='demo-select-small'
+                value={mark}
+                label='Mark'
+                onChange={handleChange}
+              >
+                <MenuItem value=''>
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value={5}>5</MenuItem>
+                <MenuItem value={10}>10</MenuItem>
+                <MenuItem value={15}>15</MenuItem>
+                <MenuItem value={20}>20</MenuItem>
+              </Select>
+            </FormControl>
+            <Tooltip
+              title='Click here to inser Equation'
+              arrow
+              sx={{ marginBottom: "5px" }}
+            >
+              <Button
+                sx={{ marginRight: "0px" }}
+                color='error'
+                onClick={isOpen ? handleClose : handleOpen}
+                variant='contained'
+                startIcon={
+                  <img style={{ height: 25 }} src={Formula} alt='formula' />
+                }
+                size='medium'
+              >
+                Equation
+              </Button>
+            </Tooltip>
+          </Box>
         </Box>
       </Box>
 
@@ -201,6 +260,7 @@ const QuestionInput = () => {
             placeholder='Please write your question here'
             editorId='question'
             handleOpen={handleOpen}
+            setContent={setQuestion}
           />
         </Grid>
       </Grid>

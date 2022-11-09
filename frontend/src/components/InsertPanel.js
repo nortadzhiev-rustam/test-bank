@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   FormControl,
   InputLabel,
@@ -9,12 +9,12 @@ import {
   RadioGroup,
   FormControlLabel,
   FormLabel,
-} from '@mui/material';
-import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
-import Button from '@mui/material/Button';
-import 'animate.css';
-import { useSelector, useDispatch } from 'react-redux';
+} from "@mui/material";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
+import Button from "@mui/material/Button";
+import "animate.css";
+import { useSelector, useDispatch } from "react-redux";
 import {
   questCategory,
   questDifficulty,
@@ -22,39 +22,33 @@ import {
   grade,
   openWindow,
   setVisible,
-} from '../store/questionTypeSlice';
-
-
-
-
+  setFull
+} from "../store/questionTypeSlice";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.caption,
   paddingBlock: theme.spacing(4),
   paddingInline: theme.spacing(4),
-  textAlign: 'center',
+  textAlign: "center",
   color: theme.palette.text.secondary,
   borderRadius: 15,
-  transition: 'all 0.3s ease-in',
+  transition: "all 0.3s ease-in",
 }));
 
-
-const difficulties = ['Easy', 'Medium', 'Hard', 'Challenge'];
-const types = ['Multiple choice', 'True or Flase', 'Fill in gaps', 'Classic'];
+const difficulties = ["Easy", "Medium", "Hard", "Challenge"];
+const types = ["Multiple choice", "True or Flase", "Fill in gaps", "Classic"];
 const grades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const InsertPanel = () => {
   const [isMouseIn, setMouseIn] = React.useState(false);
   const quest = useSelector((state) => state.questionsType.value);
-  const category = useSelector(state => state.department.department)
+  const category = useSelector((state) => state.department.department);
   const dispatch = useDispatch();
-  
-
- 
 
   const handleVisibility = () => {
-    if (quest.category !== '') {
+    if (quest.category !== "") {
       dispatch(setVisible(true));
-      dispatch(openWindow('insert'));
+      dispatch(openWindow("insert"));
+      dispatch(setFull(true))
     } else {
       dispatch(setVisible(false));
     }
@@ -75,10 +69,15 @@ const InsertPanel = () => {
   };
 
   return (
-    <Item elevation={isMouseIn ? 10 : 2} onMouseEnter={()=> setMouseIn(true)} onMouseLeave={()=> setMouseIn(false)} className='animate__animated animate__fadeInRight'>
-      <div style={{ overflow: 'hidden' }}>
+    <Item
+      elevation={isMouseIn ? 10 : 2}
+      onMouseEnter={() => setMouseIn(true)}
+      onMouseLeave={() => setMouseIn(false)}
+      className='animate__animated animate__fadeInRight'
+    >
+      <div style={{ overflow: "hidden" }}>
         <Typography
-          style={{ marginBottom: 5, textAlign: 'start' }}
+          style={{ marginBottom: 5, textAlign: "start" }}
           variant='caption'
           fontWeight={600}
           color='initial'
@@ -90,10 +89,9 @@ const InsertPanel = () => {
           <Select
             labelId='demo-simple-select-label'
             id='category'
-            value={quest.category || ''}
+            value={quest.category || ""}
             label='Category'
             onChange={handleChangeCategory}
-            defaultValue={quest.category || ""}
           >
             {category.map((item, idx) => {
               return (
@@ -104,10 +102,10 @@ const InsertPanel = () => {
             })}
           </Select>
         </FormControl>
-        {quest.category !== '' && (
+        {quest.category !== "" && (
           <div className='animate__animated animate__fadeInUp'>
             <Typography
-              style={{ marginBottom: 5, textAlign: 'start' }}
+              style={{ marginBottom: 5, textAlign: "start" }}
               variant='caption'
               fontWeight={600}
               color='initial'
@@ -134,10 +132,10 @@ const InsertPanel = () => {
             </FormControl>
           </div>
         )}
-        {quest.questionType !== '' && (
+        {quest.questionType !== "" && (
           <div className='animate__animated animate__fadeInUp'>
             <Typography
-              style={{ marginBottom: 5, textAlign: 'start' }}
+              style={{ marginBottom: 5, textAlign: "start" }}
               variant='caption'
               fontWeight={600}
               color='initial'
@@ -165,7 +163,7 @@ const InsertPanel = () => {
           </div>
         )}
 
-        {quest.difficulty !== '' && (
+        {quest.difficulty !== "" && (
           <FormControl
             component='fieldset'
             className='animate__animated animate__fadeInUp'
@@ -183,7 +181,7 @@ const InsertPanel = () => {
                   <FormControlLabel
                     key={idx}
                     value={grd}
-                    control={<Radio color={'info'} />}
+                    control={<Radio color={"info"} />}
                     label={grd}
                     labelPlacement='start'
                   />

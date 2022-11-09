@@ -45,7 +45,7 @@ function DropzoneComponent({ open, setImage }) {
         })
       )
     );
-  }, []);
+  }, [setImage]);
 
   const {
     getRootProps,

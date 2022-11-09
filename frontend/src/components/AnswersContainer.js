@@ -7,7 +7,11 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { tooltipClasses } from "@mui/material/Tooltip";
 import { Box } from "@mui/system";
-export default function AnswersContainer({ isHover, isFull }) {
+export default function AnswersContainer({
+  answers,
+  setAnswers,
+  setCorrectAnswer,
+}) {
   const [counter, setCounter] = React.useState(4);
   const [options, setOptions] = React.useState([
     {
@@ -28,13 +32,13 @@ export default function AnswersContainer({ isHover, isFull }) {
     },
   ]);
   //eslint-disable-next-line
-  const [correctAnswer, setCorrectAnswer] = React.useState({});
+
   const [isDeleted, setDeleted] = React.useState(false);
   const [checked1, setChecked1] = React.useState(false);
   const [checked2, setChecked2] = React.useState(false);
   const [checked3, setChecked3] = React.useState(false);
   const [checked4, setChecked4] = React.useState(false);
-  const [answers, setAnswers] = React.useState([]);
+
   const BootstrapTooltip = styled(({ className, ...props }) => (
     <Tooltip {...props} arrow classes={{ popper: className }} />
   ))(({ theme }) => ({
@@ -84,6 +88,7 @@ export default function AnswersContainer({ isHover, isFull }) {
   const deleteOption = (key) => {
     setTimeout(() => {
       setOptions(options.filter((item) => item.key !== key));
+      setAnswers(answers.filter((item) => item.key !== key));
       setCounter(counter - 1);
     }, 800);
   };
@@ -124,20 +129,24 @@ export default function AnswersContainer({ isHover, isFull }) {
   useEffect(() => {
     const getCorrectAnswer = () => {
       if (checked1) {
-        return 0;
-      } else if (checked2) {
         return 1;
-      } else if (checked3) {
+      } else if (checked2) {
         return 2;
-      } else if (checked4) {
+      } else if (checked3) {
         return 3;
+      } else if (checked4) {
+        return 4;
       } else {
         return null;
       }
     };
 
-    setCorrectAnswer(answers[getCorrectAnswer()]);
-  }, [checked1, checked2, checked3, checked4, answers]);
+    answers
+      .filter((answer) => getCorrectAnswer() === answer.key)
+      .forEach((answer) => {
+        setCorrectAnswer(answer.answer);
+      });
+  }, [checked1, checked2, checked3, checked4, answers, setCorrectAnswer]);
 
   return (
     <Grid

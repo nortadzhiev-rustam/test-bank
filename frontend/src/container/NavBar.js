@@ -172,6 +172,14 @@ const NavBar = (props) => {
     >
       <MenuItem onClick={handleOpenProfile}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem
+        onClick={() => {
+          history("/admin");
+          handleMenuClose();
+        }}
+      >
+        Admin
+      </MenuItem>
       <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
     </Menu>
   );
@@ -275,7 +283,7 @@ const NavBar = (props) => {
                     Test Generator
                   </Typography>
                 </div>
-                
+
                 <Box sx={{ flexGrow: 1 }} />
 
                 <Box

@@ -13,6 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import QuestionInput from "../components/QuestionInput";
 import AnswersContainer from "../components/AnswersContainer";
+import axios from "axios";
 const StyledBox = styled(Box)({
   display: "flex",
   position: "relative",
@@ -36,23 +37,19 @@ const FormPaper = styled(Paper)({
   alignItems: "center",
 });
 
-const InsertWindow = () => {
+const InsertWindow = ({ setData, setMessage, questionData }) => {
   const [mouseIn, setMouseIn] = React.useState(false);
   const [isHover, setHover] = React.useState(false);
-  // const [title, setTitle] = React.useState("");
-  // const [radio, setRadio] = React.useState("True");
-  // const [mark, setMark] = React.useState("");
-  // const [question, setQuestion] = React.useState("");
-  // const [answer, setAnswer] = React.useState({
-  //   a: "",
-  //   b: "",
-  //   c: "",
-  //   d: "",
-  // });
-
+  const [title, setTitle] = React.useState("");
+  const [mark, setMark] = React.useState("");
+  const [question, setQuestion] = React.useState("");
+  const [answers, setAnswers] = React.useState([]);
+  const [correctAnswer, setCorrectAnswer] = React.useState("");
+  const [image, setImage] = React.useState("");
   const dispatch = useDispatch();
   const isFull = useSelector((state) => state.questionsType.isFull);
   const quest = useSelector((state) => state.questionsType.value);
+  const user = useSelector((state) => state.user.user);
   // const user = useSelector((state) => state.user.user);
 
   const handleFullScreen = () => {
@@ -65,8 +62,37 @@ const InsertWindow = () => {
     dispatch(setFull(false));
   };
 
+  const handleSubmit = async () => {
+    const data = {
+      type: quest.questionType,
+      category: quest.category.name,
+      difficulty: quest.difficulty,
+      grade: quest.grade,
+      title,
+      question,
+      answers,
+      mark,
+      image,
+      correctAnswer,
+      userId: user.id,
+      departmentId: quest.category.id,
+    };
+
+    try {
+      const req = await axios.post(
+        "http://localhost:5000/api/v1/question",
+        data
+      );
+      setData([...questionData, req.data.question]);
+      setMessage(req.data.message);
+      handleClose();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <Grid item xs={12} sm={12} md={isFull ? 12 : 9.5}>
+    <Grid item xs={12} sm={12} md={isFull ? 12 : 8}>
       <Paper
         elevation={isHover ? 10 : 2}
         onMouseEnter={() => setHover(true)}
@@ -169,8 +195,20 @@ const InsertWindow = () => {
             padding: 2,
           }}
         >
-          <QuestionInput />
-          <AnswersContainer isFull={isFull} isHover={isHover} />
+          <QuestionInput
+            setQuestion={setQuestion}
+            title={title}
+            setTitle={setTitle}
+            mark={mark}
+            setMark={setMark}
+            image={image}
+            setImage={setImage}
+          />
+          <AnswersContainer
+            setCorrectAnswer={setCorrectAnswer}
+            answers={answers}
+            setAnswers={setAnswers}
+          />
         </Box>
         <Box m={3} width='95%' textAlign='right'>
           <Button
@@ -187,6 +225,7 @@ const InsertWindow = () => {
             color='success'
             variant='contained'
             size='large'
+            onClick={handleSubmit}
           >
             Submit
           </Button>

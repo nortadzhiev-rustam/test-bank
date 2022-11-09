@@ -86,7 +86,7 @@ const AnswersCard = (props) => {
   //method for watching content change and settitng it to props.answer
   const handleContentChange = (content) => {
     setContent(content);
-    props.addAnswer(content, getCheckBox(props.index));
+    props.addAnswer(content, getCheckBox(props.option.key));
   };
 
   const setCheckBox = (e, key) => {
@@ -96,13 +96,13 @@ const AnswersCard = (props) => {
     props.setChecked.d(false);
 
     switch (key) {
-      case 1:
+      case 0:
         return content && props.setChecked.a(e.target.checked);
-      case 2:
+      case 1:
         return content && props.setChecked.b(e.target.checked);
-      case 3:
+      case 2:
         return content && props.setChecked.c(e.target.checked);
-      case 4:
+      case 3:
         return content && props.setChecked.d(e.target.checked);
       default:
         return false;
@@ -111,13 +111,13 @@ const AnswersCard = (props) => {
 
   const getCheckBox = (key) => {
     switch (key) {
-      case 1:
+      case 0:
         return props.isChecked.a;
-      case 2:
+      case 1:
         return props.isChecked.b;
-      case 3:
+      case 2:
         return props.isChecked.c;
-      case 4:
+      case 3:
         return props.isChecked.d;
       default:
         return false;
@@ -213,8 +213,8 @@ const AnswersCard = (props) => {
           <Box sx={{ height: "100%" }}>
             <Checkbox
               disabled={content === ""}
-              onChange={(e) => setCheckBox(e, props.index)}
-              checked={content !== "" && getCheckBox(props.index)}
+              onChange={(e) => setCheckBox(e, props.option.key)}
+              checked={content !== "" && getCheckBox(props.option.key)}
               onMouseEnter={() => setHover(true)}
               onMouseLeave={() => setHover(false)}
               icon={

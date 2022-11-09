@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Test = sequelize.define('Test', {
+  const Test = sequelize.define("Test", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -9,23 +9,28 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    category: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     question: {
       type: DataTypes.STRING,
       allowNull: false,
+      
     },
-    answerA: {
+    option1: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    answerB: {
+    option2: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    answerC: {
+    option3: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    answerD: {
+    option4: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -41,26 +46,29 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    mark : {
-      type: DataTypes.STRING,
-      allowNull: false
-    }, 
+    mark: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     image: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    type: {
       type: DataTypes.STRING,
       allowNull: true,
     },
   });
   Test.associate = (models) => {
     Test.belongsTo(models.User, {
-      foreignKey: 'userId',
-      as: 'user',
+      foreignKey: "userId",
+      as: "user",
     });
     Test.belongsTo(models.Department, {
-      foreignKey: 'departmentId',
-      as: 'department',
+      foreignKey: "departmentId",
+      as: "department",
     });
   };
 
-  
   return Test;
 };
