@@ -92,7 +92,7 @@ const InsertWindow = ({ setData, setMessage, questionData }) => {
   };
 
   return (
-    <Grid item xs={12} sm={12} md={isFull ? 12 : 8}>
+    <Grid item xs={12} sm={12} md={isFull ? 12 : 9}>
       <Paper
         elevation={isHover ? 10 : 2}
         onMouseEnter={() => setHover(true)}

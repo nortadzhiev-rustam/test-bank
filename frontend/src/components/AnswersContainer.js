@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { tooltipClasses } from "@mui/material/Tooltip";
-import { Box } from "@mui/system";
+
 export default function AnswersContainer({
   answers,
   setAnswers,
@@ -151,64 +151,54 @@ export default function AnswersContainer({
   return (
     <Grid
       container
-      spacing={1}
+      spacing={2}
       sx={{
         marginTop: 10,
         marginInline: 1,
 
         display: "flex",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "flex-start",
       }}
     >
-      <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          alignItems: "end",
-          justifyContent: "center",
-        }}
-      >
-        {options.map((option, idx) => {
-          return (
-            <Grid
-              key={option.key}
-              xs={12}
-              sm={6}
-              lg={12 / counter}
-              xl={12 / counter}
-              sx={{ position: "relative" }}
-            >
-              <AnswersCard
-                index={idx + 1}
-                onDelete={deleteOption}
-                option={option}
-                counter={counter}
-                setDeleted={(e) => setDeleted(e)}
-                isDeleted={isDeleted}
-                isChecked={{
-                  a: checked1,
-                  b: checked2,
-                  c: checked3,
-                  d: checked4,
-                }}
-                setChecked={{
-                  a: setChecked1,
-                  b: setChecked2,
-                  c: setChecked3,
-                  d: setChecked4,
-                }}
-                addAnswer={(answer, isCorrect) =>
-                  addAnswer({
-                    answer,
-                    key: idx + 1,
-                  })
-                }
-              />
-            </Grid>
-          );
-        })}
-      </Box>
+      {options.map((option, idx) => {
+        return (
+          <Grid
+            key={option.key}
+            xs={12}
+            sm={6}
+            lg={12 / counter}
+            sx={{ position: "relative" }}
+          >
+            <AnswersCard
+              index={idx + 1}
+              onDelete={deleteOption}
+              option={option}
+              counter={counter}
+              setDeleted={(e) => setDeleted(e)}
+              isDeleted={isDeleted}
+              isChecked={{
+                a: checked1,
+                b: checked2,
+                c: checked3,
+                d: checked4,
+              }}
+              setChecked={{
+                a: setChecked1,
+                b: setChecked2,
+                c: setChecked3,
+                d: setChecked4,
+              }}
+              addAnswer={(answer, isCorrect) =>
+                addAnswer({
+                  answer,
+                  key: idx + 1,
+                })
+              }
+            />
+          </Grid>
+        );
+      })}
 
       <BootstrapTooltip
         placement='left'

@@ -134,7 +134,7 @@ const QuestionInput = ({
               </Button>
             </Tooltip>
             <TextField
-              sx={{ backgroundColor: "white", borderRadius: 1, width: "100%" }}
+              sx={{ backgroundColor: "white", borderRadius: 1, width: "100%", marginLeft: 1 }}
               label='Title'
               id='outlined-size-small'
               value={title}

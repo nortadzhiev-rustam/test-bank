@@ -1,5 +1,5 @@
 const express = require("express");
-const { Department, User, Test } = require("../models");
+const { Department, User, Question } = require("../models");
 const router = express.Router();
 const multer = require("multer");
 
@@ -22,28 +22,32 @@ router.post("/question", async (req, res) => {
       departmentId,
       type,
     } = req.body;
-    const newQuestion = await Test.create({
-      title,
-      category,
-      question,
-      option1: answers[0].answer,
-      option2: answers[1].answer,
-      option3: answers[2].answer,
-      option4: answers[3].answer,
-      image,
-      correctAnswer,
-      difficulty,
-      grade,
-      mark,
-      type,
-      userId,
-      departmentId,
-    });
+    if (question !== "") {
+      const newQuestion = await Question.create({
+        title,
+        category,
+        question,
+        option1: answers[0].answer,
+        option2: answers[1].answer,
+        option3: answers[2].answer,
+        option4: answers[3].answer,
+        image,
+        correctAnswer,
+        difficulty,
+        grade,
+        mark,
+        type,
+        userId,
+        departmentId,
+      });
 
-    res.status(200).json({
-      message: "question is assigned successfully!",
-      question: newQuestion,
-    });
+      res.status(200).json({
+        message: "question is assigned successfully!",
+        question: newQuestion,
+      });
+    } else {
+      res.status(400).json({ message: "Question is empty" });
+    }
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -52,7 +56,7 @@ router.post("/question", async (req, res) => {
 //route to get all questions
 router.get("/questions", async (req, res) => {
   try {
-    const test = await Test.findAll({
+    const test = await Question.findAll({
       include: [
         {
           model: User,

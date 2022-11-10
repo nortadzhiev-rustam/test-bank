@@ -10,6 +10,7 @@ import GenerateWindow from "../container/TestGenerateWindow";
 import { styled } from "@mui/styles";
 import Switcher from "../components/Switcher";
 import { Navigate, useParams } from "react-router-dom";
+import TestWindow from "./TestWindow";
 
 const BoxContainer = styled(Box)({
   display: "flex",
@@ -27,6 +28,9 @@ const Home = (props) => {
   const isVisible = useSelector((state) => state.questionsType.isVisible);
   const [data, setData] = useState([]);
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [test, setTest] = useState(null);
+  const [openTest, setOpenTest] = useState(false);
   const openWindow = () => {
     if (open === "insert" && swt === "create") {
       return (
@@ -34,6 +38,7 @@ const Home = (props) => {
           setMessage={setMessage}
           setData={setData}
           questionData={data}
+          test={test}
         />
       );
     } else if (open === "generate" && swt === "generate") {
@@ -45,35 +50,56 @@ const Home = (props) => {
     if (message !== "") {
       setTimeout(() => {
         setMessage("");
-      }, 1500);
+      }, 2000);
     }
-  }, [data, message]);
+    if (error !== "") {
+      setTimeout(() => {
+        setError("");
+      }, 2000);
+    }
+  }, [data, message, error]);
 
   return (
     <BoxContainer>
       {message.length !== 0 && (
         <Alert
+          sx={{ marginBottom: 2 }}
           severity='success'
           className='animate__animated animate__fadeInDown'
         >
           {message}
         </Alert>
       )}
-      <Grid container justifyContent={isVisible && "space-around"} spacing={1}>
+      {error.length !== 0 && (
+        <Alert
+          sx={{ marginBottom: 2 }}
+          severity='error'
+          className='animate__animated animate__fadeInDown'
+        >
+          {error}
+        </Alert>
+      )}
+      <Grid container justifyContent={isVisible && "space-between"} spacing={1}>
         {!isFull && (
           <Grid
             item
             xs={12}
             sm={6}
-            md={2.5}
-            style={{ paddingRight: 5, paddingBottom: 25 }}
+            md={isVisible ? 2.5 : 3}
+            style={{ paddingInline: 10, paddingBottom: 25 }}
             overflow='hidden'
           >
             {<Switcher navigation={props.navigation} />}
             {swt === "generate" ? (
               <GeneratePanel />
             ) : swt === "create" ? (
-              <InserPanel />
+              <InserPanel
+                setError={setError}
+                setTest={setTest}
+                test={test}
+                setMessage={setMessage}
+                setOpenTest={setOpenTest}
+              />
             ) : (
               <Navigate to='*' />
             )}
@@ -81,6 +107,7 @@ const Home = (props) => {
         )}
 
         {isVisible && openWindow()}
+        {openTest && <TestWindow test={test}/>}
       </Grid>
     </BoxContainer>
   );

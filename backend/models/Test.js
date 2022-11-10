@@ -1,3 +1,5 @@
+const User = require("./User");
+
 module.exports = (sequelize, DataTypes) => {
   const Test = sequelize.define("Test", {
     id: {
@@ -5,64 +7,27 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    title: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    category: {
-      type: DataTypes.STRING,
-      allowNull: false
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
     },
-    question: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      
-    },
-    option1: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    option2: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    option3: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    option4: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    correctAnswer: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    difficulty: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    grade: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    mark: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    image: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    type: {
-      type: DataTypes.STRING,
-      allowNull: true,
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
     },
   });
-  Test.associate = (models) => {
+
+  Test.associate = function (models) {
     Test.belongsTo(models.User, {
       foreignKey: "userId",
       as: "user",
+    });
+    Test.hasMany(models.Question, {
+      foreignKey: "testId",
     });
     Test.belongsTo(models.Department, {
       foreignKey: "departmentId",

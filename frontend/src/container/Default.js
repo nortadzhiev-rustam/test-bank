@@ -30,12 +30,14 @@ const Default = () => {
         >
           {options.map((option, idx) => (
             <CardComponent
-              key={idx+1}
+              key={idx + 1}
               item={option}
               width={300}
               height={400}
               top={300}
-              route={`/test/${option.name.toLowerCase()}`}
+              route={
+                `/test/${option.name.toLowerCase()}`
+              }
             />
           ))}
         </Box>

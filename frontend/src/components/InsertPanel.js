@@ -4,11 +4,11 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Typography,
   Radio,
   RadioGroup,
   FormControlLabel,
   FormLabel,
+  TextField,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
@@ -22,13 +22,14 @@ import {
   grade,
   openWindow,
   setVisible,
-  setFull
+  setFull,
 } from "../store/questionTypeSlice";
+import axios from "axios";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.caption,
-  paddingBlock: theme.spacing(4),
-  paddingInline: theme.spacing(4),
+  paddingBlock: theme.spacing(2),
+  paddingInline: theme.spacing(2),
   textAlign: "center",
   color: theme.palette.text.secondary,
   borderRadius: 15,
@@ -38,17 +39,20 @@ const Item = styled(Paper)(({ theme }) => ({
 const difficulties = ["Easy", "Medium", "Hard", "Challenge"];
 const types = ["Multiple choice", "True or Flase", "Fill in gaps", "Classic"];
 const grades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-const InsertPanel = () => {
+
+const InsertPanel = ({ setMessage, setTest, setError, test, setOpenTest }) => {
   const [isMouseIn, setMouseIn] = React.useState(false);
+  const [testName, setTestName] = React.useState("");
   const quest = useSelector((state) => state.questionsType.value);
   const category = useSelector((state) => state.department.department);
+  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
 
   const handleVisibility = () => {
     if (quest.category !== "") {
       dispatch(setVisible(true));
       dispatch(openWindow("insert"));
-      dispatch(setFull(true))
+      dispatch(setFull(true));
     } else {
       dispatch(setVisible(false));
     }
@@ -68,6 +72,23 @@ const InsertPanel = () => {
     dispatch(grade(Number(event.target.value)));
   };
 
+  const createTest = async () => {
+    const data = {
+      name: testName,
+      userId: user.id,
+      departmentId: category.id,
+    };
+    try {
+      const req = await axios.post("http://localhost:5000/api/v1/test", data);
+      setMessage(req.data.message);
+      setTest(req.data.test);
+      setOpenTest(true);
+      setTestName("");
+    } catch (err) {
+      setError("Something went wrong", err);
+    }
+  };
+
   return (
     <Item
       elevation={isMouseIn ? 10 : 2}
@@ -75,130 +96,132 @@ const InsertPanel = () => {
       onMouseLeave={() => setMouseIn(false)}
       className='animate__animated animate__fadeInRight'
     >
-      <div style={{ overflow: "hidden" }}>
-        <Typography
-          style={{ marginBottom: 5, textAlign: "start" }}
-          variant='caption'
-          fontWeight={600}
-          color='initial'
-        >
-          CHOOSE CATEGORY
-        </Typography>
-        <FormControl size='small' fullWidth style={{ marginBottom: 20 }}>
-          <InputLabel id='demo-simple-select-label'>Category</InputLabel>
-          <Select
-            labelId='demo-simple-select-label'
-            id='category'
-            value={quest.category || ""}
-            label='Category'
-            onChange={handleChangeCategory}
-          >
-            {category.map((item, idx) => {
-              return (
-                <MenuItem key={idx} value={item}>
-                  {item.name}
-                </MenuItem>
-              );
-            })}
-          </Select>
-        </FormControl>
-        {quest.category !== "" && (
-          <div className='animate__animated animate__fadeInUp'>
-            <Typography
-              style={{ marginBottom: 5, textAlign: "start" }}
-              variant='caption'
-              fontWeight={600}
-              color='initial'
+      {test !== undefined && test !== null ? (
+        <div style={{ overflow: "hidden" }}>
+          <FormControl size='small' fullWidth style={{ marginBlock: 20 }}>
+            <InputLabel id='demo-simple-select-label'>Category</InputLabel>
+            <Select
+              labelId='demo-simple-select-label'
+              id='category'
+              value={quest.category || ""}
+              label='Category'
+              onChange={handleChangeCategory}
             >
-              CHOOSE TYPE
-            </Typography>
-            <FormControl size='small' fullWidth style={{ marginBottom: 20 }}>
-              <InputLabel id='demo-simple-select-label'>Type</InputLabel>
-              <Select
-                labelId='demo-simple-select-label'
-                id='type'
-                value={quest.questionType}
-                label='Difficulty'
-                onChange={handleChangeType}
-              >
-                {types.map((tp, idx) => {
-                  return (
-                    <MenuItem key={idx} value={tp.toLowerCase()}>
-                      {tp}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          </div>
-        )}
-        {quest.questionType !== "" && (
-          <div className='animate__animated animate__fadeInUp'>
-            <Typography
-              style={{ marginBottom: 5, textAlign: "start" }}
-              variant='caption'
-              fontWeight={600}
-              color='initial'
-            >
-              CHOOSE DIFFICULTY
-            </Typography>
-            <FormControl size='small' fullWidth style={{ marginBottom: 20 }}>
-              <InputLabel id='demo-simple-select-label'>Difficulty</InputLabel>
-              <Select
-                labelId='demo-simple-select-label'
-                id='difficulty'
-                value={quest.difficulty}
-                label='Difficulty'
-                onChange={handleChangeDifficulty}
-              >
-                {difficulties.map((dif, idx) => {
-                  return (
-                    <MenuItem key={idx} value={dif.toLowerCase()}>
-                      {dif}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          </div>
-        )}
-
-        {quest.difficulty !== "" && (
-          <FormControl
-            component='fieldset'
-            className='animate__animated animate__fadeInUp'
-          >
-            <FormLabel component='legend'>Grades</FormLabel>
-            <RadioGroup
-              value={quest.grade}
-              onChange={handleChangeGarde}
-              row
-              aria-label='gender'
-              name='row-radio-buttons-group'
-            >
-              {grades.map((grd, idx) => {
+              {category.map((item, idx) => {
                 return (
-                  <FormControlLabel
-                    key={idx}
-                    value={grd}
-                    control={<Radio color={"info"} />}
-                    label={grd}
-                    labelPlacement='start'
-                  />
+                  <MenuItem key={idx} value={item}>
+                    {item.name}
+                  </MenuItem>
                 );
               })}
-            </RadioGroup>
+            </Select>
           </FormControl>
-        )}
-      </div>
-      <Button
-        disabled={quest.grade === 0 ? true : false}
-        variant='contained'
-        color='info'
-        onClick={handleVisibility}
-      >
-        Insert
-      </Button>
+          {quest.category !== "" && (
+            <div className='animate__animated animate__fadeInUp'>
+              <FormControl size='small' fullWidth style={{ marginBottom: 20 }}>
+                <InputLabel id='demo-simple-select-label'>Type</InputLabel>
+                <Select
+                  labelId='demo-simple-select-label'
+                  id='type'
+                  value={quest.questionType}
+                  label='Difficulty'
+                  onChange={handleChangeType}
+                >
+                  {types.map((tp, idx) => {
+                    return (
+                      <MenuItem key={idx} value={tp.toLowerCase()}>
+                        {tp}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </div>
+          )}
+          {quest.questionType !== "" && (
+            <div className='animate__animated animate__fadeInUp'>
+              <FormControl size='small' fullWidth style={{ marginBottom: 20 }}>
+                <InputLabel id='demo-simple-select-label'>
+                  Difficulty
+                </InputLabel>
+                <Select
+                  labelId='demo-simple-select-label'
+                  id='difficulty'
+                  value={quest.difficulty}
+                  label='Difficulty'
+                  onChange={handleChangeDifficulty}
+                >
+                  {difficulties.map((dif, idx) => {
+                    return (
+                      <MenuItem key={idx} value={dif.toLowerCase()}>
+                        {dif}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </div>
+          )}
+
+          {quest.difficulty !== "" && (
+            <FormControl
+              component='fieldset'
+              className='animate__animated animate__fadeInUp'
+            >
+              <FormLabel component='legend'>Grades</FormLabel>
+              <RadioGroup
+                value={quest.grade}
+                onChange={handleChangeGarde}
+                row
+                aria-label='gender'
+                name='row-radio-buttons-group'
+              >
+                {grades.map((grd, idx) => {
+                  return (
+                    <FormControlLabel
+                      key={idx}
+                      value={grd}
+                      control={<Radio color={"info"} />}
+                      label={grd}
+                      labelPlacement='start'
+                    />
+                  );
+                })}
+              </RadioGroup>
+            </FormControl>
+          )}
+        </div>
+      ) : (
+        <div>
+          <TextField
+            fullWidth
+            label='Test name'
+            sx={{ marginBottom: 2 }}
+            onChange={(e) => setTestName(e.target.value)}
+          />
+        </div>
+      )}
+      {test !== null && test !== undefined ? (
+        <Button
+          disabled={quest.grade === 0 ? true : false}
+          variant='contained'
+          color='info'
+          onClick={handleVisibility}
+        >
+          Insert
+        </Button>
+      ) : (
+        <Button
+          fullWidth
+          variant='contained'
+          color='info'
+          onClick={() =>
+            testName.trim() !== "" ? createTest() : setError("Input is empty")
+          }
+        >
+          Submit
+        </Button>
+      )}
     </Item>
   );
 };

@@ -1,8 +1,8 @@
-const User = require('./User');
+const User = require("./User");
 
 module.exports = (sequelize, DataTypes) => {
   const Department = sequelize.define(
-    'Department',
+    "Department",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -15,31 +15,30 @@ module.exports = (sequelize, DataTypes) => {
       },
       createdAt: {
         type: DataTypes.DATE,
-        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+        defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
         type: DataTypes.DATE,
-        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+        defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
       },
-     
     },
-    
+
     {
-      tableName: 'department',
+      tableName: "department",
       timestamps: true,
     }
   );
 
   Department.associate = function (models) {
     Department.hasMany(models.User, {
-      foreignKey: 'departmentId',
-      
+      foreignKey: "departmentId",
+    });
+    Department.hasMany(models.Question, {
+      foreignKey: "departmentId",
     });
     Department.hasMany(models.Test, {
-      foreignKey: 'departmentId',
-      
+      foreignKey: "departmentId",
     });
-   
   };
 
   return Department;
