@@ -39,6 +39,7 @@ const Home = (props) => {
           setData={setData}
           questionData={data}
           test={test}
+          setOpenTest={setOpenTest}
         />
       );
     } else if (open === "generate" && swt === "generate") {
@@ -57,6 +58,7 @@ const Home = (props) => {
         setError("");
       }, 2000);
     }
+    return () => clearTimeout()
   }, [data, message, error]);
 
   return (
@@ -107,7 +109,7 @@ const Home = (props) => {
         )}
 
         {isVisible && openWindow()}
-        {openTest && <TestWindow test={test}/>}
+        {openTest && <TestWindow data={data} test={test}/>}
       </Grid>
     </BoxContainer>
   );

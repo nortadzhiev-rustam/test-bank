@@ -13,6 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import QuestionInput from "../components/QuestionInput";
 import AnswersContainer from "../components/AnswersContainer";
+import {useNavigate} from 'react-router-dom'
 import axios from "axios";
 const StyledBox = styled(Box)({
   display: "flex",
@@ -37,7 +38,7 @@ const FormPaper = styled(Paper)({
   alignItems: "center",
 });
 
-const InsertWindow = ({ setData, setMessage, questionData }) => {
+const InsertWindow = ({ setData, setMessage, questionData, setOpenTest, test }) => {
   const [mouseIn, setMouseIn] = React.useState(false);
   const [isHover, setHover] = React.useState(false);
   const [title, setTitle] = React.useState("");
@@ -50,7 +51,7 @@ const InsertWindow = ({ setData, setMessage, questionData }) => {
   const isFull = useSelector((state) => state.questionsType.isFull);
   const quest = useSelector((state) => state.questionsType.value);
   const user = useSelector((state) => state.user.user);
-  // const user = useSelector((state) => state.user.user);
+  const navigate = useNavigate();
 
   const handleFullScreen = () => {
     dispatch(setFull(!isFull));
@@ -60,6 +61,8 @@ const InsertWindow = ({ setData, setMessage, questionData }) => {
     dispatch(setVisible(false));
     setMouseIn(false);
     dispatch(setFull(false));
+    setOpenTest(true)
+    
   };
 
   const handleSubmit = async () => {
@@ -76,6 +79,7 @@ const InsertWindow = ({ setData, setMessage, questionData }) => {
       correctAnswer,
       userId: user.id,
       departmentId: quest.category.id,
+      testId: test.id
     };
 
     try {

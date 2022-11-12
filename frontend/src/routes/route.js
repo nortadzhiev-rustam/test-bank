@@ -21,7 +21,7 @@ const Routess = ({ openSearch, setOpenSearch }) => {
         <Route element={<ProtectedRoute />}>
           <Route key='inicial' path='/test' element={<Home />} />
           <Route exact path='/test/:swt' element={<Home />} />
-          <Route exact path='/test/editor/:id' element={<Home />} />
+          <Route exact path='/test/:swt/editor/:id' element={<Home />} />
           <Route exact path='/profile' element={<Profile />} />
         </Route>
         <Route exact path='/login' element={<Login />} />

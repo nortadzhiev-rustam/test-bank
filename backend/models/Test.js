@@ -1,11 +1,8 @@
-const User = require("./User");
-
 module.exports = (sequelize, DataTypes) => {
   const Test = sequelize.define("Test", {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       primaryKey: true,
-      autoIncrement: true,
     },
     name: {
       type: DataTypes.STRING,
@@ -28,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Test.hasMany(models.Question, {
       foreignKey: "testId",
+      
     });
     Test.belongsTo(models.Department, {
       foreignKey: "departmentId",

@@ -11,7 +11,7 @@ import {
   faUpRightAndDownLeftFromCenter,
   faDownLeftAndUpRightToCenter,
 } from "@fortawesome/free-solid-svg-icons";
-
+import QuestionView from "../components/QuestionView";
 import axios from "axios";
 const StyledBox = styled(Box)({
   display: "flex",
@@ -22,7 +22,7 @@ const StyledBox = styled(Box)({
 
 const FormPaper = styled(Paper)({
   width: "100%",
-  minHeight: 70,
+  height: 70,
   backgroundColor: "#eceff1",
   textAlign: "start",
   borderTopRightRadius: 13,
@@ -36,12 +36,11 @@ const FormPaper = styled(Paper)({
   alignItems: "center",
 });
 
-export default function TestWindow({test}) {
+export default function TestWindow({ test, data }) {
   const [mouseIn, setMouseIn] = React.useState(false);
   const [isHover, setHover] = React.useState(false);
   const dispatch = useDispatch();
   const isFull = useSelector((state) => state.questionsType.isFull);
-  const quest = useSelector((state) => state.questionsType.value);
   const handleFullScreen = () => {
     dispatch(setFull(!isFull));
   };
@@ -62,6 +61,7 @@ export default function TestWindow({test}) {
           transition: "all 0.3s ease-in-out",
           width: "100%",
           paddingBottom: 5,
+          minHeight: 700,
         }}
         className='animate__animated animate__fadeInUp animate__faster'
       >
@@ -148,6 +148,24 @@ export default function TestWindow({test}) {
             </Typography>
           </FormPaper>
         </StyledBox>
+        {data.length === 0 ? (
+          <Box
+            sx={{ height: 600 }}
+            display='flex'
+            alignItems='center'
+            justifyContent='center'
+          >
+            <Typography variant='h5' textAlign='center'>
+              Questions which you prepared will appear here!
+            </Typography>
+          </Box>
+        ) : (
+          <Box>
+            {data.map((item, idx) => (
+              <QuestionView key={idx} data={item} />
+            ))}
+          </Box>
+        )}
       </Paper>
     </Grid>
   );

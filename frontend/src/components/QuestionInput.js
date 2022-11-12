@@ -72,6 +72,7 @@ const QuestionInput = ({
         setMessage("");
       }, 2000);
     }
+    return () => clearTimeout();
   }, [message]);
 
   return (
@@ -134,7 +135,12 @@ const QuestionInput = ({
               </Button>
             </Tooltip>
             <TextField
-              sx={{ backgroundColor: "white", borderRadius: 1, width: "100%", marginLeft: 1 }}
+              sx={{
+                backgroundColor: "white",
+                borderRadius: 1,
+                width: "100%",
+                marginLeft: 1,
+              }}
               label='Title'
               id='outlined-size-small'
               value={title}

@@ -24,6 +24,9 @@ import {
   setVisible,
   setFull,
 } from "../store/questionTypeSlice";
+import uuid from "react-uuid";
+import { useNavigate } from "react-router-dom";
+import SelctableButton from './SelctableButton';
 import axios from "axios";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -43,16 +46,19 @@ const grades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const InsertPanel = ({ setMessage, setTest, setError, test, setOpenTest }) => {
   const [isMouseIn, setMouseIn] = React.useState(false);
   const [testName, setTestName] = React.useState("");
+  const [selectedDepartment, setSelectedDepartment]= React.useState({})
   const quest = useSelector((state) => state.questionsType.value);
   const category = useSelector((state) => state.department.department);
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const handleVisibility = () => {
     if (quest.category !== "") {
       dispatch(setVisible(true));
       dispatch(openWindow("insert"));
       dispatch(setFull(true));
+
+      setOpenTest(false);
     } else {
       dispatch(setVisible(false));
     }
@@ -74,16 +80,21 @@ const InsertPanel = ({ setMessage, setTest, setError, test, setOpenTest }) => {
 
   const createTest = async () => {
     const data = {
+      id: uuid(),
       name: testName,
       userId: user.id,
-      departmentId: category.id,
+      departmentId: selectedDepartment.id,
     };
     try {
       const req = await axios.post("http://localhost:5000/api/v1/test", data);
+      if (req.status === 500) {
+        setError(req.data.message);
+      }
       setMessage(req.data.message);
       setTest(req.data.test);
       setOpenTest(true);
       setTestName("");
+      navigate(`/test/create/editor/${data.id}`);
     } catch (err) {
       setError("Something went wrong", err);
     }
@@ -199,6 +210,14 @@ const InsertPanel = ({ setMessage, setTest, setError, test, setOpenTest }) => {
             sx={{ marginBottom: 2 }}
             onChange={(e) => setTestName(e.target.value)}
           />
+
+          <div
+            style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
+          >
+            {category.map((item, idx) => (
+              <SelctableButton key={idx} item={item} setSelected={setSelectedDepartment}/>
+            ))}
+          </div>
         </div>
       )}
       {test !== null && test !== undefined ? (

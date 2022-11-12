@@ -1,5 +1,5 @@
 const express = require("express");
-const { Department, User, Question } = require("../models");
+const { Department, User, Question, Test } = require("../models");
 const router = express.Router();
 const multer = require("multer");
 
@@ -21,6 +21,7 @@ router.post("/question", async (req, res) => {
       userId,
       departmentId,
       type,
+      testId,
     } = req.body;
     if (question !== "") {
       const newQuestion = await Question.create({
@@ -39,6 +40,7 @@ router.post("/question", async (req, res) => {
         type,
         userId,
         departmentId,
+        testId,
       });
 
       res.status(200).json({
@@ -68,6 +70,7 @@ router.get("/questions", async (req, res) => {
           as: "department",
           attributes: ["id", "name"],
         },
+        { model: Test, as: "test" },
       ],
     });
     res.json(test);

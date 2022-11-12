@@ -5,9 +5,9 @@ const router = express.Router();
 //route that posts test
 router.post("/test", async (req, res) => {
   try {
-    const { userId, departmentId, name } = req.body;
+    const { id, userId, departmentId, name } = req.body;
     const newTest = await Test.create(
-      { name, userId, departmentId },
+      { id, name, userId, departmentId },
       { include: [Question] }
     );
 
@@ -19,10 +19,24 @@ router.post("/test", async (req, res) => {
   }
 });
 
+router.put("/test/:id", async (req, res) => {
+  try {
+    const updatedTest = Test.update(
+      { departmentId: req.body.departmentId },
+      { returning: true, where: { id: req.params.id } }
+    );
+    res
+      .status(200)
+      .json({ message: "Test was updated successfully", updatedTest });
+  } catch (err) {
+    res.status(500).json({ message: `Something went wrong: ${err}` });
+  }
+});
+
 //route to get all tests
 router.get("/tests", async (req, res) => {
   try {
-    Test.findAll({
+    const test = await Test.findAll({
       include: [
         {
           model: User,
@@ -36,11 +50,13 @@ router.get("/tests", async (req, res) => {
         },
         {
           model: Question,
-          as: "Question",
         },
       ],
     });
-  } catch (err) {}
+    res.status(200).json(test);
+  } catch (err) {
+    res.status(500).json({ message: `Something went wrong: ${err}` });
+  }
 });
 
 module.exports = router;

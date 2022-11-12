@@ -11,12 +11,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     category: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     question: {
       type: DataTypes.STRING,
       allowNull: false,
-      
     },
     option1: {
       type: DataTypes.STRING,
@@ -67,6 +66,10 @@ module.exports = (sequelize, DataTypes) => {
     Question.belongsTo(models.Department, {
       foreignKey: "departmentId",
       as: "department",
+    });
+    Question.belongsTo(models.Test, {
+      foreignKey: "testId",
+      as: "test",
     });
   };
 

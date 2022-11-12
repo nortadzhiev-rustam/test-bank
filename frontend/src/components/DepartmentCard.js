@@ -33,9 +33,11 @@ const DepartmentCard = ({ department, onDelete }) => {
             placement='top'
           >
             <Box>
-              <IconButton disabled={department.Users.length !== 0}>
+              <IconButton
+                onClick={() => onDelete(department.id)}
+                disabled={department.Users.length !== 0}
+              >
                 <FontAwesomeIcon
-                  onClick={() => onDelete(department.id)}
                   icon={faTrash}
                   color={department.Users.length !== 0 ? "#c8c8c8" : "red"}
                 />
