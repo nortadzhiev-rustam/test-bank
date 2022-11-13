@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Paper, Box, Typography, Button } from "@mui/material";
+import { Paper, Box, Typography, Button, Avatar } from "@mui/material";
 import { styled } from "@mui/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch, useSelector } from "react-redux";
 import { setFull, setVisible } from "../store/questionTypeSlice";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   faCircle,
   faMinus,
   faTimes,
   faUpRightAndDownLeftFromCenter,
   faDownLeftAndUpRightToCenter,
+  faImage,
+  faGraduationCap,
+  faBook,
+  faListCheck,
 } from "@fortawesome/free-solid-svg-icons";
+import Grid from "@mui/material/Unstable_Grid2";
 import QuestionView from "../components/QuestionView";
 import axios from "axios";
+import { Stack } from "@mui/system";
 const StyledBox = styled(Box)({
   display: "flex",
   position: "relative",
@@ -36,11 +43,14 @@ const FormPaper = styled(Paper)({
   alignItems: "center",
 });
 
-export default function TestWindow({ test, data }) {
-  const [mouseIn, setMouseIn] = React.useState(false);
-  const [isHover, setHover] = React.useState(false);
+export default function TestWindow({ setError, open, setOpenTest }) {
+  const [mouseIn, setMouseIn] = useState(false);
+  const [isHover, setHover] = useState(false);
+  const [testData, setTestData] = useState(undefined);
+  const [user, setUser] = useState(undefined);
   const dispatch = useDispatch();
   const isFull = useSelector((state) => state.questionsType.isFull);
+  const navigate = useNavigate();
   const handleFullScreen = () => {
     dispatch(setFull(!isFull));
   };
@@ -49,125 +59,228 @@ export default function TestWindow({ test, data }) {
     dispatch(setVisible(false));
     setMouseIn(false);
     dispatch(setFull(false));
+    navigate("/test/create");
+    setOpenTest(false);
   };
+  const { id } = useParams();
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/api/v1/test/${id}`)
+      .then((res) => {
+        if (res.status === 200) {
+          setTestData(res.data);
+          setUser(res.data.user);
+        }
+      })
+      .catch((err) => setError(`Something went wrong ${err}`));
+  }, [open, id, setError]);
+
   return (
-    <Grid item xs={12} sm={12} md={isFull ? 12 : 9}>
-      <Paper
-        elevation={isHover ? 10 : 2}
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-        sx={{
-          borderRadius: 3,
-          transition: "all 0.3s ease-in-out",
-          width: "100%",
-          paddingBottom: 5,
-          minHeight: 700,
-        }}
-        className='animate__animated animate__fadeInUp animate__faster'
-      >
-        <StyledBox>
-          <FormPaper>
-            <div
-              style={{ display: "flex" }}
-              onMouseLeave={() => setMouseIn(false)}
-              onMouseOver={() => setMouseIn(true)}
-            >
-              {mouseIn ? (
-                <CloseButton onClick={handleClose}>
-                  <FontAwesomeIcon
-                    icon={faTimes}
-                    size='sm'
-                    style={{
-                      borderRadius: "30%",
-                    }}
-                    color='#fff'
-                  />
-                </CloseButton>
-              ) : (
-                <FontAwesomeIcon size='lg' color='#e63946' icon={faCircle} />
-              )}
-
-              {mouseIn ? (
-                <MinusButton>
-                  <FontAwesomeIcon
-                    icon={faMinus}
-                    size='sm'
-                    style={{
-                      borderRadius: "30%",
-                    }}
-                    color='#fff'
-                  />
-                </MinusButton>
-              ) : (
-                <FontAwesomeIcon
-                  size='lg'
-                  style={{ marginLeft: 5 }}
-                  color='#ee9b00'
-                  icon={faCircle}
-                />
-              )}
-
-              {mouseIn ? (
-                <FullScreenButton onClick={handleFullScreen}>
-                  {!isFull ? (
-                    <FontAwesomeIcon
-                      icon={faUpRightAndDownLeftFromCenter}
-                      size='xs'
-                      style={{
-                        borderRadius: "30%",
-                      }}
-                      color='#fff'
-                    />
-                  ) : (
-                    <FontAwesomeIcon
-                      icon={faDownLeftAndUpRightToCenter}
-                      size='xs'
-                      style={{
-                        borderRadius: "30%",
-                      }}
-                      color='#fff'
-                    />
-                  )}
-                </FullScreenButton>
-              ) : (
-                <FontAwesomeIcon
-                  size='lg'
-                  style={{ marginLeft: 5 }}
-                  color='#43aa8b'
-                  icon={faCircle}
-                />
-              )}
-            </div>
-            <Typography
-              variant='body1'
-              fontFamily='roboto'
-              color='#006064'
-              fontWeight='900'
-            >
-              {test.name}
-            </Typography>
-          </FormPaper>
-        </StyledBox>
-        {data.length === 0 ? (
-          <Box
-            sx={{ height: 600 }}
-            display='flex'
-            alignItems='center'
-            justifyContent='center'
+    <Paper
+      elevation={isHover ? 10 : 2}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      sx={{
+        borderRadius: 3,
+        transition: "all 0.3s ease-in-out",
+        width: "100%",
+        paddingBottom: 5,
+        minHeight: 700,
+      }}
+      className='animate__animated animate__fadeInUp animate__faster'
+    >
+      <StyledBox>
+        <FormPaper>
+          <div
+            style={{ display: "flex" }}
+            onMouseLeave={() => setMouseIn(false)}
+            onMouseOver={() => setMouseIn(true)}
           >
-            <Typography variant='h5' textAlign='center'>
-              Questions which you prepared will appear here!
-            </Typography>
-          </Box>
-        ) : (
-          <Box>
-            {data.map((item, idx) => (
-              <QuestionView key={idx} data={item} />
-            ))}
-          </Box>
-        )}
-      </Paper>
-    </Grid>
+            {mouseIn ? (
+              <CloseButton onClick={handleClose}>
+                <FontAwesomeIcon
+                  icon={faTimes}
+                  size='sm'
+                  style={{
+                    borderRadius: "30%",
+                  }}
+                  color='#fff'
+                />
+              </CloseButton>
+            ) : (
+              <FontAwesomeIcon size='lg' color='#e63946' icon={faCircle} />
+            )}
+
+            {mouseIn ? (
+              <MinusButton>
+                <FontAwesomeIcon
+                  icon={faMinus}
+                  size='sm'
+                  style={{
+                    borderRadius: "30%",
+                  }}
+                  color='#fff'
+                />
+              </MinusButton>
+            ) : (
+              <FontAwesomeIcon
+                size='lg'
+                style={{ marginLeft: 5 }}
+                color='#ee9b00'
+                icon={faCircle}
+              />
+            )}
+
+            {mouseIn ? (
+              <FullScreenButton onClick={handleFullScreen}>
+                {!isFull ? (
+                  <FontAwesomeIcon
+                    icon={faUpRightAndDownLeftFromCenter}
+                    size='xs'
+                    style={{
+                      borderRadius: "30%",
+                    }}
+                    color='#fff'
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faDownLeftAndUpRightToCenter}
+                    size='xs'
+                    style={{
+                      borderRadius: "30%",
+                    }}
+                    color='#fff'
+                  />
+                )}
+              </FullScreenButton>
+            ) : (
+              <FontAwesomeIcon
+                size='lg'
+                style={{ marginLeft: 5 }}
+                color='#43aa8b'
+                icon={faCircle}
+              />
+            )}
+          </div>
+        </FormPaper>
+      </StyledBox>
+      {testData !== undefined && (
+        <Paper
+          elevation={5}
+          style={{ height: 200, margin: 25, borderRadius: 5, padding: 20 }}
+        >
+          <Grid container spacing={2}>
+            <Grid xs={6} md={2.5} xl={2}>
+              <Box
+                sx={{
+                  height: 150,
+                  width: 150,
+                  backgroundColor: "#cccccc",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: 5,
+                }}
+              >
+                <FontAwesomeIcon color='#183153' size='5x' icon={faImage} />
+              </Box>
+            </Grid>
+            <Grid xs={6} md={9.5} xl={10}>
+              <Grid container spacing={1} sx={{ mt: 1 }}>
+                <Grid xs={6}>
+                  <Typography variant='h4'>{testData.name}</Typography>
+                </Grid>
+              </Grid>
+              <Grid container rowSpacing={1} spacing={1} sx={{ mt: 1 }}>
+                <Grid xs={6} md={2}>
+                  <Box
+                    display='flex'
+                    flexDirection='row'
+                    alignItems='center'
+                    color='#666666'
+                  >
+                    <FontAwesomeIcon icon={faGraduationCap} />
+                    <Typography sx={{ ml: 1 }}>{testData.grade}th</Typography>
+                  </Box>
+                </Grid>
+                <Grid xs={6} md={2}>
+                  <Box
+                    display='flex'
+                    flexDirection='row'
+                    alignItems='center'
+                    color='#666666'
+                  >
+                    <FontAwesomeIcon icon={faBook} />
+                    <Typography sx={{ ml: 1 }}>
+                      {testData.department.name}
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Stack
+            direction='row'
+            alignItems='center'
+            justifyContent='space-between'
+            mt={2}
+          >
+            {user !== undefined && (
+              <Stack direction='row' alignItems='center'>
+                <Avatar sx={{ backgroundColor: "red", mr: 1 }}>
+                  {user.firstName.charAt(0)}
+                </Avatar>
+                <Stack
+                  direction='column'
+                  alignItems='flex-start'
+                  justifyContent='center'
+                >
+                  <Typography variant='body1'>
+                    {user.firstName + " " + user.lastName}
+                  </Typography>
+                  <Typography variant='caption'>
+                    {new Date(testData.createdAt).toUTCString()}
+                  </Typography>
+                </Stack>
+              </Stack>
+            )}
+            <Stack direction='row' alignItems='center' spacing={1}>
+              <Button variant='contained' color='success'>
+                Edit
+              </Button>
+              <Button variant='contained' color='success'>
+                Save
+              </Button>
+            </Stack>
+          </Stack>
+        </Paper>
+      )}
+      {testData && (
+        <Stack direction='row' alignItems='center' spacing={1} ml={5}>
+          <FontAwesomeIcon icon={faListCheck} />{" "}
+          <Typography>{testData.questions.length + " "} questions</Typography>
+        </Stack>
+      )}
+      {testData === undefined || testData.questions.length === 0 ? (
+        <Box
+          sx={{ height: 600 }}
+          display='flex'
+          alignItems='center'
+          justifyContent='center'
+        >
+          <Typography variant='h5' textAlign='center'>
+            Questions which you prepared will appear here!
+          </Typography>
+        </Box>
+      ) : (
+        <Box>
+          {testData.questions.map((item, idx) => (
+            <QuestionView key={idx} data={item} />
+          ))}
+        </Box>
+      )}
+    </Paper>
   );
 }
 

@@ -8,6 +8,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    grade: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    image: { type: DataTypes.STRING, allowNull: true },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
@@ -25,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Test.hasMany(models.Question, {
       foreignKey: "testId",
-      
+      as: "questions",
     });
     Test.belongsTo(models.Department, {
       foreignKey: "departmentId",

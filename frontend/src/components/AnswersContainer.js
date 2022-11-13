@@ -144,7 +144,8 @@ export default function AnswersContainer({
     answers
       .filter((answer) => getCorrectAnswer() === answer.key)
       .forEach((answer) => {
-        setCorrectAnswer(answer.answer);
+        setCorrectAnswer({});
+        setCorrectAnswer(answer);
       });
   }, [checked1, checked2, checked3, checked4, answers, setCorrectAnswer]);
 
@@ -189,12 +190,7 @@ export default function AnswersContainer({
                 c: setChecked3,
                 d: setChecked4,
               }}
-              addAnswer={(answer, isCorrect) =>
-                addAnswer({
-                  answer,
-                  key: idx + 1,
-                })
-              }
+              addAnswer={addAnswer}
             />
           </Grid>
         );

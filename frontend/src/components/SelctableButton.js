@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@mui/material";
 
-export default function SelctableButton({ item, setSelected }) {
+export default function SelctableButton({ item, setSelected, selected }) {
   const [clicked, setClicked] = React.useState(false);
   const handleSelect = () => {
     setSelected(item);
-    setClicked(!clicked);
   };
+
+  useEffect(() => {
+    if (selected !== undefined) {
+      if (selected.id === item.id) setClicked(true);
+      else setClicked(false);
+    } else setClicked(false);
+  }, [setSelected, selected, item]);
+
   return (
     <Button
       variant={clicked ? "contained" : "outlined"}

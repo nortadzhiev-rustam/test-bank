@@ -13,7 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import QuestionInput from "../components/QuestionInput";
 import AnswersContainer from "../components/AnswersContainer";
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import axios from "axios";
 const StyledBox = styled(Box)({
   display: "flex",
@@ -43,16 +43,16 @@ const InsertWindow = ({ setData, setMessage, questionData, setOpenTest, test }) 
   const [isHover, setHover] = React.useState(false);
   const [title, setTitle] = React.useState("");
   const [mark, setMark] = React.useState("");
-  const [question, setQuestion] = React.useState("");
+  const [question, setQuestion] = React.useState({});
   const [answers, setAnswers] = React.useState([]);
-  const [correctAnswer, setCorrectAnswer] = React.useState("");
+  const [correctAnswer, setCorrectAnswer] = React.useState({});
   const [image, setImage] = React.useState("");
   const dispatch = useDispatch();
   const isFull = useSelector((state) => state.questionsType.isFull);
   const quest = useSelector((state) => state.questionsType.value);
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
-
+  const {id} = useParams();
   const handleFullScreen = () => {
     dispatch(setFull(!isFull));
   };
@@ -79,7 +79,7 @@ const InsertWindow = ({ setData, setMessage, questionData, setOpenTest, test }) 
       correctAnswer,
       userId: user.id,
       departmentId: quest.category.id,
-      testId: test.id
+      testId: id
     };
 
     try {

@@ -22,7 +22,7 @@ const BoxContainer = styled(Box)({
 });
 
 const Home = (props) => {
-  let { swt } = useParams();
+  let { swt, id } = useParams();
   const isFull = useSelector((state) => state.questionsType.isFull);
   const open = useSelector((state) => state.questionsType.isOpen);
   const isVisible = useSelector((state) => state.questionsType.isVisible);
@@ -58,7 +58,8 @@ const Home = (props) => {
         setError("");
       }, 2000);
     }
-    return () => clearTimeout()
+
+    return () => clearTimeout();
   }, [data, message, error]);
 
   return (
@@ -107,9 +108,13 @@ const Home = (props) => {
             )}
           </Grid>
         )}
-
-        {isVisible && openWindow()}
-        {openTest && <TestWindow data={data} test={test}/>}
+        <Grid item xs={12} sm={12} md={isFull ? 12 : 9}>
+          {isVisible && openWindow()}
+          {openTest ||
+          (!isVisible && id !== "" && id !== undefined && id !== null) ? (
+            <TestWindow setOpenTest={setOpenTest} open={open} setError={setError} />
+          ) : null}
+        </Grid>
       </Grid>
     </BoxContainer>
   );

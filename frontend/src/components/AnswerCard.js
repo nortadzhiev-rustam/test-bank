@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Paper, Box, Checkbox, IconButton, Tooltip } from "@mui/material";
 import { tooltipClasses } from "@mui/material/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -86,8 +86,13 @@ const AnswersCard = (props) => {
   //method for watching content change and settitng it to props.answer
   const handleContentChange = (content) => {
     setContent(content);
-    props.addAnswer(content, getCheckBox(props.option.key));
   };
+
+  useEffect(() => {
+    if (content !== "") {
+      props.addAnswer({ key: props.option.option, content });
+    }
+  }, [content]);
 
   const setCheckBox = (e, key) => {
     props.setChecked.a(false);

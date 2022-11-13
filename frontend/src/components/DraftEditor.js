@@ -3,7 +3,8 @@ import { BlockMath } from "react-katex";
 import { Cancel } from "@mui/icons-material";
 import "./DraftEditor.css";
 import "katex/dist/katex.min.css";
-import { IconButton } from "@mui/material";
+import { IconButton, InputBase } from "@mui/material";
+
 
 export default function MyEditor({
   latex,
@@ -19,7 +20,7 @@ export default function MyEditor({
   setContent,
 }) {
   const [isMathHover, setIsMathHover] = useState(false);
-
+  const [questionText, setQuestionText] = useState("");
   const [equationarray, setEquationarray] = useState([]);
 
   const editor = useRef(null);
@@ -45,7 +46,7 @@ export default function MyEditor({
       latex.equation !== null
     ) {
       setEquationarray((prevState) => [...prevState, latex]);
-      setContent((prevState) => prevState + latex.equation);
+      setContent((prevState) => ({ ...prevState, equation: latex.equation }));
       setEquation("");
     }
   }, [latex, setEquation, setContent]);
@@ -66,9 +67,9 @@ export default function MyEditor({
     setEquationarray(newArray);
   };
 
-  const handleInput = () => {
-    const editor = document.querySelector(`#${editorId}`);
-    setContent(editor.innerHTML);
+  const handleInput = (e) => {
+    setQuestionText(e.target.value);
+    setContent((prevState) => ({ ...prevState, text: e.target.value }));
   };
 
   return (
@@ -77,15 +78,15 @@ export default function MyEditor({
       className={className || ""}
       onClick={focusEditor}
     >
-      <div
-        className='DraftEditor-root'
-        id={editorId}
-        data-placeholder={placeholder}
-        contentEditable
-        ref={editor}
-        onInput={handleInput}
-        suppressContentEditableWarning={true}
-      >
+      <div className='DraftEditor-root' id={editorId} ref={editor}>
+        <InputBase
+          style={{ color: "white", fontStyle: "italic" }}
+          variant='filled'
+          multiline
+          placeholder={equationarray.length === 0 ? placeholder : null}
+          value={questionText}
+          onChange={handleInput}
+        />
         {equationarray.length !== 0 && (
           <div
             style={{
@@ -96,7 +97,7 @@ export default function MyEditor({
             }}
           >
             <p>
-              <br/>
+              <br />
             </p>
             {equationarray.map((equation) => (
               <span

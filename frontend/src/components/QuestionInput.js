@@ -21,7 +21,7 @@ import MyEditor from "./DraftEditor";
 import ImageUpload from "./imageDialog";
 import axios from "axios";
 import Alert from "@mui/material/Alert";
-// import axios from "axios";
+
 const QuestionInput = ({
   setTitle,
   title,

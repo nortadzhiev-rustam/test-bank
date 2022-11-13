@@ -9,6 +9,7 @@ import SearchWindow from "../components/searchWindow";
 import Profile from "../container/Profile";
 import Default from "../container/Default";
 import Admin from "../container/Admin";
+
 const Routess = ({ openSearch, setOpenSearch }) => {
   return (
     <Router>

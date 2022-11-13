@@ -27,13 +27,10 @@ router.post("/question", async (req, res) => {
       const newQuestion = await Question.create({
         title,
         category,
-        question,
-        option1: answers[0].answer,
-        option2: answers[1].answer,
-        option3: answers[2].answer,
-        option4: answers[3].answer,
+        question: JSON.stringify(question),
+        options: JSON.stringify(answers),
         image,
-        correctAnswer,
+        correctAnswer: JSON.stringify(correctAnswer),
         difficulty,
         grade,
         mark,
@@ -58,7 +55,7 @@ router.post("/question", async (req, res) => {
 //route to get all questions
 router.get("/questions", async (req, res) => {
   try {
-    const test = await Question.findAll({
+    const questions = await Question.findAll({
       include: [
         {
           model: User,
@@ -73,7 +70,7 @@ router.get("/questions", async (req, res) => {
         { model: Test, as: "test" },
       ],
     });
-    res.json(test);
+    res.json(questions);
   } catch (error) {
     res.status(400).json({
       error: error.message,

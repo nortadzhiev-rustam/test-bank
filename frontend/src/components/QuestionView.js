@@ -12,28 +12,22 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckSquare } from "@fortawesome/free-regular-svg-icons";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
-import Markdown from './Markdown'
-
-
-const _renderContent = (content) => <Markdown source={content} />;
+import { BlockMath } from "react-katex";
+import "katex/dist/katex.min.css";
 
 export default function QuestionView({ data }) {
-  const {
-    image,
-    question,
-    option1,
-    option2,
-    option3,
-    option4,
-    type,
-    mark,
-    correctAnswer,
-  } = data;
-  const [options, setOptions] = useState([option1, option2, option3, option4]);
+  const { image, question, options, type, mark, correctAnswer } = data;
+  const [answers] = useState(JSON.parse(options));
+  const [quest] = useState(JSON.parse(question));
+  const [correct] = useState(JSON.parse(correctAnswer));
 
+  useEffect(() => {
+    console.log(answers);
+    console.log(quest);
+  }, []);
   return (
     <Box sx={{ flexGrow: 1, m: 3 }}>
-      <Paper elevation={5} sx={{ padding: 2, borderRadius: 5 }}>
+      <Paper elevation={5} sx={{ padding: 2, borderRadius: 2 }}>
         <Box
           width='100%'
           display='flex'
@@ -46,7 +40,6 @@ export default function QuestionView({ data }) {
               sx={{ padding: 2 }}
               icon={<FontAwesomeIcon icon={faCheckSquare} />}
               label={type}
-              variant='outlined'
             />
           </Paper>
           <Paper elevation={5} sx={{ borderRadius: 5 }}>
@@ -54,7 +47,6 @@ export default function QuestionView({ data }) {
               sx={{ padding: 2 }}
               icon={<FontAwesomeIcon icon={faPen} />}
               label={`${mark} points`}
-              variant='outlined'
             />
           </Paper>
         </Box>
@@ -74,7 +66,12 @@ export default function QuestionView({ data }) {
             </Grid>
           )}
           <Grid sx={12} md={image !== "" ? 10 : 12}>
-            {_renderContent(question)}
+            {quest.text !== undefined ? (
+              <Typography variant='body1'>Q: {quest.text}</Typography>
+            ) : <Typography variant='body1'>Q:</Typography>}
+            {quest.equation !== undefined && (
+              <BlockMath math={quest.equation} />
+            )}
           </Grid>
         </Grid>
         <Divider orientation='horizontal'>answer choices</Divider>
@@ -84,7 +81,7 @@ export default function QuestionView({ data }) {
           spacing={2}
           columns={{ xs: 4, sm: 8, md: 12 }}
         >
-          {options.map((option, idx) => (
+          {answers.map((option, idx) => (
             <Grid xs={12} md={6}>
               <Box
                 key={idx}
@@ -97,9 +94,16 @@ export default function QuestionView({ data }) {
                   height={15}
                   borderRadius='50%'
                   mr={2}
-                  bgcolor={option === correctAnswer ? "green" : "red"}
+                  bgcolor={correct.key === option.key ? "green" : "red"}
                 ></Box>
-                <Typography variant='caption'>{option}</Typography>
+                {option.content.text !== undefined && (
+                  <Typography variant='caption'>
+                    {option.content.text}
+                  </Typography>
+                )}
+                {option.content.equation !== undefined && (
+                  <BlockMath math={option.content.equation} />
+                )}
               </Box>
             </Grid>
           ))}

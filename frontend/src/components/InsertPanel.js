@@ -25,8 +25,8 @@ import {
   setFull,
 } from "../store/questionTypeSlice";
 import uuid from "react-uuid";
-import { useNavigate } from "react-router-dom";
-import SelctableButton from './SelctableButton';
+import { useNavigate, useParams } from "react-router-dom";
+import SelctableButton from "./SelctableButton";
 import axios from "axios";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -46,12 +46,13 @@ const grades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const InsertPanel = ({ setMessage, setTest, setError, test, setOpenTest }) => {
   const [isMouseIn, setMouseIn] = React.useState(false);
   const [testName, setTestName] = React.useState("");
-  const [selectedDepartment, setSelectedDepartment]= React.useState({})
+  const [selectedDepartment, setSelectedDepartment] = React.useState({});
   const quest = useSelector((state) => state.questionsType.value);
   const category = useSelector((state) => state.department.department);
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { id } = useParams();
   const handleVisibility = () => {
     if (quest.category !== "") {
       dispatch(setVisible(true));
@@ -74,8 +75,17 @@ const InsertPanel = ({ setMessage, setTest, setError, test, setOpenTest }) => {
     dispatch(questType(event.target.value));
   };
 
-  const handleChangeGarde = (event) => {
+  const handleChangeGarde = async (event) => {
+    const grd = Number(event.target.value);
     dispatch(grade(Number(event.target.value)));
+    const res = await axios.put("http://localhost:5000/api/v1/test/" + id, {
+      grade: grd,
+    });
+    if (res.status === 200) {
+      console.log(res);
+    } else {
+      console.log(res.data.error);
+    }
   };
 
   const createTest = async () => {
@@ -107,7 +117,8 @@ const InsertPanel = ({ setMessage, setTest, setError, test, setOpenTest }) => {
       onMouseLeave={() => setMouseIn(false)}
       className='animate__animated animate__fadeInRight'
     >
-      {test !== undefined && test !== null ? (
+      {(test !== undefined && test !== null) ||
+      (id !== "" && id !== null && id !== undefined) ? (
         <div style={{ overflow: "hidden" }}>
           <FormControl size='small' fullWidth style={{ marginBlock: 20 }}>
             <InputLabel id='demo-simple-select-label'>Category</InputLabel>
@@ -215,12 +226,18 @@ const InsertPanel = ({ setMessage, setTest, setError, test, setOpenTest }) => {
             style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
           >
             {category.map((item, idx) => (
-              <SelctableButton key={idx} item={item} setSelected={setSelectedDepartment}/>
+              <SelctableButton
+                key={idx}
+                item={item}
+                setSelected={setSelectedDepartment}
+                selected={selectedDepartment}
+              />
             ))}
           </div>
         </div>
       )}
-      {test !== null && test !== undefined ? (
+      {(test !== null && test !== undefined) ||
+      (id !== "" && id !== null && id !== undefined) ? (
         <Button
           disabled={quest.grade === 0 ? true : false}
           variant='contained'
