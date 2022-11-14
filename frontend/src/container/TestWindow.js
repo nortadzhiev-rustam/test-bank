@@ -43,7 +43,14 @@ const FormPaper = styled(Paper)({
   alignItems: "center",
 });
 
-export default function TestWindow({ setError, open, setOpenTest }) {
+export default function TestWindow({
+  setError,
+  open,
+  setOpenTest,
+  test,
+  setLoading,
+  loading,
+}) {
   const [mouseIn, setMouseIn] = useState(false);
   const [isHover, setHover] = useState(false);
   const [testData, setTestData] = useState(undefined);
@@ -66,7 +73,7 @@ export default function TestWindow({ setError, open, setOpenTest }) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/v1/test/${id}`)
+      .get(`http://localhost:5000/api/v1/test/${id || test.id}`)
       .then((res) => {
         if (res.status === 200) {
           setTestData(res.data);
@@ -74,7 +81,7 @@ export default function TestWindow({ setError, open, setOpenTest }) {
         }
       })
       .catch((err) => setError(`Something went wrong ${err}`));
-  }, [open, id, setError]);
+  }, [open, test, setError]);
 
   return (
     <Paper

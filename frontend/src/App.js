@@ -13,14 +13,12 @@ function App() {
       const res = await axios.get("http://localhost:5000/api/v1/isAuth", {
         withCredentials: true,
       });
-      if (res.data.user) {
+      if (res.status === 200) {
         dispatch(login(res.data.user));
       }
     };
     fetchLogin();
-  });
-
- 
+  }, [dispatch]);
 
   React.useEffect(() => {
     //add event listener that listens for ctrl+k and changes openSearch to true
@@ -45,7 +43,6 @@ function App() {
       <Routess
         openSearch={openSearch}
         setOpenSearch={(e) => setOpenSearch(e)}
-        
       />
     </div>
   );

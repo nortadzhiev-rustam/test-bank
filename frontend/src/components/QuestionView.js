@@ -68,7 +68,9 @@ export default function QuestionView({ data }) {
           <Grid sx={12} md={image !== "" ? 10 : 12}>
             {quest.text !== undefined ? (
               <Typography variant='body1'>Q: {quest.text}</Typography>
-            ) : <Typography variant='body1'>Q:</Typography>}
+            ) : (
+              <Typography variant='body1'>Q:</Typography>
+            )}
             {quest.equation !== undefined && (
               <BlockMath math={quest.equation} />
             )}
@@ -82,7 +84,7 @@ export default function QuestionView({ data }) {
           columns={{ xs: 4, sm: 8, md: 12 }}
         >
           {answers.map((option, idx) => (
-            <Grid xs={12} md={6}>
+            <Grid key={idx} xs={12} md={6}>
               <Box
                 key={idx}
                 display='flex'

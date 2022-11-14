@@ -31,6 +31,7 @@ const Home = (props) => {
   const [error, setError] = useState("");
   const [test, setTest] = useState(null);
   const [openTest, setOpenTest] = useState(false);
+  const [loading, setLoading] = useState(false);
   const openWindow = () => {
     if (open === "insert" && swt === "create") {
       return (
@@ -102,6 +103,8 @@ const Home = (props) => {
                 test={test}
                 setMessage={setMessage}
                 setOpenTest={setOpenTest}
+                loading={loading}
+                setLoading={setLoading}
               />
             ) : (
               <Navigate to='*' />
@@ -112,7 +115,14 @@ const Home = (props) => {
           {isVisible && openWindow()}
           {openTest ||
           (!isVisible && id !== "" && id !== undefined && id !== null) ? (
-            <TestWindow setOpenTest={setOpenTest} open={open} setError={setError} />
+            <TestWindow
+              setOpenTest={setOpenTest}
+              open={open}
+              test={test}
+              setError={setError}
+              loading={loading}
+              setLoading={setLoading}
+            />
           ) : null}
         </Grid>
       </Grid>

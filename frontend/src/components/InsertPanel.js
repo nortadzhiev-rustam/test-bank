@@ -43,7 +43,7 @@ const difficulties = ["Easy", "Medium", "Hard", "Challenge"];
 const types = ["Multiple choice", "True or Flase", "Fill in gaps", "Classic"];
 const grades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-const InsertPanel = ({ setMessage, setTest, setError, test, setOpenTest }) => {
+const InsertPanel = ({ setMessage, setTest, setError, test, setOpenTest, loading, setLoading }) => {
   const [isMouseIn, setMouseIn] = React.useState(false);
   const [testName, setTestName] = React.useState("");
   const [selectedDepartment, setSelectedDepartment] = React.useState({});
@@ -89,6 +89,7 @@ const InsertPanel = ({ setMessage, setTest, setError, test, setOpenTest }) => {
   };
 
   const createTest = async () => {
+    setLoading(true)
     const data = {
       id: uuid(),
       name: testName,
@@ -105,6 +106,7 @@ const InsertPanel = ({ setMessage, setTest, setError, test, setOpenTest }) => {
       setOpenTest(true);
       setTestName("");
       navigate(`/test/create/editor/${data.id}`);
+      setLoading(false)
     } catch (err) {
       setError("Something went wrong", err);
     }
