@@ -10,11 +10,6 @@ const userSlice = createSlice({
   },
   reducers: {
     login: (state, action) => {
-<<<<<<< HEAD
-=======
-      
-      state.isLoggedIn = true;
->>>>>>> 513df6e5b4260c9b2d209e61f9af55a313bf1023
       state.user = action.payload;
       state.isLoading = false;
       state.isLoggedIn = true;
