@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { login } from "./store/userSlice";
+import { login, setLoading } from "./store/userSlice";
 import axios from "axios";
 import { getDepartmentSuccess } from "./store/departmentSlice";
 import Routess from "./routes/route";
@@ -14,9 +14,11 @@ function App() {
         withCredentials: true,
       });
       if (res.status === 200) {
+        dispatch(setLoading(true));
         dispatch(login(res.data.user));
       }
     };
+
     fetchLogin();
   }, [dispatch]);
 

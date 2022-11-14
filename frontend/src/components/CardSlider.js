@@ -1,5 +1,5 @@
 // import Swiper core and required modules
-import { Navigation, Pagination, Autoplay } from "swiper";
+import { Navigation, Pagination, Autoplay, Mousewheel } from "swiper";
 import React from "react";
 import { useMediaQuery } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -15,16 +15,16 @@ const Slider = ({ items }) => {
   return (
     <Swiper
       // install Swiper modules
-      modules={[Pagination, Navigation, Autoplay]}
-      spaceBetween={3}
+      style={{ paddingRight: 30 }}
+      modules={[Pagination, Navigation, Autoplay, Mousewheel]}
+      spaceBetween={1}
       slidesPerView={matches ? 5 : 3}
-      navigation
+      
       pagination={{ clickable: true }}
       autoplay={{
-        delay: 2500,
+        delay: 2000,
         disableOnInteraction: false,
       }}
-      
     >
       {items.map((item, idx) => (
         <React.Fragment key={idx}>

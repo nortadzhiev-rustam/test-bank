@@ -5,7 +5,7 @@ import Spinner from '../components/Spinner'
 const ProtectedRoute = () => {
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const isLoading = useSelector((state) => state.user.isLoading);
-  if (isLoggedIn === false) return <Spinner loading={isLoading}/>
+  if (isLoading) return <Spinner loading={isLoading}/>
   console.log(isLoggedIn);
   return isLoggedIn ? <Outlet /> : <Navigate to='/login' />;
 };

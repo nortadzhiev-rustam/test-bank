@@ -81,7 +81,7 @@ export default function TestWindow({
         }
       })
       .catch((err) => setError(`Something went wrong ${err}`));
-  }, [open, test, setError]);
+  }, [open, test, setError, id]);
 
   return (
     <Paper
@@ -93,7 +93,7 @@ export default function TestWindow({
         transition: "all 0.3s ease-in-out",
         width: "100%",
         paddingBottom: 5,
-        minHeight: 700,
+        minHeight: 500,
       }}
       className='animate__animated animate__fadeInUp animate__faster'
     >
@@ -271,7 +271,7 @@ export default function TestWindow({
       )}
       {testData === undefined || testData.questions.length === 0 ? (
         <Box
-          sx={{ height: 600 }}
+          sx={{ height: 200 }}
           display='flex'
           alignItems='center'
           justifyContent='center'

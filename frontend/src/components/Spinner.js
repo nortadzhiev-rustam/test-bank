@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
 import GridLoader from "react-spinners/GridLoader";
-
 const override = {
   display: "block",
   margin: "0 auto",
@@ -8,6 +7,8 @@ const override = {
 };
 
 export default function Spinner({ loading }) {
+  
+
   return (
     <div
       style={{

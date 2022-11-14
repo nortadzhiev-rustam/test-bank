@@ -10,9 +10,9 @@ const userSlice = createSlice({
   },
   reducers: {
     login: (state, action) => {
-      state.isLoggedIn = true;
       state.user = action.payload;
       state.isLoading = false;
+      state.isLoggedIn = true;
       state.error = null;
     },
     logout: (state) => {
