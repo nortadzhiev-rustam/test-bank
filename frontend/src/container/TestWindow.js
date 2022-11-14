@@ -20,6 +20,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import QuestionView from "../components/QuestionView";
 import axios from "axios";
 import { Stack } from "@mui/system";
+import Spinner from "../components/Spinner";
 const StyledBox = styled(Box)({
   display: "flex",
   position: "relative",
@@ -172,6 +173,7 @@ export default function TestWindow({
           </div>
         </FormPaper>
       </StyledBox>
+      {loading && <Spinner loading={loading} />}
       {testData !== undefined && (
         <Paper
           elevation={5}

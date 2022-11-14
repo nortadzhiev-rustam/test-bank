@@ -106,7 +106,7 @@ const InsertPanel = ({ setMessage, setTest, setError, test, setOpenTest, loading
       setOpenTest(true);
       setTestName("");
       navigate(`/test/create/editor/${data.id}`);
-      setLoading(false)
+      setLoading(true)
     } catch (err) {
       setError("Something went wrong", err);
     }

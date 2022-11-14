@@ -14,9 +14,8 @@ function App() {
         withCredentials: true,
       });
       if (res.status === 200) {
-        dispatch(setLoading(true));
-        dispatch(login(res.data.user));
-      }
+        dispatch(login(res.data));
+      } else dispatch(setLoading(undefined));
     };
 
     fetchLogin();
