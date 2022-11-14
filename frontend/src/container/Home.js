@@ -49,18 +49,22 @@ const Home = (props) => {
   };
 
   useEffect(() => {
+    let time1, time2;
     if (message !== "") {
-      setTimeout(() => {
+      time1 = setTimeout(() => {
         setMessage("");
       }, 2000);
     }
     if (error !== "") {
-      setTimeout(() => {
+      time2 = setTimeout(() => {
         setError("");
       }, 2000);
     }
 
-    return () => clearTimeout();
+    return () => {
+      clearTimeout(time1);
+      clearTimeout(time2);
+    };
   }, [data, message, error]);
 
   return (
@@ -122,6 +126,7 @@ const Home = (props) => {
               setError={setError}
               loading={loading}
               setLoading={setLoading}
+              setTest={setTest}
             />
           ) : null}
         </Grid>

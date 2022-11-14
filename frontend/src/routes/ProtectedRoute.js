@@ -6,9 +6,10 @@ import Spinner from "../components/Spinner";
 const ProtectedRoute = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    setTimeout(() => {
+    const time = setTimeout(() => {
       dispatch(setLoading(false));
     }, 500);
+    return () => clearTimeout(time)
   }, []);
 
   const isAuth = useSelector((state) => state.user.user.isAuth);

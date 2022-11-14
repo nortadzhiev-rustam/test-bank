@@ -43,26 +43,29 @@ const difficulties = ["Easy", "Medium", "Hard", "Challenge"];
 const types = ["Multiple choice", "True or Flase", "Fill in gaps", "Classic"];
 const grades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-const InsertPanel = ({ setMessage, setTest, setError, test, setOpenTest, loading, setLoading }) => {
+const InsertPanel = ({
+  setMessage,
+  setTest,
+  setError,
+  test,
+  setOpenTest,
+  loading,
+  setLoading,
+}) => {
   const [isMouseIn, setMouseIn] = React.useState(false);
   const [testName, setTestName] = React.useState("");
   const [selectedDepartment, setSelectedDepartment] = React.useState({});
   const quest = useSelector((state) => state.questionsType.value);
   const category = useSelector((state) => state.department.department);
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
   const handleVisibility = () => {
-    if (quest.category !== "") {
-      dispatch(setVisible(true));
-      dispatch(openWindow("insert"));
-      dispatch(setFull(true));
-
-      setOpenTest(false);
-    } else {
-      dispatch(setVisible(false));
-    }
+    dispatch(setVisible(true));
+    dispatch(openWindow("insert"));
+    dispatch(setFull(true));
+    setOpenTest(false);
   };
   const handleChangeCategory = (event) => {
     dispatch(questCategory(event.target.value));
@@ -89,12 +92,13 @@ const InsertPanel = ({ setMessage, setTest, setError, test, setOpenTest, loading
   };
 
   const createTest = async () => {
-    setLoading(true)
+    setLoading(true);
     const data = {
       id: uuid(),
       name: testName,
       userId: user.id,
       departmentId: selectedDepartment.id,
+      grade: null,
     };
     try {
       const req = await axios.post("http://localhost:5000/api/v1/test", data);
@@ -106,7 +110,7 @@ const InsertPanel = ({ setMessage, setTest, setError, test, setOpenTest, loading
       setOpenTest(true);
       setTestName("");
       navigate(`/test/create/editor/${data.id}`);
-      setLoading(true)
+      setLoading(true);
     } catch (err) {
       setError("Something went wrong", err);
     }
@@ -122,46 +126,27 @@ const InsertPanel = ({ setMessage, setTest, setError, test, setOpenTest, loading
       {(test !== undefined && test !== null) ||
       (id !== "" && id !== null && id !== undefined) ? (
         <div style={{ overflow: "hidden" }}>
-          <FormControl size='small' fullWidth style={{ marginBlock: 20 }}>
-            <InputLabel id='demo-simple-select-label'>Category</InputLabel>
-            <Select
-              labelId='demo-simple-select-label'
-              id='category'
-              value={quest.category || ""}
-              label='Category'
-              onChange={handleChangeCategory}
-            >
-              {category.map((item, idx) => {
-                return (
-                  <MenuItem key={idx} value={item}>
-                    {item.name}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-          {quest.category !== "" && (
-            <div className='animate__animated animate__fadeInUp'>
-              <FormControl size='small' fullWidth style={{ marginBottom: 20 }}>
-                <InputLabel id='demo-simple-select-label'>Type</InputLabel>
-                <Select
-                  labelId='demo-simple-select-label'
-                  id='type'
-                  value={quest.questionType}
-                  label='Difficulty'
-                  onChange={handleChangeType}
-                >
-                  {types.map((tp, idx) => {
-                    return (
-                      <MenuItem key={idx} value={tp.toLowerCase()}>
-                        {tp}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </div>
-          )}
+          <div className='animate__animated animate__fadeInUp'>
+            <FormControl size='small' fullWidth style={{ marginBlock: 20 }}>
+              <InputLabel id='demo-simple-select-label'>Type</InputLabel>
+              <Select
+                labelId='demo-simple-select-label'
+                id='type'
+                value={quest.questionType}
+                label='Difficulty'
+                onChange={handleChangeType}
+              >
+                {types.map((tp, idx) => {
+                  return (
+                    <MenuItem key={idx} value={tp.toLowerCase()}>
+                      {tp}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </div>
+
           {quest.questionType !== "" && (
             <div className='animate__animated animate__fadeInUp'>
               <FormControl size='small' fullWidth style={{ marginBottom: 20 }}>
@@ -187,7 +172,7 @@ const InsertPanel = ({ setMessage, setTest, setError, test, setOpenTest, loading
             </div>
           )}
 
-          {quest.difficulty !== "" && (
+          {test && test.grade === undefined && (
             <FormControl
               component='fieldset'
               className='animate__animated animate__fadeInUp'
@@ -241,7 +226,7 @@ const InsertPanel = ({ setMessage, setTest, setError, test, setOpenTest, loading
       {(test !== null && test !== undefined) ||
       (id !== "" && id !== null && id !== undefined) ? (
         <Button
-          disabled={quest.grade === 0 ? true : false}
+          disabled={quest.grade === 0 && quest.difficulty === "" ? true : false}
           variant='contained'
           color='info'
           onClick={handleVisibility}

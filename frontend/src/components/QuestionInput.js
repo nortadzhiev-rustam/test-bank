@@ -161,8 +161,10 @@ const QuestionInput = ({
                 width: 80,
                 backgroundColor: "white",
                 borderRadius: 1,
+                
               }}
               size='small'
+
             >
               <InputLabel id='demo-select-small'>Mark</InputLabel>
               <Select
@@ -171,14 +173,26 @@ const QuestionInput = ({
                 value={mark}
                 label='Mark'
                 onChange={handleChange}
+                MenuProps={{style: {maxHeight: 200}}}
+                
               >
                 <MenuItem value=''>
+                  <em>None</em>
+                </MenuItem>
+                {Array(20)
+                  .fill()
+                  .map((_, idx) => (
+                    <MenuItem key={idx} value={idx + 1}>
+                      {idx + 1}
+                    </MenuItem>
+                  ))}
+                {/* <MenuItem value=''>
                   <em>None</em>
                 </MenuItem>
                 <MenuItem value={5}>5</MenuItem>
                 <MenuItem value={10}>10</MenuItem>
                 <MenuItem value={15}>15</MenuItem>
-                <MenuItem value={20}>20</MenuItem>
+                <MenuItem value={20}>20</MenuItem> */}
               </Select>
             </FormControl>
             <Tooltip

@@ -5,7 +5,6 @@ import "./DraftEditor.css";
 import "katex/dist/katex.min.css";
 import { IconButton, InputBase } from "@mui/material";
 
-
 export default function MyEditor({
   latex,
   setLatex,
@@ -80,7 +79,10 @@ export default function MyEditor({
     >
       <div className='DraftEditor-root' id={editorId} ref={editor}>
         <InputBase
-          style={{ color: "white", fontStyle: "italic" }}
+          style={{
+            color: "white",
+            fontStyle: questionText.length === 0 && "italic",
+          }}
           variant='filled'
           multiline
           placeholder={equationarray.length === 0 ? placeholder : null}

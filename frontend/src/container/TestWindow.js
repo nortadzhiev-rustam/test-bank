@@ -51,6 +51,7 @@ export default function TestWindow({
   test,
   setLoading,
   loading,
+  setTest,
 }) {
   const [mouseIn, setMouseIn] = useState(false);
   const [isHover, setHover] = useState(false);
@@ -73,6 +74,13 @@ export default function TestWindow({
   const { id } = useParams();
 
   useEffect(() => {
+    const time = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    return () => clearTimeout(time);
+  }, []);
+
+  useEffect(() => {
     axios
       .get(`http://localhost:5000/api/v1/test/${id || test.id}`)
       .then((res) => {
@@ -80,9 +88,12 @@ export default function TestWindow({
           setTestData(res.data);
           setUser(res.data.user);
         }
+        if (test === null) {
+          setTest(res.data);
+        }
       })
       .catch((err) => setError(`Something went wrong ${err}`));
-  }, [open, test, setError, id]);
+  }, [open, test, setError, id, setTest]);
 
   return (
     <Paper
@@ -174,7 +185,7 @@ export default function TestWindow({
         </FormPaper>
       </StyledBox>
       {loading && <Spinner loading={loading} />}
-      {testData !== undefined && (
+      {testData !== undefined && !loading && (
         <Paper
           elevation={5}
           style={{ height: 200, margin: 25, borderRadius: 5, padding: 20 }}
