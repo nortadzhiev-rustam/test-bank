@@ -97,22 +97,15 @@ const Home = (props) => {
             style={{ paddingInline: 10, paddingBottom: 25 }}
             overflow='hidden'
           >
-            {<Switcher navigation={props.navigation} />}
-            {swt === "generate" ? (
-              <GeneratePanel />
-            ) : swt === "create" ? (
-              <InserPanel
-                setError={setError}
-                setTest={setTest}
-                test={test}
-                setMessage={setMessage}
-                setOpenTest={setOpenTest}
-                loading={loading}
-                setLoading={setLoading}
-              />
-            ) : (
-              <Navigate to='*' />
-            )}
+            <InserPanel
+              setError={setError}
+              setTest={setTest}
+              test={test}
+              setMessage={setMessage}
+              setOpenTest={setOpenTest}
+              loading={loading}
+              setLoading={setLoading}
+            />
           </Grid>
         )}
         <Grid item xs={12} sm={12} md={isFull ? 12 : 9}>
