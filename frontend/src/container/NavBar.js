@@ -16,13 +16,24 @@ import {
   Button,
   Avatar,
   Stack,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import { MeetingRoom } from "@mui/icons-material";
+import {
+  Explore,
+  Folder,
+  LibraryBooks,
+  MeetingRoom,
+  Settings,
+} from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -31,9 +42,9 @@ import { withRouter } from "../components/withRouter.js";
 import { logout } from "../store/userSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import TabPanel from "../components/TabPanel";
 
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   height: 40,
@@ -103,12 +114,21 @@ const Space = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-const drawerWidth = 240;
+const list = [
+  { text: "Explore", icon: <Explore />, id: 0 },
+  { text: "My Library", icon: <LibraryBooks />, id: 1 },
+  { text: "Collections", icon: <Folder />, id: 2 },
+  { text: "Settings", icon: <Settings />, id: 3 },
+  { text: "Profile", icon: <AccountCircle />, id: 4 },
+];
+
+const drawerWidth = 250;
 
 const NavBar = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [selected, setSelected] = React.useState(0);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
@@ -152,10 +172,11 @@ const NavBar = (props) => {
   };
 
   const drawer = (
-    <div>
+    <div style={{ width: "100%", overflow: "hidden" }}>
       <Toolbar sx={{ backgroundColor: "#15616d" }}>
         <div
           style={{
+            width: "100%",
             display: "flex",
             flexDirection: "row",
             cursor: "pointer",
@@ -176,8 +197,8 @@ const NavBar = (props) => {
       </Toolbar>
       <Divider />
       {user && (
-        <Toolbar>
-          <Avatar sx={{ bgcolor: "red", mr: 1 }}>
+        <Toolbar disableGutters>
+          <Avatar sx={{ bgcolor: "red", mx: 1 }}>
             {user.firstName.charAt(0) + user.lastName.charAt(0)}
           </Avatar>
           <Stack direction='column' justifyContent='flex-start'>
@@ -193,27 +214,53 @@ const NavBar = (props) => {
         </Toolbar>
       )}
       <Divider />
-      <Toolbar sx={{ height: 200 }} />
+      <Toolbar sx={{ height: 250 }} />
       <Divider />
-      <Toolbar>
+      <Toolbar disableGutters>
         <Button
           sx={{
+            paddingX: 1,
+            mx: 1,
             bgcolor: "#006064",
             "&:hover": {
               bgcolor: "#006064",
             },
-            justifyContent: "space-evenly",
+            justifyContent: "flex-start",
           }}
           size='large'
           fullWidth
           variant='contained'
         >
-          <AddCircleOutlineIcon />
+          <AddCircleOutlineIcon sx={{ mr: 1 }} />
           Create
         </Button>
       </Toolbar>
       <Divider />
-      <TabPanel />
+      <Toolbar disableGutters sx={{ width: "100%", padding: 0 }}>
+        <List sx={{ width: "100%", margin: 0 }}>
+          {list.map((li, idx) => (
+            <ListItem
+              sx={{
+                width: "100%",
+                borderRightWidth: 5,
+                borderRightColor: "#006064",
+                borderRightStyle: idx === selected ? "solid" : "none",
+                color: idx === selected ? "#006064" : "#888888",
+              }}
+              id={li.id}
+              key={idx}
+              disablePadding
+            >
+              <ListItemButton onClick={() => setSelected(li.id)}>
+                <ListItemIcon>{li.icon}</ListItemIcon>
+                <ListItemText>
+                  <Typography fontWeight='bold'>{li.text}</Typography>
+                </ListItemText>
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Toolbar>
     </div>
   );
 
@@ -327,13 +374,34 @@ const NavBar = (props) => {
       <AppBar
         position='fixed'
         sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
+          width: isLoggedIn ? { sm: `calc(100% - ${drawerWidth}px)` } : "100%",
+          ml: isLoggedIn && { sm: `${drawerWidth}px` },
         }}
         color='secondary'
         elevation={10}
       >
         <Toolbar>
+          {!isLoggedIn && (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                cursor: "pointer",
+              }}
+              onClick={() => history("/")}
+            >
+              <img src={logo} width='30' height='30' alt='logo' />
+              <Typography
+                sx={{ marginLeft: 2 }}
+                variant='h6'
+                noWrap
+                component='div'
+                color='white'
+              >
+                Test Generator
+              </Typography>
+            </div>
+          )}
           <IconButton
             color='inherit'
             aria-label='open drawer'
@@ -443,43 +511,45 @@ const NavBar = (props) => {
           </Box>
         </Toolbar>
       </AppBar>
-      <Box
-        component='nav'
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label='mailbox folders'
-      >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
-          variant='temporary'
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
+      {isLoggedIn && (
+        <Box
+          component='nav'
+          sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+          aria-label='mailbox folders'
         >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant='permanent'
-          sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Box>
+          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+          <Drawer
+            variant='temporary'
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+            sx={{
+              display: { xs: "flex", sm: "none" },
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: drawerWidth,
+              },
+            }}
+          >
+            {drawer}
+          </Drawer>
+          <Drawer
+            variant='permanent'
+            sx={{
+              display: { xs: "none", sm: "flex" },
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: drawerWidth,
+              },
+            }}
+            open
+          >
+            {drawer}
+          </Drawer>
+        </Box>
+      )}
 
       <Space />
 
