@@ -88,27 +88,8 @@ const Home = (props) => {
         </Alert>
       )}
       <Grid container justifyContent={isVisible && "space-between"} spacing={1}>
-        {!isFull && (
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            md={isVisible ? 2.5 : 3}
-            style={{ paddingInline: 10, paddingBottom: 25 }}
-            overflow='hidden'
-          >
-            <InserPanel
-              setError={setError}
-              setTest={setTest}
-              test={test}
-              setMessage={setMessage}
-              setOpenTest={setOpenTest}
-              loading={loading}
-              setLoading={setLoading}
-            />
-          </Grid>
-        )}
-        <Grid item xs={12} sm={12} md={isFull ? 12 : 9}>
+        
+        <Grid item xs={12} >
           {isVisible && openWindow()}
           {openTest ||
           (!isVisible && id !== "" && id !== undefined && id !== null) ? (

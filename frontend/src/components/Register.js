@@ -1,11 +1,11 @@
-import React from 'react';
-import { makeStyles } from '@mui/styles';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../store/userSlice';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { makeStyles } from "@mui/styles";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../store/userSlice";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Grid,
@@ -19,32 +19,32 @@ import {
   Select,
   MenuItem,
   Alert,
-} from '@mui/material';
-import { VisibilityOff, Visibility } from '@mui/icons-material';
+} from "@mui/material";
+import { VisibilityOff, Visibility } from "@mui/icons-material";
 
 const useStyles = makeStyles({
   root: {
-    height: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
   },
   form: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    backgroundColor: 'rgb(255,255,255)',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    backgroundColor: "rgb(255,255,255)",
     padding: 20,
     borderRadius: 10,
-    transition: 'all 0.7s ease-in-out',
-    '&:hover': {
-      boxShadow: '0px 0px 20px 10px rgba(0,0,0,0.2)',
-      transform: 'translate3D(0, -10px, 20px)',
+    transition: "all 0.7s ease-in-out",
+    "&:hover": {
+      boxShadow: "0px 0px 20px 10px rgba(0,0,0,0.2)",
+      transform: "translate3D(0, -10px, 20px)",
     },
   },
-  textField: { marginBlock: 10, color: '#fff' },
+  textField: { marginBlock: 10, color: "#fff" },
 });
 
 const Register = ({ setIsLogin, history }) => {
@@ -52,29 +52,27 @@ const Register = ({ setIsLogin, history }) => {
   const dispatch = useDispatch();
   const departments = useSelector((state) => state.department.department);
   const [values, setValues] = React.useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    passwordConfirm: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    passwordConfirm: "",
     showPassword: false,
     showPasswordConfirm: false,
     departmentId: 0,
   });
-  const [error, setError] = React.useState('');
-  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+  const [error, setError] = React.useState("");
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const navigate = useNavigate();
   React.useEffect(() => {
-       const isLogged = async (status) => {
-          if (status) {
-             await navigate('/');
-             
-          }
-        }
-  
-        isLogged(isLoggedIn);
-  
-      }, [navigate, isLoggedIn]);
+    const isLogged = async (status) => {
+      if (status) {
+        await navigate("/");
+      }
+    };
+
+    isLogged(isLoggedIn);
+  }, [navigate, isLoggedIn]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const {
@@ -86,11 +84,11 @@ const Register = ({ setIsLogin, history }) => {
       departmentId,
     } = values;
     if (password !== passwordConfirm) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
     } else {
       try {
         const res = await axios.post(
-          'http://localhost:5000/api/v1/register',
+          "http://localhost:5000/api/v1/register",
           {
             firstName,
             lastName,
@@ -105,28 +103,25 @@ const Register = ({ setIsLogin, history }) => {
           setError(res.data.error);
         } else {
           setValues({
-            firstName: '',
-            lastName: '',
-            email: '',
-            password: '',
-            passwordConfirm: '',
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            passwordConfirm: "",
             showPassword: false,
             showPasswordConfirm: false,
-            department: '',
-            error: '',
+            department: "",
+            error: "",
           });
           dispatch(login(res.data));
-         
-          window.location.replace('/');
-          
+
+          window.location.replace("/");
         }
       } catch (err) {
         setError(err.response.data.message);
       }
     }
   };
-
-  
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
@@ -145,7 +140,7 @@ const Register = ({ setIsLogin, history }) => {
   React.useEffect(() => {
     if (error) {
       setTimeout(() => {
-        setError('');
+        setError("");
       }, 3000);
     }
   }, [error]);
@@ -153,11 +148,11 @@ const Register = ({ setIsLogin, history }) => {
   return (
     //form for register with material-ui
 
-    <Box component='div' className={classes.root}>
-      {error !== '' && (
+    <Box className={classes.root} sx={{ my: { xs: "100px" } }}>
+      {error !== "" && (
         <Alert
           className='animate__animated animate__fadeIn'
-          sx={{ width: '550px', position: 'relative' }}
+          sx={{ width: "550px", position: "relative" }}
           severity='error'
         >
           {error}
@@ -165,10 +160,11 @@ const Register = ({ setIsLogin, history }) => {
       )}
       <Paper
         sx={{
-          borderRadius: '15px',
-          padding: { md: '40px', xs: '20px' },
-          margin: { xs: '20px' },
-          backgroundColor: '#006064',
+          borderRadius: "15px",
+          padding: { md: "40px", xs: "20px" },
+
+          margin: { xs: "20px" },
+          backgroundColor: "#006064",
         }}
         elevation={10}
         className='animate__animated animate__bounceIn animate__slow'
@@ -177,9 +173,9 @@ const Register = ({ setIsLogin, history }) => {
           variant='h3'
           fontWeight='bold'
           sx={{
-            textAlign: 'center',
+            textAlign: "center",
             marginBottom: { xs: 2, md: 5 },
-            textTransform: 'uppercase',
+            textTransform: "uppercase",
           }}
           color='white'
         >
@@ -193,7 +189,7 @@ const Register = ({ setIsLogin, history }) => {
                 size='small'
                 autoComplete='fname'
                 fullWidth
-                onChange={handleChange('firstName')}
+                onChange={handleChange("firstName")}
                 label='First Name'
                 variant='filled'
               />
@@ -204,7 +200,7 @@ const Register = ({ setIsLogin, history }) => {
                 size='small'
                 fullWidth
                 autoComplete='lname'
-                onChange={handleChange('lastName')}
+                onChange={handleChange("lastName")}
                 label='Last Name'
                 variant='filled'
               />
@@ -217,7 +213,7 @@ const Register = ({ setIsLogin, history }) => {
                 type='email'
                 size='small'
                 fullWidth
-                onChange={handleChange('email')}
+                onChange={handleChange("email")}
                 email='email'
                 label='Email'
                 variant='filled'
@@ -229,7 +225,7 @@ const Register = ({ setIsLogin, history }) => {
             <Grid item xs={12} sm={6}>
               <FormControl
                 size='small'
-                sx={{ width: '100%' }}
+                sx={{ width: "100%" }}
                 variant='filled'
                 color='success'
               >
@@ -239,9 +235,9 @@ const Register = ({ setIsLogin, history }) => {
                 <FilledInput
                   fullWidth
                   id='outlined-adornment-password'
-                  type={values.showPassword ? 'text' : 'password'}
+                  type={values.showPassword ? "text" : "password"}
                   value={values.password}
-                  onChange={handleChange('password')}
+                  onChange={handleChange("password")}
                   endAdornment={
                     <InputAdornment position='end'>
                       <IconButton
@@ -275,9 +271,9 @@ const Register = ({ setIsLogin, history }) => {
                 <FilledInput
                   name='passwordConfirm'
                   id='outlined-adornment-passwordConfirm'
-                  type={values.showPasswordConfirm ? 'text' : 'password'}
+                  type={values.showPasswordConfirm ? "text" : "password"}
                   value={values.passwordConfirm}
-                  onChange={handleChange('passwordConfirm')}
+                  onChange={handleChange("passwordConfirm")}
                   endAdornment={
                     <InputAdornment position='end'>
                       <IconButton
@@ -310,7 +306,7 @@ const Register = ({ setIsLogin, history }) => {
                 <InputLabel htmlFor='select-role'>Department</InputLabel>
                 <Select
                   variant='filled'
-                  value={values.departmentId || ''}
+                  value={values.departmentId || ""}
                   onChange={(event) =>
                     setValues({ ...values, departmentId: event.target.value })
                   }
@@ -331,17 +327,17 @@ const Register = ({ setIsLogin, history }) => {
             <Grid
               item
               xs={12}
-              sx={{ display: 'flex', justifyContent: 'center' }}
+              sx={{ display: "flex", justifyContent: "center" }}
             >
               <Button
-                onClick={() => navigate('/login')}
+                onClick={() => navigate("/login")}
                 variant='standart'
                 color='info'
               >
-                Already have an account?{' '}
+                Already have an account?{" "}
                 <Box
                   component='span'
-                  sx={{ textDecoration: 'underline', marginLeft: 1 }}
+                  sx={{ textDecoration: "underline", marginLeft: 1 }}
                 >
                   Login!
                 </Box>
@@ -350,11 +346,11 @@ const Register = ({ setIsLogin, history }) => {
             <Grid
               item
               xs={12}
-              sx={{ display: 'flex', justifyContent: 'center' }}
+              sx={{ display: "flex", justifyContent: "center" }}
             >
               <Button
                 variant='contained'
-                sx={{ bgcolor: '#006064', '&:hover': { bgcolor: '#004d40' } }}
+                sx={{ bgcolor: "#006064", "&:hover": { bgcolor: "#004d40" } }}
                 type='submit'
               >
                 Sign up

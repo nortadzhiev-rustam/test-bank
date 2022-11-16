@@ -1,33 +1,16 @@
 import React from "react";
-import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  FormLabel,
-  TextField,
-} from "@mui/material";
+import { TextField } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import "animate.css";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  questCategory,
-  questDifficulty,
-  questType,
-  grade,
-  openWindow,
-  setVisible,
-  setFull,
-} from "../store/questionTypeSlice";
+
 import uuid from "react-uuid";
 import { useNavigate, useParams } from "react-router-dom";
 import SelctableButton from "./SelctableButton";
 import axios from "axios";
+
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.caption,
@@ -39,58 +22,15 @@ const Item = styled(Paper)(({ theme }) => ({
   transition: "all 0.3s ease-in",
 }));
 
-const difficulties = ["Easy", "Medium", "Hard", "Challenge"];
-const types = ["Multiple choice", "True or Flase", "Fill in gaps", "Classic"];
-const grades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-
-const InsertPanel = ({
-  setMessage,
-  setTest,
-  setError,
-  test,
-  setOpenTest,
-  loading,
-  setLoading,
-}) => {
-  const [isMouseIn, setMouseIn] = React.useState(false);
+const InsertPanel = ({ setOpen }) => {
   const [testName, setTestName] = React.useState("");
   const [selectedDepartment, setSelectedDepartment] = React.useState({});
-  const quest = useSelector((state) => state.questionsType.value);
+
   const category = useSelector((state) => state.department.department);
   const user = useSelector((state) => state.user.user.user);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { id } = useParams();
-  const handleVisibility = () => {
-    dispatch(setVisible(true));
-    dispatch(openWindow("insert"));
-    dispatch(setFull(true));
-    setOpenTest(false);
-  };
- 
-  const handleChangeDifficulty = (event) => {
-    dispatch(questDifficulty(event.target.value));
-  };
-
-  const handleChangeType = (event) => {
-    dispatch(questType(event.target.value));
-  };
-
-  const handleChangeGarde = async (event) => {
-    const grd = Number(event.target.value);
-    dispatch(grade(Number(event.target.value)));
-    const res = await axios.put("http://localhost:5000/api/v1/test/" + id, {
-      grade: grd,
-    });
-    if (res.status === 200) {
-      console.log(res);
-    } else {
-      console.log(res.data.error);
-    }
-  };
 
   const createTest = async () => {
-    setLoading(true);
     const data = {
       id: uuid(),
       name: testName,
@@ -100,149 +40,53 @@ const InsertPanel = ({
     };
     try {
       const req = await axios.post("http://localhost:5000/api/v1/test", data);
-      if (req.status === 500) {
-        setError(req.data.message);
+      if (req.status === 200) {
+        setTestName("");
+        navigate(`/test/create/editor/${data.id}`);
+        setOpen(false);
       }
-      setMessage(req.data.message);
-      setTest(req.data.test);
-      setOpenTest(true);
-      setTestName("");
-      navigate(`/test/create/editor/${data.id}`);
-      setLoading(true);
     } catch (err) {
-      setError("Something went wrong", err);
+      console.log("Something went wrong", err);
     }
   };
 
   return (
-    <Item
-      elevation={isMouseIn ? 10 : 2}
-      onMouseEnter={() => setMouseIn(true)}
-      onMouseLeave={() => setMouseIn(false)}
-      className='animate__animated animate__fadeInRight'
-    >
-      {(test !== undefined && test !== null) ||
-      (id !== "" && id !== null && id !== undefined) ? (
-        <div style={{ overflow: "hidden" }}>
-          <div className='animate__animated animate__fadeInUp'>
-            <FormControl size='small' fullWidth style={{ marginBlock: 20 }}>
-              <InputLabel id='demo-simple-select-label'>Type</InputLabel>
-              <Select
-                labelId='demo-simple-select-label'
-                id='type'
-                value={quest.questionType}
-                label='Difficulty'
-                onChange={handleChangeType}
-              >
-                {types.map((tp, idx) => {
-                  return (
-                    <MenuItem key={idx} value={tp.toLowerCase()}>
-                      {tp}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          </div>
-
-          {quest.questionType !== "" && (
-            <div className='animate__animated animate__fadeInUp'>
-              <FormControl size='small' fullWidth style={{ marginBottom: 20 }}>
-                <InputLabel id='demo-simple-select-label'>
-                  Difficulty
-                </InputLabel>
-                <Select
-                  labelId='demo-simple-select-label'
-                  id='difficulty'
-                  value={quest.difficulty}
-                  label='Difficulty'
-                  onChange={handleChangeDifficulty}
-                >
-                  {difficulties.map((dif, idx) => {
-                    return (
-                      <MenuItem key={idx} value={dif.toLowerCase()}>
-                        {dif}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </div>
-          )}
-
-          {test && test.grade === undefined && (
-            <FormControl
-              component='fieldset'
-              className='animate__animated animate__fadeInUp'
-            >
-              <FormLabel component='legend'>Grades</FormLabel>
-              <RadioGroup
-                value={quest.grade}
-                onChange={handleChangeGarde}
-                row
-                aria-label='gender'
-                name='row-radio-buttons-group'
-              >
-                {grades.map((grd, idx) => {
-                  return (
-                    <FormControlLabel
-                      key={idx}
-                      value={grd}
-                      control={<Radio color={"info"} />}
-                      label={grd}
-                      labelPlacement='start'
-                    />
-                  );
-                })}
-              </RadioGroup>
-            </FormControl>
-          )}
-        </div>
-      ) : (
-        <div>
-          <TextField
-            fullWidth
-            label='Test name'
-            sx={{ marginBottom: 2 }}
-            onChange={(e) => setTestName(e.target.value)}
-          />
-
-          <div
-            style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
-          >
-            {category.map((item, idx) => (
-              <SelctableButton
-                key={idx}
-                item={item}
-                setSelected={setSelectedDepartment}
-                selected={selectedDepartment}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-      {(test !== null && test !== undefined) ||
-      (id !== "" && id !== null && id !== undefined) ? (
-        <Button
-          disabled={quest.grade === 0 && quest.difficulty === "" ? true : false}
-          variant='contained'
-          color='info'
-          onClick={handleVisibility}
-        >
-          Insert
-        </Button>
-      ) : (
-        <Button
+    <Item elevation={0} className='animate__animated animate__fadeInRight'>
+      <div>
+        <TextField
           fullWidth
-          variant='contained'
-          color='info'
-          onClick={() =>
-            testName.trim() !== "" ? createTest() : setError("Input is empty")
-          }
+          label='Test name'
+          sx={{ marginBottom: 2 }}
+          onChange={(e) => setTestName(e.target.value)}
+        />
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
         >
-          Submit
-        </Button>
-      )}
+          {category.map((item, idx) => (
+            <SelctableButton
+              key={idx}
+              item={item}
+              setSelected={setSelectedDepartment}
+              selected={selectedDepartment}
+            />
+          ))}
+        </div>
+      </div>
+
+      <Button
+        fullWidth
+        variant='contained'
+        color='info'
+        onClick={() => (testName.trim() !== "" ? createTest() : null)}
+      >
+        Submit
+      </Button>
     </Item>
   );
 };

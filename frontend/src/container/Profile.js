@@ -3,6 +3,7 @@ import React from 'react';
 import { Paper, Box, Typography} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useSelector } from 'react-redux';
+
 const useStyles = makeStyles(() => ({
   root: {
     padding: 20,
@@ -25,7 +26,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Profile = () => {
-  const user = useSelector(state => state.user.user);
+  const user = useSelector(state => state.user.user.user);
   const classes = useStyles();
   
 

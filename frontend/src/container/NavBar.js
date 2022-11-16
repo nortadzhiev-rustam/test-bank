@@ -21,7 +21,13 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
+import Slide from "@mui/material/Slide";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
@@ -31,6 +37,7 @@ import {
   Explore,
   Folder,
   LibraryBooks,
+  Logout,
   MeetingRoom,
   Settings,
 } from "@mui/icons-material";
@@ -41,9 +48,10 @@ import logo from "../logo.svg";
 import { withRouter } from "../components/withRouter.js";
 import { logout } from "../store/userSlice";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import InsertPanel from "../components/InsertPanel";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -115,26 +123,31 @@ const Space = styled("div")(({ theme }) => ({
 }));
 
 const list = [
-  { text: "Explore", icon: <Explore />, id: 0 },
-  { text: "My Library", icon: <LibraryBooks />, id: 1 },
-  { text: "Collections", icon: <Folder />, id: 2 },
-  { text: "Settings", icon: <Settings />, id: 3 },
-  { text: "Profile", icon: <AccountCircle />, id: 4 },
+  { text: "Explore", icon: <Explore />, id: 0, path: "/" },
+  { text: "My Library", icon: <LibraryBooks />, id: 1, path: "#" },
+  { text: "Collections", icon: <Folder />, id: 2, path: "#" },
+  { text: "Settings", icon: <Settings />, id: 3, path: "/settings" },
+  { text: "Profile", icon: <AccountCircle />, id: 4, path: "/profile" },
 ];
 
 const drawerWidth = 250;
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction='up' ref={ref} {...props} />;
+});
 
 const NavBar = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState(0);
+  const [selected, setSelected] = React.useState(undefined);
+  const [isOpen, setOpen] = React.useState(false);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const user = useSelector((state) => state.user.user.user);
   const dispatch = useDispatch();
   const history = useNavigate();
+  const location = useLocation();
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -155,6 +168,10 @@ const NavBar = (props) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleDialogOpen = () => {
+    setOpen(!isOpen);
+  };
+
   const handleLogOut = async () => {
     dispatch(logout());
     handleMenuClose();
@@ -171,8 +188,17 @@ const NavBar = (props) => {
     handleMenuClose();
   };
 
+  const handleNavigation = (id, path) => {
+    setSelected(id);
+    history(path);
+  };
+
+  React.useEffect(() => {
+    setSelected(undefined);
+  }, [location]);
+
   const drawer = (
-    <div style={{ width: "100%", overflow: "hidden" }}>
+    <div style={{ width: "100%", overflowX: "hidden" }}>
       <Toolbar sx={{ backgroundColor: "#15616d" }}>
         <div
           style={{
@@ -214,7 +240,7 @@ const NavBar = (props) => {
         </Toolbar>
       )}
       <Divider />
-      <Toolbar sx={{ height: 250 }} />
+      <Toolbar sx={{ height: 200 }} />
       <Divider />
       <Toolbar disableGutters>
         <Button
@@ -223,20 +249,31 @@ const NavBar = (props) => {
             mx: 1,
             bgcolor: "#006064",
             "&:hover": {
-              bgcolor: "#006064",
+              bgcolor: "#15616d",
             },
             justifyContent: "flex-start",
           }}
           size='large'
           fullWidth
           variant='contained'
+          onClick={handleDialogOpen}
         >
           <AddCircleOutlineIcon sx={{ mr: 1 }} />
           Create
         </Button>
       </Toolbar>
       <Divider />
-      <Toolbar disableGutters sx={{ width: "100%", padding: 0 }}>
+      <Toolbar
+        disableGutters
+        sx={{
+          width: "100%",
+
+          padding: 0,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
         <List sx={{ width: "100%", margin: 0 }}>
           {list.map((li, idx) => (
             <ListItem
@@ -244,14 +281,20 @@ const NavBar = (props) => {
                 width: "100%",
                 borderRightWidth: 5,
                 borderRightColor: "#006064",
-                borderRightStyle: idx === selected ? "solid" : "none",
-                color: idx === selected ? "#006064" : "#888888",
+                borderRightStyle:
+                  idx === selected || location.pathname === li.path
+                    ? "solid"
+                    : "none",
+                color:
+                  idx === selected || location.pathname === li.path
+                    ? "#006064"
+                    : "#888888",
               }}
               id={li.id}
               key={idx}
               disablePadding
             >
-              <ListItemButton onClick={() => setSelected(li.id)}>
+              <ListItemButton onClick={() => handleNavigation(li.id, li.path)}>
                 <ListItemIcon>{li.icon}</ListItemIcon>
                 <ListItemText>
                   <Typography fontWeight='bold'>{li.text}</Typography>
@@ -259,6 +302,23 @@ const NavBar = (props) => {
               </ListItemButton>
             </ListItem>
           ))}
+        </List>
+        <List sx={{ width: "100%", margin: 0 }}>
+          <ListItem
+            sx={{
+              width: "100%",
+            }}
+            disablePadding
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                <Logout />
+              </ListItemIcon>
+              <ListItemText>
+                <Typography fontWeight='bold'>{"Logout"}</Typography>
+              </ListItemText>
+            </ListItemButton>
+          </ListItem>
         </List>
       </Toolbar>
     </div>
@@ -283,14 +343,16 @@ const NavBar = (props) => {
     >
       <MenuItem onClick={handleOpenProfile}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem
-        onClick={() => {
-          history("/admin");
-          handleMenuClose();
-        }}
-      >
-        Admin
-      </MenuItem>
+      {user && user.role.toLowerCase() === "admin" && (
+        <MenuItem
+          onClick={() => {
+            history("/admin/dashboard");
+            handleMenuClose();
+          }}
+        >
+          Admin
+        </MenuItem>
+      )}
       <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
     </Menu>
   );
@@ -371,6 +433,18 @@ const NavBar = (props) => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
+      <Dialog
+        open={isOpen}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleDialogOpen}
+        aria-describedby='alert-dialog-slide-description'
+      >
+        <DialogTitle>{"Create a Test"}</DialogTitle>
+        <DialogContent>
+          <InsertPanel setOpen={setOpen}/>
+        </DialogContent>
+      </Dialog>
       <AppBar
         position='fixed'
         sx={{
@@ -381,6 +455,17 @@ const NavBar = (props) => {
         elevation={10}
       >
         <Toolbar>
+          {isLoggedIn && (
+            <IconButton
+              color='inherit'
+              aria-label='open drawer'
+              edge='start'
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: "none" } }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
           {!isLoggedIn && (
             <div
               style={{
@@ -402,15 +487,6 @@ const NavBar = (props) => {
               </Typography>
             </div>
           )}
-          <IconButton
-            color='inherit'
-            aria-label='open drawer'
-            edge='start'
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
 
           <Box sx={{ flexGrow: 1 }} />
 

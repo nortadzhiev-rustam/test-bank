@@ -1,5 +1,5 @@
 import React from "react";
-
+import "./Default.css";
 import {
   Box,
   FormControl,
@@ -26,7 +26,7 @@ const Search = styled(Paper)(({ theme }) => ({
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
-  width: 800,
+  width: "100%",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -51,6 +51,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
+    width: "100%",
   },
 }));
 
@@ -93,7 +94,12 @@ const Default = () => {
       }}
     >
       <Box width='100%' display='flex' justifyContent='center'>
-        <Stack direction='column' justifyContent='center' alignItems='center'>
+        <Stack
+          width={{ xs: 300, md: 800 }}
+          direction='column'
+          justifyContent='center'
+          alignItems='center'
+        >
           <Search
             sx={{ marginTop: 3, marginLeft: 1 }}
             elevation={5}
@@ -107,13 +113,16 @@ const Default = () => {
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
               fullWidth
-              sx={{ fontSize: "1.3rem" }}
+              sx={{ fontSize: { xs: "1rem", md: "1.3rem" } }}
               placeholder='Search for test on any topic'
               inputProps={{ "aria-label": "search" }}
               endAdornment={
                 <InputAdornment
-                  sx={{ padding: "10px", cursor: "pointer" }}
-                  position='end'
+                  sx={{
+                    display: { xs: "none", md: "flex" },
+                    padding: "10px",
+                    cursor: "pointer",
+                  }}
                 >
                   <Box
                     sx={{
@@ -170,10 +179,14 @@ const Default = () => {
       </Box>
       {!open && !focused && (
         <Stack
-          width='100%'
-          justifyContent='center'
+          className='department-stack'
+          overflow='scroll'
+          height={200}
+          width={{ xs: 200, md: 650, lg: 850, xl: 1200 }}
+          justifyContent='flex-start'
+          alignItems='center'
           direction='row'
-          spacing={2}
+          spacing={2.5}
           mb={5}
           mt={20}
         >

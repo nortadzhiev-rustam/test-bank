@@ -36,7 +36,7 @@ const useStyles = makeStyles({
     paddingBlock: 50,
     paddingInline: 20,
     borderRadius: 10,
-    width: 300,
+
     transition: "all 0.7s ease-in-out",
     "&:hover": {
       boxShadow: "0px 0px 20px 10px rgba(0,0,0,0.2)",
@@ -118,7 +118,7 @@ const Login = ({ history }) => {
       <Paper
         sx={{
           borderRadius: "15px",
-          padding: { md: "40px", xs: "20px" },
+          padding: { md: "40px", xs: "10px" },
           marginBlock: { xs: "20px" },
           backgroundColor: "#006064",
         }}
@@ -137,7 +137,15 @@ const Login = ({ history }) => {
         >
           Login
         </Typography>
-        <form onSubmit={handleSubmit} className={classes.form}>
+        <Box
+          component='form'
+          onSubmit={handleSubmit}
+          className={classes.form}
+          sx={{
+            margin: { xs: "10px", md: "0px" },
+            maxWidth: { xs: "280px", md: "350px" },
+          }}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <FormControl
@@ -219,7 +227,7 @@ const Login = ({ history }) => {
               </Button>
             </Grid>
           </Grid>
-        </form>
+        </Box>
       </Paper>
     </Box>
   );
