@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2/";
 import {
   Paper,
@@ -21,10 +21,7 @@ export default function QuestionView({ data }) {
   const [quest] = useState(JSON.parse(question));
   const [correct] = useState(JSON.parse(correctAnswer));
 
-  useEffect(() => {
-    console.log(answers);
-    console.log(quest);
-  }, []);
+  
   return (
     <Box sx={{ flexGrow: 1, m: 3 }}>
       <Paper elevation={5} sx={{ padding: 2, borderRadius: 2 }}>

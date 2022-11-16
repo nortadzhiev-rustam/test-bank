@@ -9,20 +9,31 @@ import InputBase from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import { InputAdornment, useScrollTrigger, Slide } from "@mui/material";
+import {
+  InputAdornment,
+  Divider,
+  Drawer,
+  Button,
+  Avatar,
+  Stack,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { MeetingRoom } from "@mui/icons-material";
+import MenuIcon from "@mui/icons-material/Menu";
+
 import { useSelector, useDispatch } from "react-redux";
 import logo from "../logo.svg";
 import { withRouter } from "../components/withRouter.js";
 import { logout } from "../store/userSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import TabPanel from "../components/TabPanel";
 
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   height: 40,
@@ -94,32 +105,19 @@ const Space = styled("div")(({ theme }) => ({
 
 const drawerWidth = 240;
 
-function HideOnScroll(props) {
-  const { children, window } = props;
-  // Note that you normally won't need to set the window ref as useScrollTrigger
-  // will default to window.
-  // This is only being set here because the demo is in an iframe.
-  const trigger = useScrollTrigger({
-    target: window ? window() : undefined,
-  });
-
-  return (
-    <Slide appear={false} direction='down' in={!trigger}>
-      {children}
-    </Slide>
-  );
-}
-
 const NavBar = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
+  const [mobileOpen, setMobileOpen] = React.useState(false);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const isFull = useSelector((state) => state.questionsType.isFull);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const user = useSelector((state) => state.user.user.user);
   const dispatch = useDispatch();
   const history = useNavigate();
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -152,6 +150,72 @@ const NavBar = (props) => {
     history("/profile");
     handleMenuClose();
   };
+
+  const drawer = (
+    <div>
+      <Toolbar sx={{ backgroundColor: "#15616d" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            cursor: "pointer",
+          }}
+          onClick={() => history("/")}
+        >
+          <img src={logo} width='30' height='30' alt='logo' />
+          <Typography
+            sx={{ marginLeft: 2 }}
+            variant='h6'
+            noWrap
+            component='div'
+            color='white'
+          >
+            Test Generator
+          </Typography>
+        </div>
+      </Toolbar>
+      <Divider />
+      {user && (
+        <Toolbar>
+          <Avatar sx={{ bgcolor: "red", mr: 1 }}>
+            {user.firstName.charAt(0) + user.lastName.charAt(0)}
+          </Avatar>
+          <Stack direction='column' justifyContent='flex-start'>
+            <Typography fontWeight='bold' fontSize={14}>
+              {user.firstName + " " + user.lastName}
+            </Typography>
+            <Stack direction='row'>
+              <Typography fontWeight='bold' variant='caption'>
+                {user.role + " - " + user.department.name}
+              </Typography>
+            </Stack>
+          </Stack>
+        </Toolbar>
+      )}
+      <Divider />
+      <Toolbar sx={{ height: 200 }} />
+      <Divider />
+      <Toolbar>
+        <Button
+          sx={{
+            bgcolor: "#006064",
+            "&:hover": {
+              bgcolor: "#006064",
+            },
+            justifyContent: "space-evenly",
+          }}
+          size='large'
+          fullWidth
+          variant='contained'
+        >
+          <AddCircleOutlineIcon />
+          Create
+        </Button>
+      </Toolbar>
+      <Divider />
+      <TabPanel />
+    </div>
+  );
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -260,137 +324,167 @@ const NavBar = (props) => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      {!isFull && (
-        <>
-          <HideOnScroll {...props}>
-            <AppBar position='fixed' color='secondary' elevation={10}>
-              <Toolbar>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => history("/")}
-                >
-                  <img src={logo} width='30' height='30' alt='logo' />
-                  <Typography
-                    sx={{ marginLeft: 2 }}
-                    variant='h6'
-                    noWrap
-                    component='div'
+      <AppBar
+        position='fixed'
+        sx={{
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },
+        }}
+        color='secondary'
+        elevation={10}
+      >
+        <Toolbar>
+          <IconButton
+            color='inherit'
+            aria-label='open drawer'
+            edge='start'
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: "none" } }}
+          >
+            <MenuIcon />
+          </IconButton>
+
+          <Box sx={{ flexGrow: 1 }} />
+
+          <Box
+            sx={{
+              display: { xs: "none", md: "flex" },
+              alignItems: "center",
+            }}
+          >
+            <Search onClick={() => props.setOpenSearch(true)}>
+              <StyledInputBase
+                placeholder='Search…'
+                inputProps={{ "aria-label": "search" }}
+                endAdornment={
+                  <InputAdornment
+                    sx={{ padding: "10px", cursor: "pointer" }}
+                    position='end'
                   >
-                    Test Generator
-                  </Typography>
-                </div>
-
-                <Box sx={{ flexGrow: 1 }} />
-
-                <Box
-                  sx={{
-                    display: { xs: "none", md: "flex" },
-                    alignItems: "center",
-                  }}
-                >
-                  <Search onClick={() => props.setOpenSearch(true)}>
-                    <StyledInputBase
-                      placeholder='Search…'
-                      inputProps={{ "aria-label": "search" }}
-                      endAdornment={
-                        <InputAdornment
-                          sx={{ padding: "10px", cursor: "pointer" }}
-                          position='end'
-                        >
-                          <Box
-                            sx={{
-                              bgcolor: "white",
-                              borderRadius: 1,
-                              paddingInline: "5px",
-                              cursor: "pointer",
-                              color: "black",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            Ctrl+K
-                          </Box>
-                        </InputAdornment>
-                      }
-                      startAdornment={
-                        <InputAdornment position='start'>
-                          <SearchIconWrapper>
-                            <SearchIcon />
-                          </SearchIconWrapper>
-                        </InputAdornment>
-                      }
-                    />
-                  </Search>
-
-                  <IconButton
-                    size='large'
-                    aria-label='show 17 new notifications'
-                    color='inherit'
-                  >
-                    <Badge badgeContent={5} color='error'>
-                      <NotificationsIcon />
-                    </Badge>
-                  </IconButton>
-                  {!isLoggedIn && (
-                    <IconButton
-                      size='small'
-                      aria-label='login'
-                      color='inherit'
-                      onClick={() => history("/login")}
+                    <Box
+                      sx={{
+                        bgcolor: "white",
+                        borderRadius: 1,
+                        paddingInline: "5px",
+                        cursor: "pointer",
+                        color: "black",
+                        fontWeight: "bold",
+                      }}
                     >
-                      <MeetingRoom />
-                    </IconButton>
-                  )}
-                  {isLoggedIn && (
-                    <IconButton
-                      size='large'
-                      aria-label='show 4 new mails'
-                      color='inherit'
-                    >
-                      <Badge badgeContent={0} color='error'>
-                        <MailIcon />
-                      </Badge>
-                    </IconButton>
-                  )}
-                  {isLoggedIn && (
-                    <IconButton
-                      size='large'
-                      edge='end'
-                      aria-label='account of current user'
-                      aria-controls={menuId}
-                      aria-haspopup='true'
-                      onClick={handleProfileMenuOpen}
-                      color='inherit'
-                    >
-                      <AccountCircle />
-                    </IconButton>
-                  )}
-                </Box>
-                <Box sx={{ display: { xs: "flex", md: "none" } }}>
-                  <IconButton
-                    size='large'
-                    aria-label='show more'
-                    aria-controls={mobileMenuId}
-                    aria-haspopup='true'
-                    onClick={handleMobileMenuOpen}
-                    color='inherit'
-                  >
-                    <MoreIcon />
-                  </IconButton>
-                </Box>
-              </Toolbar>
-            </AppBar>
-          </HideOnScroll>
+                      Ctrl+K
+                    </Box>
+                  </InputAdornment>
+                }
+                startAdornment={
+                  <InputAdornment position='start'>
+                    <SearchIconWrapper>
+                      <SearchIcon />
+                    </SearchIconWrapper>
+                  </InputAdornment>
+                }
+              />
+            </Search>
 
-          <Space />
+            <IconButton
+              size='large'
+              aria-label='show 17 new notifications'
+              color='inherit'
+            >
+              <Badge badgeContent={5} color='error'>
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+            {!isLoggedIn && (
+              <IconButton
+                size='small'
+                aria-label='login'
+                color='inherit'
+                onClick={() => history("/login")}
+              >
+                <MeetingRoom />
+              </IconButton>
+            )}
+            {isLoggedIn && (
+              <IconButton
+                size='large'
+                aria-label='show 4 new mails'
+                color='inherit'
+              >
+                <Badge badgeContent={0} color='error'>
+                  <MailIcon />
+                </Badge>
+              </IconButton>
+            )}
+            {isLoggedIn && (
+              <IconButton
+                size='large'
+                edge='end'
+                aria-label='account of current user'
+                aria-controls={menuId}
+                aria-haspopup='true'
+                onClick={handleProfileMenuOpen}
+                color='inherit'
+              >
+                <AccountCircle />
+              </IconButton>
+            )}
+          </Box>
+          <Box sx={{ display: { xs: "flex", md: "none" } }}>
+            <IconButton
+              size='large'
+              aria-label='show more'
+              aria-controls={mobileMenuId}
+              aria-haspopup='true'
+              onClick={handleMobileMenuOpen}
+              color='inherit'
+            >
+              <MoreIcon />
+            </IconButton>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      <Box
+        component='nav'
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        aria-label='mailbox folders'
+      >
+        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+        <Drawer
+          variant='temporary'
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: "block", sm: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
+          }}
+        >
+          {drawer}
+        </Drawer>
+        <Drawer
+          variant='permanent'
+          sx={{
+            display: { xs: "none", sm: "block" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
+          }}
+          open
+        >
+          {drawer}
+        </Drawer>
+      </Box>
 
-          {renderMobileMenu}
-          {renderMenu}
-        </>
-      )}
+      <Space />
+
+      {renderMobileMenu}
+      {renderMenu}
     </Box>
   );
 };

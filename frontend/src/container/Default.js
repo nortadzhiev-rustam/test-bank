@@ -19,7 +19,7 @@ import MainDepartments from "../components/MainDepartments";
 const Search = styled(Paper)(({ theme }) => ({
   position: "relative",
   height: 70,
-  marginBottom: 100,
+
   backgroundColor: alpha(theme.palette.common.white, 0.15),
   "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
@@ -53,45 +53,59 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create("width"),
   },
 }));
+
 const Default = () => {
   const [name, setName] = React.useState("");
   const departments = useSelector((state) => state.department.department);
   const [open, setOpen] = React.useState(false);
+  const [focused, setFocused] = React.useState(false);
   const handleClose = () => {
     setOpen(false);
   };
   const handleToggle = () => {
     setOpen(!open);
   };
-  const options = [
-    { name: "Create" },
-    { name: "Generate" },
-    { name: "Past Papers" },
-  ];
+
   const handleClick = (name) => {
     setName(name);
     handleToggle();
   };
+
+  React.useEffect(() => {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        handleClose();
+        setName("");
+      }
+    });
+  }, []);
+
   return (
     <Box
       sx={{
-        width: "90%",
+        width: "100%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        paddingInline: 10,
+
         paddingTop: 30,
       }}
     >
       <Box width='100%' display='flex' justifyContent='center'>
-        <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={open}
-          
-        >
-          <Search elevation={5}>
+        <Stack direction='column' justifyContent='center' alignItems='center'>
+          <Search
+            sx={{ marginTop: 3, marginLeft: 1 }}
+            elevation={5}
+            onBlur={() => {
+              setFocused(false);
+              setOpen(false);
+              setName("");
+            }}
+          >
             <StyledInputBase
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
               fullWidth
               sx={{ fontSize: "1.3rem" }}
               placeholder='Search for test on any topic'
@@ -136,48 +150,32 @@ const Default = () => {
               }
             />
           </Search>
-        </Backdrop>
-        {!open && (
-          <Search elevation={5}>
-            <StyledInputBase
-              fullWidth
-              sx={{ fontSize: "1.3rem" }}
-              placeholder='Search for test on any topic'
-              inputProps={{ "aria-label": "search" }}
-              endAdornment={
-                <InputAdornment
-                  sx={{ padding: "10px", cursor: "pointer" }}
-                  position='end'
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginRight: 5,
-                    }}
-                  >
-                    <ChevronRightTwoTone fontSize='large' />
-                  </Box>
-                </InputAdornment>
-              }
-              startAdornment={
-                <InputAdornment position='start'>
-                  <SearchIconWrapper>
-                    <SearchIcon fontSize='large' />
-                  </SearchIconWrapper>
-                </InputAdornment>
-              }
-            />
-          </Search>
-        )}
+
+          {open || focused ? (
+            <Paper
+              elevation={5}
+              style={{
+                width: 800,
+                height: 200,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 10,
+                marginTop: 10,
+                marginLeft: -8,
+              }}
+            ></Paper>
+          ) : null}
+        </Stack>
       </Box>
-      {!open && (
+      {!open && !focused && (
         <Stack
           width='100%'
           justifyContent='center'
           direction='row'
-          spacing={10}
+          spacing={2}
           mb={5}
+          mt={20}
         >
           {departments.map((item, idx) => (
             <MainDepartments key={idx} name={item.name} onClick={handleClick} />

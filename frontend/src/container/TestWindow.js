@@ -78,7 +78,7 @@ export default function TestWindow({
       setLoading(false);
     }, 1000);
     return () => clearTimeout(time);
-  }, []);
+  }, [setLoading]);
 
   useEffect(() => {
     axios

@@ -67,9 +67,7 @@ const InsertPanel = ({
     dispatch(setFull(true));
     setOpenTest(false);
   };
-  const handleChangeCategory = (event) => {
-    dispatch(questCategory(event.target.value));
-  };
+ 
   const handleChangeDifficulty = (event) => {
     dispatch(questDifficulty(event.target.value));
   };

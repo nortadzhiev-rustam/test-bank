@@ -9,8 +9,8 @@ const ProtectedRoute = () => {
     const time = setTimeout(() => {
       dispatch(setLoading(false));
     }, 500);
-    return () => clearTimeout(time)
-  }, []);
+    return () => clearTimeout(time);
+  }, [dispatch]);
 
   const isAuth = useSelector((state) => state.user.user.isAuth);
   const isLoading = useSelector((state) => state.user.isLoading);

@@ -13,12 +13,12 @@ import { Navigate, useParams } from "react-router-dom";
 import TestWindow from "./TestWindow";
 
 const BoxContainer = styled(Box)({
+  width: "100%",
   display: "flex",
-  justifyContent: "space-between",
-  flexGrow: 1,
   flexDirection: "column",
+  justifyContent: "end",
   marginInline: "2%",
-  marginBlock: 40,
+  marginBlock: 100,
 });
 
 const Home = (props) => {

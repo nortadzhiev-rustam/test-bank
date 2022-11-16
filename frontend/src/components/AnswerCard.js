@@ -87,10 +87,11 @@ const AnswersCard = (props) => {
   const handleContentChange = (content) => {
     setContent(content);
   };
+  const { addAnswer, option } = props;
 
   useEffect(() => {
     if (content !== "") {
-      props.addAnswer({ key: props.option.option, content });
+      addAnswer({ key: option.option, content });
     }
   }, [content]);
 

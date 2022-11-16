@@ -90,7 +90,7 @@ const CardComponent = (props) => {
           alt={name}
         />
         <CardContent>
-          {/* <Paper
+          <Paper
             elevation={5}
             sx={{
               width: "100%",
@@ -111,7 +111,7 @@ const CardComponent = (props) => {
             >
               {name}
             </Typography>
-          </Paper> */}
+          </Paper>
         </CardContent>
       </CardActionArea>
     </Card>

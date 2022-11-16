@@ -40,7 +40,14 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className='App'>
+    <div
+      className='App'
+      style={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "flex-start",
+      }}
+    >
       <Routess
         openSearch={openSearch}
         setOpenSearch={(e) => setOpenSearch(e)}

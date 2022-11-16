@@ -20,6 +20,7 @@ import { setLoading, login } from "../store/userSlice";
 import { useNavigate } from "react-router-dom";
 const useStyles = makeStyles({
   root: {
+    width: "100%",
     height: "100vh",
     display: "flex",
     flexDirection: "column",
@@ -58,7 +59,7 @@ const Login = ({ history }) => {
   React.useEffect(() => {
     const isLogged = (status) => {
       if (status) {
-         navigate(-1);
+        navigate(-1);
       }
     };
 

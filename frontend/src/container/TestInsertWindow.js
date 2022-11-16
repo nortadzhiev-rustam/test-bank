@@ -14,7 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import QuestionInput from "../components/QuestionInput";
 import AnswersContainer from "../components/AnswersContainer";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Draggable from "react-draggable";
 
 import axios from "axios";
@@ -57,11 +57,12 @@ const InsertWindow = ({
   const [answers, setAnswers] = React.useState([]);
   const [correctAnswer, setCorrectAnswer] = React.useState({});
   const [image, setImage] = React.useState("");
+  const [createdTest, setCreatedTest] = React.useState("");
   const dispatch = useDispatch();
   const isFull = useSelector((state) => state.questionsType.isFull);
   const quest = useSelector((state) => state.questionsType.value);
   const user = useSelector((state) => state.user.user);
-  const navigate = useNavigate();
+
   const { id } = useParams();
   const handleFullScreen = () => {
     dispatch(setFull(!isFull));
@@ -77,7 +78,7 @@ const InsertWindow = ({
   const handleSubmit = async () => {
     const data = {
       type: quest.questionType,
-      category: quest.category.name,
+      category: test.department.name,
       difficulty: quest.difficulty,
       grade: quest.grade,
       title,
@@ -87,7 +88,7 @@ const InsertWindow = ({
       image,
       correctAnswer,
       userId: user.id,
-      departmentId: quest.category.id,
+      departmentId: test.departmentId,
       testId: id,
     };
 
@@ -103,6 +104,8 @@ const InsertWindow = ({
       console.log(err);
     }
   };
+
+  
 
   return (
     <Draggable>

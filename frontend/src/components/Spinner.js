@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import GridLoader from "react-spinners/GridLoader";
 const override = {
   display: "block",
@@ -7,8 +7,6 @@ const override = {
 };
 
 export default function Spinner({ loading }) {
-  
-
   return (
     <div
       style={{
