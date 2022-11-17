@@ -1,5 +1,9 @@
 {
     "xml.preferences.quoteStyle": "single",
     "javascript.preferences.quoteStyle": "single",
-    "typescript.preferences.quoteStyle": "single"
+    "typescript.preferences.quoteStyle": "single",
+    "terminal.integrated.autoReplies": {
+    
+    },
+    "terminal.integrated.fontSize": 24
 }
