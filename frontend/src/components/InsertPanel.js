@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField } from "@mui/material";
+import { TextField, Stack } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
@@ -10,7 +10,6 @@ import uuid from "react-uuid";
 import { useNavigate, useParams } from "react-router-dom";
 import SelctableButton from "./SelctableButton";
 import axios from "axios";
-
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.caption,
@@ -78,15 +77,25 @@ const InsertPanel = ({ setOpen }) => {
           ))}
         </div>
       </div>
-
-      <Button
-        fullWidth
-        variant='contained'
-        color='info'
-        onClick={() => (testName.trim() !== "" ? createTest() : null)}
-      >
-        Submit
-      </Button>
+      <Stack direction='row' spacing={2} justifyContent='center'>
+        <Button
+          fullWidth
+          variant='contained'
+          color='error'
+          onClick={() => setOpen(false)}
+        >
+          Cancel
+        </Button>
+        <Button
+          fullWidth
+          variant='contained'
+          disabled={testName.trim() === "" && selectedDepartment}
+          color='info'
+          onClick={() => createTest()}
+        >
+          Submit
+        </Button>
+      </Stack>
     </Item>
   );
 };
