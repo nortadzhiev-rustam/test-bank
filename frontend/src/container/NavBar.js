@@ -238,7 +238,7 @@ const NavBar = () => {
         </Toolbar>
       )}
       <Divider />
-      <Toolbar sx={{ height: 100 }} />
+      <Toolbar sx={{ height: "35%" }} />
       <Divider />
       <Toolbar disableGutters>
         <Button
@@ -261,14 +261,15 @@ const NavBar = () => {
         </Button>
       </Toolbar>
       <Divider />
+      <Stack direction='column' justifyContent='space-between'>
       <Toolbar
         disableGutters
         sx={{
           width: "100%",
           padding: 0,
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
+         
+          
         }}
       >
         <List sx={{ width: "100%", margin: 0 }}>
@@ -294,9 +295,7 @@ const NavBar = () => {
             >
               <ListItemButton onClick={() => handleNavigation(li.id, li.path)}>
                 <ListItemIcon
-                  color={
-                    location.pathname === li.path ? "#006064" : "#888888"
-                  }
+                  color={location.pathname === li.path ? "#006064" : "#888888"}
                 >
                   {li.icon}
                 </ListItemIcon>
@@ -307,6 +306,8 @@ const NavBar = () => {
             </ListItem>
           ))}
         </List>
+      </Toolbar>
+      <Toolbar disableGutters>
         <List sx={{ width: "100%", margin: 0 }}>
           <ListItem
             sx={{
@@ -325,6 +326,8 @@ const NavBar = () => {
           </ListItem>
         </List>
       </Toolbar>
+      </Stack>
+      
     </div>
   );
 
