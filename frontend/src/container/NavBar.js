@@ -125,12 +125,17 @@ const Space = styled("div")(({ theme }) => ({
 }));
 
 const list = [
-  { text: "Explore", icon: <Explore htmlColor='inherit' />, id: 0, path: "/" },
+  {
+    text: "Explore",
+    icon: <Explore htmlColor='inherit' />,
+    id: 0,
+    path: "/admin",
+  },
   {
     text: "My Library",
     icon: <LibraryBooks htmlColor='inherit' />,
     id: 1,
-    path: "#",
+    path: "/admin/private",
   },
   {
     text: "Collections",
@@ -196,8 +201,8 @@ const NavBar = () => {
   }, [location]);
 
   const drawer = (
-    <div style={{ width: "100%", height: "100vh" }}>
-      <Toolbar sx={{ backgroundColor: "#15616d" }}>
+    <div style={{ width: "100%", position: "absolute" }}>
+      <Toolbar sx={{ backgroundColor: "#15616d", position: "sticky" }}>
         <div
           style={{
             width: "100%",
@@ -238,7 +243,7 @@ const NavBar = () => {
         </Toolbar>
       )}
       <Divider />
-      <Toolbar sx={{ height: "35%" }} />
+      <Toolbar sx={{ height: "50%" }} />
       <Divider />
       <Toolbar disableGutters>
         <Button
@@ -261,73 +266,74 @@ const NavBar = () => {
         </Button>
       </Toolbar>
       <Divider />
-      <Stack direction='column' justifyContent='space-between'>
-      <Toolbar
-        disableGutters
-        sx={{
-          width: "100%",
-          padding: 0,
-          display: "flex",
-         
-          
-        }}
-      >
-        <List sx={{ width: "100%", margin: 0 }}>
-          {list.map((li, idx) => (
+      <Stack height={480} direction='column' justifyContent='space-between'>
+        <Toolbar
+          disableGutters
+          sx={{
+            width: "100%",
+            padding: 0,
+            display: "flex",
+          }}
+        >
+          <List sx={{ width: "100%", margin: 0 }}>
+            {list.map((li, idx) => (
+              <ListItem
+                sx={{
+                  width: "100%",
+                  borderRightWidth: 5,
+                  borderRightColor: "#006064",
+                  borderRightStyle:
+                    idx === selected || location.pathname === li.path
+                      ? "solid"
+                      : "none",
+                  color: location.pathname === li.path ? "#006064" : "#888888",
+                  bgcolor:
+                    location.pathname === li.path
+                      ? "rgba(0,100,102,0.1)"
+                      : "default",
+                }}
+                id={li.id}
+                key={idx}
+                disablePadding
+              >
+                <ListItemButton
+                  onClick={() => handleNavigation(li.id, li.path)}
+                >
+                  <ListItemIcon
+                    color={
+                      location.pathname === li.path ? "#006064" : "#888888"
+                    }
+                  >
+                    {li.icon}
+                  </ListItemIcon>
+                  <ListItemText>
+                    <Typography fontWeight='bold'>{li.text}</Typography>
+                  </ListItemText>
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Toolbar>
+        <Toolbar disableGutters>
+          <List sx={{ width: "100%", margin: 0 }}>
             <ListItem
               sx={{
                 width: "100%",
-                borderRightWidth: 5,
-                borderRightColor: "#006064",
-                borderRightStyle:
-                  idx === selected || location.pathname === li.path
-                    ? "solid"
-                    : "none",
-                color: location.pathname === li.path ? "#006064" : "#888888",
-                bgcolor:
-                  location.pathname === li.path
-                    ? "rgba(0,100,102,0.1)"
-                    : "default",
               }}
-              id={li.id}
-              key={idx}
               disablePadding
             >
-              <ListItemButton onClick={() => handleNavigation(li.id, li.path)}>
-                <ListItemIcon
-                  color={location.pathname === li.path ? "#006064" : "#888888"}
-                >
-                  {li.icon}
+              <ListItemButton onClick={handleLogOut}>
+                <ListItemIcon>
+                  <Logout />
                 </ListItemIcon>
                 <ListItemText>
-                  <Typography fontWeight='bold'>{li.text}</Typography>
+                  <Typography fontWeight='bold'>{"Logout"}</Typography>
                 </ListItemText>
               </ListItemButton>
             </ListItem>
-          ))}
-        </List>
-      </Toolbar>
-      <Toolbar disableGutters>
-        <List sx={{ width: "100%", margin: 0 }}>
-          <ListItem
-            sx={{
-              width: "100%",
-            }}
-            disablePadding
-          >
-            <ListItemButton onClick={handleLogOut}>
-              <ListItemIcon>
-                <Logout />
-              </ListItemIcon>
-              <ListItemText>
-                <Typography fontWeight='bold'>{"Logout"}</Typography>
-              </ListItemText>
-            </ListItemButton>
-          </ListItem>
-        </List>
-      </Toolbar>
+          </List>
+        </Toolbar>
       </Stack>
-      
     </div>
   );
 

@@ -89,7 +89,7 @@ const Login = ({ history }) => {
 
       dispatch(login(res.data));
 
-      navigate("/test/create");
+      navigate("/admin");
     } catch (err) {
       setError(err.message);
     }
