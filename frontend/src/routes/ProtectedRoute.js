@@ -15,7 +15,7 @@ const ProtectedRoute = () => {
   const isAuth = useSelector((state) => state.user.user.isAuth);
   const isLoading = useSelector((state) => state.user.isLoading);
   if (isLoading) return <Spinner loading={isLoading} />;
-  return isAuth ? <Outlet /> : <Navigate to='/login' />;
+  return isAuth ? <Outlet /> : <Navigate to='/' />;
 };
 
 export default ProtectedRoute;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Paper, Typography, Stack, Button } from "@mui/material";
+import { Box, Paper, Typography, Stack } from "@mui/material";
 const photoSelector = (title) => {
   switch (title) {
     case "Mathematics":
@@ -66,11 +66,10 @@ export default function MainDepartments({ name, onClick }) {
       alignItems='center'
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      onMouseDown={() => setHover(false)}
-      onClick={()=>onClick(name)}
+      onClick={() => onClick(name)}
       style={{
         cursor: "pointer",
-        transition: "transform 0.3s ease-in",
+        transition: "transform 0.5s ease-in",
         transform: hover && "scale(1.2)",
       }}
     >

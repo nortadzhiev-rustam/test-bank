@@ -23,7 +23,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const InsertPanel = ({ setOpen }) => {
   const [testName, setTestName] = React.useState("");
-  const [selectedDepartment, setSelectedDepartment] = React.useState({});
+  const [selectedDepartment, setSelectedDepartment] = React.useState(undefined);
 
   const category = useSelector((state) => state.department.department);
   const user = useSelector((state) => state.user.user.user);
@@ -89,7 +89,7 @@ const InsertPanel = ({ setOpen }) => {
         <Button
           fullWidth
           variant='contained'
-          disabled={testName.trim() === "" && selectedDepartment}
+          disabled={testName.trim() === "" && selectedDepartment !== undefined}
           color='info'
           onClick={() => createTest()}
         >

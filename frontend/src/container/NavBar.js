@@ -24,18 +24,13 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
-  DialogActions,
   Select,
   FormControl,
-  InputLabel,
 } from "@mui/material";
 import Slide from "@mui/material/Slide";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import MoreIcon from "@mui/icons-material/MoreVert";
 import {
   Explore,
   Folder,
@@ -187,7 +182,7 @@ const NavBar = () => {
       withCredentials: true,
     });
     if (res.status === 200) {
-      history("/login");
+      history("/");
     }
   };
 
@@ -243,7 +238,7 @@ const NavBar = () => {
         </Toolbar>
       )}
       <Divider />
-      <Toolbar sx={{ height: "50%" }} />
+      <Toolbar sx={{ height: "30vh" }} />
       <Divider />
       <Toolbar disableGutters>
         <Button
@@ -265,8 +260,13 @@ const NavBar = () => {
           Create
         </Button>
       </Toolbar>
-      <Divider />
-      <Stack height={480} direction='column' justifyContent='space-between'>
+      <Divider sx={{ mb: 2 }} />
+      <Stack
+        height={{ xs: "40vh", xl: "48vh" }}
+        direction='column'
+        justifyContent='space-between'
+        overflow='auto'
+      >
         <Toolbar
           disableGutters
           sx={{
@@ -454,10 +454,10 @@ const NavBar = () => {
           ) : (
             <Stack
               width='100%'
-              display='flex'
               direction='row'
               spacing={1}
               justifyContent='flex-end'
+              display={{ xs: "none", md: "flex" }}
             >
               <Button
                 onClick={() => history("/login")}

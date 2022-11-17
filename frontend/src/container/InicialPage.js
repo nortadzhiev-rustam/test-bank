@@ -1,54 +1,119 @@
 import { Paper, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import React from "react";
-import { useSelector } from "react-redux";
+import { setLoading } from "../store/userSlice";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { HowToReg, MeetingRoom } from "@mui/icons-material";
+
 export default function InicialPage() {
   const loggedIn = useSelector((state) => state.user.isLoggedIn);
+  const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [loginClicked, setLoginClicked] = React.useState(false);
+  const [registerClicked, setRegisterClicked] = React.useState(false);
+
   React.useEffect(() => {
-    if (loggedIn) {
+    dispatch(setLoading(true));
+    if (user && user.isAuth) {
       navigate("/admin");
     }
-  }, []);
+  }, [navigate, loggedIn, dispatch, user]);
 
   return (
     <Stack
       direction='column'
       justifyContent='center'
-      style={{ marginTop: 300, width: "100%" }}
+      sx={{
+        my: { xs: "80px", md: "250px" },
+        width: "100%",
+        transition: "all 2s ease-in",
+      }}
       spacing={3}
     >
-      <Typography textAlign='center' variant='h2'>
+      <Typography
+        fontWeight='bold'
+        color='#118ab2'
+        textAlign='center'
+        variant='h2'
+      >
         Welcome to Test Generatng Application
       </Typography>
-      <Typography textAlign='center' variant='h4'>
+      <Typography
+        fontWeight='bold'
+        color='#83c5be'
+        textAlign='center'
+        variant='h4'
+      >
         Login or register
       </Typography>
-      <Stack direction='row' justifyContent='center' spacing={3}>
+      <Stack direction='row' justifyContent='center' spacing={1}>
         <Paper
-          elevation={5}
-          style={{
+          elevation={loginClicked ? 2 : 10}
+          onClick={() => navigate("/login")}
+          onMouseEnter={() => setLoginClicked(true)}
+          onMouseLeave={() => setLoginClicked(false)}
+          sx={{
+            backgroundColor: "#7209b7",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            width: 300,
-            height: 200,
+            width: { xs: "150px", md: "250px" },
+            height: 100,
+            borderRadius: 5,
+            cursor: "pointer",
+            transition: "all 0.3s ease-in",
+            "&:hover": {
+              transform: "translate3D(0, 4px, 20px)",
+            },
           }}
         >
-          <Typography variant='h3'>Login</Typography>
+          <Stack
+            direction='row'
+            justifyContent='center'
+            alignItems='center'
+            spacing={2}
+            color='white'
+          >
+            <MeetingRoom fontSize='large' />
+            <Typography color='white' variant={{ xs: "h5", md: "h4" }}>
+              Login
+            </Typography>
+          </Stack>
         </Paper>
         <Paper
-          elevation={5}
-          style={{
+          onClick={() => navigate("/register")}
+          onMouseEnter={() => setRegisterClicked(true)}
+          onMouseLeave={() => setRegisterClicked(false)}
+          elevation={registerClicked ? 2 : 10}
+          sx={{
+            backgroundColor: "#2a9d8f",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            width: 300,
-            height: 200,
+            width: { xs: "150px", md: "250px" },
+            height: 100,
+            borderRadius: 5,
+            cursor: "pointer",
+            transition: "all 0.3s ease-in",
+            "&:hover": {
+              transform: "translate3D(0, 4px, 20px)",
+            },
           }}
         >
-          <Typography variant='h3'>Register</Typography>
+          <Stack
+            direction='row'
+            justifyContent='center'
+            alignItems='center'
+            spacing={2}
+            color='white'
+          >
+            <HowToReg fontSize='large' />
+            <Typography color='white' variant={{ xs: "h5", md: "h4" }}>
+              Register
+            </Typography>
+          </Stack>
         </Paper>
       </Stack>
     </Stack>
