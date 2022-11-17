@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import "./Default.css";
 import {
   Box,
@@ -60,6 +60,7 @@ const Default = () => {
   const departments = useSelector((state) => state.department.department);
   const [open, setOpen] = React.useState(false);
   const [focused, setFocused] = React.useState(false);
+  const ref = useRef(null);
   const handleClose = () => {
     setOpen(false);
   };
@@ -68,6 +69,7 @@ const Default = () => {
   };
 
   const handleClick = (name) => {
+    ref.current.focus();
     setName(name);
     handleToggle();
   };
@@ -110,6 +112,7 @@ const Default = () => {
             }}
           >
             <StyledInputBase
+              ref={ref}
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
               fullWidth
@@ -183,7 +186,7 @@ const Default = () => {
           overflow='scroll'
           height={200}
           width={{ xs: 200, md: 650, lg: 850, xl: 1200 }}
-          justifyContent='flex-start'
+          justifyContent={departments.length < 10 ? "center" : "flex-start"}
           alignItems='center'
           direction='row'
           spacing={2.5}

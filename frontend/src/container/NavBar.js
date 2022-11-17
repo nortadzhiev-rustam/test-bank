@@ -26,6 +26,9 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Select,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import Slide from "@mui/material/Slide";
 import SearchIcon from "@mui/icons-material/Search";
@@ -36,6 +39,7 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import {
   Explore,
   Folder,
+  HowToReg,
   LibraryBooks,
   Logout,
   MeetingRoom,
@@ -54,7 +58,6 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import InsertPanel from "../components/InsertPanel";
 
 const Search = styled("div")(({ theme }) => ({
-  position: "relative",
   height: 40,
   borderRadius: 10,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
@@ -66,7 +69,7 @@ const Search = styled("div")(({ theme }) => ({
   width: "100%",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
-    width: "auto",
+    width: "100%",
   },
   cursor: "pointer",
   display: "flex",
@@ -104,6 +107,7 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  width: "100%",
   color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
@@ -111,9 +115,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
+
     cursor: "pointer",
   },
 }));
@@ -123,11 +125,31 @@ const Space = styled("div")(({ theme }) => ({
 }));
 
 const list = [
-  { text: "Explore", icon: <Explore />, id: 0, path: "/" },
-  { text: "My Library", icon: <LibraryBooks />, id: 1, path: "#" },
-  { text: "Collections", icon: <Folder />, id: 2, path: "#" },
-  { text: "Settings", icon: <Settings />, id: 3, path: "/settings" },
-  { text: "Profile", icon: <AccountCircle />, id: 4, path: "/profile" },
+  { text: "Explore", icon: <Explore htmlColor='inherit' />, id: 0, path: "/" },
+  {
+    text: "My Library",
+    icon: <LibraryBooks htmlColor='inherit' />,
+    id: 1,
+    path: "#",
+  },
+  {
+    text: "Collections",
+    icon: <Folder htmlColor='inherit' />,
+    id: 2,
+    path: "#",
+  },
+  {
+    text: "Settings",
+    icon: <Settings htmlColor='inherit' />,
+    id: 3,
+    path: "/settings",
+  },
+  {
+    text: "Profile",
+    icon: <AccountCircle htmlColor='inherit' />,
+    id: 4,
+    path: "/profile",
+  },
 ];
 
 const drawerWidth = 250;
@@ -135,37 +157,19 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />;
 });
 
-const NavBar = (props) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+const NavBar = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [selected, setSelected] = React.useState(undefined);
+  const [option, setOption] = React.useState("Test Library");
   const [isOpen, setOpen] = React.useState(false);
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const user = useSelector((state) => state.user.user.user);
   const dispatch = useDispatch();
   const history = useNavigate();
   const location = useLocation();
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
-  };
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
   };
 
   const handleDialogOpen = () => {
@@ -174,18 +178,12 @@ const NavBar = (props) => {
 
   const handleLogOut = async () => {
     dispatch(logout());
-    handleMenuClose();
     const res = await axios.get("http://localhost:5000/api/v1/logout", {
       withCredentials: true,
     });
     if (res.status === 200) {
       history("/login");
     }
-  };
-
-  const handleOpenProfile = () => {
-    history("/profile");
-    handleMenuClose();
   };
 
   const handleNavigation = (id, path) => {
@@ -198,7 +196,7 @@ const NavBar = (props) => {
   }, [location]);
 
   const drawer = (
-    <div style={{ width: "100%", overflowX: "hidden" }}>
+    <div style={{ width: "100%", height: "100vh" }}>
       <Toolbar sx={{ backgroundColor: "#15616d" }}>
         <div
           style={{
@@ -240,7 +238,7 @@ const NavBar = (props) => {
         </Toolbar>
       )}
       <Divider />
-      <Toolbar sx={{ height: 200 }} />
+      <Toolbar sx={{ height: 100 }} />
       <Divider />
       <Toolbar disableGutters>
         <Button
@@ -267,7 +265,6 @@ const NavBar = (props) => {
         disableGutters
         sx={{
           width: "100%",
-
           padding: 0,
           display: "flex",
           flexDirection: "column",
@@ -285,17 +282,24 @@ const NavBar = (props) => {
                   idx === selected || location.pathname === li.path
                     ? "solid"
                     : "none",
-                color:
-                  idx === selected || location.pathname === li.path
-                    ? "#006064"
-                    : "#888888",
+                color: location.pathname === li.path ? "#006064" : "#888888",
+                bgcolor:
+                  location.pathname === li.path
+                    ? "rgba(0,100,102,0.1)"
+                    : "default",
               }}
               id={li.id}
               key={idx}
               disablePadding
             >
               <ListItemButton onClick={() => handleNavigation(li.id, li.path)}>
-                <ListItemIcon>{li.icon}</ListItemIcon>
+                <ListItemIcon
+                  color={
+                    location.pathname === li.path ? "#006064" : "#888888"
+                  }
+                >
+                  {li.icon}
+                </ListItemIcon>
                 <ListItemText>
                   <Typography fontWeight='bold'>{li.text}</Typography>
                 </ListItemText>
@@ -310,7 +314,7 @@ const NavBar = (props) => {
             }}
             disablePadding
           >
-            <ListItemButton>
+            <ListItemButton onClick={handleLogOut}>
               <ListItemIcon>
                 <Logout />
               </ListItemIcon>
@@ -324,116 +328,10 @@ const NavBar = (props) => {
     </div>
   );
 
-  const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleOpenProfile}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      {user && user.role.toLowerCase() === "admin" && (
-        <MenuItem
-          onClick={() => {
-            history("/admin/dashboard");
-            handleMenuClose();
-          }}
-        >
-          Admin
-        </MenuItem>
-      )}
-      <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton
-          size='large'
-          aria-label='show 17 new notifications'
-          color='inherit'
-        >
-          <Badge badgeContent={0} color='error'>
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      {!isLoggedIn && (
-        <MenuItem onClick={() => history("/login")}>
-          <IconButton
-            size='large'
-            aria-label='account of current user'
-            aria-controls='primary-search-account-menu'
-            aria-haspopup='true'
-            color='inherit'
-          >
-            <MeetingRoom />
-          </IconButton>
-          <p>Login</p>
-        </MenuItem>
-      )}
-      {isLoggedIn && (
-        <MenuItem>
-          <IconButton
-            size='large'
-            aria-label='show 4 new mails'
-            color='inherit'
-          >
-            <Badge badgeContent={0} color='error'>
-              <MailIcon />
-            </Badge>
-          </IconButton>
-          <p>Messages</p>
-        </MenuItem>
-      )}
-      {isLoggedIn && (
-        <MenuItem onClick={handleProfileMenuOpen}>
-          <IconButton
-            size='large'
-            aria-label='account of current user'
-            aria-controls='primary-search-account-menu'
-            aria-haspopup='true'
-            color='inherit'
-          >
-            <AccountCircle />
-          </IconButton>
-          <p>Profile</p>
-        </MenuItem>
-      )}
-    </Menu>
-  );
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Dialog
+        maxWidth='xs'
         open={isOpen}
         TransitionComponent={Transition}
         keepMounted
@@ -442,7 +340,7 @@ const NavBar = (props) => {
       >
         <DialogTitle>{"Create a Test"}</DialogTitle>
         <DialogContent>
-          <InsertPanel setOpen={setOpen}/>
+          <InsertPanel setOpen={setOpen} />
         </DialogContent>
       </Dialog>
       <AppBar
@@ -487,104 +385,89 @@ const NavBar = (props) => {
               </Typography>
             </div>
           )}
-
-          <Box sx={{ flexGrow: 1 }} />
-
-          <Box
-            sx={{
-              display: { xs: "none", md: "flex" },
-              alignItems: "center",
-            }}
-          >
-            <Search onClick={() => props.setOpenSearch(true)}>
-              <StyledInputBase
-                placeholder='Search…'
-                inputProps={{ "aria-label": "search" }}
-                endAdornment={
-                  <InputAdornment
-                    sx={{ padding: "10px", cursor: "pointer" }}
-                    position='end'
-                  >
-                    <Box
-                      sx={{
-                        bgcolor: "white",
-                        borderRadius: 1,
-                        paddingInline: "5px",
-                        cursor: "pointer",
-                        color: "black",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Ctrl+K
-                    </Box>
-                  </InputAdornment>
-                }
-                startAdornment={
-                  <InputAdornment position='start'>
-                    <SearchIconWrapper>
-                      <SearchIcon />
-                    </SearchIconWrapper>
-                  </InputAdornment>
-                }
-              />
-            </Search>
-
-            <IconButton
-              size='large'
-              aria-label='show 17 new notifications'
-              color='inherit'
+          {isLoggedIn ? (
+            <Box
+              sx={{
+                width: "100%",
+                display: { xs: "none", md: "flex" },
+                alignItems: "center",
+              }}
             >
-              <Badge badgeContent={5} color='error'>
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            {!isLoggedIn && (
-              <IconButton
-                size='small'
-                aria-label='login'
-                color='inherit'
-                onClick={() => history("/login")}
-              >
-                <MeetingRoom />
-              </IconButton>
-            )}
-            {isLoggedIn && (
-              <IconButton
-                size='large'
-                aria-label='show 4 new mails'
-                color='inherit'
-              >
-                <Badge badgeContent={0} color='error'>
-                  <MailIcon />
+              <Search sx={{ width: "100%" }}>
+                <StyledInputBase
+                  sx={{ width: "100%" }}
+                  placeholder='Search…'
+                  inputProps={{ "aria-label": "search" }}
+                  startAdornment={
+                    <InputAdornment position='start'>
+                      <SearchIconWrapper>
+                        <SearchIcon />
+                      </SearchIconWrapper>
+                    </InputAdornment>
+                  }
+                  endAdornment={
+                    <InputAdornment position='end'>
+                      <FormControl
+                        sx={{ width: "200px", padding: 0 }}
+                        size='small'
+                        color='success'
+                      >
+                        <Select
+                          variant='filled'
+                          value={option}
+                          style={{ paddingInline: 0, color: "white" }}
+                          labelId='demo-simple-select-label'
+                          id='demo-simple-select'
+                          label='test'
+                          onChange={(e) => setOption(e.target.value)}
+                        >
+                          <MenuItem value='Test Library'>Test Library</MenuItem>
+                          <MenuItem value='My Library'>My Library</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </InputAdornment>
+                  }
+                />
+              </Search>
+              <IconButton>
+                <Badge
+                  badgeContent={5}
+                  color='error'
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                >
+                  <NotificationsIcon htmlColor='white' />
                 </Badge>
               </IconButton>
-            )}
-            {isLoggedIn && (
-              <IconButton
+            </Box>
+          ) : (
+            <Stack
+              width='100%'
+              display='flex'
+              direction='row'
+              spacing={1}
+              justifyContent='flex-end'
+            >
+              <Button
+                onClick={() => history("/login")}
                 size='large'
-                edge='end'
-                aria-label='account of current user'
-                aria-controls={menuId}
-                aria-haspopup='true'
-                onClick={handleProfileMenuOpen}
+                variant='outlined'
                 color='inherit'
               >
-                <AccountCircle />
-              </IconButton>
-            )}
-          </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size='large'
-              aria-label='show more'
-              aria-controls={mobileMenuId}
-              aria-haspopup='true'
-              onClick={handleMobileMenuOpen}
-              color='inherit'
-            >
-              <MoreIcon />
-            </IconButton>
-          </Box>
+                <MeetingRoom sx={{ mr: 1 }} /> Login
+              </Button>
+              <Button
+                onClick={() => history("/register")}
+                size='large'
+                variant='outlined'
+                color='inherit'
+              >
+                <HowToReg sx={{ mr: 1 }} /> Register
+              </Button>
+            </Stack>
+          )}
         </Toolbar>
       </AppBar>
       {isLoggedIn && (
@@ -606,6 +489,7 @@ const NavBar = (props) => {
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
                 width: drawerWidth,
+                height: "100%",
               },
             }}
           >
@@ -615,9 +499,11 @@ const NavBar = (props) => {
             variant='permanent'
             sx={{
               display: { xs: "none", sm: "flex" },
+              height: "100%",
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
                 width: drawerWidth,
+                height: "100%",
               },
             }}
             open
@@ -628,9 +514,6 @@ const NavBar = (props) => {
       )}
 
       <Space />
-
-      {renderMobileMenu}
-      {renderMenu}
     </Box>
   );
 };

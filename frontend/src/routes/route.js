@@ -16,9 +16,7 @@ const Routess = ({ openSearch, setOpenSearch }) => {
   return (
     <Router>
       <NavBar setOpenSearch={(o) => setOpenSearch(o)} />
-      {openSearch && (
-        <SearchWindow open={openSearch} setOpen={(e) => setOpenSearch(e)} />
-      )}
+      
       <Routes>
         <Route exact path='/' element={<Default />} />
         <Route element={<ProtectedRoute />}>
