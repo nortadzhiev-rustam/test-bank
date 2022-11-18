@@ -12,6 +12,7 @@ import Settings from "../container/Settings";
 import InicialPage from "../container/InicialPage";
 import MyLibrary from "../container/MyLibrary";
 import { useSelector } from "react-redux";
+import TestEditingPage from '../components/TestEditingPage';
 const Routess = ({ openSearch, setOpenSearch }) => {
   const user = useSelector((state) => state.user.user.user);
   return (
@@ -21,7 +22,7 @@ const Routess = ({ openSearch, setOpenSearch }) => {
       <Routes>
         <Route exact path='/' element={<InicialPage />} />
         <Route element={<ProtectedRoute />}>
-          <Route path='/admin' element={<Default />} />
+          <Route path='/admin' element={<TestEditingPage />} />
           <Route path='/admin/private' element={<MyLibrary />} />
           <Route key='inicial' path='/test' element={<Home />} />
           <Route exact path='/test/:swt' element={<Home />} />

@@ -1,20 +1,11 @@
 import React, { useRef } from "react";
 import "./Default.css";
-import {
-  Box,
-  FormControl,
-  InputBase,
-  Typography,
-  InputAdornment,
-  Paper,
-  Stack,
-  Backdrop,
-} from "@mui/material";
+import { Box, InputBase, InputAdornment, Paper, Stack } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { ChevronRightTwoTone } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { styled, alpha } from "@mui/material/styles";
-import Slider from "../components/CardSlider";
+
 import MainDepartments from "../components/MainDepartments";
 const Search = styled(Paper)(({ theme }) => ({
   position: "relative",
@@ -63,6 +54,7 @@ const Default = () => {
   const ref = useRef(null);
   const handleClose = () => {
     setOpen(false);
+    setFocused(false);
   };
   const handleToggle = () => {
     setOpen(!open);
@@ -114,13 +106,14 @@ const Default = () => {
             <StyledInputBase
               ref={ref}
               onFocus={() => setFocused(true)}
-              onBlur={() => setFocused(false)}
+              onBlur={() => (open ? setFocused(false) : null)}
               fullWidth
               sx={{ fontSize: { xs: "1rem", md: "1.3rem" } }}
               placeholder='Search for test on any topic'
               inputProps={{ "aria-label": "search" }}
               endAdornment={
                 <InputAdornment
+                  position='end'
                   sx={{
                     display: { xs: "none", md: "flex" },
                     padding: "10px",
@@ -165,16 +158,16 @@ const Default = () => {
 
           {open || focused ? (
             <Paper
-              elevation={5}
-              style={{
-                width: 800,
-                height: 200,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 10,
-                marginTop: 10,
-                marginLeft: -8,
+              onClick={() => setFocused(true)}
+              elevation={10}
+              sx={{
+                mt: 2,
+                marginRight: 1,
+                width: "100%",
+                maxWidth: 800,
+                minHeight: 200,
+                display: "block",
+                borderRadius: 3,
               }}
             ></Paper>
           ) : null}
@@ -191,7 +184,7 @@ const Default = () => {
           direction='row'
           spacing={2.5}
           mb={5}
-          mt={20}
+          mt={10}
         >
           {departments.map((item, idx) => (
             <MainDepartments key={idx} name={item.name} onClick={handleClick} />

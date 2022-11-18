@@ -48,7 +48,7 @@
     "react-dropzone": "^14.2.3",
     "react-katex": "^3.0.1",
     "react-markdown": "^8.0.3",
-    "react-mathlive": "^2.0.5",
+    "react-mathlive": "^3.0.5-preview.1",
     "react-mathquill": "^1.0.2",
     "react-redux": "^7.2.6",
     "react-router": "^6.2.1",

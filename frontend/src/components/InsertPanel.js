@@ -4,10 +4,10 @@ import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import "animate.css";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import uuid from "react-uuid";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import SelctableButton from "./SelctableButton";
 import axios from "axios";
 

@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
+
 import {
   InputAdornment,
   Divider,
@@ -55,12 +55,14 @@ import InsertPanel from "../components/InsertPanel";
 const Search = styled("div")(({ theme }) => ({
   height: 40,
   borderRadius: 10,
+
   backgroundColor: alpha(theme.palette.common.white, 0.15),
   "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
+  paddingRight: 10,
   width: "100%",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
@@ -111,7 +113,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create("width"),
     width: "100%",
 
-    cursor: "pointer",
+    
   },
 }));
 
@@ -238,7 +240,7 @@ const NavBar = () => {
         </Toolbar>
       )}
       <Divider />
-      <Toolbar sx={{ height: "30vh" }} />
+      <Toolbar sx={{ height: { xs: "20vh", xl: "30vh" } }} />
       <Divider />
       <Toolbar disableGutters>
         <Button
@@ -265,7 +267,7 @@ const NavBar = () => {
         height={{ xs: "40vh", xl: "48vh" }}
         direction='column'
         justifyContent='space-between'
-        overflow='auto'
+        overflow='scrroll'
       >
         <Toolbar
           disableGutters
@@ -402,7 +404,7 @@ const NavBar = () => {
                 alignItems: "center",
               }}
             >
-              <Search sx={{ width: "100%" }}>
+              <Search sx={{ width: "100%", py: "4px" }}>
                 <StyledInputBase
                   sx={{ width: "100%" }}
                   placeholder='Search…'
@@ -414,29 +416,35 @@ const NavBar = () => {
                       </SearchIconWrapper>
                     </InputAdornment>
                   }
-                  endAdornment={
-                    <InputAdornment position='end'>
-                      <FormControl
-                        sx={{ width: "200px", padding: 0 }}
-                        size='small'
-                        color='success'
-                      >
-                        <Select
-                          variant='filled'
-                          value={option}
-                          style={{ paddingInline: 0, color: "white" }}
-                          labelId='demo-simple-select-label'
-                          id='demo-simple-select'
-                          label='test'
-                          onChange={(e) => setOption(e.target.value)}
-                        >
-                          <MenuItem value='Test Library'>Test Library</MenuItem>
-                          <MenuItem value='My Library'>My Library</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </InputAdornment>
-                  }
                 />
+                <Divider orientation='vertical' />
+                <FormControl sx={{ width: 180, padding: 0 }} size='small'>
+                  <Select
+                    variant='outlined'
+                    value={option}
+                    style={{
+                      ".css-6uowpu-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                        {
+                          borderWidth: 0,
+                          borderColor: "none",
+                        },
+                    }}
+                    sx={{
+                      paddingInline: 0,
+                      color: "white",
+                      boxShadow: "none",
+                      ".MuiOutlinedInput-notchedOutline": {
+                        border: 0,
+                      },
+                    }}
+                    labelId='demo-simple-select-label'
+                    id='demo-simple-select'
+                    onChange={(e) => setOption(e.target.value)}
+                  >
+                    <MenuItem value='Test Library'>Test Library</MenuItem>
+                    <MenuItem value='My Library'>My Library</MenuItem>
+                  </Select>
+                </FormControl>
               </Search>
               <IconButton>
                 <Badge
@@ -473,7 +481,7 @@ const NavBar = () => {
                 variant='outlined'
                 color='inherit'
               >
-                <HowToReg sx={{ mr: 1 }} /> Register
+                <HowToReg sx={{ mr: 1 }} /> Sign up
               </Button>
             </Stack>
           )}

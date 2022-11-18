@@ -77,7 +77,7 @@ export default function InicialPage() {
             color='white'
           >
             <MeetingRoom fontSize='large' />
-            <Typography color='white' variant={{ xs: "h5", md: "h4" }}>
+            <Typography color='white' variant='h4'>
               Login
             </Typography>
           </Stack>
@@ -110,7 +110,7 @@ export default function InicialPage() {
             color='white'
           >
             <HowToReg fontSize='large' />
-            <Typography color='white' variant={{ xs: "h5", md: "h4" }}>
+            <Typography color='white' variant='h4'>
               Register
             </Typography>
           </Stack>
