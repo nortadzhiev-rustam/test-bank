@@ -22,6 +22,8 @@ import ImageUpload from "./imageDialog";
 import axios from "axios";
 import Alert from "@mui/material/Alert";
 
+const difficulties = ["Easy", "Normal", "Hard", "Chalange"];
+
 const QuestionInput = ({
   setTitle,
   title,
@@ -30,6 +32,8 @@ const QuestionInput = ({
   setQuestion,
   image,
   setImage,
+  difficulty,
+  setDifficulty,
 }) => {
   const [equation, setEquation] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -157,14 +161,40 @@ const QuestionInput = ({
           >
             <FormControl
               sx={{
+                marginInline: 2,
+                width: 120,
+                backgroundColor: "white",
+                borderRadius: 1,
+              }}
+              size='small'
+            >
+              <InputLabel id='demo-select-small'>Difficulty</InputLabel>
+              <Select
+                labelId='demo-select-small'
+                id='demo-select-small'
+                value={difficulty}
+                label='Difficulty'
+                onChange={(e) => setDifficulty(e.target.value)}
+                MenuProps={{ style: { maxHeight: 200 } }}
+              >
+                <MenuItem value=''>
+                  <em>None</em>
+                </MenuItem>
+                {difficulties.map((item, idx) => (
+                  <MenuItem key={idx} value={item}>
+                    {item}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl
+              sx={{
                 marginRight: 2,
                 width: 80,
                 backgroundColor: "white",
                 borderRadius: 1,
-                
               }}
               size='small'
-
             >
               <InputLabel id='demo-select-small'>Mark</InputLabel>
               <Select
@@ -173,8 +203,7 @@ const QuestionInput = ({
                 value={mark}
                 label='Mark'
                 onChange={handleChange}
-                MenuProps={{style: {maxHeight: 200}}}
-                
+                MenuProps={{ style: { maxHeight: 200 } }}
               >
                 <MenuItem value=''>
                   <em>None</em>
@@ -186,13 +215,6 @@ const QuestionInput = ({
                       {idx + 1}
                     </MenuItem>
                   ))}
-                {/* <MenuItem value=''>
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={5}>5</MenuItem>
-                <MenuItem value={10}>10</MenuItem>
-                <MenuItem value={15}>15</MenuItem>
-                <MenuItem value={20}>20</MenuItem> */}
               </Select>
             </FormControl>
             <Tooltip

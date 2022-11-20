@@ -12,30 +12,32 @@ import Settings from "../container/Settings";
 import InicialPage from "../container/InicialPage";
 import MyLibrary from "../container/MyLibrary";
 import { useSelector } from "react-redux";
-import TestEditingPage from '../components/TestEditingPage';
-const Routess = ({ openSearch, setOpenSearch }) => {
+import TestEditingPage from "../container/TestEditingPage";
+const Routess = () => {
   const user = useSelector((state) => state.user.user.user);
+  const [showNav, setShowNav] = React.useState(true);
   return (
     <Router>
-      <NavBar setOpenSearch={(o) => setOpenSearch(o)} />
-
+      {showNav && <NavBar />}
       <Routes>
         <Route exact path='/' element={<InicialPage />} />
         <Route element={<ProtectedRoute />}>
-          <Route path='/admin' element={<TestEditingPage />} />
-          <Route path='/admin/private' element={<MyLibrary />} />
-          <Route key='inicial' path='/test' element={<Home />} />
-          <Route exact path='/test/:swt' element={<Home />} />
-          <Route exact path='/test/:swt/editor/:id' element={<Home />} />
-          <Route exact path='/profile' element={<Profile />} />
+          <Route exact path='/admin' element={<Default setShowNav={setShowNav} showNav={showNav}  />} />
+          <Route exact path='/admin/private' element={<MyLibrary setShowNav={setShowNav} showNav={showNav} />} />
+          <Route
+            path='/test/editor/:id/edit'
+            element={<TestEditingPage setShowNav={setShowNav} showNav={showNav}  />}
+          />
+
+          <Route exact path='/profile' element={<Profile setShowNav={setShowNav} showNav={showNav} />} />
           <Route
             exact
             path='/settings'
             element={
               user && user.role.toLowerCase() !== "admin" ? (
-                <Settings />
+                <Settings setShowNav={setShowNav} showNav={showNav}/>
               ) : (
-                <Admin />
+                <Admin setShowNav={setShowNav} showNav={showNav}/>
               )
             }
           />

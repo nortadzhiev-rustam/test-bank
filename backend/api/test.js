@@ -20,12 +20,12 @@ router.post("/test", async (req, res) => {
 });
 
 router.put("/test/:id", async (req, res) => {
-  console.log(req.body.grade)
+  console.log(req.query);
   try {
-    const updatedTest = await Test.update(
-      { grade: req.body.grade },
-      { returning: true, where: { id: req.params.id } }
-    );
+    const updatedTest = await Test.update(req.query, {
+      returning: true,
+      where: { id: req.params.id },
+    });
     res
       .status(200)
       .json({ message: "Test was updated successfully", updatedTest });

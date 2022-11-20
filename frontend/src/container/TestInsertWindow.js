@@ -48,6 +48,8 @@ const InsertWindow = ({
   questionData,
   setOpenTest,
   test,
+  grade,
+  type,
 }) => {
   const [mouseIn, setMouseIn] = React.useState(false);
   const [isHover, setHover] = React.useState(false);
@@ -58,6 +60,7 @@ const InsertWindow = ({
   const [correctAnswer, setCorrectAnswer] = React.useState({});
   const [image, setImage] = React.useState("");
   const [createdTest, setCreatedTest] = React.useState("");
+  const [difficulty, setDifficulty] = React.useState('');
   const dispatch = useDispatch();
   const isFull = useSelector((state) => state.questionsType.isFull);
   const quest = useSelector((state) => state.questionsType.value);
@@ -72,15 +75,15 @@ const InsertWindow = ({
     dispatch(setVisible(false));
     setMouseIn(false);
     dispatch(setFull(false));
-    setOpenTest(true);
+    setOpenTest(false);
   };
 
   const handleSubmit = async () => {
     const data = {
-      type: quest.questionType,
-      category: test.department.name,
-      difficulty: quest.difficulty,
-      grade: quest.grade,
+      type: type,
+      category: test.name,
+      difficulty: difficulty,
+      grade: grade,
       title,
       question,
       answers,
@@ -88,7 +91,7 @@ const InsertWindow = ({
       image,
       correctAnswer,
       userId: user.id,
-      departmentId: test.departmentId,
+      departmentId: test.id,
       testId: id,
     };
 
@@ -104,8 +107,6 @@ const InsertWindow = ({
       console.log(err);
     }
   };
-
-  
 
   return (
     <Draggable>
@@ -172,7 +173,7 @@ const InsertWindow = ({
 
                   {mouseIn ? (
                     <FullScreenButton onClick={handleFullScreen}>
-                      {!isFull ? (
+                      {isFull ? (
                         <FontAwesomeIcon
                           icon={faUpRightAndDownLeftFromCenter}
                           size='xs'
@@ -201,14 +202,6 @@ const InsertWindow = ({
                     />
                   )}
                 </div>
-                <Typography
-                  variant='body1'
-                  fontFamily='roboto'
-                  color='#006064'
-                  fontWeight='900'
-                >
-                  {`${quest.questionType.toUpperCase()} QUESTION`}
-                </Typography>
               </FormPaper>
             </StyledBox>
 
@@ -226,6 +219,8 @@ const InsertWindow = ({
                 setMark={setMark}
                 image={image}
                 setImage={setImage}
+                setDifficulty={setDifficulty}
+                difficulty={difficulty}
               />
               <AnswersContainer
                 setCorrectAnswer={setCorrectAnswer}
@@ -233,7 +228,7 @@ const InsertWindow = ({
                 setAnswers={setAnswers}
               />
             </Box>
-            <Box m={3} width='95%' textAlign='right'>
+            <Box mt={3} width='95%' textAlign='right'>
               <Button
                 sx={{ borderRadius: 10 }}
                 onClick={handleClose}

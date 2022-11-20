@@ -8,19 +8,21 @@ import {
   Box,
   TextField,
   List,
-  
 } from "@mui/material";
 import axios from "axios";
 
 import PersonalCard from "../components/PersonalCard";
 import DepartmentCard from "../components/DepartmentCard";
-const Admin = () => {
+const Admin = ({ showNav, setShowNav }) => {
   //departments
   const [departments, setDepartments] = React.useState([]);
   const [department, setDepartment] = React.useState("");
   //users
   const [users, setUsers] = React.useState([]);
-  
+
+  React.useEffect(() => {
+    if (showNav === false) setShowNav(true);
+  }, [showNav, setShowNav]);
 
   //get departments
   useEffect(() => {

@@ -14,6 +14,7 @@ import { faCheckSquare } from "@fortawesome/free-regular-svg-icons";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { BlockMath } from "react-katex";
 import "katex/dist/katex.min.css";
+import { Stack } from "@mui/system";
 
 export default function QuestionView({ data }) {
   const { image, question, options, type, mark, correctAnswer } = data;
@@ -21,33 +22,30 @@ export default function QuestionView({ data }) {
   const [quest] = useState(JSON.parse(question));
   const [correct] = useState(JSON.parse(correctAnswer));
 
-  
   return (
-    <Box sx={{ flexGrow: 1, m: 3 }}>
-      <Paper elevation={5} sx={{ padding: 2, borderRadius: 2 }}>
+    <Box sx={{ mb: 3, width: "100%" }}>
+      <Paper elevation={5} sx={{ padding: 1, borderRadius: 2 }}>
         <Box
           width='100%'
           display='flex'
           flexDirection='row'
           justifyContent='space-between'
-          mb={4}
+          mb={1}
         >
-          <Paper elevation={5} sx={{ borderRadius: 5 }}>
-            <Chip
-              sx={{ padding: 2 }}
-              icon={<FontAwesomeIcon icon={faCheckSquare} />}
-              label={type}
-            />
+          <Paper elevation={2} sx={{ borderRadius: 1, py: 0.5, px: 1 }}>
+            <Stack direction='row' spacing={1} alignItems='center'>
+              <FontAwesomeIcon icon={faCheckSquare} />
+              <Typography>{type}</Typography>
+            </Stack>
           </Paper>
-          <Paper elevation={5} sx={{ borderRadius: 5 }}>
-            <Chip
-              sx={{ padding: 2 }}
-              icon={<FontAwesomeIcon icon={faPen} />}
-              label={`${mark} points`}
-            />
+          <Paper elevation={2} sx={{ borderRadius: 1, py: 0.5, px: 1 }}>
+            <Stack direction='row' spacing={1} alignItems='center'>
+              <FontAwesomeIcon icon={faPen} />
+              <Typography>{`${mark} points`}</Typography>
+            </Stack>
           </Paper>
         </Box>
-        <Grid container spacing={2} sx={{ alignItems: "center", m: 2 }}>
+        <Grid container spacing={2} sx={{ alignItems: "center", m: 1 }}>
           {image !== "" && (
             <Grid xs={12} md={2}>
               <img
@@ -62,7 +60,7 @@ export default function QuestionView({ data }) {
               />
             </Grid>
           )}
-          <Grid sx={12} md={image !== "" ? 10 : 12}>
+          <Grid xs={12} md={image !== "" ? 10 : 12} p='0px'>
             {quest.text !== undefined ? (
               <Typography variant='body1'>Q: {quest.text}</Typography>
             ) : (
@@ -74,12 +72,7 @@ export default function QuestionView({ data }) {
           </Grid>
         </Grid>
         <Divider orientation='horizontal'>answer choices</Divider>
-        <Grid
-          sx={{ margin: 2 }}
-          container
-          spacing={2}
-          columns={{ xs: 4, sm: 8, md: 12 }}
-        >
+        <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
           {answers.map((option, idx) => (
             <Grid key={idx} xs={12} md={6}>
               <Box

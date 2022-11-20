@@ -8,7 +8,7 @@ const ProtectedRoute = () => {
   useEffect(() => {
     const time = setTimeout(() => {
       dispatch(setLoading(false));
-    }, 500);
+    }, 1500);
     return () => clearTimeout(time);
   }, [dispatch]);
 

@@ -46,12 +46,17 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const Default = () => {
+const Default = ({ setShowNav, showNav }) => {
   const [name, setName] = React.useState("");
   const departments = useSelector((state) => state.department.department);
   const [open, setOpen] = React.useState(false);
   const [focused, setFocused] = React.useState(false);
   const ref = useRef(null);
+
+  React.useEffect(() => {
+    if (showNav === false) setShowNav(true);
+  }, [showNav, setShowNav]);
+
   const handleClose = () => {
     setOpen(false);
     setFocused(false);

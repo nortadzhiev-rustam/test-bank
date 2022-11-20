@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
-
+import { Wallpaper } from "@mui/icons-material";
 const baseStyle = {
   display: "flex",
   flexDirection: "column",
@@ -30,22 +30,25 @@ const rejectStyle = {
 function DropzoneComponent({ open, setImage }) {
   const [files, setFiles] = useState([]);
 
-  const onDrop = useCallback((acceptedFiles) => {
-    setFiles(
-      acceptedFiles.map((file) =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
-        })
-      )
-    );
-    setImage(
-      acceptedFiles.map((file) =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
-        })
-      )
-    );
-  }, [setImage]);
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      setFiles(
+        acceptedFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        )
+      );
+      setImage(
+        acceptedFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        )
+      );
+    },
+    [setImage]
+  );
 
   const {
     getRootProps,
@@ -92,7 +95,16 @@ function DropzoneComponent({ open, setImage }) {
     <section>
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
-        <div style={{ cursor: "pointer" }}>
+        <div
+          style={{
+            cursor: "pointer",
+            diplay: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            
+          }}
+        >
           Drag and drop your images here or click here.
         </div>
       </div>

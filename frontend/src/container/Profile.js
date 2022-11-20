@@ -25,10 +25,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Profile = () => {
+const Profile = ({showNav, setShowNav}) => {
   const user = useSelector(state => state.user.user.user);
   const classes = useStyles();
-  
+  React.useEffect(() => {
+    if (showNav === false) setShowNav(true);
+  }, [showNav, setShowNav]);
 
   return (
     

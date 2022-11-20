@@ -47,7 +47,7 @@ import logo from "../logo.svg";
 import { withRouter } from "../components/withRouter.js";
 import { logout } from "../store/userSlice";
 import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import InsertPanel from "../components/InsertPanel";
@@ -112,8 +112,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
-
-    
   },
 }));
 
@@ -169,6 +167,7 @@ const NavBar = () => {
   const dispatch = useDispatch();
   const history = useNavigate();
   const location = useLocation();
+  const { id } = useParams();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -188,14 +187,12 @@ const NavBar = () => {
     }
   };
 
+  
+
   const handleNavigation = (id, path) => {
     setSelected(id);
     history(path);
   };
-
-  React.useEffect(() => {
-    setSelected(undefined);
-  }, [location]);
 
   const drawer = (
     <div style={{ width: "100%", position: "absolute" }}>
@@ -357,8 +354,14 @@ const NavBar = () => {
       <AppBar
         position='fixed'
         sx={{
-          width: isLoggedIn ? { sm: `calc(100% - ${drawerWidth}px)` } : "100%",
-          ml: isLoggedIn && { sm: `${drawerWidth}px` },
+          width:
+            isLoggedIn && location.pathname !== `/test/editor/${id}/edit`
+              ? { sm: `calc(100% - ${drawerWidth}px)` }
+              : "100%",
+          ml: isLoggedIn &&
+            location.pathname !== `/test/editor/${id}/edit` && {
+              sm: `${drawerWidth}px`,
+            },
         }}
         color='secondary'
         elevation={10}
@@ -422,13 +425,6 @@ const NavBar = () => {
                   <Select
                     variant='outlined'
                     value={option}
-                    style={{
-                      ".css-6uowpu-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                        {
-                          borderWidth: 0,
-                          borderColor: "none",
-                        },
-                    }}
                     sx={{
                       paddingInline: 0,
                       color: "white",
@@ -487,7 +483,7 @@ const NavBar = () => {
           )}
         </Toolbar>
       </AppBar>
-      {isLoggedIn && (
+      {isLoggedIn && location.pathname !== `/test/editor/${id}/edit` && (
         <Box
           component='nav'
           sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
