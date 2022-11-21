@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Box, Grid, Paper } from "@mui/material";
 
-import { MathfieldComponent } from "react-mathlive";
+import { MathFieldComponent } from "react-mathlive";
 import("mathlive/dist/mathlive-static.css");
 
 const FormulaEditor = ({
@@ -94,7 +94,7 @@ const FormulaEditor = ({
               backgroundColor: "white",
             }}
           >
-            <MathfieldComponent
+            <MathFieldComponent
               mathFieldConfig={{ virtualKeyboardMode: "onfocus" }}
               latex={latex}
               onChange={setLatex}
