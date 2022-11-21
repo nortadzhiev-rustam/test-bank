@@ -374,6 +374,7 @@ export default function TestEditingPage({ setShowNav, showNav }) {
                       >
                         {types.map((item, idx) => (
                           <Stack
+                            key={idx}
                             direction='row'
                             justifyContent='flex-start'
                             spacing={1}
@@ -433,7 +434,12 @@ export default function TestEditingPage({ setShowNav, showNav }) {
                 </Stack>
                 <Stack direction='column' spacing={1} alignItems='center'>
                   {questions.map((question, idx) => (
-                    <QuestionView key={idx} data={question} />
+                    <QuestionView
+                      key={idx}
+                      data={question}
+                      isEditing={true}
+                      index={idx + 1}
+                    />
                   ))}
                 </Stack>
                 <Stack direction='row' justifyContent='center' spacing={2}>

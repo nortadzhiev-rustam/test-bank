@@ -27,7 +27,7 @@ const rejectStyle = {
   borderColor: "#ff1744",
 };
 
-function DropzoneComponent({ open, setImage }) {
+function DropzoneComponent({ open, setImage, image }) {
   const [files, setFiles] = useState([]);
 
   const onDrop = useCallback(

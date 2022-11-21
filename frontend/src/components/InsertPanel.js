@@ -30,7 +30,7 @@ const InsertPanel = ({ setOpen, name, department, isEditing, setEditing }) => {
   const navigate = useNavigate();
   const { id } = useParams();
   React.useEffect(() => {
-    setTestName(name);
+    if (name) setTestName(name);
     setSelectedDepartment(department);
   }, [department, name]);
 
@@ -68,7 +68,6 @@ const InsertPanel = ({ setOpen, name, department, isEditing, setEditing }) => {
         setOpen(false);
       }, 500);
 
-      
       console.log(res.data.message);
     } catch (err) {
       console.log(err.message);

@@ -14,8 +14,10 @@ import {
   Stack,
   Slide,
   CircularProgress,
+  IconButton,
 } from "@mui/material";
 import DropzoneComponent from "./Dropzone";
+import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -24,7 +26,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function TesteditDialog({
   onClose,
   open,
-
   isEditing,
   setEditing,
   setImageName,
@@ -34,6 +35,7 @@ export default function TesteditDialog({
 }) {
   const [selected, setSelected] = React.useState("");
   const [image, setImage] = React.useState([]);
+  const [img, setImg] = React.useState("");
   const [publicc, setPublic] = React.useState("Public");
   const [isLoading, setLoading] = React.useState(false);
   const { id } = useParams();
@@ -45,8 +47,8 @@ export default function TesteditDialog({
     setSelected(grade);
   }, [grade]);
 
-  const uploadImage = async () => {
-    if (image.length !== 0) {
+  React.useEffect(() => {
+    const uploadImage = async () => {
       let data = new FormData();
       data.append("file", image[0]);
 
@@ -59,20 +61,43 @@ export default function TesteditDialog({
           },
         }
       );
-      setImageName(res.data);
-    }
-  };
 
-  const updateTestSettings = async () => {
-    return await axios.put(
-      `http://localhost:5000/api/v1/test/${id}?grade=${selected}&image=${imageName}`
+      setImg(res.data);
+      setLoading(false);
+    };
+    if (image.length !== 0) {
+      setLoading(true);
+      uploadImage();
+    }
+  }, [image]);
+
+  const handleDelete = async () => {
+    const res = await axios.delete(
+      "http://localhost:5000/api/v1/files/" + imageName
     );
+    console.log(res.message);
+    setImg("");
+    setImage([]);
+  };
+  const updateTestSettings = async () => {
+    try {
+      if (img !== "")
+        return await axios.put(
+          `http://localhost:5000/api/v1/test/${id}?grade=${selected}&image=${img}`
+        );
+      else
+        return await axios.put(
+          `http://localhost:5000/api/v1/test/${id}?grade=${selected}&image=`
+        );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleOk = async () => {
     setLoading(true);
     try {
-      const res = await axios.all([uploadImage(), updateTestSettings()]);
+      const res = await axios.all([updateTestSettings()]);
       console.log(res.data);
     } catch (err) {
       console.log(err);
@@ -103,6 +128,41 @@ export default function TesteditDialog({
             alignItems='center'
           >
             <DropzoneComponent open={open} setImage={setImage} />
+            {img !== "" && img !== null && img !== undefined && (
+              <Box
+                maxWidth='100%'
+                height={150}
+                component='div'
+                sx={{
+                  border: "1px",
+                  borderStyle: "dashed",
+                  borderColor: "#888",
+                  borderRadius: 2,
+                  position: "relative",
+                  backgroundColor: "white",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <IconButton
+                  sx={{ position: "absolute", top: -5, right: -8 }}
+                  onClick={handleDelete}
+                >
+                  <DeleteIcon color='action' fontSize='small' />
+                </IconButton>
+
+                <img
+                  src={process.env.PUBLIC_URL + "/uploads/" + imageName}
+                  alt='inputImage'
+                  style={{
+                    width: "100%",
+                    maxHeight: "140px",
+                    objectFit: "contain",
+                    borderRadius: "15px",
+                  }}
+                />
+              </Box>
+            )}
           </Box>
           <Typography>2.Select grade</Typography>
           <FormControl fullWidth>

@@ -53,7 +53,7 @@ export default function AlertDialogSlide({ open, setOpen, setImage }) {
             alignItems: "center",
           }}
         >
-          <DropzoneComponent setImage={setFile} open={open} />
+          <DropzoneComponent setImage={setFile} open={open} image={file} />
         </DialogContent>
         <DialogActions>
           <Button variant='contained' color='error' onClick={handleClose}>

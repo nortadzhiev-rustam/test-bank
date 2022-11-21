@@ -16,7 +16,7 @@ router.use(express.static(__dirname + "/public"));
 router.use("/uploads", express.static("uploads"));
 router.delete("/files/:name", controller.remove);
 router.post("/upload", upload.single("file"), async (req, res) => {
-  res.status(200).send(req.file.filename);
+  res.status(200).send(req.file.filename || "");
 });
 
 module.exports = router;
