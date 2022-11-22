@@ -129,6 +129,21 @@ export default function TestEditingPage({ setShowNav, showNav }) {
   const [openEditor, setOpenEditor] = React.useState(false);
   const { id } = useParams();
 
+  const handleDelete = async (questionId) => {
+    try {
+      const res = await axios.delete(
+        `http://localhost:5000/api/v1/question/${questionId}`
+      );
+      console.log(res.data.message);
+      const newArray = questions
+        .filter((item) => item.id !== questionId)
+        .map((item) => item);
+      setQuestions(newArray);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   React.useEffect(() => {
     axios
       .get(`http://localhost:5000/api/v1/test/${id}`)
@@ -439,6 +454,7 @@ export default function TestEditingPage({ setShowNav, showNav }) {
                       data={question}
                       isEditing={true}
                       index={idx + 1}
+                      handleDelete={handleDelete}
                     />
                   ))}
                 </Stack>
@@ -487,7 +503,7 @@ export default function TestEditingPage({ setShowNav, showNav }) {
               }}
             >
               <Stack direction='column' spacing={1} p={1}>
-                {image === "" ? (
+                {image === "" || image === null || image === undefined ? (
                   <Stack
                     borderRadius={2}
                     width='100%'
@@ -530,13 +546,15 @@ export default function TestEditingPage({ setShowNav, showNav }) {
                       backgroundColor: "white",
                       display: "flex",
                       alignItems: "center",
+                      color:'white'
                     }}
                   >
                     <IconButton
+                      
                       sx={{ position: "absolute", top: -5, right: -8 }}
                       onClick={() => setOpen(true)}
                     >
-                      <DeleteIcon color='action' fontSize='small' />
+                      <DeleteIcon color='inherit' fontSize='small' />
                     </IconButton>
 
                     <img
@@ -544,8 +562,8 @@ export default function TestEditingPage({ setShowNav, showNav }) {
                       alt='inputImage'
                       style={{
                         width: "100%",
-                        maxHeight: "210px",
-                        objectFit: "contain",
+                        height: "100%",
+                        objectFit: "cover",
                         borderRadius: "15px",
                       }}
                     />
@@ -561,7 +579,8 @@ export default function TestEditingPage({ setShowNav, showNav }) {
                     <Mode fontSize='small' />
                   </IconButton>
                 </Stack>
-                <Stack direction='row' justifyContent='space-between'>
+                <Divider />
+                <Stack direction='row' justifyContent='space-between' mt={5}>
                   <Typography>{grade ? grade + "th Grades" : ""}</Typography>
                   <IconButton onClick={() => setOpen(true)}>
                     <Mode fontSize='small' />

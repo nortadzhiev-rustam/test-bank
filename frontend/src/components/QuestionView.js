@@ -19,14 +19,16 @@ import { Stack } from "@mui/system";
 import {
   CheckBoxOutlined,
   CopyAll,
+  Delete,
   Flaky,
   Layers,
   Mode,
   Subject,
 } from "@mui/icons-material";
+import axios from "axios";
 
-export default function QuestionView({ data, isEditing, index }) {
-  const { image, question, options, type, mark, correctAnswer } = data;
+export default function QuestionView({ data, isEditing, index, handleDelete }) {
+  const { image, question, options, type, mark, correctAnswer, id } = data;
   const [answers] = useState(JSON.parse(options));
   const [quest] = useState(JSON.parse(question));
   const [correct] = useState(JSON.parse(correctAnswer));
@@ -39,6 +41,10 @@ export default function QuestionView({ data, isEditing, index }) {
     if (type === "Open ended")
       return <Subject color='inherit' fontSize='small' />;
     else return <Layers color='inherit' fontSize='small' />;
+  };
+
+  const onDelete = () => {
+    handleDelete(id);
   };
 
   return (
@@ -72,11 +78,26 @@ export default function QuestionView({ data, isEditing, index }) {
                 <Mode fontSize='small' color='inherit' /> Edit
               </Button>
               <Button
+                display='flex'
+                justifyContent='center'
+                alignItems='center'
+                width={25}
                 variant='contained'
-                sx={{ width: "25px" }}
                 color='inherit'
+                sx={{ minWidth: 15, maxWidth: 20 }}
               >
                 <CopyAll fontSize='small' />
+              </Button>
+              <Button
+                display='flex'
+                justifyContent='center'
+                alignItems='center'
+                variant='contained'
+                color='inherit'
+                sx={{ minWidth: 15, maxWidth: 20 }}
+                onClick={() => onDelete()}
+              >
+                <Delete fontSize='small' />
               </Button>
             </Stack>
           </Stack>
@@ -90,7 +111,7 @@ export default function QuestionView({ data, isEditing, index }) {
           >
             <Paper elevation={2} sx={{ borderRadius: 1, py: 0.5, px: 1 }}>
               <Stack direction='row' spacing={1} alignItems='center'>
-                <FontAwesomeIcon icon={faCheckSquare} />
+                <IconSelector />
                 <Typography>{type}</Typography>
               </Stack>
             </Paper>

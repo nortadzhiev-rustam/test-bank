@@ -25,8 +25,10 @@ const DepartmentCard = ({ department, onDelete }) => {
         {isHover && (
           <Tooltip
             title={
-              department.Users.length !== 0
-                ? "This department has dependency you cannot delete it"
+              department.Users.length !== 0 ||
+              department.Questions.length !== 0 ||
+              department.Tests.length !== 0
+                ? "This department has dependencies, You cannot delete it!"
                 : ""
             }
             arrow
@@ -35,11 +37,21 @@ const DepartmentCard = ({ department, onDelete }) => {
             <Box>
               <IconButton
                 onClick={() => onDelete(department.id)}
-                disabled={department.Users.length !== 0}
+                disabled={
+                  department.Users.length !== 0 ||
+                  department.Questions.length !== 0 ||
+                  department.Tests.length !== 0
+                }
               >
                 <FontAwesomeIcon
                   icon={faTrash}
-                  color={department.Users.length !== 0 ? "#c8c8c8" : "red"}
+                  color={
+                    department.Users.length !== 0 ||
+                    department.Questions.length !== 0 ||
+                    department.Tests.length !== 0
+                      ? "#c8c8c8"
+                      : "red"
+                  }
                 />
               </IconButton>
             </Box>

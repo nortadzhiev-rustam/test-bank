@@ -109,8 +109,8 @@ const InsertWindow = ({
   };
 
   return (
-    <Draggable>
-      <Grid container>
+    <Draggable handle='#styled-box'>
+      <Grid  container>
         <Grid xs={12} sm={12} md={isFull ? 8 : 12} mdOffset={isFull ? 2 : 0}>
           <Paper
             elevation={isHover ? 10 : 2}
@@ -125,7 +125,7 @@ const InsertWindow = ({
             }}
             className='animate__animated animate__fadeInUp animate__faster'
           >
-            <StyledBox>
+            <StyledBox id='styled-box'>
               <FormPaper>
                 <div
                   style={{ display: "flex", cursor: "default" }}

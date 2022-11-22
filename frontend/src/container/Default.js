@@ -190,6 +190,7 @@ const Default = ({ setShowNav, showNav }) => {
           spacing={2.5}
           mb={5}
           mt={10}
+          p={2}
         >
           {departments.map((item, idx) => (
             <MainDepartments key={idx} name={item.name} onClick={handleClick} />

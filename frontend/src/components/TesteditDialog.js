@@ -46,6 +46,9 @@ export default function TesteditDialog({
   React.useEffect(() => {
     setSelected(grade);
   }, [grade]);
+  React.useEffect(() => {
+    setImg(imageName);
+  }, []);
 
   React.useEffect(() => {
     const uploadImage = async () => {
@@ -127,8 +130,10 @@ export default function TesteditDialog({
             justifyContent='center'
             alignItems='center'
           >
-            <DropzoneComponent open={open} setImage={setImage} />
-            {img !== "" && img !== null && img !== undefined && (
+            {img !== null &&
+            img !== undefined &&
+            imageName !== "" &&
+            img !== "" ? (
               <Box
                 maxWidth='100%'
                 height={150}
@@ -152,7 +157,9 @@ export default function TesteditDialog({
                 </IconButton>
 
                 <img
-                  src={process.env.PUBLIC_URL + "/uploads/" + imageName}
+                  src={
+                    process.env.PUBLIC_URL + "/uploads/" + (imageName || img)
+                  }
                   alt='inputImage'
                   style={{
                     width: "100%",
@@ -162,6 +169,8 @@ export default function TesteditDialog({
                   }}
                 />
               </Box>
+            ) : (
+              <DropzoneComponent open={open} setImage={setImage} />
             )}
           </Box>
           <Typography>2.Select grade</Typography>

@@ -52,6 +52,18 @@ router.post("/question", async (req, res) => {
   }
 });
 
+router.delete("/question/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const question = await Question.destroy({ where: { id: id }, force: true });
+    res
+      .status(200)
+      .json({ data: question, message: "A question was successfully deleted" });
+  } catch (err) {
+    res.send("Something went wrong ", err);
+  }
+});
+
 //route to get all questions
 router.get("/questions", async (req, res) => {
   try {
