@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, Box, Typography, Button } from "@mui/material";
+import { Paper, Box, Button } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { styled } from "@mui/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,6 +18,7 @@ import { useParams } from "react-router-dom";
 import Draggable from "react-draggable";
 
 import axios from "axios";
+import TrueOrFalse from "../components/TrueOrFalse";
 const StyledBox = styled(Box)({
   display: "flex",
   position: "relative",
@@ -50,6 +51,7 @@ const InsertWindow = ({
   test,
   grade,
   type,
+  setError,
 }) => {
   const [mouseIn, setMouseIn] = React.useState(false);
   const [isHover, setHover] = React.useState(false);
@@ -59,11 +61,9 @@ const InsertWindow = ({
   const [answers, setAnswers] = React.useState([]);
   const [correctAnswer, setCorrectAnswer] = React.useState({});
   const [image, setImage] = React.useState("");
-  const [createdTest, setCreatedTest] = React.useState("");
-  const [difficulty, setDifficulty] = React.useState('');
+  const [difficulty, setDifficulty] = React.useState("");
   const dispatch = useDispatch();
   const isFull = useSelector((state) => state.questionsType.isFull);
-  const quest = useSelector((state) => state.questionsType.value);
   const user = useSelector((state) => state.user.user);
 
   const { id } = useParams();
@@ -104,13 +104,13 @@ const InsertWindow = ({
       setMessage(req.data.message);
       handleClose();
     } catch (err) {
-      console.log(err);
+      setError(err);
     }
   };
 
   return (
     <Draggable handle='#styled-box'>
-      <Grid  container>
+      <Grid container>
         <Grid xs={12} sm={12} md={isFull ? 8 : 12} mdOffset={isFull ? 2 : 0}>
           <Paper
             elevation={isHover ? 10 : 2}
@@ -222,11 +222,20 @@ const InsertWindow = ({
                 setDifficulty={setDifficulty}
                 difficulty={difficulty}
               />
-              <AnswersContainer
-                setCorrectAnswer={setCorrectAnswer}
-                answers={answers}
-                setAnswers={setAnswers}
-              />
+              {type === "Multiple-choice" && (
+                <AnswersContainer
+                  setCorrectAnswer={(item) => setCorrectAnswer(item)}
+                  answers={answers}
+                  setAnswers={setAnswers}
+                />
+              )}
+              {type === "True or False" && (
+                <TrueOrFalse
+                  setCorrectAnswer={setCorrectAnswer}
+                  answers={answers}
+                  setAnswers={setAnswers}
+                />
+              )}
             </Box>
             <Box mt={3} width='95%' textAlign='right'>
               <Button
