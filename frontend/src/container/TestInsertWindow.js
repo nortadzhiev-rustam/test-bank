@@ -60,7 +60,7 @@ const InsertWindow = ({
   const [correctAnswer, setCorrectAnswer] = React.useState({});
   const [image, setImage] = React.useState("");
   const [createdTest, setCreatedTest] = React.useState("");
-  const [difficulty, setDifficulty] = React.useState('');
+  const [difficulty, setDifficulty] = React.useState("");
   const dispatch = useDispatch();
   const isFull = useSelector((state) => state.questionsType.isFull);
   const quest = useSelector((state) => state.questionsType.value);
@@ -110,7 +110,7 @@ const InsertWindow = ({
 
   return (
     <Draggable handle='#styled-box'>
-      <Grid  container>
+      <Grid container>
         <Grid xs={12} sm={12} md={isFull ? 8 : 12} mdOffset={isFull ? 2 : 0}>
           <Paper
             elevation={isHover ? 10 : 2}
@@ -222,11 +222,14 @@ const InsertWindow = ({
                 setDifficulty={setDifficulty}
                 difficulty={difficulty}
               />
-              <AnswersContainer
-                setCorrectAnswer={setCorrectAnswer}
-                answers={answers}
-                setAnswers={setAnswers}
-              />
+              {type === "Multiple-choice" && (
+                <AnswersContainer
+                  setCorrectAnswer={setCorrectAnswer}
+                  answers={answers}
+                  setAnswers={setAnswers}
+                />
+              )}
+              {type === 'Open ended' && <Typography sx={{my: 10}} textAlign='center' variant='h4'>Participants will write their own responses</Typography>}
             </Box>
             <Box mt={3} width='95%' textAlign='right'>
               <Button
