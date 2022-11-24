@@ -110,7 +110,7 @@ const InsertWindow = ({
 
   return (
     <Draggable handle='#styled-box'>
-      <Grid  container>
+      <Grid container>
         <Grid xs={12} sm={12} md={isFull ? 8 : 12} mdOffset={isFull ? 2 : 0}>
           <Paper
             elevation={isHover ? 10 : 2}
@@ -222,11 +222,14 @@ const InsertWindow = ({
                 setDifficulty={setDifficulty}
                 difficulty={difficulty}
               />
-              <AnswersContainer
-                setCorrectAnswer={setCorrectAnswer}
-                answers={answers}
-                setAnswers={setAnswers}
-              />
+              {type == "Multiple-choice" && (
+                <AnswersContainer
+                  setCorrectAnswer={setCorrectAnswer}
+                  answers={answers}
+                  setAnswers={setAnswers}
+                />
+              )}
+              {type === "True or False" && <TrueOrFalse />}
             </Box>
             <Box mt={3} width='95%' textAlign='right'>
               <Button
