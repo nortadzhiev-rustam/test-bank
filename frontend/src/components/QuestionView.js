@@ -27,7 +27,13 @@ import {
 } from "@mui/icons-material";
 import axios from "axios";
 
-export default function QuestionView({ data, isEditing, index, handleDelete }) {
+export default function QuestionView({
+  data,
+  isEditing,
+  index,
+  handleDelete,
+  handleEdit,
+}) {
   const { image, question, options, type, mark, correctAnswer, id } = data;
   const [answers] = useState(JSON.parse(options));
   const [quest] = useState(JSON.parse(question));
@@ -45,6 +51,10 @@ export default function QuestionView({ data, isEditing, index, handleDelete }) {
 
   const onDelete = () => {
     handleDelete(id);
+  };
+
+  const onEdit = () => {
+    handleEdit(id);
   };
 
   return (
@@ -73,7 +83,12 @@ export default function QuestionView({ data, isEditing, index, handleDelete }) {
               <Typography>Question {index}</Typography>
             </Stack>
             <Stack direction='row' spacing={1}>
-              <Button variant='contained' size='small' color='inherit'>
+              <Button
+                variant='contained'
+                size='small'
+                color='inherit'
+                onClick={onEdit}
+              >
                 {" "}
                 <Mode fontSize='small' color='inherit' /> Edit
               </Button>

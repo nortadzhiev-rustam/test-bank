@@ -17,6 +17,8 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
+  Alert,
+  AlertTitle,
 } from "@mui/material";
 import Slide from "@mui/material/Slide";
 import SearchIcon from "@mui/icons-material/Search";
@@ -40,6 +42,7 @@ import TesteditDialog from "../components/TesteditDialog";
 import InsertPanel from "../components/InsertPanel";
 import TestInsertWindow from "./TestInsertWindow";
 import QuestionView from "../components/QuestionView";
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -125,7 +128,9 @@ export default function TestEditingPage({ setShowNav, showNav }) {
   const [image, setImage] = React.useState("");
   const [message, setMessage] = React.useState("");
   const [questionType, setQuestionType] = React.useState("");
+  const [question, setQuestion] = React.useState({});
   const history = useNavigate();
+  const [error, setError] = React.useState("");
   const [openEditor, setOpenEditor] = React.useState(false);
   const { id } = useParams();
 
@@ -134,14 +139,20 @@ export default function TestEditingPage({ setShowNav, showNav }) {
       const res = await axios.delete(
         `http://localhost:5000/api/v1/question/${questionId}`
       );
-      console.log(res.data.message);
+      setMessage(res.data.message);
       const newArray = questions
         .filter((item) => item.id !== questionId)
         .map((item) => item);
       setQuestions(newArray);
     } catch (err) {
-      console.log(err);
+      setError(err);
     }
+  };
+
+  const handleEdit = (questionId) => {
+    questions
+      .filter((item) => item.id === questionId)
+      .map((item) => setQuestion(item));
   };
 
   React.useEffect(() => {
@@ -165,9 +176,6 @@ export default function TestEditingPage({ setShowNav, showNav }) {
       setShowNav(false);
     }
   }, [showNav, setShowNav]);
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleDialogOpen = () => {
     setOpenSettings(!openSettings);
@@ -179,6 +187,12 @@ export default function TestEditingPage({ setShowNav, showNav }) {
     setQuestionType(type);
   };
 
+  React.useEffect(() => {
+    setTimeout(() => {
+      setMessage("");
+    }, 1000);
+  }, [message]);
+
   return (
     <Box
       sx={{
@@ -188,8 +202,18 @@ export default function TestEditingPage({ setShowNav, showNav }) {
         justifyContent: "center",
         alignItem: "center",
         backroundColor: "#f2f2f2",
+       
       }}
     >
+      {message !== "" && (
+        <Alert
+          sx={{  width: "92%" }}
+          severity='success'
+        >
+          <AlertTitle>Success</AlertTitle>
+          {message}
+        </Alert>
+      )}
       <TesteditDialog
         onClose={setOpen}
         open={open}
@@ -279,6 +303,7 @@ export default function TestEditingPage({ setShowNav, showNav }) {
           test={department}
           grade={grade}
           type={questionType}
+          setError={setError}
         />
       ) : (
         <Grid
@@ -368,6 +393,7 @@ export default function TestEditingPage({ setShowNav, showNav }) {
                 ) : null}
               </Stack>
             </Item>
+
             {questions.length === 0 ? (
               <Stack
                 sx={{ mt: 20, width: "92%", height: 300 }}
@@ -455,6 +481,7 @@ export default function TestEditingPage({ setShowNav, showNav }) {
                       isEditing={true}
                       index={idx + 1}
                       handleDelete={handleDelete}
+                      handleEdit={handleEdit}
                     />
                   ))}
                 </Stack>
@@ -486,11 +513,11 @@ export default function TestEditingPage({ setShowNav, showNav }) {
             xs={10}
             md={4}
             lg={3}
-            xl={2.5}
+            xl={2.4}
             sx={{
               position: { xs: "static", md: "fixed" },
               top: "72px",
-              right: { md: "70px", lg: "100px", xl: "180px" },
+              right: { md: "70px", lg: "120px", xl: "250px" },
             }}
           >
             <Item
@@ -546,11 +573,10 @@ export default function TestEditingPage({ setShowNav, showNav }) {
                       backgroundColor: "white",
                       display: "flex",
                       alignItems: "center",
-                      color:'white'
+                      color: "white",
                     }}
                   >
                     <IconButton
-                      
                       sx={{ position: "absolute", top: -5, right: -8 }}
                       onClick={() => setOpen(true)}
                     >
