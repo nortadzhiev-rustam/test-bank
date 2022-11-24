@@ -486,11 +486,11 @@ export default function TestEditingPage({ setShowNav, showNav }) {
             xs={10}
             md={4}
             lg={3}
-            xl={2}
+            xl={2.5}
             sx={{
               position: { xs: "static", md: "fixed" },
               top: "72px",
-              right: { md: "70px", lg: "120px", xl: "250px" },
+              right: { md: "70px", lg: "100px", xl: "180px" },
             }}
           >
             <Item
