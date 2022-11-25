@@ -131,16 +131,7 @@ const AnswersCard = (props) => {
   };
 
   return (
-    <StyledPaper
-      elevation={10}
-      sx={{ backgroundColor: getRandomColor(props.index) }}
-      id={props.index}
-      className={
-        isDeleted
-          ? "animate__animated animate__fadeOutDown"
-          : "animate__animated animate__fadeInRight"
-      }
-    >
+    <>
       {isOpen && (
         <Box sx={{ width: "95%" }}>
           <FormulaEditor
@@ -160,112 +151,128 @@ const AnswersCard = (props) => {
           />
         </Box>
       )}
-      <Box
-        sx={{
-          height: 50,
-          width: "100%",
-          padding: 0,
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
+      <StyledPaper
+        elevation={10}
+        sx={{ backgroundColor: getRandomColor(props.index) }}
+        id={props.index}
+        className={
+          isDeleted
+            ? "animate__animated animate__fadeOutDown"
+            : "animate__animated animate__fadeInRight"
+        }
       >
-        <IconBoxContainer>
-          <BootstrapTooltip2
-            placement='top'
-            arrow
-            title={
-              props.counter < 3 ? "You should have at least two optoins" : ""
-            }
-          >
-            <IconBox
-              variant='button'
-              sx={{ backgroundColor: props.counter === 2 ? "#999" : "#006064" }}
+        <Box
+          sx={{
+            height: 50,
+            width: "100%",
+            padding: 0,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <IconBoxContainer>
+            <BootstrapTooltip2
+              placement='top'
+              arrow
+              title={
+                props.counter < 3 ? "You should have at least two optoins" : ""
+              }
             >
-              <IconButton
-                disabled={props.counter === 2}
-                onClick={() => {
-                  setDeleted(!isDeleted);
-                  props.setDeleted(!isDeleted);
-                  props.onDelete(props.option.key);
+              <IconBox
+                variant='button'
+                sx={{
+                  backgroundColor: props.counter === 2 ? "#999" : "#006064",
                 }}
               >
-                <FontAwesomeIcon size='xs' icon={faTrashCan} color='white' />
-              </IconButton>
-            </IconBox>
-          </BootstrapTooltip2>
-          <Tooltip
-            placement='top'
-            arrow
-            title={isOpen ? "Close" : "insert equation"}
-          >
-            <IconBox bgcolor='#006064'>
-              <IconButton onClick={isOpen ? handleClose : handleOpen}>
-                {isOpen ? (
-                  <FontAwesomeIcon size='sm' color='#fff' icon={faKeyboard} />
-                ) : (
-                  <img style={{ height: 20 }} src={formula} alt='formula' />
-                )}
-              </IconButton>
-            </IconBox>
-          </Tooltip>
-        </IconBoxContainer>
-        {props.type === "Multiple-choice" && (
-          <BootstrapTooltip
-            placement='top'
-            title={
-              content === ""
-                ? "Editor can't be empty"
-                : "Mark the coorect answer"
-            }
-          >
-            <Box sx={{ height: "100%" }}>
-              <Checkbox
-                disabled={content === ""}
-                onChange={(e) => setCheckBox(e, props.option.key)}
-                checked={content !== "" && getCheckBox(props.option.key)}
-                onMouseEnter={() => setHover(true)}
-                onMouseLeave={() => setHover(false)}
-                icon={
-                  <FontAwesomeIcon
-                    size='xl'
-                    color={isHover ? "#fff" : "#999"}
-                    icon={faCheckCircle}
-                  />
-                }
-                checkedIcon={
-                  <FontAwesomeIcon size='xl' color='#fff' icon={checkCircle} />
-                }
-              />
-            </Box>
-          </BootstrapTooltip>
-        )}
-      </Box>
+                <IconButton
+                  disabled={props.counter === 2}
+                  onClick={() => {
+                    setDeleted(!isDeleted);
+                    props.setDeleted(!isDeleted);
+                    props.onDelete(props.option.key);
+                  }}
+                >
+                  <FontAwesomeIcon size='xs' icon={faTrashCan} color='white' />
+                </IconButton>
+              </IconBox>
+            </BootstrapTooltip2>
+            <Tooltip
+              placement='top'
+              arrow
+              title={isOpen ? "Close" : "insert equation"}
+            >
+              <IconBox bgcolor='#006064'>
+                <IconButton onClick={isOpen ? handleClose : handleOpen}>
+                  {isOpen ? (
+                    <FontAwesomeIcon size='sm' color='#fff' icon={faKeyboard} />
+                  ) : (
+                    <img style={{ height: 20 }} src={formula} alt='formula' />
+                  )}
+                </IconButton>
+              </IconBox>
+            </Tooltip>
+          </IconBoxContainer>
+          {props.type === "Multiple-choice" && (
+            <BootstrapTooltip
+              placement='top'
+              title={
+                content === ""
+                  ? "Editor can't be empty"
+                  : "Mark the coorect answer"
+              }
+            >
+              <Box sx={{ height: "100%" }}>
+                <Checkbox
+                  disabled={content === ""}
+                  onChange={(e) => setCheckBox(e, props.option.key)}
+                  checked={content !== "" && getCheckBox(props.option.key)}
+                  onMouseEnter={() => setHover(true)}
+                  onMouseLeave={() => setHover(false)}
+                  icon={
+                    <FontAwesomeIcon
+                      size='xl'
+                      color={isHover ? "#fff" : "#999"}
+                      icon={faCheckCircle}
+                    />
+                  }
+                  checkedIcon={
+                    <FontAwesomeIcon
+                      size='xl'
+                      color='#fff'
+                      icon={checkCircle}
+                    />
+                  }
+                />
+              </Box>
+            </BootstrapTooltip>
+          )}
+        </Box>
 
-      <Box width={"90%"}>
-        <MyEditor
-          latex={{ id: Date.now(), equation }}
-          setLatex={(eq) => setToEdit(eq)}
-          setEditing={(e) => setEditing(e)}
-          edited={toEdit}
-          isEditing={isEditing}
-          setEquation={(eq) => setEquation(eq)}
-          placeholder='Your answer goes here'
-          handleOpen={handleOpen}
-          editorId={`answer${props.option.key}`}
-          setContent={handleContentChange}
-        />
-      </Box>
-    </StyledPaper>
+        <Box width={"90%"}>
+          <MyEditor
+            latex={{ id: Date.now(), equation }}
+            setLatex={(eq) => setToEdit(eq)}
+            setEditing={(e) => setEditing(e)}
+            edited={toEdit}
+            isEditing={isEditing}
+            setEquation={(eq) => setEquation(eq)}
+            placeholder='Your answer goes here'
+            handleOpen={handleOpen}
+            editorId={`answer${props.option.key}`}
+            setContent={handleContentChange}
+          />
+        </Box>
+      </StyledPaper>
+    </>
   );
 };
 
 export default AnswersCard;
 
 const StyledPaper = styled(Paper)({
-  minHeight: 300,
   width: "100%",
-
+  height: "100%",
   display: "flex",
   flexDirection: "column",
   justifyContent: "start",
@@ -275,7 +282,7 @@ const StyledPaper = styled(Paper)({
   borderTopLeftRadius: 15,
   borderTopRightRadius: 25,
   paddingLeft: 0,
-  paddingBottom: 10,
+  paddingBlock: 10,
 });
 
 const IconBox = styled(Box)({

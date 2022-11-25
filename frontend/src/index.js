@@ -8,10 +8,11 @@ import { Provider } from "react-redux";
 
 import "animate.css";
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-
+  <StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </StrictMode>,
   document.getElementById("root")
 );
 
