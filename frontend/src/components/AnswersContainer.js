@@ -11,6 +11,7 @@ export default function AnswersContainer({
   answers,
   setAnswers,
   setCorrectAnswer,
+  type,
 }) {
   const [counter, setCounter] = React.useState(4);
   const [options, setOptions] = React.useState([
@@ -191,6 +192,7 @@ export default function AnswersContainer({
                 d: setChecked4,
               }}
               addAnswer={addAnswer}
+              type={type}
             />
           </Grid>
         );

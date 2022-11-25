@@ -94,8 +94,6 @@ export default function QuestionView({
               </Button>
               <Button
                 display='flex'
-                justifyContent='center'
-                alignItems='center'
                 width={25}
                 variant='contained'
                 color='inherit'
@@ -105,8 +103,6 @@ export default function QuestionView({
               </Button>
               <Button
                 display='flex'
-                justifyContent='center'
-                alignItems='center'
                 variant='contained'
                 color='inherit'
                 sx={{ minWidth: 15, maxWidth: 20 }}

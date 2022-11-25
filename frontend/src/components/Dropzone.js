@@ -102,7 +102,6 @@ function DropzoneComponent({ open, setImage, image }) {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            
           }}
         >
           Drag and drop your images here or click here.
