@@ -225,7 +225,7 @@ const InsertWindow = ({
               />
               {type === "Multiple-choice" && (
                 <AnswersContainer
-                  setCorrectAnswer={(item) => setCorrectAnswer(item)}
+                  setCorrectAnswer={setCorrectAnswer}
                   answers={answers}
                   setAnswers={setAnswers}
                   type={type}

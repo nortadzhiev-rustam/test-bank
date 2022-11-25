@@ -168,10 +168,10 @@ const QuestionInput = ({
               }}
               size='small'
             >
-              <InputLabel id='demo-select-small'>Difficulty</InputLabel>
+              <InputLabel id='demo-select-small2'>Difficulty</InputLabel>
               <Select
-                labelId='demo-select-small'
-                id='demo-select-small'
+                labelId='demo-select-small2'
+                id='demo-select-small2'
                 value={difficulty}
                 label='Difficulty'
                 onChange={(e) => setDifficulty(e.target.value)}
@@ -196,10 +196,10 @@ const QuestionInput = ({
               }}
               size='small'
             >
-              <InputLabel id='demo-select-small'>Mark</InputLabel>
+              <InputLabel id='demo-select-small1'>Mark</InputLabel>
               <Select
-                labelId='demo-select-small'
-                id='demo-select-small'
+                labelId='demo-select-small1'
+                id='demo-select-small1'
                 value={mark}
                 label='Mark'
                 onChange={handleChange}
