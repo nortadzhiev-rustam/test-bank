@@ -210,32 +210,36 @@ const AnswersCard = (props) => {
             </IconBox>
           </Tooltip>
         </IconBoxContainer>
-        <BootstrapTooltip
-          placement='top'
-          title={
-            content === "" ? "Editor can't be empty" : "Mark the coorect answer"
-          }
-        >
-          <Box sx={{ height: "100%" }}>
-            <Checkbox
-              disabled={content === ""}
-              onChange={(e) => setCheckBox(e, props.option.key)}
-              checked={content !== "" && getCheckBox(props.option.key)}
-              onMouseEnter={() => setHover(true)}
-              onMouseLeave={() => setHover(false)}
-              icon={
-                <FontAwesomeIcon
-                  size='xl'
-                  color={isHover ? "#fff" : "#999"}
-                  icon={faCheckCircle}
-                />
-              }
-              checkedIcon={
-                <FontAwesomeIcon size='xl' color='#fff' icon={checkCircle} />
-              }
-            />
-          </Box>
-        </BootstrapTooltip>
+        {props.type === "Multiple-choice" && (
+          <BootstrapTooltip
+            placement='top'
+            title={
+              content === ""
+                ? "Editor can't be empty"
+                : "Mark the coorect answer"
+            }
+          >
+            <Box sx={{ height: "100%" }}>
+              <Checkbox
+                disabled={content === ""}
+                onChange={(e) => setCheckBox(e, props.option.key)}
+                checked={content !== "" && getCheckBox(props.option.key)}
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
+                icon={
+                  <FontAwesomeIcon
+                    size='xl'
+                    color={isHover ? "#fff" : "#999"}
+                    icon={faCheckCircle}
+                  />
+                }
+                checkedIcon={
+                  <FontAwesomeIcon size='xl' color='#fff' icon={checkCircle} />
+                }
+              />
+            </Box>
+          </BootstrapTooltip>
+        )}
       </Box>
 
       <Box width={"90%"}>

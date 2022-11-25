@@ -19,7 +19,7 @@ import Draggable from "react-draggable";
 
 import axios from "axios";
 import TrueOrFalse from "../components/TrueOrFalse";
-import Match from "../components/Match";
+import MatchingContainer from "../components/Match";
 const StyledBox = styled(Box)({
   display: "flex",
   position: "relative",
@@ -228,6 +228,7 @@ const InsertWindow = ({
                   setCorrectAnswer={setCorrectAnswer}
                   answers={answers}
                   setAnswers={setAnswers}
+                  type={type}
                 />
               )}
               {type === "True or False" && (
@@ -237,7 +238,14 @@ const InsertWindow = ({
                   setAnswers={setAnswers}
                 />
               )}
-              {type === "Match" && <Match />}
+              {type === "Match" && (
+                <MatchingContainer
+                  answers={answers}
+                  setAnswers={setAnswers}
+                  type={type}
+                  setCorrectAnswer={(item) => setCorrectAnswer(item)}
+                />
+              )}
             </Box>
             <Box mt={3} width='95%' textAlign='right'>
               <Button
