@@ -140,9 +140,8 @@ export default function TestEditingPage({ setShowNav, showNav }) {
         `http://localhost:5000/api/v1/question/${questionId}`
       );
       setMessage(res.data.message);
-      const newArray = questions
-        .filter((item) => item.id !== questionId)
-        .map((item) => item);
+      const newArray = questions.filter((item) => item.id !== questionId);
+
       setQuestions(newArray);
     } catch (err) {
       setError(err);
@@ -202,14 +201,10 @@ export default function TestEditingPage({ setShowNav, showNav }) {
         justifyContent: "center",
         alignItem: "center",
         backroundColor: "#f2f2f2",
-       
       }}
     >
       {message !== "" && (
-        <Alert
-          sx={{  width: "92%" }}
-          severity='success'
-        >
+        <Alert sx={{ width: "92%" }} severity='success'>
           <AlertTitle>Success</AlertTitle>
           {message}
         </Alert>

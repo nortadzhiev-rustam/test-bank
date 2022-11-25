@@ -1,12 +1,12 @@
 import { Stack, Box, Typography } from "@mui/material";
 import React from "react";
 
-export default function TrueOrFalse({answers, setAnswers, setCorrectAnswer}) {
+export default function TrueOrFalse({ answers, setAnswers, setCorrectAnswer }) {
   const [clicked, setClicked] = React.useState(false);
   const [selected, setSelected] = React.useState("");
   const options = [
-    { option: "True", key: 0 },
-    { option: "Flase", key: 1 },
+    { content: { text: "True" }, key: 0 },
+    { content: { text: "Flase" }, key: 1 },
   ];
 
   const handleClick = (item) => {
@@ -50,7 +50,7 @@ export default function TrueOrFalse({answers, setAnswers, setCorrectAnswer}) {
               cursor: "pointer",
             }}
           >
-            <Typography variant='h4'>{item.option}</Typography>
+            <Typography variant='h4'>{item.content.text}</Typography>
           </Stack>
         ))}
       </Stack>
