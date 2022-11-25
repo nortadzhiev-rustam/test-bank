@@ -36,6 +36,7 @@ import {
   Flaky,
   Subject,
   FormatListBulleted,
+  Crop169,
 } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import TesteditDialog from "../components/TesteditDialog";
@@ -109,10 +110,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const types = [
-  { type: "Multiple-choice", icon: <CheckBoxOutlined fontSize='inherit' /> },
+  { type: "Multiple choice", icon: <CheckBoxOutlined fontSize='inherit' /> },
   { type: "True or False", icon: <Flaky fontSize='inherit' /> },
   { type: "Open ended", icon: <Subject fontSize='inherit' /> },
   { type: "Match", icon: <Layers fontSize='inherit' /> },
+  { type: "Fill in the blanks", icon: <Crop169 fontSize='inherit' /> },
 ];
 
 export default function TestEditingPage({ setShowNav, showNav }) {
@@ -154,6 +156,30 @@ export default function TestEditingPage({ setShowNav, showNav }) {
       .map((item) => setQuestion(item));
   };
 
+  const handleDuplicate = React.useCallback(
+    async (id) => {
+      const newArray = questions.filter((item) => {
+        if (item.id === id) {
+          item.id = questions.length + 1;
+          return item;
+        }
+        return null;
+      });
+      const data = newArray[0];
+      try {
+        const req = await axios.post(
+          "http://localhost:5000/api/v1/question",
+          data
+        );
+        
+        setMessage(req.data.message);
+      } catch (err) {
+        setError(err);
+      }
+    },
+    [questions]
+  );
+
   React.useEffect(() => {
     axios
       .get(`http://localhost:5000/api/v1/test/${id}`)
@@ -168,7 +194,7 @@ export default function TestEditingPage({ setShowNav, showNav }) {
         }
       })
       .catch((err) => console.log(`Something went wrong ${err}`));
-  }, [id, isEditing, openEditor, open]);
+  }, [id, isEditing, openEditor, open, handleDuplicate]);
 
   React.useEffect(() => {
     if (showNav) {
@@ -203,12 +229,6 @@ export default function TestEditingPage({ setShowNav, showNav }) {
         backroundColor: "#f2f2f2",
       }}
     >
-      {message !== "" && (
-        <Alert sx={{ width: "92%" }} severity='success'>
-          <AlertTitle>Success</AlertTitle>
-          {message}
-        </Alert>
-      )}
       <TesteditDialog
         onClose={setOpen}
         open={open}
@@ -417,7 +437,7 @@ export default function TestEditingPage({ setShowNav, showNav }) {
                             alignItems='center'
                             p={1}
                             borderRadius={2}
-                            width='129px'
+                            minWidth='129px'
                             sx={{
                               "&:hover": { backgroundColor: "#f2f2f2" },
                               cursor: "pointer",
@@ -477,6 +497,7 @@ export default function TestEditingPage({ setShowNav, showNav }) {
                       index={idx + 1}
                       handleDelete={handleDelete}
                       handleEdit={handleEdit}
+                      handleDuplicate={handleDuplicate}
                     />
                   ))}
                 </Stack>
@@ -512,7 +533,7 @@ export default function TestEditingPage({ setShowNav, showNav }) {
             sx={{
               position: { xs: "static", md: "fixed" },
               top: "72px",
-              right: { md: "70px", lg: "120px", xl: "250px" },
+              right: { md: "70px", lg: "120px", xl: "180px" },
             }}
           >
             <Item

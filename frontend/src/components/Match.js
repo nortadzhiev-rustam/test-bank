@@ -83,12 +83,12 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type }) {
 
   const getRandomKey = () => {
     const set = new Set();
-    let randomNumber = Math.floor(Math.random() * 5) + 1;
+    let randomNumber = Math.floor(Math.random() * 4) + 1;
     options.forEach((item) => {
       set.add(item.key);
     });
     while (set.has(randomNumber)) {
-      randomNumber = Math.floor(Math.random() * 5) + 1;
+      randomNumber = Math.floor(Math.random() * 4) + 1;
     }
     return randomNumber;
   };
@@ -152,6 +152,7 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type }) {
                 addAnswer={addAnswer}
                 type={type}
               />
+             
               <Stack
                 bgcolor={getRandomColor(option.option)}
                 direction='row'
@@ -160,6 +161,7 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type }) {
                 justifyContent='center'
                 p={1}
                 borderRadius={2}
+                
               >
                 <Typography color='white'>{option.option}</Typography>
                 <InputBase

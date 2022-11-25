@@ -33,6 +33,7 @@ export default function QuestionView({
   index,
   handleDelete,
   handleEdit,
+  handleDuplicate,
 }) {
   const { image, question, options, type, mark, correctAnswer, id } = data;
   const [answers] = useState(JSON.parse(options));
@@ -55,6 +56,10 @@ export default function QuestionView({
 
   const onEdit = () => {
     handleEdit(id);
+  };
+
+  const onDuplicate = () => {
+    handleDuplicate(id);
   };
 
   return (
@@ -98,6 +103,7 @@ export default function QuestionView({
                 variant='contained'
                 color='inherit'
                 sx={{ minWidth: 15, maxWidth: 20 }}
+                onClick={() => onDuplicate()}
               >
                 <CopyAll fontSize='small' />
               </Button>

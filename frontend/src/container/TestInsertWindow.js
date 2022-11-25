@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, Box, Button } from "@mui/material";
+import { Paper, Box, Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { styled } from "@mui/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -86,11 +86,11 @@ const InsertWindow = ({
       difficulty: difficulty,
       grade: grade,
       title,
-      question,
-      answers,
+      question: JSON.stringify(question),
+      options: JSON.stringify(answers),
       mark,
       image,
-      correctAnswer,
+      correctAnswer: JSON.stringify(correctAnswer),
       userId: user.id,
       departmentId: test.id,
       testId: id,
@@ -111,8 +111,8 @@ const InsertWindow = ({
 
   return (
     <Draggable handle='#styled-box'>
-      <Grid container>
-        <Grid xs={12} sm={12} md={isFull ? 8 : 12} mdOffset={isFull ? 2 : 0}>
+      <Grid container sx={{ transition: "all 0.5s ease-in" }}>
+        <Grid xs={12} sm={12} md={!isFull ? 8 : 12} mdOffset={!isFull ? 2 : 0}>
           <Paper
             elevation={isHover ? 10 : 2}
             id='draggable-dialog-title'
@@ -174,7 +174,7 @@ const InsertWindow = ({
 
                   {mouseIn ? (
                     <FullScreenButton onClick={handleFullScreen}>
-                      {isFull ? (
+                      {!isFull ? (
                         <FontAwesomeIcon
                           icon={faUpRightAndDownLeftFromCenter}
                           size='xs'
@@ -223,7 +223,7 @@ const InsertWindow = ({
                 setDifficulty={setDifficulty}
                 difficulty={difficulty}
               />
-              {type === "Multiple-choice" && (
+              {type === "Multiple choice" && (
                 <AnswersContainer
                   setCorrectAnswer={setCorrectAnswer}
                   answers={answers}
@@ -245,6 +245,11 @@ const InsertWindow = ({
                   type={type}
                   setCorrectAnswer={(item) => setCorrectAnswer(item)}
                 />
+              )}
+              {type === "Open ended" && (
+                <Typography mt={10} variant='h4' fontFamily='Roboto' width='100%' textAlign='center'>
+                  Participants will write their own answers!
+                </Typography>
               )}
             </Box>
             <Box mt={3} width='95%' textAlign='right'>
