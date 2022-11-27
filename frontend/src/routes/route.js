@@ -13,6 +13,7 @@ import InicialPage from "../container/InicialPage";
 import MyLibrary from "../container/MyLibrary";
 import { useSelector } from "react-redux";
 import TestEditingPage from "../container/TestEditingPage";
+import TestWindow from "../container/TestWindow";
 const Routess = () => {
   const user = useSelector((state) => state.user.user.user);
   const [showNav, setShowNav] = React.useState(true);
@@ -22,22 +23,40 @@ const Routess = () => {
       <Routes>
         <Route exact path='/' element={<InicialPage />} />
         <Route element={<ProtectedRoute />}>
-          <Route exact path='/admin' element={<Default setShowNav={setShowNav} showNav={showNav}  />} />
-          <Route exact path='/admin/private' element={<MyLibrary setShowNav={setShowNav} showNav={showNav} />} />
+          <Route
+            exact
+            path='/admin'
+            element={<Default setShowNav={setShowNav} showNav={showNav} />}
+          />
+          <Route
+            path='/admin/private'
+            element={<MyLibrary setShowNav={setShowNav} showNav={showNav} />}
+          />
+          <Route
+            exact
+            path='/admin/test/:id/:name'
+            element={<TestWindow setShowNav={setShowNav} showNav={showNav} />}
+          />
           <Route
             path='/test/editor/:id/edit'
-            element={<TestEditingPage setShowNav={setShowNav} showNav={showNav}  />}
+            element={
+              <TestEditingPage setShowNav={setShowNav} showNav={showNav} />
+            }
           />
 
-          <Route exact path='/profile' element={<Profile setShowNav={setShowNav} showNav={showNav} />} />
+          <Route
+            exact
+            path='/profile'
+            element={<Profile setShowNav={setShowNav} showNav={showNav} />}
+          />
           <Route
             exact
             path='/settings'
             element={
               user && user.role.toLowerCase() !== "admin" ? (
-                <Settings setShowNav={setShowNav} showNav={showNav}/>
+                <Settings setShowNav={setShowNav} showNav={showNav} />
               ) : (
-                <Admin setShowNav={setShowNav} showNav={showNav}/>
+                <Admin setShowNav={setShowNav} showNav={showNav} />
               )
             }
           />

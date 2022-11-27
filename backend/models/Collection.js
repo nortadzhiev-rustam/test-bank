@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Department = sequelize.define(
-    "Department",
+  const Collection = sequelize.define(
+    "Collection",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -22,22 +22,21 @@ module.exports = (sequelize, DataTypes) => {
     },
 
     {
-      tableName: "department",
+      tableName: "collections",
       timestamps: true,
     }
   );
 
-  Department.associate = function (models) {
-    Department.hasMany(models.User, {
-      foreignKey: "departmentId",
+  Collection.associate = function (models) {
+    Collection.belongsTo(models.User, {
+      foreignKey: "userId",
     });
-    Department.hasMany(models.Question, {
-      foreignKey: "departmentId",
-    });
-    Department.hasMany(models.Test, {
-      foreignKey: "departmentId",
+
+    Collection.hasMany(models.Test, {
+      foreignKey: "collectionId",
+      as: 'tests'
     });
   };
 
-  return Department;
+  return Collection;
 };

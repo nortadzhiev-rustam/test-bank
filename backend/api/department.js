@@ -25,7 +25,11 @@ router.get("/departments", async (req, res) => {
   try {
     const departments = await Department.findAll({
       include: [
-        { model: User, as: "Users" },
+        {
+          model: User,
+          as: "Users",
+          attributes: ["id", "firstName", "lastName", "createdAt", "role"],
+        },
         { model: Question, as: "Questions" },
         { model: Test, as: "Tests" },
       ],

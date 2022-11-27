@@ -126,22 +126,26 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type }) {
       justifyContent='center'
       alignItems='center'
       mb={10}
+      height={400}
     >
       <Grid
         container
         spacing={2}
         sx={{
           marginTop: 10,
-          marginInline: 1,
-
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          mr: 2,
         }}
       >
         {options.map((option) => (
-          <Grid key={option.key} xs={2.4} sx={{ position: "relative" }} mb={2}>
-            <Stack spacing={5} height={200}>
+          <Grid key={option.key} xs={12 / counter} height={400}>
+            <Stack
+              spacing={2}
+              justifyContent='flex-end'
+              height={400}
+              width='95%'
+              overflow='hidden'
+              px={2}
+            >
               <AnswersCard
                 index={option.key + 1}
                 onDelete={deleteOption}
@@ -151,8 +155,10 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type }) {
                 isDeleted={isDeleted}
                 addAnswer={addAnswer}
                 type={type}
+                height={200}
+                answer={answers[option.key]}
               />
-             
+
               <Stack
                 bgcolor={getRandomColor(option.option)}
                 direction='row'
@@ -160,8 +166,8 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type }) {
                 alignItems='center'
                 justifyContent='center'
                 p={1}
+                px={2}
                 borderRadius={2}
-                
               >
                 <Typography color='white'>{option.option}</Typography>
                 <InputBase

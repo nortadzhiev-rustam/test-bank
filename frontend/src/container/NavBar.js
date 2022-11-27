@@ -187,8 +187,6 @@ const NavBar = () => {
     }
   };
 
-  
-
   const handleNavigation = (id, path) => {
     setSelected(id);
     history(path);
@@ -356,11 +354,11 @@ const NavBar = () => {
         sx={{
           width:
             isLoggedIn && location.pathname !== `/test/editor/${id}/edit`
-              ? { sm: `calc(100% - ${drawerWidth}px)` }
+              ? { lg: `calc(100% - ${drawerWidth}px)` }
               : "100%",
           ml: isLoggedIn &&
             location.pathname !== `/test/editor/${id}/edit` && {
-              sm: `${drawerWidth}px`,
+              lg: `${drawerWidth}px`,
             },
         }}
         color='secondary'
@@ -373,7 +371,7 @@ const NavBar = () => {
               aria-label='open drawer'
               edge='start'
               onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: "none" } }}
+              sx={{ mr: 2, display: { lg: "none" } }}
             >
               <MenuIcon />
             </IconButton>
@@ -420,18 +418,26 @@ const NavBar = () => {
                     </InputAdornment>
                   }
                 />
-                <Divider orientation='vertical' />
-                <FormControl sx={{ width: 180, padding: 0 }} size='small'>
+                <Divider
+                  orientation='vertical'
+                  sx={{ display: { xs: "none", lg: "flex" } }}
+                />
+                <FormControl
+                  sx={{
+                    width: 140,
+                    padding: 1,
+                    display: { xs: "none", lg: "flex" },
+                  }}
+                  size='small'
+                >
                   <Select
-                    variant='outlined'
+                    disableUnderline
+                    variant='standard'
                     value={option}
                     sx={{
-                      paddingInline: 0,
+                      padding: 1,
                       color: "white",
                       boxShadow: "none",
-                      ".MuiOutlinedInput-notchedOutline": {
-                        border: 0,
-                      },
                     }}
                     labelId='demo-simple-select-label'
                     id='demo-simple-select'
@@ -486,7 +492,7 @@ const NavBar = () => {
       {isLoggedIn && location.pathname !== `/test/editor/${id}/edit` && (
         <Box
           component='nav'
-          sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+          sx={{ width: { lg: drawerWidth }, flexShrink: { sm: 0 } }}
           aria-label='mailbox folders'
         >
           {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
@@ -498,7 +504,7 @@ const NavBar = () => {
               keepMounted: true, // Better open performance on mobile.
             }}
             sx={{
-              display: { xs: "flex", sm: "none" },
+              display: { xs: "flex", lg: "none" },
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
                 width: drawerWidth,
@@ -511,10 +517,11 @@ const NavBar = () => {
           <Drawer
             variant='permanent'
             sx={{
-              display: { xs: "none", sm: "flex" },
+              display: { xs: "none", lg: "flex" },
               height: "100%",
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
+
                 width: drawerWidth,
                 height: "100%",
               },

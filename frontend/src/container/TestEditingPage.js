@@ -150,10 +150,12 @@ export default function TestEditingPage({ setShowNav, showNav }) {
     }
   };
 
-  const handleEdit = (questionId) => {
+  const handleEdit = (questionId, type) => {
     questions
       .filter((item) => item.id === questionId)
       .map((item) => setQuestion(item));
+    setEditing(true);
+    handleEditorOpen(type);
   };
 
   const handleDuplicate = React.useCallback(
@@ -171,8 +173,9 @@ export default function TestEditingPage({ setShowNav, showNav }) {
           "http://localhost:5000/api/v1/question",
           data
         );
-        
-        setMessage(req.data.message);
+
+        setMessage("Question was duplicated successfully!");
+        setQuestions((questions) => [...questions, req.data.question]);
       } catch (err) {
         setError(err);
       }
@@ -194,7 +197,7 @@ export default function TestEditingPage({ setShowNav, showNav }) {
         }
       })
       .catch((err) => console.log(`Something went wrong ${err}`));
-  }, [id, isEditing, openEditor, open, handleDuplicate]);
+  }, [id, isEditing, openEditor, open]);
 
   React.useEffect(() => {
     if (showNav) {
@@ -255,6 +258,7 @@ export default function TestEditingPage({ setShowNav, showNav }) {
             department={department}
             name={name}
             setOpen={setOpenSettings}
+            setMessage={setMessage}
           />
         </DialogContent>
       </Dialog>
@@ -319,6 +323,11 @@ export default function TestEditingPage({ setShowNav, showNav }) {
           grade={grade}
           type={questionType}
           setError={setError}
+          data={question}
+          isEditing={isEditing}
+          setType={setQuestionType}
+          setEditing={setEditing}
+          questionId={question.id}
         />
       ) : (
         <Grid
@@ -475,7 +484,7 @@ export default function TestEditingPage({ setShowNav, showNav }) {
             ) : (
               <Stack
                 direction='column'
-                spacing={3}
+                spacing={2}
                 width='95%'
                 mt={20}
                 zIndex={1}
@@ -488,7 +497,17 @@ export default function TestEditingPage({ setShowNav, showNav }) {
                     }`}
                   </Typography>
                 </Stack>
-                <Stack direction='column' spacing={1} alignItems='center'>
+                <Stack direction='column' spacing={5} alignItems='center'>
+                  {message !== "" && (
+                    <Alert severity='success' sx={{ width: "100%" }}>
+                      {message}
+                    </Alert>
+                  )}
+                  {error !== "" && (
+                    <Alert severity='error' sx={{ width: "100%" }}>
+                      {error}
+                    </Alert>
+                  )}
                   {questions.map((question, idx) => (
                     <QuestionView
                       key={idx}
@@ -531,9 +550,9 @@ export default function TestEditingPage({ setShowNav, showNav }) {
             lg={3}
             xl={2.4}
             sx={{
-              position: { xs: "static", md: "fixed" },
+              position: { xs: "static", lg: "fixed" },
               top: "72px",
-              right: { md: "70px", lg: "120px", xl: "180px" },
+              right: { md: "70px", lg: "80px", xl: "180px" },
             }}
           >
             <Item

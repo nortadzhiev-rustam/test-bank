@@ -52,13 +52,31 @@ router.post("/question", async (req, res) => {
   }
 });
 
+router.put("/question/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const updatedQuestion = await Question.update(req.body, {
+      returning: true,
+      where: { id: id },
+    });
+    res
+      .status(200)
+      .json({ message: "Question was updated successfully", updatedQuestion });
+  } catch (err) {
+    res.status(500).json({ message: `Something went wrong: ${err}` });
+  }
+});
+
 router.delete("/question/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const question = await Question.destroy({ where: { id: id }, force: true });
     res
       .status(200)
-      .json({ data: question, message: "A question was successfully deleted" });
+      .json({
+        data: question,
+        message: "Question was deleted successfully ",
+      });
   } catch (err) {
     res.send("Something went wrong ", err);
   }

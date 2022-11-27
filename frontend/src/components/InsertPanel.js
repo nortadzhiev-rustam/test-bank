@@ -21,7 +21,14 @@ const Item = styled(Paper)(({ theme }) => ({
   transition: "all 0.3s ease-in",
 }));
 
-const InsertPanel = ({ setOpen, name, department, isEditing, setEditing }) => {
+const InsertPanel = ({
+  setOpen,
+  name,
+  department,
+  isEditing,
+  setEditing,
+  setMessage,
+}) => {
   const [testName, setTestName] = React.useState("");
   const [selectedDepartment, setSelectedDepartment] = React.useState(undefined);
   const [isLoading, setLoading] = React.useState(false);
@@ -68,7 +75,7 @@ const InsertPanel = ({ setOpen, name, department, isEditing, setEditing }) => {
         setOpen(false);
       }, 500);
 
-      console.log(res.data.message);
+      setMessage(res.data.message);
     } catch (err) {
       console.log(err.message);
     }

@@ -34,7 +34,12 @@ router.post("/login", async (req, res) => {
 
   res.json({
     message: `Welcome Back! ${userWithEmail.firstName}`,
-    user: userWithEmail,
+    user: {
+      firstName: userWithEmail.firstName,
+      lastName: userWithEmail.lastName,
+      createdAt: userWithEmail.createdAt,
+      role: userWithEmail.role,
+    },
     isAuth: req.session.isAuth,
     loading: false,
   });

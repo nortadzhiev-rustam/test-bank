@@ -53,6 +53,11 @@ const InsertWindow = ({
   grade,
   type,
   setError,
+  data,
+  isEditing,
+  setType,
+  setEditing,
+  questionId,
 }) => {
   const [mouseIn, setMouseIn] = React.useState(false);
   const [isHover, setHover] = React.useState(false);
@@ -63,20 +68,57 @@ const InsertWindow = ({
   const [correctAnswer, setCorrectAnswer] = React.useState({});
   const [image, setImage] = React.useState("");
   const [difficulty, setDifficulty] = React.useState("");
+
   const dispatch = useDispatch();
   const isFull = useSelector((state) => state.questionsType.isFull);
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user.user.user);
 
   const { id } = useParams();
   const handleFullScreen = () => {
     dispatch(setFull(!isFull));
   };
 
+  React.useEffect(() => {
+    if (isEditing) {
+      const {
+        image,
+        question,
+        options,
+        mark,
+        correctAnswer,
+        type,
+        difficulty,
+        title,
+      } = data;
+      const answers = JSON.parse(options);
+      const quest = JSON.parse(question);
+      const correct = JSON.parse(correctAnswer);
+
+      setImage(image);
+      setAnswers(answers);
+      setCorrectAnswer(correct);
+      setQuestion(quest);
+      setMark(mark);
+      setType(type);
+      setDifficulty(difficulty);
+      setTitle(title);
+    }
+  }, [isEditing, data, setType]);
+
   const handleClose = () => {
     dispatch(setVisible(false));
     setMouseIn(false);
     dispatch(setFull(false));
     setOpenTest(false);
+    setImage("");
+    setAnswers([]);
+    setCorrectAnswer({});
+    setQuestion({});
+    setMark("");
+    setType("");
+    setDifficulty("");
+    setTitle("");
+    setEditing(false);
   };
 
   const handleSubmit = async () => {
@@ -95,24 +137,38 @@ const InsertWindow = ({
       departmentId: test.id,
       testId: id,
     };
+    if (isEditing) {
+      try {
+        const res = await axios.put(
+          `http://localhost:5000/api/v1/question/${questionId}`,
+          data
+        );
 
-    try {
-      const req = await axios.post(
-        "http://localhost:5000/api/v1/question",
-        data
-      );
-      setData([...questionData, req.data.question]);
-      setMessage(req.data.message);
-      handleClose();
-    } catch (err) {
-      setError(err);
+        setMessage(res.data.message);
+        handleClose();
+        window.location.reload();
+      } catch (err) {
+        setError(err);
+      }
+    } else {
+      try {
+        const res = await axios.post(
+          "http://localhost:5000/api/v1/question",
+          data
+        );
+        setData([...questionData, res.data.question]);
+        setMessage(res.data.message);
+        handleClose();
+      } catch (err) {
+        setError(err);
+      }
     }
   };
 
   return (
     <Draggable handle='#styled-box'>
-      <Grid container sx={{ transition: "all 0.5s ease-in" }}>
-        <Grid xs={12} sm={12} md={!isFull ? 8 : 12} mdOffset={!isFull ? 2 : 0}>
+      <Grid container>
+        <Grid xs={12} sm={12} lg={!isFull ? 8 : 12} lgOffset={!isFull ? 2 : 0}>
           <Paper
             elevation={isHover ? 10 : 2}
             id='draggable-dialog-title'
@@ -209,7 +265,8 @@ const InsertWindow = ({
             <Box
               component='div'
               sx={{
-                padding: 2,
+                padding: 1,
+                minHeight: 300,
               }}
             >
               <QuestionInput
@@ -222,6 +279,10 @@ const InsertWindow = ({
                 setImage={setImage}
                 setDifficulty={setDifficulty}
                 difficulty={difficulty}
+                content={question}
+                editing={isEditing}
+                type={type}
+                setType={setType}
               />
               {type === "Multiple choice" && (
                 <AnswersContainer
@@ -229,6 +290,8 @@ const InsertWindow = ({
                   answers={answers}
                   setAnswers={setAnswers}
                   type={type}
+                  correctAnswer={correctAnswer}
+                  editing={isEditing}
                 />
               )}
               {type === "True or False" && (
@@ -236,6 +299,7 @@ const InsertWindow = ({
                   setCorrectAnswer={setCorrectAnswer}
                   answers={answers}
                   setAnswers={setAnswers}
+                  correctAnswer={correctAnswer}
                 />
               )}
               {type === "Match" && (
@@ -247,7 +311,13 @@ const InsertWindow = ({
                 />
               )}
               {type === "Open ended" && (
-                <Typography mt={10} variant='h4' fontFamily='Roboto' width='100%' textAlign='center'>
+                <Typography
+                  mt={10}
+                  variant='h4'
+                  fontFamily='Roboto'
+                  width='100%'
+                  textAlign='center'
+                >
                   Participants will write their own answers!
                 </Typography>
               )}

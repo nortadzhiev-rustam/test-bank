@@ -17,10 +17,21 @@ export default function MyEditor({
   handleOpen,
   editorId,
   setContent,
+  correctAnswer,
+  editing,
+  content,
 }) {
   const [isMathHover, setIsMathHover] = useState(false);
   const [questionText, setQuestionText] = useState("");
   const [equationarray, setEquationarray] = useState([]);
+
+  useEffect(() => {
+    if (editing) {
+      if (content && content.text) setQuestionText(content.text);
+      if (content && content.equation)
+        setEquationarray([{ id: 1, equation: content.equation }]);
+    }
+  }, [editing, content]);
 
   const editor = useRef(null);
 

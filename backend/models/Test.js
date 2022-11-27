@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     image: { type: DataTypes.STRING, allowNull: true },
+    isEditing: { type: DataTypes.BOOLEAN, allowNull: false },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
@@ -35,6 +36,10 @@ module.exports = (sequelize, DataTypes) => {
     Test.belongsTo(models.Department, {
       foreignKey: "departmentId",
       as: "department",
+    });
+    Test.belongsTo(models.Collection, {
+      foreignKey: "collectionId",
+      as: "collection",
     });
   };
 

@@ -1,7 +1,12 @@
 import { Stack, Box, Typography } from "@mui/material";
 import React from "react";
 
-export default function TrueOrFalse({ answers, setAnswers, setCorrectAnswer }) {
+export default function TrueOrFalse({
+  answers,
+  setAnswers,
+  setCorrectAnswer,
+  correctAnswer,
+}) {
   const [clicked, setClicked] = React.useState(false);
   const [selected, setSelected] = React.useState("");
   const options = [
@@ -36,14 +41,24 @@ export default function TrueOrFalse({ answers, setAnswers, setCorrectAnswer }) {
             width='100%'
             height={{ xs: 150, md: 300 }}
             key={item.key}
-            bgcolor={clicked && selected === item.key ? "#006460" : "#f2f2f2"}
-            color={clicked && selected === item.key ? "#ffffff" : "#000000"}
+            bgcolor={
+              (clicked && selected === item.key) ||
+              correctAnswer.key === item.key
+                ? "#006460"
+                : "#f2f2f2"
+            }
+            color={
+              (clicked && selected === item.key) ||
+              correctAnswer.key === item.key
+                ? "#ffffff"
+                : "#000000"
+            }
             borderRadius={4}
             boxShadow={10}
             onClick={() => handleClick(item)}
             sx={{
               transition: "all 0.3s ease-in",
-              "&:active": {
+              "&:hover": {
                 boxShadow: 0,
                 transform: "translateY(5px)",
               },

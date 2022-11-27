@@ -46,6 +46,8 @@ function App() {
         width: "100%",
         display: "flex",
         justifyContent: "flex-start",
+        backgroundColor: "#f2f2f2",
+        minHeight: "100vh",
       }}
     >
       <Routess

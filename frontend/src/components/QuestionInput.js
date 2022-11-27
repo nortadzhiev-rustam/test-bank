@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import {
   Box,
   Tooltip,
@@ -23,6 +23,13 @@ import axios from "axios";
 import Alert from "@mui/material/Alert";
 
 const difficulties = ["Easy", "Normal", "Hard", "Chalange"];
+const types = [
+  "Multiple choice",
+  "True or False",
+  "Open ended",
+  "Match",
+  "Fill in the blanks",
+];
 
 const QuestionInput = ({
   setTitle,
@@ -34,6 +41,10 @@ const QuestionInput = ({
   setImage,
   difficulty,
   setDifficulty,
+  content,
+  editing,
+  type,
+  setType,
 }) => {
   const [equation, setEquation] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -125,18 +136,37 @@ const QuestionInput = ({
             width='100%'
           >
             <Tooltip title='Click to Upload picture' arrow>
-              <Button
-                color='warning'
-                variant='contained'
-                sx={{ marginRight: "5px" }}
-                aria-label='upload picture'
-                component='label'
-                startIcon={<PhotoCamera />}
-                size='medium'
-                onClick={() => setDialogOpen(true)}
-              >
-                photo
-              </Button>
+              <Fragment>
+                <Button
+                  color='warning'
+                  variant='contained'
+                  sx={{
+                    marginRight: "5px",
+                    display: { xs: "none", lg: "flex" },
+                  }}
+                  aria-label='upload picture'
+                  component='label'
+                  startIcon={<PhotoCamera />}
+                  size='medium'
+                  onClick={() => setDialogOpen(true)}
+                >
+                  photo
+                </Button>
+                <Button
+                  color='warning'
+                  variant='contained'
+                  sx={{
+                    marginRight: "5px",
+                    display: { xs: "flex", lg: "none" },
+                  }}
+                  aria-label='upload picture'
+                  component='label'
+                  size='medium'
+                  onClick={() => setDialogOpen(true)}
+                >
+                  <PhotoCamera />
+                </Button>
+              </Fragment>
             </Tooltip>
             <TextField
               sx={{
@@ -159,6 +189,34 @@ const QuestionInput = ({
               alignItems: "center",
             }}
           >
+            <FormControl
+              sx={{
+                marginInline: 2,
+                width: 120,
+                backgroundColor: "white",
+                borderRadius: 1,
+              }}
+              size='small'
+            >
+              <InputLabel id='demo-select-small2'>Type</InputLabel>
+              <Select
+                labelId='demo-select-small2'
+                id='demo-select-small2'
+                value={type}
+                label='Type'
+                onChange={(e) => setType(e.target.value)}
+                MenuProps={{ style: { maxHeight: 200 } }}
+              >
+                <MenuItem value=''>
+                  <em>None</em>
+                </MenuItem>
+                {types.map((item, idx) => (
+                  <MenuItem key={idx} value={item}>
+                    {item}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <FormControl
               sx={{
                 marginInline: 2,
@@ -222,18 +280,35 @@ const QuestionInput = ({
               arrow
               sx={{ marginBottom: "5px" }}
             >
-              <Button
-                sx={{ marginRight: "0px" }}
-                color='error'
-                onClick={isOpen ? handleClose : handleOpen}
-                variant='contained'
-                startIcon={
+              <Fragment>
+                <Button
+                  sx={{
+                    marginRight: "0px",
+                    display: { xs: "none", lg: "flex" },
+                  }}
+                  color='error'
+                  onClick={isOpen ? handleClose : handleOpen}
+                  variant='contained'
+                  startIcon={
+                    <img style={{ height: 25 }} src={Formula} alt='formula' />
+                  }
+                  size='medium'
+                >
+                  Equation
+                </Button>
+                <Button
+                  sx={{
+                    marginRight: "0px",
+                    display: { xs: "flex", lg: "none" },
+                  }}
+                  color='error'
+                  onClick={isOpen ? handleClose : handleOpen}
+                  variant='contained'
+                  size='medium'
+                >
                   <img style={{ height: 25 }} src={Formula} alt='formula' />
-                }
-                size='medium'
-              >
-                Equation
-              </Button>
+                </Button>
+              </Fragment>
             </Tooltip>
           </Box>
         </Box>
@@ -304,6 +379,8 @@ const QuestionInput = ({
             editorId='question'
             handleOpen={handleOpen}
             setContent={setQuestion}
+            content={content}
+            editing={editing}
           />
         </Grid>
       </Grid>

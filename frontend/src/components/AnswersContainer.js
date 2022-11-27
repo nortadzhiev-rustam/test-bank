@@ -12,6 +12,8 @@ export default function AnswersContainer({
   setAnswers,
   setCorrectAnswer,
   type,
+  correctAnswer,
+  editing,
 }) {
   const [counter, setCounter] = React.useState(4);
   const [options, setOptions] = React.useState([
@@ -96,10 +98,9 @@ export default function AnswersContainer({
 
   //add answers to the array if previous answer key is same as the current answer key then replace the answer
   const addAnswer = (answer) => {
-    const newArr = answers
-      .filter((item) => item.key !== answer.key)
-      .map((item) => item);
-    setAnswers([...newArr, answer]);
+    const newArr = answers.filter((item) => item.key !== answer.key);
+    newArr.splice(answer.key - 1, 0, answer);
+    setAnswers(newArr);
   };
 
   useEffect(() => {
@@ -193,6 +194,9 @@ export default function AnswersContainer({
               }}
               addAnswer={addAnswer}
               type={type}
+              answers={answers}
+              correctAnswer={correctAnswer}
+              editing={editing}
             />
           </Grid>
         );

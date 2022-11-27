@@ -41,7 +41,7 @@ export default function QuestionView({
   const [correct] = useState(JSON.parse(correctAnswer));
 
   const IconSelector = () => {
-    if (type === "Multiple-choice")
+    if (type === "Multiple choice")
       return <CheckBoxOutlined color='inherit' fontSize='small' />;
     if (type === "True or False")
       return <Flaky color='inherit' fontSize='small' />;
@@ -55,7 +55,7 @@ export default function QuestionView({
   };
 
   const onEdit = () => {
-    handleEdit(id);
+    handleEdit(id, type);
   };
 
   const onDuplicate = () => {
@@ -63,7 +63,7 @@ export default function QuestionView({
   };
 
   return (
-    <Box sx={{ mb: 3, width: "100%" }}>
+    <Box sx={{ width: "100%" }}>
       <Paper elevation={5} sx={{ padding: 1, borderRadius: 2 }}>
         {isEditing ? (
           <Stack
@@ -166,35 +166,41 @@ export default function QuestionView({
             )}
           </Grid>
         </Grid>
+
         <Divider orientation='horizontal'>answer choices</Divider>
-        <Grid container spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
-          {answers.map((option, idx) => (
-            <Grid key={idx} xs={12} md={6}>
-              <Box
-                key={idx}
-                display='flex'
-                flexDirection='row'
-                alignItems='center'
-              >
-                <Box
-                  width={15}
-                  height={15}
-                  borderRadius='50%'
-                  mr={2}
-                  bgcolor={correct.key === option.key ? "green" : "red"}
-                ></Box>
-                {option.content.text !== undefined && (
-                  <Typography variant='caption'>
-                    {option.content.text}
-                  </Typography>
-                )}
-                {option.content.equation !== undefined && (
-                  <BlockMath math={option.content.equation} />
-                )}
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
+
+        {type === "Multiple choice" ||
+        type === "Match" ||
+        type === "Fill in the blanks" ||
+        type === "True or False" ? (
+          <Grid container spacing={2} m={1} columns={{ xs: 4, sm: 8, md: 12 }}>
+            {answers.map((option) => (
+              <Grid key={option.key} xs={12} sm={6}>
+                <Box display='flex' flexDirection='row' alignItems='center'>
+                  <Box
+                    width={15}
+                    height={15}
+                    borderRadius='50%'
+                    mr={2}
+                    bgcolor={correct.key === option.key ? "green" : "red"}
+                  ></Box>
+                  {option.content.text !== undefined && (
+                    <Typography variant='caption'>
+                      {option.content.text}
+                    </Typography>
+                  )}
+                  {option.content.equation !== undefined && (
+                    <BlockMath math={option.content.equation} />
+                  )}
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <Typography my={2} textAlign='center'>
+            Participants will provide their own answers
+          </Typography>
+        )}
       </Paper>
     </Box>
   );

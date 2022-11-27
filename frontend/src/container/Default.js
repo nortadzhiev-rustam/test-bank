@@ -69,6 +69,7 @@ const Default = ({ setShowNav, showNav }) => {
     ref.current.focus();
     setName(name);
     handleToggle();
+    console.log(ref.current);
   };
 
   React.useEffect(() => {
@@ -109,7 +110,7 @@ const Default = ({ setShowNav, showNav }) => {
             }}
           >
             <StyledInputBase
-              ref={ref}
+              inputRef={ref}
               onFocus={() => setFocused(true)}
               onBlur={() => (open ? setFocused(false) : null)}
               fullWidth
