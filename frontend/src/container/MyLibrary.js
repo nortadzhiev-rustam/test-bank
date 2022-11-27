@@ -46,9 +46,13 @@ export default function MyLibrary({ showNav, setShowNav }) {
   }, []);
 
   return (
-    <Grid mx={10} width='100%' container spacing={2} mt={20}>
-      <Grid xs={12} md={4}>
-        <Stack spacing={4}>
+    <Grid mx={10} width='100%' container spacing={2} mt={15}>
+      <Grid xs={12} md={4} lg={3} xl={2}>
+        <Stack
+          spacing={4}
+          position={{ xs: "static", md: "fixed" }}
+          width='250px'
+        >
           {" "}
           <Typography
             variant='h4'
@@ -119,8 +123,8 @@ export default function MyLibrary({ showNav, setShowNav }) {
           </Stack>
         </Stack>
       </Grid>
-      <Grid xs={12} md={8}>
-        <Stack width='100%' spacing={2}>
+      <Grid xs={12} md={8} lg={9} xl={10}>
+        <Stack width='100%' spacing={2} ml={{ xs: 0, md: "70px" }} mt={10}>
           {testData.map((data) => (
             <TestView testData={data} user={data.user} />
           ))}
