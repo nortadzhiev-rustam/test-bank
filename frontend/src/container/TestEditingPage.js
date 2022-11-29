@@ -18,7 +18,7 @@ import {
   DialogTitle,
   DialogContent,
   Alert,
-  AlertTitle,
+  
 } from "@mui/material";
 import Slide from "@mui/material/Slide";
 import SearchIcon from "@mui/icons-material/Search";
@@ -220,7 +220,7 @@ export default function TestEditingPage({ setShowNav, showNav }) {
       const res = await axios.put(
         `http://localhost:5000/api/v1/test/${id}?isEditing=${false}`
       );
-      history(`/admin/test/${id}/${name}`);
+      if(res.status === 200) history(`/admin/test/${id}/${name}`);
     } catch (err) {
       console.log(err);
     }

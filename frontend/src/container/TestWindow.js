@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Paper, Box, Typography, Button, Avatar } from "@mui/material";
-import { styled } from "@mui/styles";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useParams, useNavigate } from "react-router-dom";
@@ -56,7 +56,7 @@ export default function TestWindow({
       const res = await axios.put(
         `http://localhost:5000/api/v1/test/${id}?isEditing=${true}`
       );
-      navigate(`/test/editor/${id}/edit`);
+      if (res.status === 200) navigate(`/test/editor/${id}/edit`);
     } catch (err) {
       console.log(err);
     }
@@ -135,14 +135,14 @@ export default function TestWindow({
                       {testData.isEditing && (
                         <Box
                           component='div'
-                          m={0}
-                          pt={0.4}
+                          
+                          
                           width={60}
                           bgcolor='#006460'
                           color='white'
                           display='flex'
                           justifyContent='center'
-                          alignItems='flex-start'
+                          alignItems='center'
                           borderRadius={10}
                         >
                           Draft

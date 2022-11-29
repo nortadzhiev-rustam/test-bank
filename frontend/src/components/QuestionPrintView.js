@@ -18,24 +18,25 @@ const QuestionPrintView = ({ quest, number, imageOff }) => {
   };
 
   return (
-    <Stack spacing={2} width='100%'>
-      <Stack direction='row' spacing={1} width='100%'>
+    <Stack spacing={2} width='100%' mb={2}>
+      <Stack direction='row' spacing={1} width='100%' alignItems='center'>
         <Typography variant='h6'>{number + "."}</Typography>
-        {image !== "" && !imageOff && (
-          <img
-            src={process.env.PUBLIC_URL + "/uploads/" + image}
-            alt='inputImage'
-            style={{
-              width: "210px",
-              maxHeight: "210px",
-              objectFit: "contain",
-              borderRadius: "15px",
-            }}
-          />
-        )}
-        <Stack direction='row' spacing={2} width='100%'>
+
+        <Stack direction='row' spacing={2} width='100%' alignItems='center'>
+          {image !== "" && !imageOff && (
+            <img
+              src={process.env.PUBLIC_URL + "/uploads/" + image}
+              alt='inputImage'
+              style={{
+                width: "210px",
+                maxHeight: "210px",
+                objectFit: "contain",
+                borderRadius: "15px",
+              }}
+            />
+          )}
           {parsedQuestion.text !== undefined && (
-            <Typography noWrap variant='h6'>
+            <Typography sx={{overflowWrap: 'anywhere'}} variant='h6'>
               {parsedQuestion.text}
             </Typography>
           )}
@@ -44,11 +45,16 @@ const QuestionPrintView = ({ quest, number, imageOff }) => {
           )}
         </Stack>
       </Stack>
-      <Stack direction='row' alignItems='center' flexWrap='wrap'>
+      <Stack pl={5} mb={1} direction='row'  flexWrap='wrap' >
         {answers.map((answer, idx) => (
-          <Stack key={idx} width='50%' alignItems='flex-start' direction='row'>
+          <Stack key={idx} width='50%' alignItems='center' direction='row'>
             {optionGenerator(idx) + ")"}
-            <Stack ml={2} mb={2} spacing={2} direction='row'>
+            <Stack
+              ml={1}
+              spacing={2}
+              direction='row'
+              alignItems='center'
+            >
               {answer.content.text !== undefined && (
                 <Typography>{answer.content.text}</Typography>
               )}

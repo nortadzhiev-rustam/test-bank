@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Typography from "@mui/material/Typography";
 import {
-  Box,
   Button,
   Divider,
   List,
@@ -19,15 +18,14 @@ import {
   SaveAlt,
   TextSnippet,
 } from "@mui/icons-material";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import {  useSearchParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import TestView from "../components/TestView";
-import { setLoading } from "../store/userSlice";
+
 import axios from "axios";
 export default function MyLibrary({ showNav, setShowNav }) {
   const [testData, setTestData] = useState([]);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  
   const user = useSelector((state) => state.user.user.user);
   let [searchParams, setSearchParams] = useSearchParams();
   React.useEffect(() => {
@@ -43,7 +41,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
         res.data.filter((test) => test.userId === user.id).map((item) => item)
       );
     });
-  }, []);
+  }, [user.id]);
 
   const handleDelete = async (id) => {
     try {
@@ -150,8 +148,9 @@ export default function MyLibrary({ showNav, setShowNav }) {
           mt={10}
           justifyContent='flex-start'
         >
-          {testData.map((data) => (
+          {testData.map((data,idx) => (
             <TestView
+            key={idx}
               testData={data}
               user={data.user}
               handleDelete={handleDelete}

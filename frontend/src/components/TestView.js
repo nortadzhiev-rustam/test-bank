@@ -81,8 +81,9 @@ export default function TestView({ testData, user, handleDelete }) {
                     color='white'
                     display='flex'
                     justifyContent='center'
-                    alignItems='flex-start'
+                    alignItems='center'
                     borderRadius={10}
+                    fontSize={14}
                   >
                     Draft
                   </Box>
