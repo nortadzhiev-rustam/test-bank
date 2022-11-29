@@ -15,7 +15,7 @@ import QuestionView from "../components/QuestionView";
 import axios from "axios";
 import { Stack } from "@mui/system";
 import Spinner from "../components/Spinner";
-import { Folder, Mode } from "@mui/icons-material";
+import { Folder, Mode, Print } from "@mui/icons-material";
 
 export default function TestWindow({
   setError,
@@ -51,6 +51,17 @@ export default function TestWindow({
       .catch((err) => setError(`Something went wrong ${err}`));
   }, [open, test, setError, id, setTest]);
 
+  const handleEdit = async () => {
+    try {
+      const res = await axios.put(
+        `http://localhost:5000/api/v1/test/${id}?isEditing=${true}`
+      );
+      navigate(`/test/editor/${id}/edit`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <Stack
       width='100%'
@@ -60,7 +71,6 @@ export default function TestWindow({
       direction='row'
       spacing={2}
       justifyContent='center'
-      
     >
       {loading && <Spinner loading={loading} />}
       <Stack
@@ -72,7 +82,7 @@ export default function TestWindow({
         {testData !== undefined && !loading && (
           <Paper elevation={5} sx={{ borderRadius: 2, padding: 2 }}>
             <Grid container spacing={2}>
-              <Grid display='flex' justifyContent='center' xs={4}>
+              <Grid display='flex' justifyContent='center' xs={4} lg={3}>
                 {testData.image === "" ||
                 testData.image === undefined ||
                 testData.image === null ? (
@@ -93,7 +103,7 @@ export default function TestWindow({
                   <Box
                     sx={{
                       height: 150,
-                      width: "100%",
+                      width: 150,
                       backgroundColor: "#cccccc",
                       display: "flex",
                       justifyContent: "center",
@@ -199,7 +209,16 @@ export default function TestWindow({
                 <Button
                   variant='contained'
                   color='inherit'
-                  onClick={() => navigate(`/test/editor/${id}/edit`)}
+                  startIcon={<Print />}
+                  onClick={() => window.open(`/print/test/${id}`, "_blank")}
+                >
+                  Print
+                </Button>
+
+                <Button
+                  variant='contained'
+                  color='inherit'
+                  onClick={handleEdit}
                 >
                   <Mode fontSize='small' sx={{ mr: 1 }} /> Edit
                 </Button>
@@ -241,7 +260,6 @@ export default function TestWindow({
           )}
         </Stack>
       </Stack>
-     
     </Stack>
   );
 }

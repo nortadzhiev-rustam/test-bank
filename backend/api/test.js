@@ -61,6 +61,19 @@ router.get("/tests", async (req, res) => {
   }
 });
 
+router.delete("/test/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const test = await Test.destroy({ where: { id: id }, force: true });
+    res.status(200).json({
+      data: test,
+      message: "Test was deleted successfully ",
+    });
+  } catch (err) {
+    res.send("Something went wrong ", err);
+  }
+});
+
 router.get("/test/:id", async (req, res) => {
   const { id } = req.params;
   try {

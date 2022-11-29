@@ -6,32 +6,33 @@ import {
   faImage,
   faBook,
   faGraduationCap,
+  faListCheck,
 } from "@fortawesome/free-solid-svg-icons";
-import { Folder, Mode } from "@mui/icons-material";
+import { Delete, Folder, Mode } from "@mui/icons-material";
 import { useNavigate, useParams } from "react-router-dom";
-export default function TestView({ testData, user }) {
+import axios from "axios";
+export default function TestView({ testData, user, handleDelete }) {
   const navigate = useNavigate();
+
   return (
     <Paper
-      onClick={() => navigate(`/admin/test/${testData.id}/${testData.name}`)}
-      elevation={5}
       sx={{
-        borderRadius: 2,
-        padding: 2,
-        bgcolor: "#f2f2f2",
-        "&:hover": { bgcolor: "#ffffff" },
+        borderRadius: 1,
+        padding: 1,
+
+        "&:hover": { bgcolor: "#f2f2f2" },
         cursor: "pointer",
       }}
     >
-      <Grid container spacing={2}>
-        <Grid display='flex' justifyContent='center' xs={4}>
+      <Grid container spacing={1}>
+        <Grid display='flex' justifyContent='center' xs={3} xl={2}>
           {testData.image === "" ||
           testData.image === undefined ||
           testData.image === null ? (
             <Box
               sx={{
-                height: 150,
-                width: 150,
+                height: 100,
+                width: 100,
                 backgroundColor: "#cccccc",
                 display: "flex",
                 justifyContent: "center",
@@ -39,13 +40,13 @@ export default function TestView({ testData, user }) {
                 borderRadius: 5,
               }}
             >
-              <FontAwesomeIcon color='#183153' size='5x' icon={faImage} />
+              <FontAwesomeIcon color='#183153' size='3x' icon={faImage} />
             </Box>
           ) : (
             <Box
               sx={{
-                height: 150,
-                width: "100%",
+                height: 100,
+                width: 100,
                 backgroundColor: "#cccccc",
                 display: "flex",
                 justifyContent: "center",
@@ -67,16 +68,14 @@ export default function TestView({ testData, user }) {
             </Box>
           )}
         </Grid>
-        <Grid xs={8}>
-          <Grid container spacing={1} sx={{ mt: 1 }}>
-            <Grid xs={6}>
-              <Stack direction='row' spacing={1}>
-                <Typography variant='h5'>Test</Typography>
+        <Grid xs={9} xl={10}>
+          <Grid container spacing={1}>
+            <Grid xs={12}>
+              <Stack direction='row' justifyContent='space-between' spacing={1}>
+                <Typography variant='body1'>Test</Typography>
                 {testData.isEditing && (
                   <Box
                     component='div'
-                    m={0}
-                    pt={0.4}
                     width={60}
                     bgcolor='#006460'
                     color='white'
@@ -89,10 +88,14 @@ export default function TestView({ testData, user }) {
                   </Box>
                 )}
               </Stack>
-              <Typography variant='h4'>{testData.name}</Typography>
+            </Grid>
+            <Grid xs={6}>
+              <Typography variant='h5' fontWeight='bold'>
+                {testData.name}
+              </Typography>
             </Grid>
           </Grid>
-          <Grid container rowSpacing={1} spacing={1} sx={{ mt: 1 }}>
+          <Grid container spacing={1}>
             <Grid xs={4}>
               <Box
                 display='flex'
@@ -100,7 +103,7 @@ export default function TestView({ testData, user }) {
                 alignItems='center'
                 color='#666666'
               >
-                <FontAwesomeIcon icon={faGraduationCap} />
+                <FontAwesomeIcon icon={faListCheck} />
                 {testData.questions ? (
                   <Typography sx={{ ml: 1 }}>
                     {testData.questions.length}
@@ -119,7 +122,18 @@ export default function TestView({ testData, user }) {
                 color='#666666'
               >
                 <FontAwesomeIcon icon={faGraduationCap} />
-                <Typography sx={{ ml: 1 }}>{testData.grade}th Grade</Typography>
+                <Typography sx={{ ml: 1 }}>
+                  {testData.grade}
+                  {testData.garde > 3
+                    ? "th Grade"
+                    : testData.grade === 1
+                    ? "st Grade"
+                    : testData.grade === 2
+                    ? "nd Grade"
+                    : testData.grade === 3
+                    ? "rd Grade"
+                    : "th Grade"}
+                </Typography>
               </Box>
             </Grid>
             <Grid xs={4}>
@@ -140,15 +154,18 @@ export default function TestView({ testData, user }) {
           </Grid>
         </Grid>
       </Grid>
-      <Stack
-        direction='row'
-        alignItems='center'
-        justifyContent='space-between'
-        mt={2}
-      >
+      <Stack direction='row' alignItems='center' justifyContent='space-between'>
         {user !== undefined && (
           <Stack direction='row' alignItems='center'>
-            <Avatar sx={{ backgroundColor: "red", mr: 1 }}>
+            <Avatar
+              sx={{
+                backgroundColor: "red",
+                mr: 1,
+                width: 30,
+                height: 30,
+                fontSize: 10,
+              }}
+            >
               {user.firstName.charAt(0)}
             </Avatar>
             <Stack
@@ -156,10 +173,10 @@ export default function TestView({ testData, user }) {
               alignItems='flex-start'
               justifyContent='center'
             >
-              <Typography variant='body1'>
+              <Typography fontSize={14} variant='body1'>
                 {user.firstName + " " + user.lastName}
               </Typography>
-              <Typography variant='caption'>
+              <Typography fontSize={10} variant='caption'>
                 {new Date(testData.createdAt).toUTCString()}
               </Typography>
             </Stack>
@@ -167,16 +184,32 @@ export default function TestView({ testData, user }) {
         )}
         <Stack direction='row' alignItems='center' spacing={1}>
           <Button
+            size='small'
+            startIcon={<Delete />}
+            variant='contained'
+            color='inherit'
+            onClick={() => handleDelete(testData.id)}
+          >
+            delete
+          </Button>
+          <Button
+            size='small'
+            startIcon={<Mode />}
             variant='contained'
             color='inherit'
             onClick={() =>
               navigate(`/admin/test/${testData.id}/${testData.name}`)
             }
           >
-            <Mode fontSize='small' sx={{ mr: 1 }} /> Edit
+            Edit
           </Button>
-          <Button variant='contained' color='inherit'>
-            <Folder fontSize='small' sx={{ mr: 1 }} /> Save
+          <Button
+            size='small'
+            startIcon={<Folder />}
+            variant='contained'
+            color='inherit'
+          >
+            Save
           </Button>
         </Stack>
       </Stack>

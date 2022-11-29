@@ -259,7 +259,7 @@ const NavBar = () => {
       </Toolbar>
       <Divider sx={{ mb: 2 }} />
       <Stack
-        height={{ xs: "40vh", xl: "48vh" }}
+        
         direction='column'
         justifyContent='space-between'
         overflow='scrroll'

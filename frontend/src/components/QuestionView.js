@@ -186,7 +186,7 @@ export default function QuestionView({
                   ></Box>
                   {option.content.text !== undefined && (
                     <Typography variant='caption'>
-                      {option.content.text}
+                      {option.content.text + " "}
                     </Typography>
                   )}
                   {option.content.equation !== undefined && (

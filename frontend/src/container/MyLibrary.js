@@ -45,13 +45,23 @@ export default function MyLibrary({ showNav, setShowNav }) {
     });
   }, []);
 
+  const handleDelete = async (id) => {
+    try {
+      const res = await axios.delete(`http://localhost:5000/api/v1/test/${id}`);
+      setTestData(testData.filter((item) => item.id !== id));
+      console.log(res.message);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <Grid mx={10} width='100%' container spacing={2} mt={15}>
+    <Grid mx={10} width='100%' container spacing={2} mt={15} height='100%'>
       <Grid xs={12} md={4} lg={3} xl={2}>
         <Stack
           spacing={4}
-          position={{ xs: "static", md: "fixed" }}
-          width='250px'
+          position={{ xs: "static", lg: "fixed" }}
+          width={{ xs: "100%", lg: "250px" }}
         >
           {" "}
           <Typography
@@ -62,8 +72,8 @@ export default function MyLibrary({ showNav, setShowNav }) {
           >
             My Library
           </Typography>
-          <Box width='100%'>
-            <List component='nav'>
+          <Stack width='100%' direction='row' flexWrap='wrap'>
+            <List component='nav' sx={{ display: "flex", flexWrap: "wrap" }}>
               <ListItem disablePadding>
                 <ListItemButton
                   selected={searchParams.has("allTest")}
@@ -109,7 +119,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
                 </ListItemButton>
               </ListItem>
             </List>
-          </Box>
+          </Stack>
           <Divider />
           <Stack spacing={2}>
             <Button
@@ -123,10 +133,29 @@ export default function MyLibrary({ showNav, setShowNav }) {
           </Stack>
         </Stack>
       </Grid>
-      <Grid xs={12} md={8} lg={9} xl={10}>
-        <Stack width='100%' spacing={2} ml={{ xs: 0, md: "70px" }} mt={10}>
+      <Grid
+        xs={12}
+        md={8}
+        lgOffset={3}
+        xlOffset={0}
+        lg={9}
+        ml={3}
+        height='100%'
+      >
+        <Stack
+          width='100%'
+          height='100%'
+          spacing={2}
+          ml={{ xs: 0, md: "70px" }}
+          mt={10}
+          justifyContent='flex-start'
+        >
           {testData.map((data) => (
-            <TestView testData={data} user={data.user} />
+            <TestView
+              testData={data}
+              user={data.user}
+              handleDelete={handleDelete}
+            />
           ))}
         </Stack>
       </Grid>

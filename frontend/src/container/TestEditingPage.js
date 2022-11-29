@@ -215,6 +215,17 @@ export default function TestEditingPage({ setShowNav, showNav }) {
     setQuestionType(type);
   };
 
+  const handleSave = async () => {
+    try {
+      const res = await axios.put(
+        `http://localhost:5000/api/v1/test/${id}?isEditing=${false}`
+      );
+      history(`/admin/test/${id}/${name}`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   React.useEffect(() => {
     setTimeout(() => {
       setMessage("");
@@ -270,7 +281,7 @@ export default function TestEditingPage({ setShowNav, showNav }) {
               flexDirection: "row",
               cursor: "pointer",
             }}
-            onClick={() => history("/")}
+            onClick={() => history(`/admin/test/${id}/${name}`)}
           >
             <img src={logo} width='30' height='30' alt='logo' />
             <Typography
@@ -299,6 +310,7 @@ export default function TestEditingPage({ setShowNav, showNav }) {
               <Settings sx={{ mr: 1 }} fontSize='small' /> Settings
             </Button>
             <Button
+              startIcon={<DriveFolderUpload />}
               variant='contained'
               size='small'
               sx={{
@@ -307,8 +319,9 @@ export default function TestEditingPage({ setShowNav, showNav }) {
                 color: "#333333",
                 "&:hover": { backgroundColor: "#e7e7e7" },
               }}
+              onClick={questions.length > 0 ? handleSave : null}
             >
-              <DriveFolderUpload sx={{ mr: 1 }} fontSize='small' /> Save
+              Save
             </Button>
           </Stack>
         </Toolbar>
@@ -520,7 +533,7 @@ export default function TestEditingPage({ setShowNav, showNav }) {
                     />
                   ))}
                 </Stack>
-                <Stack direction='row' justifyContent='center' spacing={2}>
+                <Stack direction='row' justifyContent='center' spacing={3}>
                   {types.map((type, idx) => (
                     <Box
                       key={idx}
