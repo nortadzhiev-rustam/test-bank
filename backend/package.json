@@ -20,12 +20,11 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
     "mysql2": "^2.3.3-rc.0",
-    "passport": "^0.5.0",
+    "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "path": "^0.12.7",
     "sequelize": "^6.9.0",
-    "sequelize-cli": "^6.3.0",
-    "wysiwyg-editor-node-sdk": "^4.0.7"
+    "sequelize-cli": "^6.3.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

@@ -67,7 +67,7 @@ export default function TestWindow({
       width='100%'
       height='100%'
       mx={2}
-      mt={10}
+      mt={8}
       direction='row'
       spacing={2}
       justifyContent='center'
@@ -80,7 +80,17 @@ export default function TestWindow({
         width='70%'
       >
         {testData !== undefined && !loading && (
-          <Paper elevation={5} sx={{ borderRadius: 2, padding: 2 }}>
+          <Paper
+            elevation={5}
+            sx={{
+              borderRadius: 2,
+              padding: 2,
+              position: "fixed",
+              width: "65%",
+              left: "23%",
+              zIndex: 10,
+            }}
+          >
             <Grid container spacing={2}>
               <Grid display='flex' justifyContent='center' xs={4} lg={3}>
                 {testData.image === "" ||
@@ -135,8 +145,6 @@ export default function TestWindow({
                       {testData.isEditing && (
                         <Box
                           component='div'
-                          
-                          
                           width={60}
                           bgcolor='#006460'
                           color='white'
@@ -230,7 +238,13 @@ export default function TestWindow({
           </Paper>
         )}
         {testData && (
-          <Stack direction='row' alignItems='center' spacing={1} ml={40}>
+          <Stack
+            direction='row'
+            alignItems='center'
+            spacing={1}
+            mt={200}
+            ml={40}
+          >
             <FontAwesomeIcon icon={faListCheck} />{" "}
             <Typography>
               {testData.questions.length + " "}{" "}
@@ -238,7 +252,7 @@ export default function TestWindow({
             </Typography>
           </Stack>
         )}
-        <Stack spacing={3}>
+        <Stack spacing={3} sx={{ marginTop: 200 }}>
           {" "}
           {testData === undefined || testData.questions.length === 0 ? (
             <Box
