@@ -67,7 +67,7 @@ export default function TestWindow({
       width='100%'
       height='100%'
       mx={2}
-      mt={8}
+      mt={40}
       direction='row'
       spacing={2}
       justifyContent='center'
@@ -88,6 +88,7 @@ export default function TestWindow({
               position: "fixed",
               width: "65%",
               left: "23%",
+              top: 60,
               zIndex: 10,
             }}
           >
@@ -215,6 +216,7 @@ export default function TestWindow({
               )}
               <Stack direction='row' alignItems='center' spacing={1}>
                 <Button
+                  size='small'
                   variant='contained'
                   color='inherit'
                   startIcon={<Print />}
@@ -224,13 +226,14 @@ export default function TestWindow({
                 </Button>
 
                 <Button
+                  size='small'
                   variant='contained'
                   color='inherit'
                   onClick={handleEdit}
                 >
                   <Mode fontSize='small' sx={{ mr: 1 }} /> Edit
                 </Button>
-                <Button variant='contained' color='inherit'>
+                <Button size='small' variant='contained' color='inherit'>
                   <Folder fontSize='small' sx={{ mr: 1 }} /> Save
                 </Button>
               </Stack>
