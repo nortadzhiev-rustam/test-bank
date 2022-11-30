@@ -1,7 +1,7 @@
 import { Stack, Typography } from "@mui/material";
 import { BlockMath } from "react-katex";
 import React from "react";
-
+import "./PrintPage.css";
 const QuestionPrintView = ({ quest, number, imageOff }) => {
   const { question, options, image } = quest;
 
@@ -18,80 +18,75 @@ const QuestionPrintView = ({ quest, number, imageOff }) => {
   };
 
   return (
-    <table>
-      <tr>
-        <td>{number + "."}</td>
-        {image !== "" && !imageOff && (
-          <td>
-            <img
-              src={process.env.PUBLIC_URL + "/uploads/" + image}
-              alt='inputImage'
-              style={{
-                width: "210px",
-                maxHeight: "210px",
-                objectFit: "contain",
-                borderRadius: "15px",
-              }}
-            />
-          </td>
-        )}
-        {parsedQuestion.text !== undefined && (
-          <td style={{ overflowWrap: "anywhere" }}> {parsedQuestion.text}</td>
-        )}
-        {parsedQuestion.equation !== undefined && (
-          <td>
-            <BlockMath math={parsedQuestion.equation} />
-          </td>
-        )}
-      </tr>
-      <tr
-        style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems:'center'
-        }}
-      >
-        {answers.map((answer, idx) =>
-          idx < 2 ? (
-            <td>
-              <td>{optionGenerator(idx) + ")"}</td>
-              {answer.content.text !== undefined && (
-                <td>{answer.content.text}</td>
-              )}
-              {answer.content.equation !== undefined && (
-                <td>
-                  <BlockMath math={answer.content.equation} />
-                </td>
-              )}
-            </td>
-          ) : null
-        )}
-      </tr>
-      <tr
-        style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        {answers.map((answer, idx) =>
-          idx > 1 ? (
-            <td>
-              <td>{optionGenerator(idx) + ")"}</td>
-              {answer.content.text !== undefined && (
-                <td>{answer.content.text}</td>
-              )}
-              {answer.content.equation !== undefined && (
-                <td>
-                  <BlockMath math={answer.content.equation} />
-                </td>
-              )}
-            </td>
-          ) : null
-        )}
-      </tr>
+    <table style={{ width: "100%", breakInside: "auto"  }}>
+      <tbody>
+        <tr>
+          <th width='5%'>{number + "."}</th>
+          {image !== "" && !imageOff && (
+            <th>
+              <img
+                src={process.env.PUBLIC_URL + "/uploads/" + image}
+                alt='inputImage'
+                style={{
+                  width: "150px",
+                  maxHeight: "150x",
+                  objectFit: "contain",
+                  borderRadius: "15px",
+                }}
+              />
+            </th>
+          )}
+          {parsedQuestion.text !== undefined && (
+            <th style={{ paddinLeft: 5, textAlign: "left" }}>
+              {parsedQuestion.text}
+            </th>
+          )}
+          {parsedQuestion.equation !== undefined && (
+            <th>
+              <BlockMath math={parsedQuestion.equation} />
+            </th>
+          )}
+          {(parsedQuestion.equation === undefined ||
+            parsedQuestion.text === undefined ||
+            image === "" ||
+            imageOff) && <th width='25%'></th>}
+        </tr>
+        <tr style={{ borderSpacing: 10 }}></tr>
+        <tr>
+          {answers.map((answer, idx) =>
+            idx < 2 ? (
+              <td key={idx} colSpan={2} style={{ paddingLeft: 30 }}>
+                {optionGenerator(idx) + ") "}
+                {answer.content.text !== undefined &&
+                  answer.content.text + " "}{" "}
+                {answer.content.equation !== undefined && (
+                  <div style={{ display: "inline-flex", marginLeft: 10 }}>
+                    {" "}
+                    <BlockMath math={answer.content.equation} />
+                  </div>
+                )}
+              </td>
+            ) : null
+          )}
+        </tr>
+        <tr>
+          {answers.map((answer, idx) =>
+            idx > 1 ? (
+              <td key={idx} colSpan={2} style={{ paddingLeft: 30 }}>
+                {optionGenerator(idx) + ") "}
+                {answer.content.text !== undefined &&
+                  answer.content.text + "  "}{" "}
+                {answer.content.equation !== undefined && (
+                  <div style={{ display: "inline-flex", marginLeft: 10 }}>
+                    {" "}
+                    <BlockMath math={answer.content.equation} />
+                  </div>
+                )}
+              </td>
+            ) : null
+          )}
+        </tr>
+      </tbody>
     </table>
     // <Stack spacing={2} width='100%' mb={2} style={{pageBreakBefore: 'always'}} >
     //   <Stack direction='row' spacing={1} width='100%' alignItems='center'>

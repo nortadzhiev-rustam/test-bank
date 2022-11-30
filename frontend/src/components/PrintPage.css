@@ -1,0 +1,26 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+@media print {
+  table {
+    break-inside: avoid;
+    
+  }
+  tr {
+    break-inside: avoid;
+    break-after: auto;
+  }
+  thead {
+    display: table-header-group;
+  }
+  tfoot {
+    display: table-footer-group;
+  }
+}
+
+@page {
+  size: auto;
+
+  margin: 20mm 20mm;
+}

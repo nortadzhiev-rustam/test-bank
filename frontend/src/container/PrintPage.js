@@ -1,10 +1,10 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, Fragment } from "react";
 import { useReactToPrint } from "react-to-print";
 import { useParams } from "react-router-dom";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import axios from "axios";
 import QuestionPrintView from "../components/QuestionPrintView";
-import "./PrintPage.css";
+
 import {
   Box,
   Stack,
@@ -145,18 +145,12 @@ const PrintPage = ({ showNav, setShowNav }) => {
               </Stack>
             </Stack>
           </Stack>
-          <div className='page-break'></div>
 
           {questions &&
             questions.map((question, idx) => (
-              <>
-                <div className='page-break'></div>
-                <QuestionPrintView
-                  key={idx}
-                  quest={question}
-                  number={idx + 1}
-                />
-              </>
+              <Fragment key={idx}>
+                <QuestionPrintView quest={question} number={idx + 1} />
+              </Fragment>
             ))}
         </Stack>
       </div>
