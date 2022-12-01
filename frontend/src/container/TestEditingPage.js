@@ -18,7 +18,6 @@ import {
   DialogTitle,
   DialogContent,
   Alert,
-  
 } from "@mui/material";
 import Slide from "@mui/material/Slide";
 import SearchIcon from "@mui/icons-material/Search";
@@ -43,7 +42,8 @@ import TesteditDialog from "../components/TesteditDialog";
 import InsertPanel from "../components/InsertPanel";
 import TestInsertWindow from "./TestInsertWindow";
 import QuestionView from "../components/QuestionView";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faListCheck } from "@fortawesome/free-solid-svg-icons";
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -117,7 +117,7 @@ const types = [
   { type: "Fill in the blanks", icon: <Crop169 fontSize='inherit' /> },
 ];
 
-export default function TestEditingPage({ setShowNav, showNav }) {
+const TestEditingPage = ({ setShowNav, showNav }) => {
   const [testData, setTestData] = React.useState([]);
   const [name, setName] = React.useState("");
   const [search, setSearch] = React.useState("");
@@ -220,7 +220,7 @@ export default function TestEditingPage({ setShowNav, showNav }) {
       const res = await axios.put(
         `http://localhost:5000/api/v1/test/${id}?isEditing=${false}`
       );
-      if(res.status === 200) history(`/admin/test/${id}/${name}`);
+      if (res.status === 200) history(`/admin/test/${id}/${name}`);
     } catch (err) {
       console.log(err);
     }
@@ -502,8 +502,8 @@ export default function TestEditingPage({ setShowNav, showNav }) {
                 mt={20}
                 zIndex={1}
               >
-                <Stack direction='row' spacing={1}>
-                  <FormatListBulleted />
+                <Stack direction='row' alignItems='center' spacing={1}>
+                  <FontAwesomeIcon icon={faListCheck} />
                   <Typography>
                     {`${questions.length} ${
                       questions.length < 2 ? " question" : " questions"
@@ -673,4 +673,6 @@ export default function TestEditingPage({ setShowNav, showNav }) {
       )}
     </Box>
   );
-}
+};
+
+export default TestEditingPage;

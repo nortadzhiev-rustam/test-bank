@@ -12,6 +12,7 @@ import {
   AppBar as MuiAppBar,
   Toolbar,
   Button,
+  Alert,
 } from "@mui/material";
 import { Print } from "@mui/icons-material";
 
@@ -55,9 +56,15 @@ const PrintPage = ({ showNav, setShowNav }) => {
     };
   }, [id]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setMessage("");
+    }, 1000);
+  }, [message]);
+
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
-    documnetTitle: data.name,
+    documentTitle: data.name,
     onAfterPrint: () => setMessage("Print Success"),
   });
 
@@ -69,6 +76,7 @@ const PrintPage = ({ showNav, setShowNav }) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        flexDirection: "column",
         width: "100%",
         backgroundColor: "#f2f2f2",
         paddingTop: 100,
@@ -91,6 +99,9 @@ const PrintPage = ({ showNav, setShowNav }) => {
           </Stack>
         </Toolbar>
       </AppBar>
+      {message !== "" && (
+        <Alert sx={{ width: "595.28px", mb: 5 }}>{message}</Alert>
+      )}
       <div style={{ backgroundColor: "#fff", padding: 60 }}>
         <Stack
           spacing={3}

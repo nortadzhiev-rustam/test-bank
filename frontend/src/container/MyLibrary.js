@@ -41,7 +41,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
         res.data.filter((test) => test.userId === user.id).map((item) => item)
       );
     });
-  }, [user.id]);
+  }, []);
 
   const handleDelete = async (id) => {
     try {
