@@ -18,14 +18,14 @@ import {
   SaveAlt,
   TextSnippet,
 } from "@mui/icons-material";
-import {  useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import TestView from "../components/TestView";
 
 import axios from "axios";
 export default function MyLibrary({ showNav, setShowNav }) {
   const [testData, setTestData] = useState([]);
-  
+
   const user = useSelector((state) => state.user.user.user);
   let [searchParams, setSearchParams] = useSearchParams();
   React.useEffect(() => {
@@ -37,9 +37,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
   React.useEffect(() => {
     axios.get("http://localhost:5000/api/v1/tests").then((res) => {
       console.log(res.data);
-      setTestData(
-        res.data.filter((test) => test.userId === user.id).map((item) => item)
-      );
+      setTestData(res.data);
     });
   }, []);
 
@@ -148,14 +146,16 @@ export default function MyLibrary({ showNav, setShowNav }) {
           mt={10}
           justifyContent='flex-start'
         >
-          {testData.map((data,idx) => (
-            <TestView
-            key={idx}
-              testData={data}
-              user={data.user}
-              handleDelete={handleDelete}
-            />
-          ))}
+          {testData
+            .filter((item) => item.userId === user.id)
+            .map((data, idx) => (
+              <TestView
+                key={idx}
+                testData={data}
+                user={data.user}
+                handleDelete={handleDelete}
+              />
+            ))}
         </Stack>
       </Grid>
     </Grid>

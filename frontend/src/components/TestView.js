@@ -164,7 +164,7 @@ export default function TestView({ testData, user, handleDelete }) {
                 mr: 1,
                 width: 30,
                 height: 30,
-                fontSize: 10,
+                fontSize: 14,
               }}
             >
               {user.firstName.charAt(0)}
