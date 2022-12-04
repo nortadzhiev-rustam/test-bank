@@ -3,9 +3,11 @@ body {
   padding: 0;
 }
 @media print {
+  .container {
+    margin-top: 10px;
+  }
   table {
     break-inside: avoid;
-    
   }
   tr {
     break-inside: avoid;

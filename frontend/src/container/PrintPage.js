@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, Fragment } from "react";
+import React, { useRef, useEffect, useState, Fragment, useMemo } from "react";
 import { useReactToPrint } from "react-to-print";
 import { useParams } from "react-router-dom";
 import { experimentalStyled as styled } from "@mui/material/styles";
@@ -13,8 +13,45 @@ import {
   Toolbar,
   Button,
   Alert,
+  Switch,
+  FormGroup,
+  FormControlLabel,
+  Divider,
 } from "@mui/material";
 import { Print } from "@mui/icons-material";
+
+const Android12Switch = styled(Switch)(({ theme }) => ({
+  padding: 8,
+  "& .MuiSwitch-track": {
+    borderRadius: 22 / 2,
+    "&:before, &:after": {
+      content: '""',
+      position: "absolute",
+      top: "50%",
+      transform: "translateY(-50%)",
+      width: 16,
+      height: 16,
+    },
+    "&:before": {
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+        theme.palette.getContrastText(theme.palette.primary.main)
+      )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
+      left: 12,
+    },
+    "&:after": {
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+        theme.palette.getContrastText(theme.palette.primary.main)
+      )}" d="M19,13H5V11H19V13Z" /></svg>')`,
+      right: 12,
+    },
+  },
+  "& .MuiSwitch-thumb": {
+    boxShadow: "none",
+    width: 16,
+    height: 16,
+    margin: 2,
+  },
+}));
 
 const AppBar = styled(
   MuiAppBar,
@@ -32,6 +69,11 @@ const AppBar = styled(
 const PrintPage = ({ showNav, setShowNav }) => {
   const [data, setData] = useState({});
   const [message, setMessage] = useState("");
+  const [checkBoxOn, setCheckBoxOn] = useState(true);
+  const [optionOn, setOptionOn] = useState(true);
+  const [shuffleQuestion, setShuffleQuestion] = useState(false);
+  const [shuffleAnswers, setShuffleAnswers] = useState(false);
+  const [showAnswerKey, setShowAnswerKey] = useState(false);
   const componentRef = useRef();
   const { id } = useParams();
 
@@ -47,6 +89,7 @@ const PrintPage = ({ showNav, setShowNav }) => {
       .then((res) => {
         if (res.status === 200) {
           setData(res.data);
+          document.title = res.data.name.toUpperCase();
         }
       })
       .catch((err) => console.log(err.message));
@@ -70,6 +113,23 @@ const PrintPage = ({ showNav, setShowNav }) => {
 
   const { questions } = data;
 
+  const shQuestion = useMemo(() => {
+    const shuffledQuestions = () => {
+      return shuffleQuestion
+        ? [...questions].sort(() => Math.random() - 0.5)
+        : questions;
+    };
+    return shuffledQuestions();
+  }, [shuffleQuestion, questions]);
+
+  const handleShuffleQuestions = () => {
+    setShuffleQuestion(!shuffleQuestion);
+  };
+
+  const handleShuffleAnswers = () => {
+    setShuffleAnswers(!shuffleAnswers);
+  };
+
   return (
     <div
       style={{
@@ -83,7 +143,89 @@ const PrintPage = ({ showNav, setShowNav }) => {
       }}
     >
       <AppBar>
-        <Toolbar></Toolbar>
+        <Toolbar>
+          <Stack direction='row' py={1} spacing={1}>
+            <Stack alignItems='flex-start'>
+              <Stack
+                width='170px'
+                direction='row'
+                alignItems='center'
+                justifyContent='space-between'
+              >
+                <Typography>Answer Key</Typography>
+                <Android12Switch
+                  color='secondary'
+                  value={showAnswerKey}
+                  onChange={() => setShowAnswerKey(!showAnswerKey)}
+                />
+              </Stack>
+
+              <Stack
+                width='170px'
+                direction='row'
+                alignItems='center'
+                justifyContent='space-between'
+              >
+                <Typography>Checkboxes</Typography>
+                <Android12Switch
+                  defaultChecked={checkBoxOn}
+                  value={checkBoxOn}
+                  color='secondary'
+                  onChange={() => setCheckBoxOn(!checkBoxOn)}
+                />
+              </Stack>
+
+              <Stack
+                width='170px'
+                direction='row'
+                alignItems='center'
+                justifyContent='space-between'
+              >
+                <Typography>Answer options</Typography>
+                <Android12Switch
+                  defaultChecked={optionOn}
+                  color='secondary'
+                  value={optionOn}
+                  onChange={() => setOptionOn(!optionOn)}
+                />
+              </Stack>
+            </Stack>
+            <Divider
+              flexItem
+              orientation='vertical'
+              sx={{ bgcolor: "white" }}
+            />
+            <Stack alignItems='flex-start'>
+              <Stack
+                width='183px'
+                direction='row'
+                alignItems='center'
+                justifyContent='space-between'
+              >
+                <Typography>Shufle Questions</Typography>
+                <Android12Switch
+                  color='secondary'
+                  value={shuffleQuestion}
+                  onChange={handleShuffleQuestions}
+                />
+              </Stack>
+
+              <Stack
+                width='183px'
+                direction='row'
+                alignItems='center'
+                justifyContent='space-between'
+              >
+                <Typography>Shuffle Answers</Typography>
+                <Android12Switch
+                  value={shuffleAnswers}
+                  color='secondary'
+                  onChange={handleShuffleAnswers}
+                />
+              </Stack>
+            </Stack>
+          </Stack>
+        </Toolbar>
         <Toolbar sx={{ flexGrow: 1 }} />
         <Toolbar>
           <Stack direction='row' spacing={1}>
@@ -103,12 +245,9 @@ const PrintPage = ({ showNav, setShowNav }) => {
         <Alert sx={{ width: "595.28px", mb: 5 }}>{message}</Alert>
       )}
       <div style={{ backgroundColor: "#fff", padding: 60 }}>
-        <Stack
-          spacing={3}
-          component='div'
-          sx={{
+        <div
+          style={{
             maxWidth: "595.28px",
-
             backgroundColor: "#ffffff",
           }}
           ref={componentRef}
@@ -118,11 +257,17 @@ const PrintPage = ({ showNav, setShowNav }) => {
             height={150}
             border={1}
             direction='row'
-            spacing={28}
+            spacing={10}
             alignItems='center'
             p={1}
+            mb={4}
           >
-            <Stack justifyContent='center' alignItems='center'>
+            <Stack
+              pl={1}
+              justifyContent='center'
+              width='50%'
+              alignItems='flex-start'
+            >
               <img
                 src={process.env.PUBLIC_URL + "/uploads/logo Cepi.png"}
                 alt='inputImage'
@@ -132,8 +277,8 @@ const PrintPage = ({ showNav, setShowNav }) => {
                   objectFit: "contain",
                 }}
               />
-              <Typography variant='h5'>{data.name}</Typography>
-              <Typography>
+              <Typography>{data.name}</Typography>
+              <Typography variant='caption'>
                 {data.questions && data.questions.length + " Questions"}
               </Typography>
             </Stack>
@@ -156,14 +301,39 @@ const PrintPage = ({ showNav, setShowNav }) => {
               </Stack>
             </Stack>
           </Stack>
+          <div style={{ display: "block" }}>
+            {questions &&
+              shQuestion.map((question, idx) => (
+                <div
+                  style={{
+                    display: "block",
 
-          {questions &&
-            questions.map((question, idx) => (
-              <Fragment key={idx}>
-                <QuestionPrintView quest={question} number={idx + 1} />
-              </Fragment>
-            ))}
-        </Stack>
+                    breakAfter: "auto",
+                  }}
+                  key={idx}
+                >
+                  <QuestionPrintView
+                    checkBoxOn={checkBoxOn}
+                    quest={question}
+                    number={idx + 1}
+                    optionOn={optionOn}
+                    shuffleAnswers={shuffleAnswers}
+                  />
+                </div>
+              ))}
+
+            <div
+              style={{
+                display: "block",
+                breakBefore: "page",
+                height: "200px",
+                border: "1px solid black",
+              }}
+            >
+              fdfsf
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

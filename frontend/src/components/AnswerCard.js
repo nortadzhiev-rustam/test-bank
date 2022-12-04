@@ -165,6 +165,7 @@ const AnswersCard = (props) => {
             backgroundColor: getRandomColor(props.index),
             height: props.height ? props.height : null,
             padding: 0,
+           
           }}
           id={props.index}
           className={
