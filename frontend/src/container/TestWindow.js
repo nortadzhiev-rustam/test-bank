@@ -87,8 +87,8 @@ export default function TestWindow({
               borderRadius: 2,
               padding: 2,
               position: "fixed",
-              width: "65%",
-              left: "23%",
+              width: "70%",
+              left: {xs:'14%',md:"13.5%", lg:'22%'},
               top: 60,
               zIndex: 10,
             }}

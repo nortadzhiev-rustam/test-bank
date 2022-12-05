@@ -547,8 +547,11 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
                       color='#ffffff'
                       fontSize={30}
                       onClick={() => handleEditorOpen(type.type)}
-                      boxShadow={10}
-                      sx={{ cursor: "pointer" }}
+                      sx={{
+                        cursor: "pointer",
+                        "&:hover": { boxShadow: 10 },
+                        transition: "box-shadow 0.3s ease-in",
+                      }}
                     >
                       {type.icon}
                     </Box>

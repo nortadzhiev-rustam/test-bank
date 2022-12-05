@@ -17,9 +17,12 @@ import {
   FormGroup,
   FormControlLabel,
   Divider,
+  ToggleButtonGroup,
+  ToggleButton,
+  Paper,
 } from "@mui/material";
 import { Print } from "@mui/icons-material";
-
+import "../components/PrintPage.css";
 const Android12Switch = styled(Switch)(({ theme }) => ({
   padding: 8,
   "& .MuiSwitch-track": {
@@ -66,6 +69,22 @@ const AppBar = styled(
   backgroundColor: "#006064",
 }));
 
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+  "& .MuiToggleButtonGroup-grouped": {
+    margin: theme.spacing(0.5),
+    border: 0,
+    "&.Mui-disabled": {
+      border: 0,
+    },
+    "&:not(:first-of-type)": {
+      borderRadius: theme.shape.borderRadius,
+    },
+    "&:first-of-type": {
+      borderRadius: theme.shape.borderRadius,
+    },
+  },
+}));
+
 const PrintPage = ({ showNav, setShowNav }) => {
   const [data, setData] = useState({});
   const [message, setMessage] = useState("");
@@ -74,6 +93,9 @@ const PrintPage = ({ showNav, setShowNav }) => {
   const [shuffleQuestion, setShuffleQuestion] = useState(false);
   const [shuffleAnswers, setShuffleAnswers] = useState(false);
   const [showAnswerKey, setShowAnswerKey] = useState(false);
+  const [questionImage, setQuestionImage] = useState("200");
+  const [font, setFont] = useState("16px");
+
   const componentRef = useRef();
   const { id } = useParams();
 
@@ -89,7 +111,7 @@ const PrintPage = ({ showNav, setShowNav }) => {
       .then((res) => {
         if (res.status === 200) {
           setData(res.data);
-          document.title = res.data.name.toUpperCase();
+          document.title = res.data.name;
         }
       })
       .catch((err) => console.log(err.message));
@@ -109,6 +131,7 @@ const PrintPage = ({ showNav, setShowNav }) => {
     content: () => componentRef.current,
     documentTitle: data.name,
     onAfterPrint: () => setMessage("Print Success"),
+    pageStyle: ` @media print { body { font-size: ${font} } } `,
   });
 
   const { questions } = data;
@@ -139,7 +162,7 @@ const PrintPage = ({ showNav, setShowNav }) => {
         flexDirection: "column",
         width: "100%",
         backgroundColor: "#f2f2f2",
-        paddingTop: 100,
+        paddingTop: 200,
       }}
     >
       <AppBar>
@@ -224,6 +247,74 @@ const PrintPage = ({ showNav, setShowNav }) => {
                 />
               </Stack>
             </Stack>
+            <Divider
+              flexItem
+              orientation='vertical'
+              sx={{ bgcolor: "white" }}
+            />
+            <Stack spacing={1} alignItems='flex-start'>
+              <Stack
+                direction='row'
+                alignItems='center'
+                justifyContent='space-between'
+                width='300px'
+              >
+                <Typography>Font</Typography>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    display: "flex",
+                    border: (theme) => `1px solid ${theme.palette.divider}`,
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <StyledToggleButtonGroup
+                    color='secondary'
+                    size='small'
+                    exclusive
+                    aria-label='text alignment'
+                    onChange={(e) => setFont(e.target.value)}
+                    value={font}
+                  >
+                    <ToggleButton value='12px'>S</ToggleButton>
+                    <ToggleButton value='16px'>M</ToggleButton>
+                    <ToggleButton value='22px'>L</ToggleButton>
+                    <ToggleButton value='26px'>XL</ToggleButton>
+                  </StyledToggleButtonGroup>
+                </Paper>
+              </Stack>
+              <Stack
+                direction='row'
+                alignItems='center'
+                justifyContent='space-between'
+                width='300px'
+              >
+                <Typography>Question Image</Typography>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    display: "flex",
+                    border: (theme) => `1px solid ${theme.palette.divider}`,
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <StyledToggleButtonGroup
+                    color='secondary'
+                    onChange={(e) => setQuestionImage(e.target.value)}
+                    value={questionImage}
+                    size='small'
+                    exclusive
+                    aria-label='text alignment'
+                  >
+                    <ToggleButton value='150'>S</ToggleButton>
+                    <ToggleButton value='200'>M</ToggleButton>
+                    <ToggleButton value='250'>L</ToggleButton>
+                    <ToggleButton value='300'>XL</ToggleButton>
+                    <ToggleButton value='OFF'>OFF</ToggleButton>
+                  </StyledToggleButtonGroup>
+                </Paper>
+              </Stack>
+            </Stack>
           </Stack>
         </Toolbar>
         <Toolbar sx={{ flexGrow: 1 }} />
@@ -242,24 +333,30 @@ const PrintPage = ({ showNav, setShowNav }) => {
         </Toolbar>
       </AppBar>
       {message !== "" && (
-        <Alert sx={{ width: "595.28px", mb: 5 }}>{message}</Alert>
+        <Alert sx={{ width: "826px", mb: 5 }}>{message}</Alert>
       )}
-      <div style={{ backgroundColor: "#fff", padding: 60 }}>
+      <div
+        style={{
+          backgroundColor: "#fff",
+          padding: 60,
+          fontSize: font,
+          whiteSpace: "break-space",
+        }}
+      >
         <div
           style={{
-            maxWidth: "595.28px",
+            width: "826px",
             backgroundColor: "#ffffff",
           }}
           ref={componentRef}
         >
           <Stack
             width='100%'
-            height={150}
             border={1}
             direction='row'
-            spacing={10}
+            justifyContent='space-between'
             alignItems='center'
-            p={1}
+            p={2}
             mb={4}
           >
             <Stack
@@ -272,32 +369,32 @@ const PrintPage = ({ showNav, setShowNav }) => {
                 src={process.env.PUBLIC_URL + "/uploads/logo Cepi.png"}
                 alt='inputImage'
                 style={{
-                  width: 100,
+                  width: 150,
                   height: "100%",
-                  objectFit: "contain",
+                  objectFit: "cover",
                 }}
               />
-              <Typography>{data.name}</Typography>
-              <Typography variant='caption'>
+              <Typography fontSize='inherit'>{data.name}</Typography>
+              <Typography fontSize='inherit' variant='caption'>
                 {data.questions && data.questions.length + " Questions"}
               </Typography>
             </Stack>
             <Stack direction='column' justifyContent='flex-end' spacing={1}>
               <Stack direction='row' spacing={2.3}>
-                <Typography>Name:</Typography>{" "}
-                <Box width={200} borderBottom={1}></Box>
+                <Typography fontSize='inherit'>Name:</Typography>{" "}
+                <Box width={300} borderBottom={1}></Box>
               </Stack>
               <Stack direction='row' spacing={2.7}>
-                <Typography>Class:</Typography>{" "}
-                <Box width={200} borderBottom={1}></Box>
+                <Typography fontSize='inherit'>Class:</Typography>{" "}
+                <Box width={300} borderBottom={1}></Box>
               </Stack>
               <Stack direction='row' spacing={3.4}>
-                <Typography>Date:</Typography>{" "}
-                <Box width={200} borderBottom={1}></Box>
+                <Typography fontSize='inherit'>Date:</Typography>{" "}
+                <Box width={300} borderBottom={1}></Box>
               </Stack>
               <Stack direction='row' spacing={1}>
-                <Typography>Subject:</Typography>{" "}
-                <Box width={200} borderBottom={1}></Box>
+                <Typography fontSize='inherit'>Subject:</Typography>{" "}
+                <Box width={300} borderBottom={1}></Box>
               </Stack>
             </Stack>
           </Stack>
@@ -313,6 +410,7 @@ const PrintPage = ({ showNav, setShowNav }) => {
                   key={idx}
                 >
                   <QuestionPrintView
+                    questionImage={questionImage}
                     checkBoxOn={checkBoxOn}
                     quest={question}
                     number={idx + 1}
@@ -322,16 +420,18 @@ const PrintPage = ({ showNav, setShowNav }) => {
                 </div>
               ))}
 
-            <div
-              style={{
-                display: "block",
-                breakBefore: "page",
-                height: "200px",
-                border: "1px solid black",
-              }}
-            >
-              fdfsf
-            </div>
+            {showAnswerKey && (
+              <div
+                style={{
+                  display: "block",
+                  breakBefore: "page",
+                  height: "200px",
+                  border: "1px solid black",
+                }}
+              >
+                fdfsf
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { Stack, Typography, Box, Divider } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { BlockMath } from "react-katex";
-import React from "react";
+import React, { useMemo } from "react";
 import "./PrintPage.css";
 const QuestionPrintView = ({
   quest,
@@ -10,6 +10,7 @@ const QuestionPrintView = ({
   checkBoxOn,
   optionOn,
   shuffleAnswers,
+  questionImage,
 }) => {
   const { question, options, image } = quest;
 
@@ -25,59 +26,80 @@ const QuestionPrintView = ({
     else return "";
   };
 
-  const shuffledAnswers = () => {
-    return shuffleAnswers
-      ? [...answers].sort(() => Math.random() - 0.5)
-      : answers;
-  };
+  const shAnswers = useMemo(() => {
+    const shuffledAnswers = () => {
+      return shuffleAnswers
+        ? [...answers].sort(() => Math.random() - 0.5)
+        : answers;
+    };
+    return shuffledAnswers();
+  }, [shuffleAnswers, answers]);
 
   return (
-    <Grid className='container' container rowSpacing={2} spacing={1} sx={{ display: 'block', breakAfter: "always" }}>
-      <Grid xs={12} >
-        <Stack direction='row' alignItems='center' spacing={1}>
-          <Typography fontWeight='bold'>{number + "."}</Typography>
-          {image !== "" && !imageOff && (
-            <Box>
-              <img
-                src={process.env.PUBLIC_URL + "/uploads/" + image}
-                alt='inputImage'
-                style={{
-                  width: "250px",
-                  height: "250px",
-                  objectFit: "contain",
-                  borderRadius: "15px",
-                  border: 1,
-                }}
-              />
-            </Box>
-          )}
-          {parsedQuestion.text !== undefined && (
-            <Typography>{parsedQuestion.text}</Typography>
-          )}
-          {parsedQuestion.equation !== undefined && (
-            <BlockMath math={parsedQuestion.equation} />
-          )}
-        </Stack>
+    <Grid
+      className='container'
+      container
+      rowSpacing={2}
+      spacing={1}
+      sx={{ display: "block", breakAfter: "always" }}
+    >
+      <Grid xs={12}>
+        <div style={{ display: "block", breakBefore: "avoid" }}>
+          <Stack
+            direction='row'
+            alignItems='center'
+            spacing={1}
+            flexWrap={questionImage === "300" ? "wrap" : "nowrap"}
+          >
+            <Typography fontSize='inherit' fontWeight='bold'>
+              {number + "."}
+            </Typography>
+            {image !== "" && questionImage !== "OFF" && (
+              <Box>
+                <img
+                  src={process.env.PUBLIC_URL + "/uploads/" + image}
+                  alt='inputImage'
+                  style={{
+                    width: Number(questionImage),
+                    height: Number(questionImage),
+                    objectFit: "contain",
+                    borderRadius: "15px",
+                    border: 1,
+                  }}
+                />
+              </Box>
+            )}
+            <Stack direction='row' spacing={2} alignItems='center'>
+              {parsedQuestion.text !== undefined && (
+                <Box sx={{ whiteSpace: "normal" }}>
+                  <Typography noWrap={false} fontSize='inherit'>
+                    {parsedQuestion.text}
+                  </Typography>
+                </Box>
+              )}
+              {parsedQuestion.equation !== undefined && (
+                <BlockMath math={parsedQuestion.equation} />
+              )}
+            </Stack>
+          </Stack>
+        </div>
       </Grid>
 
-      <Grid xsOffset={0.5} xs={11.5} >
+      <Grid xsOffset={0.5} xs={11.5}>
         {optionOn ? (
-          <Grid
-            container
-            rowSpacing={1}
-            spacing={2}
-            
-          >
-            {shuffledAnswers().map((answer, idx) => (
-              <Grid key={idx} xs={6} >
+          <Grid container rowSpacing={1} spacing={2} alignItems='center'>
+            {shAnswers.map((answer, idx) => (
+              <Grid key={idx} xs={6}>
                 <Stack direction='row' spacing={2} alignItems='center'>
                   {checkBoxOn && (
-                    <Typography fontWeight='bold'>
+                    <Typography fontSize='inherit' fontWeight='bold'>
                       {optionGenerator(idx) + ") "}
                     </Typography>
                   )}
                   {answer.content.text !== undefined && (
-                    <Typography>{" " + answer.content.text}</Typography>
+                    <Typography fontSize='inherit'>
+                      {" " + answer.content.text}
+                    </Typography>
                   )}
                   {answer.content.equation !== undefined && (
                     <BlockMath math={answer.content.equation} />
