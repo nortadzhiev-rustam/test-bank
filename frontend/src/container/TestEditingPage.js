@@ -18,6 +18,8 @@ import {
   DialogTitle,
   DialogContent,
   Alert,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import Slide from "@mui/material/Slide";
 import SearchIcon from "@mui/icons-material/Search";
@@ -34,7 +36,6 @@ import {
   Layers,
   Flaky,
   Subject,
-  FormatListBulleted,
   Crop169,
 } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -117,6 +118,49 @@ const types = [
   { type: "Fill in the blanks", icon: <Crop169 fontSize='inherit' /> },
 ];
 
+const StyledMenu = styled((props) => (
+  <Menu
+    elevation={0}
+    anchorOrigin={{
+      vertical: "bottom",
+      horizontal: "right",
+    }}
+    transformOrigin={{
+      vertical: "top",
+      horizontal: "right",
+    }}
+    {...props}
+  />
+))(({ theme }) => ({
+  "& .MuiPaper-root": {
+    borderRadius: 6,
+    marginTop: theme.spacing(1),
+    minWidth: 180,
+    color:
+      theme.palette.mode === "light"
+        ? "rgb(55, 65, 81)"
+        : theme.palette.grey[300],
+    boxShadow:
+      "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
+    "& .MuiMenu-list": {
+      padding: "4px 0",
+    },
+    "& .MuiMenuItem-root": {
+      "& .MuiSvgIcon-root": {
+        fontSize: 18,
+        color: theme.palette.text.secondary,
+        marginRight: theme.spacing(1.5),
+      },
+      "&:active": {
+        backgroundColor: alpha(
+          theme.palette.primary.main,
+          theme.palette.action.selectedOpacity
+        ),
+      },
+    },
+  },
+}));
+
 const TestEditingPage = ({ setShowNav, showNav }) => {
   const [testData, setTestData] = React.useState([]);
   const [name, setName] = React.useState("");
@@ -135,7 +179,14 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
   const [error, setError] = React.useState("");
   const [openEditor, setOpenEditor] = React.useState(false);
   const { id } = useParams();
-
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const menuOpen = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   const handleDelete = async (questionId) => {
     try {
       const res = await axios.delete(
@@ -189,7 +240,6 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
       .then((res) => {
         if (res.status === 200) {
           setName(res.data.name);
-          setSearch(res.data.name);
           setGrade(res.data.grade);
           setDepartment(res.data.department);
           setQuestions(res.data.questions);
@@ -213,6 +263,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
   const handleEditorOpen = (type) => {
     setOpenEditor(true);
     setQuestionType(type);
+    handleClose();
   };
 
   const handleSave = async () => {
@@ -366,7 +417,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
               elevation={5}
               sx={{
                 position: "fixed",
-                width: { xs: "90%", md: "46%" },
+                width: { xs: "90%", md: "48%" },
                 zIndex: 10,
               }}
             >
@@ -415,17 +466,40 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
                   >
                     <Typography fontWeight='bold'>Create test</Typography>
                     <Button
-                      size='small'
+                      id='demo-customized-button'
+                      aria-controls={
+                        menuOpen ? "demo-customized-menu" : undefined
+                      }
+                      aria-haspopup='true'
+                      aria-expanded={menuOpen ? "true" : undefined}
                       variant='contained'
-                      sx={{
-                        width: { xs: "150px", lg: "250px" },
-                        height: 48,
-                        alignItems: "center",
-                      }}
+                      size='large'
+                      fullWidth
+                      onClick={handleClick}
+                      endIcon={<AddCircleOutline />}
                     >
-                      <AddCircleOutline sx={{ mr: 2 }} />
                       Create
                     </Button>
+                    <StyledMenu
+                      id='demo-customized-menu'
+                      MenuListProps={{
+                        "aria-labelledby": "demo-customized-button",
+                      }}
+                      anchorEl={anchorEl}
+                      open={menuOpen}
+                      onClose={handleClose}
+                    >
+                      {types.map((type, idx) => (
+                        <MenuItem
+                          key={idx}
+                          onClick={() => handleEditorOpen(type.type)}
+                          disableRipple
+                        >
+                          {type.icon}
+                          {type.type}
+                        </MenuItem>
+                      ))}
+                    </StyledMenu>
                   </Stack>
                 ) : null}
               </Stack>

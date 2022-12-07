@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Box, Grid, Paper } from "@mui/material";
+import { Button, Box, Grid, Paper, Typography } from "@mui/material";
 
 import { MathfieldComponent } from "react-mathlive";
 import("mathlive/dist/mathlive-static.css");
@@ -81,6 +81,7 @@ const FormulaEditor = ({
           alignItems='center'
         ></Grid>
         <Box sx={{ marginTop: "5px" }}>
+         
           <Box
             sx={{
               borderWidth: "1px",

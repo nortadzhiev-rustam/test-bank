@@ -44,12 +44,12 @@ const QuestionPrintView = ({
       sx={{ display: "block", breakAfter: "always" }}
     >
       <Grid xs={12}>
-        <div style={{ display: "block", breakBefore: "avoid" }}>
+        <div style={{ display: "block", breakBefore: "auto" }}>
           <Stack
             direction='row'
             alignItems='center'
             spacing={1}
-            flexWrap={questionImage === "300" ? "wrap" : "nowrap"}
+            flexWrap={Number(questionImage) > 300 ? "wrap" : "nowrap"}
           >
             <Typography fontSize='inherit' fontWeight='bold'>
               {number + "."}
@@ -72,7 +72,7 @@ const QuestionPrintView = ({
             <Stack direction='row' spacing={2} alignItems='center'>
               {parsedQuestion.text !== undefined && (
                 <Box sx={{ whiteSpace: "normal" }}>
-                  <Typography noWrap={false} fontSize='inherit'>
+                  <Typography sx={{display: 'block'}}  fontSize='inherit'>
                     {parsedQuestion.text}
                   </Typography>
                 </Box>

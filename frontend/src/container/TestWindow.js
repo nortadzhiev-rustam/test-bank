@@ -43,7 +43,7 @@ export default function TestWindow({
         if (res.status === 200) {
           setTestData(res.data);
           setUser(res.data.user);
-          document.title = res.data.name.toUpperCase();
+          document.title = res.data.name;
         }
         if (test === null) {
           setTest(res.data);

@@ -93,7 +93,7 @@ const PrintPage = ({ showNav, setShowNav }) => {
   const [shuffleQuestion, setShuffleQuestion] = useState(false);
   const [shuffleAnswers, setShuffleAnswers] = useState(false);
   const [showAnswerKey, setShowAnswerKey] = useState(false);
-  const [questionImage, setQuestionImage] = useState("200");
+  const [questionImage, setQuestionImage] = useState("300");
   const [font, setFont] = useState("16px");
 
   const componentRef = useRef();
@@ -306,10 +306,10 @@ const PrintPage = ({ showNav, setShowNav }) => {
                     exclusive
                     aria-label='text alignment'
                   >
-                    <ToggleButton value='150'>S</ToggleButton>
-                    <ToggleButton value='200'>M</ToggleButton>
-                    <ToggleButton value='250'>L</ToggleButton>
-                    <ToggleButton value='300'>XL</ToggleButton>
+                    <ToggleButton value='250'>S</ToggleButton>
+                    <ToggleButton value='300'>M</ToggleButton>
+                    <ToggleButton value='350'>L</ToggleButton>
+                    <ToggleButton value='400'>XL</ToggleButton>
                     <ToggleButton value='OFF'>OFF</ToggleButton>
                   </StyledToggleButtonGroup>
                 </Paper>

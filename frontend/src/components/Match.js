@@ -136,7 +136,7 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type }) {
           mr: 2,
         }}
       >
-        {options.map((option) => (
+        {options.map((option,idx) => (
           <Grid key={option.key} xs={12 / counter} height={400}>
             <Stack
               spacing={2}
@@ -169,7 +169,7 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type }) {
                 px={2}
                 borderRadius={2}
               >
-                <Typography color='white'>{option.option}</Typography>
+                <Typography color='white'>{idx+1}</Typography>
                 <InputBase
                   sx={{
                     color: "white",
