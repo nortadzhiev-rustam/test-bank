@@ -118,6 +118,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
           </Stack>
           <Divider />
           <Stack spacing={2}>
+            <Typography  textTransform='uppercase' color='dimgray'>Collections</Typography>
             <Button
               startIcon={<AddBox />}
               color='inherit'

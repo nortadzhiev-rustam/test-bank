@@ -39,7 +39,8 @@ router.post("/login", async (req, res) => {
       lastName: userWithEmail.lastName,
       createdAt: userWithEmail.createdAt,
       role: userWithEmail.role,
-      department: userWithEmail.department
+      department: userWithEmail.department,
+      id: userWithEmail.id
     },
     isAuth: req.session.isAuth,
     loading: false,
