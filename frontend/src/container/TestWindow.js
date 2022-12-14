@@ -17,6 +17,22 @@ import { Stack } from "@mui/system";
 import Spinner from "../components/Spinner";
 import { Folder, Mode, Print } from "@mui/icons-material";
 
+const intervals = [
+  { label: "year", seconds: 31536000 },
+  { label: "month", seconds: 2592000 },
+  { label: "day", seconds: 86400 },
+  { label: "hour", seconds: 3600 },
+  { label: "minute", seconds: 60 },
+  { label: "second", seconds: 1 },
+];
+
+function timeSince(date) {
+  const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+  const interval = intervals.find((i) => i.seconds < seconds);
+  const count = Math.floor(seconds / interval.seconds);
+  return `${count} ${interval.label}${count !== 1 ? "s" : ""} ago`;
+}
+
 export default function TestWindow({
   setError,
   open,
@@ -38,7 +54,7 @@ export default function TestWindow({
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/v1/test/${id || test.id}`)
+      .get(`http://localhost:5000/api/v1/test/${id}`)
       .then((res) => {
         if (res.status === 200) {
           setTestData(res.data);
@@ -49,7 +65,7 @@ export default function TestWindow({
           setTest(res.data);
         }
       })
-      .catch((err) => setError(`Something went wrong ${err}`));
+      .catch((err) => console.log(`Something went wrong ${err}`));
   }, [open, test, setError, id, setTest]);
 
   const handleEdit = async () => {
@@ -88,7 +104,7 @@ export default function TestWindow({
               padding: 2,
               position: "fixed",
               width: "70%",
-              left: {xs:'14%',md:"13.5%", lg:'22%'},
+              left: { xs: "14%", md: "13.5%", lg: "22%" },
               top: 60,
               zIndex: 10,
             }}
@@ -202,15 +218,17 @@ export default function TestWindow({
                     {user.firstName.charAt(0)}
                   </Avatar>
                   <Stack
-                    direction='column'
-                    alignItems='flex-start'
+                    direction='row'
+                    alignItems='center'
                     justifyContent='center'
+                    spacing={1}
                   >
                     <Typography variant='body1'>
                       {user.firstName + " " + user.lastName}
                     </Typography>
+                    {" *"}
                     <Typography variant='caption'>
-                      {new Date(testData.createdAt).toUTCString()}
+                      {timeSince(new Date(testData.createdAt))}
                     </Typography>
                   </Stack>
                 </Stack>

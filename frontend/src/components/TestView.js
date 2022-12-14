@@ -7,11 +7,31 @@ import {
   faBook,
   faGraduationCap,
   faListCheck,
+  faCircle
 } from "@fortawesome/free-solid-svg-icons";
 import { Delete, Folder, Mode } from "@mui/icons-material";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
-export default function TestView({ testData, user, handleDelete }) {
+
+
+
+const intervals = [
+  { label: "year", seconds: 31536000 },
+  { label: "month", seconds: 2592000 },
+  { label: "day", seconds: 86400 },
+  { label: "hour", seconds: 3600 },
+  { label: "minute", seconds: 60 },
+  { label: "second", seconds: 1 },
+];
+
+function timeSince(date) {
+  const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+  const interval = intervals.find((i) => i.seconds < seconds);
+  const count = Math.floor(seconds / interval.seconds);
+  return `${count} ${interval.label}${count !== 1 ? "s" : ""} ago`;
+}
+
+
+const TestView = ({ testData, user, handleDelete }) => {
   const navigate = useNavigate();
 
   return (
@@ -170,15 +190,17 @@ export default function TestView({ testData, user, handleDelete }) {
               {user.firstName.charAt(0)}
             </Avatar>
             <Stack
-              direction='column'
+              direction='row'
               alignItems='flex-start'
               justifyContent='center'
+              spacing={1}
             >
               <Typography fontSize={14} variant='body1'>
                 {user.firstName + " " + user.lastName}
               </Typography>
-              <Typography fontSize={10} variant='caption'>
-                {new Date(testData.createdAt).toUTCString()}
+              <FontAwesomeIcon icon={faCircle}/>
+              <Typography fontSize={12} variant='caption'>
+                {timeSince(new Date(testData.createdAt))}
               </Typography>
             </Stack>
           </Stack>
@@ -217,3 +239,4 @@ export default function TestView({ testData, user, handleDelete }) {
     </Paper>
   );
 }
+export default TestView;
