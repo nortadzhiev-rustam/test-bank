@@ -191,14 +191,14 @@ const TestView = ({ testData, user, handleDelete }) => {
             </Avatar>
             <Stack
               direction='row'
-              alignItems='flex-start'
+              alignItems='center'
               justifyContent='center'
               spacing={1}
             >
               <Typography fontSize={14} variant='body1'>
                 {user.firstName + " " + user.lastName}
               </Typography>
-              <FontAwesomeIcon icon={faCircle}/>
+              <FontAwesomeIcon fontSize={5} icon={faCircle}/>
               <Typography fontSize={12} variant='caption'>
                 {timeSince(new Date(testData.createdAt))}
               </Typography>

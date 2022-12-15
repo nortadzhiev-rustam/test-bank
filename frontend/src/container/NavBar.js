@@ -26,6 +26,9 @@ import {
   DialogContent,
   Select,
   FormControl,
+  BottomNavigation,
+  BottomNavigationAction,
+  Paper
 } from "@mui/material";
 import Slide from "@mui/material/Slide";
 import SearchIcon from "@mui/icons-material/Search";
@@ -39,6 +42,9 @@ import {
   Logout,
   MeetingRoom,
   Settings,
+  Restore,
+  Favorite,
+  LocationOn,
 } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 
@@ -259,7 +265,6 @@ const NavBar = () => {
       </Toolbar>
       <Divider sx={{ mb: 2 }} />
       <Stack
-        
         direction='column'
         justifyContent='space-between'
         overflow='scrroll'
@@ -335,7 +340,7 @@ const NavBar = () => {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Stack direction='column'>
       <Dialog
         maxWidth='xs'
         open={isOpen}
@@ -534,7 +539,42 @@ const NavBar = () => {
       )}
 
       <Space />
-    </Box>
+      <Paper
+        sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
+        elevation={3}
+      >
+        <BottomNavigation
+        showLabels
+          sx={{ display: { xs: "flex", lg: "none" }, justifyContent:'space-evenly', height: '100px'}}
+        >
+          <BottomNavigationAction
+            label='Explore'
+            value='recents'
+            icon={<Explore  fontSize='large' />}
+          />
+          <BottomNavigationAction
+            label='Library'
+            value='recents'
+            icon={<LibraryBooks fontSize='large' />}
+          />
+          <BottomNavigationAction
+            label='Create'
+            value='favorites'
+            icon={<AddCircleOutlineIcon fontSize='large' />}
+          />
+          <BottomNavigationAction
+            label='Collections'
+            value='nearby'
+            icon={<Folder fontSize='large' />}
+          />
+          <BottomNavigationAction
+            label='Profile'
+            value='folder'
+            icon={<AccountCircle fontSize='large' />}
+          />
+        </BottomNavigation>
+      </Paper>
+    </Stack>
   );
 };
 

@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import {
   AddBox,
+  CreateNewFolder,
   Inventory2,
   Person,
   SaveAlt,
@@ -53,11 +54,11 @@ export default function MyLibrary({ showNav, setShowNav }) {
 
   return (
     <Grid mx={10} width='100%' container spacing={2} mt={15} height='100%'>
-      <Grid xs={12} md={4} lg={3} xl={2}>
+      <Grid xs={12}  xl={2}>
         <Stack
           spacing={4}
-          position={{ xs: "static", lg: "fixed" }}
-          width={{ xs: "100%", lg: "250px" }}
+          position={{ xs: "static", xl: "fixed" }}
+          width={{ xs: "100%", xl: "250px" }}
         >
           {" "}
           <Typography
@@ -69,7 +70,14 @@ export default function MyLibrary({ showNav, setShowNav }) {
             My Library
           </Typography>
           <Stack width='100%' direction='row' flexWrap='wrap'>
-            <List component='nav' sx={{ display: "flex", flexWrap: "wrap" }}>
+            <List
+              component='nav'
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "row", lg: "column" },
+                flexWrap: "wrap",
+              }}
+            >
               <ListItem disablePadding>
                 <ListItemButton
                   selected={searchParams.has("allTest")}
@@ -118,9 +126,11 @@ export default function MyLibrary({ showNav, setShowNav }) {
           </Stack>
           <Divider />
           <Stack spacing={2}>
-            <Typography  textTransform='uppercase' color='dimgray'>Collections</Typography>
+            <Typography textTransform='uppercase' color='dimgray'>
+              Collections
+            </Typography>
             <Button
-              startIcon={<AddBox />}
+              startIcon={<CreateNewFolder />}
               color='inherit'
               size='small'
               variant='contained'
@@ -132,11 +142,11 @@ export default function MyLibrary({ showNav, setShowNav }) {
       </Grid>
       <Grid
         xs={12}
-        md={8}
+        md={11}
         lgOffset={3}
         xlOffset={0}
         lg={9}
-        ml={3}
+        ml={{ xs: 0, lg: 3 }}
         height='100%'
       >
         <Stack
