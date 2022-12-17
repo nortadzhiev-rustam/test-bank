@@ -87,15 +87,15 @@ const Default = ({ setShowNav, showNav }) => {
         width: "100%",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
+        justifyContent: { xs: "flex-start", md: "center" },
         alignItems: "center",
 
-        paddingTop: 30,
+        paddingTop: 10,
       }}
     >
       <Box width='100%' display='flex' justifyContent='center'>
         <Stack
-          width={{ xs: 300, md: 800 }}
+          width={{ xs: "85%", md: 800 }}
           direction='column'
           justifyContent='center'
           alignItems='center'
@@ -184,11 +184,12 @@ const Default = ({ setShowNav, showNav }) => {
           className='department-stack'
           overflow='scroll'
           height={200}
-          width={{ xs: 200, md: 650, lg: 850, xl: 1200 }}
-          justifyContent={departments.length < 10 ? "center" : "flex-start"}
+          width={{ xs: '85%', md: 650, lg: 850, xl: 1200 }}
+          justifyContent={{xs:'flex-start', lg: 'center'}}
           alignItems='center'
           direction='row'
-          spacing={2.5}
+          // display={{ xs: "none", md: "flex" }}
+          spacing={3}
           mb={5}
           mt={10}
           p={2}

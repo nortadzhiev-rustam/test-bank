@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     image: { type: DataTypes.STRING, allowNull: true },
-    isEditing: { type: DataTypes.BOOLEAN, allowNull: false },
+    isEditing: { type: DataTypes.BOOLEAN, allowNull: true },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),

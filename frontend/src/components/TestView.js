@@ -1,18 +1,24 @@
 import React from "react";
 import Grid from "@mui/material/Unstable_Grid2";
-import { Paper, Box, Stack, Typography, Avatar, Button } from "@mui/material";
+import {
+  Paper,
+  Box,
+  Stack,
+  Typography,
+  Avatar,
+  Button,
+  IconButton,
+} from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faImage,
   faBook,
   faGraduationCap,
   faListCheck,
-  faCircle
+  faCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { Delete, Folder, Mode } from "@mui/icons-material";
 import { useNavigate, useParams } from "react-router-dom";
-
-
 
 const intervals = [
   { label: "year", seconds: 31536000 },
@@ -29,7 +35,6 @@ function timeSince(date) {
   const count = Math.floor(seconds / interval.seconds);
   return `${count} ${interval.label}${count !== 1 ? "s" : ""} ago`;
 }
-
 
 const TestView = ({ testData, user, handleDelete }) => {
   const navigate = useNavigate();
@@ -110,8 +115,8 @@ const TestView = ({ testData, user, handleDelete }) => {
                 )}
               </Stack>
             </Grid>
-            <Grid xs={6}>
-              <Typography variant='h5' fontWeight='bold'>
+            <Grid xs={12}>
+              <Typography variant={{ xs: "h6", md: "h5" }} fontWeight='bold'>
                 {testData.name}
               </Typography>
             </Grid>
@@ -123,15 +128,18 @@ const TestView = ({ testData, user, handleDelete }) => {
                 flexDirection='row'
                 alignItems='center'
                 color='#666666'
+                
               >
-                <FontAwesomeIcon icon={faListCheck} />
+                <FontAwesomeIcon size='xs' icon={faListCheck} />
                 {testData.questions ? (
-                  <Typography sx={{ ml: 1 }}>
+                  <Typography fontSize={{ xs: "12px" }} sx={{ ml: 1 }}>
                     {testData.questions.length}
                     {testData.questions.length > 2 ? " questions" : " question"}
                   </Typography>
                 ) : (
-                  <Typography sx={{ ml: 1 }}>0 question</Typography>
+                  <Typography fontSize={{ xs: "12px" }} sx={{ ml: 1 }}>
+                    0 question
+                  </Typography>
                 )}
               </Box>
             </Grid>
@@ -142,8 +150,8 @@ const TestView = ({ testData, user, handleDelete }) => {
                 alignItems='center'
                 color='#666666'
               >
-                <FontAwesomeIcon icon={faGraduationCap} />
-                <Typography sx={{ ml: 1 }}>
+                <FontAwesomeIcon size='xs' icon={faGraduationCap} />
+                <Typography fontSize={{ xs: "12px" }} sx={{ ml: 1 }}>
                   {testData.grade}
                   {testData.garde > 3
                     ? "th Grade"
@@ -164,9 +172,9 @@ const TestView = ({ testData, user, handleDelete }) => {
                 alignItems='center'
                 color='#666666'
               >
-                <FontAwesomeIcon icon={faBook} />
+                <FontAwesomeIcon size='xs' icon={faBook} />
                 {testData.department !== null && (
-                  <Typography sx={{ ml: 1 }}>
+                  <Typography fontSize={{ xs: "12px" }} sx={{ ml: 1 }}>
                     {testData.department.name}
                   </Typography>
                 )}
@@ -195,17 +203,22 @@ const TestView = ({ testData, user, handleDelete }) => {
               justifyContent='center'
               spacing={1}
             >
-              <Typography fontSize={14} variant='body1'>
+              <Typography fontSize={{ xs: 10, md: 14 }} variant='body1'>
                 {user.firstName + " " + user.lastName}
               </Typography>
-              <FontAwesomeIcon fontSize={5} icon={faCircle}/>
-              <Typography fontSize={12} variant='caption'>
+              <FontAwesomeIcon fontSize={5} icon={faCircle} />
+              <Typography fontSize={{ xs: 10, md: 12 }} variant='caption'>
                 {timeSince(new Date(testData.createdAt))}
               </Typography>
             </Stack>
           </Stack>
         )}
-        <Stack direction='row' alignItems='center' spacing={1}>
+        <Stack
+          direction='row'
+          alignItems='center'
+          spacing={1}
+          display={{ xs: "none", md: "flex" }}
+        >
           <Button
             size='small'
             startIcon={<Delete />}
@@ -235,8 +248,34 @@ const TestView = ({ testData, user, handleDelete }) => {
             Save
           </Button>
         </Stack>
+        <Stack
+          direction='row'
+          alignItems='center'
+          spacing={1}
+          display={{ xs: "flex", md: "none" }}
+        >
+          <IconButton
+            size='small'
+            color='secondary'
+            onClick={() => handleDelete(testData.id)}
+          >
+            <Delete fontSize='small'/>
+          </IconButton>
+          <IconButton
+            size='small'
+            color='secondary'
+            onClick={() =>
+              navigate(`/admin/test/${testData.id}/${testData.name}`)
+            }
+          >
+            <Mode fontSize='small' />
+          </IconButton>
+          <IconButton size='small' color='secondary'>
+            <Folder fontSize='small'/>
+          </IconButton>
+        </Stack>
       </Stack>
     </Paper>
   );
-}
+};
 export default TestView;

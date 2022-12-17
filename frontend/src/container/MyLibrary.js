@@ -53,8 +53,8 @@ export default function MyLibrary({ showNav, setShowNav }) {
   };
 
   return (
-    <Grid mx={10} width='100%' container spacing={2} mt={15} height='100%'>
-      <Grid xs={12}  xl={2}>
+    <Grid mx={2} width='100%' container spacing={2} my={15} height='100%'>
+      <Grid xs={12} lgOffset={1} xl={2}>
         <Stack
           spacing={4}
           position={{ xs: "static", xl: "fixed" }}
@@ -74,11 +74,11 @@ export default function MyLibrary({ showNav, setShowNav }) {
               component='nav'
               sx={{
                 display: "flex",
-                flexDirection: { xs: "row", lg: "column" },
-                flexWrap: "wrap",
+                flexDirection: { xs: "row", xl: "column" },
+                flexWrap:'wrap'
               }}
             >
-              <ListItem disablePadding>
+              <ListItem disablePadding sx={{width:250}} >
                 <ListItemButton
                   selected={searchParams.has("allTest")}
                   onClick={() => handleClick("allTest=true")}
@@ -89,7 +89,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
                   <ListItemText primary='All my content' />
                 </ListItemButton>
               </ListItem>
-              <ListItem disablePadding>
+              <ListItem disablePadding sx={{width:250}} >
                 <ListItemButton
                   selected={searchParams.has("madeByMe")}
                   onClick={() => handleClick("madeByMe=true")}
@@ -100,7 +100,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
                   <ListItemText primary='Prepared by me' />
                 </ListItemButton>
               </ListItem>
-              <ListItem disablePadding>
+              <ListItem disablePadding sx={{width:250}} >
                 <ListItemButton
                   selected={searchParams.has("imported")}
                   onClick={() => handleClick("imported=true")}
@@ -111,7 +111,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
                   <ListItemText primary='Imported' />
                 </ListItemButton>
               </ListItem>
-              <ListItem disablePadding>
+              <ListItem disablePadding sx={{width:250}} >
                 <ListItemButton
                   selected={searchParams.has("drafts")}
                   onClick={() => handleClick("drafts=true")}
@@ -125,7 +125,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
             </List>
           </Stack>
           <Divider />
-          <Stack spacing={2}>
+          <Stack spacing={2} maxWidth={{ xs: "100%", sm: "40%", md: "30%", xl: '100%' }}>
             <Typography textTransform='uppercase' color='dimgray'>
               Collections
             </Typography>
@@ -144,8 +144,9 @@ export default function MyLibrary({ showNav, setShowNav }) {
         xs={12}
         md={11}
         lgOffset={3}
-        xlOffset={0}
-        lg={9}
+       
+        lg={8}
+        xl={7}
         ml={{ xs: 0, lg: 3 }}
         height='100%'
       >

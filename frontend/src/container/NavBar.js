@@ -28,7 +28,7 @@ import {
   FormControl,
   BottomNavigation,
   BottomNavigationAction,
-  Paper
+  Paper,
 } from "@mui/material";
 import Slide from "@mui/material/Slide";
 import SearchIcon from "@mui/icons-material/Search";
@@ -45,6 +45,7 @@ import {
   Restore,
   Favorite,
   LocationOn,
+  AddCircle,
 } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 
@@ -168,6 +169,7 @@ const NavBar = () => {
   const [selected, setSelected] = React.useState(undefined);
   const [option, setOption] = React.useState("Test Library");
   const [isOpen, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("explore");
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const user = useSelector((state) => state.user.user.user);
   const dispatch = useDispatch();
@@ -197,7 +199,9 @@ const NavBar = () => {
     setSelected(id);
     history(path);
   };
-
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
   const drawer = (
     <div style={{ width: "100%", position: "absolute" }}>
       <Toolbar sx={{ backgroundColor: "#15616d", position: "sticky" }}>
@@ -540,37 +544,46 @@ const NavBar = () => {
 
       <Space />
       <Paper
-        sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
+        sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 10 }}
         elevation={3}
       >
         <BottomNavigation
-        showLabels
-          sx={{ display: { xs: "flex", lg: "none" }, justifyContent:'space-evenly', height: '100px'}}
+          showLabels
+          sx={{
+            display: { xs: "flex", lg: "none" },
+            justifyContent: "space-evenly",
+            height: "60px",
+          }}
+          value={value}
+          onChange={handleChange}
         >
           <BottomNavigationAction
+            onClick={() => history("/")}
             label='Explore'
-            value='recents'
-            icon={<Explore  fontSize='large' />}
+            value='explore'
+            icon={<Explore fontSize='medium' />}
           />
           <BottomNavigationAction
+          onClick={() => history("/admin/private")}
             label='Library'
-            value='recents'
-            icon={<LibraryBooks fontSize='large' />}
+            value='library'
+            icon={<LibraryBooks fontSize='medium' />}
           />
           <BottomNavigationAction
             label='Create'
-            value='favorites'
-            icon={<AddCircleOutlineIcon fontSize='large' />}
+            onClick={handleDialogOpen}
+            icon={<AddCircle color='success' fontSize='medium' />}
           />
           <BottomNavigationAction
             label='Collections'
-            value='nearby'
-            icon={<Folder fontSize='large' />}
+            value='collections'
+            icon={<Folder fontSize='medium' />}
           />
           <BottomNavigationAction
+          onClick={() => history("/profile")}
             label='Profile'
-            value='folder'
-            icon={<AccountCircle fontSize='large' />}
+            value='profile'
+            icon={<AccountCircle fontSize='medium' />}
           />
         </BottomNavigation>
       </Paper>
