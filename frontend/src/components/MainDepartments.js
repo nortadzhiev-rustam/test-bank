@@ -1,55 +1,24 @@
 import React from "react";
 import { Box, Paper, Typography, Stack } from "@mui/material";
+
 const photoSelector = (title) => {
   switch (title) {
-    case "Mathematics":
-      return require("../subjects/Mathematics.png");
-
-    case "History":
-      return require("../subjects/History.png");
-
-    case "ICT":
-      return require("../subjects/Computer.png");
-
-    case "Physics":
-      return require("../subjects/Physics.png");
-
-    case "Chemistry":
-      return require("../subjects/Chemistry.png");
-
-    case "Biology":
-      return require("../subjects/Biology.png");
-
+    case "Maths":
+      return require("../subjects/Maths.png");
+    case "Computers":
+      return require("../subjects/Computers.png");
+    case "Career ed":
+      return require("../subjects/Career Ed.png");
     case "English":
       return require("../subjects/English.png");
-
-    case "French":
-      return require("../subjects/French.png");
-
-    case "Art":
-      return require("../subjects/Arte.png");
-
-    case "Geography":
-      return require("../subjects/Geography.png");
-
-    case "Musica":
-      return require("../subjects/Music.png");
-
-    case "Portuguese":
-      return require("../subjects/Litrature.png");
-
-    case "Eduçao Laboral":
-      return require("../subjects/EVP.png");
-
-    case "EVP":
-      return require("../subjects/EVP.png");
-
-    case "EMC":
-      return require("../subjects/EMC.png");
-
-    case "Robotics":
-      return require("../subjects/Robotics.png");
-
+    case "Social Studies":
+      return require("../subjects/Social Studies.png");
+    case "Languages":
+      return require("../subjects/Languages.png");
+    case "Science":
+      return require("../subjects/Science.png");
+    case "Creative Arts":
+      return require("../subjects/Creative Arts.png");
     default:
       return require("../subjects/English.png");
   }
@@ -70,7 +39,7 @@ export default function MainDepartments({ name, onClick }) {
       style={{
         cursor: "pointer",
         transition: "transform 0.5s ease-in",
-        transform: hover && "scale(1.2)",
+        transform: hover && "scale(1.5)",
       }}
     >
       <Paper
@@ -84,25 +53,17 @@ export default function MainDepartments({ name, onClick }) {
           alignItems: "center",
         }}
       >
-        <Box
-          border='GrayText'
-          bgcolor='#e0fbfc'
-          width='85%'
-          height='85%'
-          borderRadius='50%'
-        >
-          <img
-            width='100%'
-            height='100%'
-            style={{ objectFit: "cover", borderRadius: "50%" }}
-            src={photoSelector(name)}
-            alt={name}
-          />
-        </Box>
+        <img
+          width='100%'
+          height='100%'
+          style={{ objectFit: "contain", borderRadius: "50%" }}
+          src={photoSelector(name)}
+          alt={name}
+        />
       </Paper>
       <Typography
         fontWeight='bold'
-        fontSize={18}
+        fontSize={{ xs: 6, lg: 18 }}
         fontFamily='sans-serif'
         color='GrayText'
       >

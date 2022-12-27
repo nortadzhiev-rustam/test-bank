@@ -5,8 +5,18 @@ import SearchIcon from "@mui/icons-material/Search";
 import { ChevronRightTwoTone } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { styled, alpha } from "@mui/material/styles";
-
 import MainDepartments from "../components/MainDepartments";
+const mainDepartments = [
+  { title: "Computers", id: 1 },
+  { title: "Maths", id: 2 },
+  { title: "Career ed", id: 3 },
+  { title: "English", id: 4 },
+  { title: "Social Studies", id: 5 },
+  { title: "Languages", id: 6 },
+  { title: "Science", id: 7 },
+  { title: "Creative Arts", id: 8 },
+];
+
 const Search = styled(Paper)(({ theme }) => ({
   position: "relative",
   height: 70,
@@ -95,7 +105,7 @@ const Default = ({ setShowNav, showNav }) => {
     >
       <Box width='100%' display='flex' justifyContent='center'>
         <Stack
-          width={{ xs: "85%", md: 800 }}
+          width={{ xs: "85%", md: "65%" }}
           direction='column'
           justifyContent='center'
           alignItems='center'
@@ -151,7 +161,7 @@ const Default = ({ setShowNav, showNav }) => {
                     p={1}
                     color='white'
                     borderRadius={3}
-                    width={120}
+                    width={250}
                     justifyContent='center'
                     display='flex'
                   >
@@ -170,9 +180,7 @@ const Default = ({ setShowNav, showNav }) => {
                 mt: 2,
                 marginRight: 1,
                 width: "100%",
-                maxWidth: 800,
-                minHeight: 200,
-                display: "block",
+                height: "200px",
                 borderRadius: 3,
               }}
             ></Paper>
@@ -184,8 +192,8 @@ const Default = ({ setShowNav, showNav }) => {
           className='department-stack'
           overflow='scroll'
           height={200}
-          width={{ xs: '85%', md: 650, lg: 850, xl: 1200 }}
-          justifyContent={{xs:'flex-start', lg: 'center'}}
+          width={{ xs: "85%", md: 650, lg: 850, xl: 1200 }}
+          justifyContent={{ xs: "flex-start", lg: "center" }}
           alignItems='center'
           direction='row'
           // display={{ xs: "none", md: "flex" }}
@@ -194,8 +202,12 @@ const Default = ({ setShowNav, showNav }) => {
           mt={10}
           p={2}
         >
-          {departments.map((item, idx) => (
-            <MainDepartments key={idx} name={item.name} onClick={handleClick} />
+          {mainDepartments.map((item, idx) => (
+            <MainDepartments
+              key={idx}
+              name={item.title}
+              onClick={handleClick}
+            />
           ))}
         </Stack>
       )}

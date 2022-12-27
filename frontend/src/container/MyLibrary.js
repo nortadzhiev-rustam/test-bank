@@ -12,7 +12,6 @@ import {
   Stack,
 } from "@mui/material";
 import {
-  AddBox,
   CreateNewFolder,
   Inventory2,
   Person,
@@ -58,7 +57,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
         <Stack
           spacing={4}
           position={{ xs: "static", xl: "fixed" }}
-          width={{ xs: "100%", xl: "250px" }}
+          width={{ xs: "100%", xl: "400px" }}
         >
           {" "}
           <Typography
@@ -75,10 +74,10 @@ export default function MyLibrary({ showNav, setShowNav }) {
               sx={{
                 display: "flex",
                 flexDirection: { xs: "row", xl: "column" },
-                flexWrap:'wrap'
+                flexWrap: "wrap",
               }}
             >
-              <ListItem disablePadding sx={{width:250}} >
+              <ListItem disablePadding sx={{ width: 400 }}>
                 <ListItemButton
                   selected={searchParams.has("allTest")}
                   onClick={() => handleClick("allTest=true")}
@@ -89,7 +88,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
                   <ListItemText primary='All my content' />
                 </ListItemButton>
               </ListItem>
-              <ListItem disablePadding sx={{width:250}} >
+              <ListItem disablePadding sx={{ width: 400 }}>
                 <ListItemButton
                   selected={searchParams.has("madeByMe")}
                   onClick={() => handleClick("madeByMe=true")}
@@ -98,9 +97,12 @@ export default function MyLibrary({ showNav, setShowNav }) {
                     <Person />
                   </ListItemIcon>
                   <ListItemText primary='Prepared by me' />
+                  <Typography>
+                    {testData.filter((item) => item.userId === user.id).length}
+                  </Typography>
                 </ListItemButton>
               </ListItem>
-              <ListItem disablePadding sx={{width:250}} >
+              <ListItem disablePadding sx={{ width: 400 }}>
                 <ListItemButton
                   selected={searchParams.has("imported")}
                   onClick={() => handleClick("imported=true")}
@@ -111,7 +113,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
                   <ListItemText primary='Imported' />
                 </ListItemButton>
               </ListItem>
-              <ListItem disablePadding sx={{width:250}} >
+              <ListItem disablePadding sx={{ width: 400 }}>
                 <ListItemButton
                   selected={searchParams.has("drafts")}
                   onClick={() => handleClick("drafts=true")}
@@ -125,7 +127,10 @@ export default function MyLibrary({ showNav, setShowNav }) {
             </List>
           </Stack>
           <Divider />
-          <Stack spacing={2} maxWidth={{ xs: "100%", sm: "40%", md: "30%", xl: '100%' }}>
+          <Stack
+            spacing={2}
+            maxWidth={{ xs: "100%", sm: "40%", md: "30%", xl: "100%" }}
+          >
             <Typography textTransform='uppercase' color='dimgray'>
               Collections
             </Typography>
@@ -144,7 +149,6 @@ export default function MyLibrary({ showNav, setShowNav }) {
         xs={12}
         md={11}
         lgOffset={3}
-       
         lg={8}
         xl={7}
         ml={{ xs: 0, lg: 3 }}

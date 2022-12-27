@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Paper, Box, Typography, Button, Avatar } from "@mui/material";
+import {
+  Paper,
+  Box,
+  Typography,
+  Button,
+  Avatar,
+  IconButton,
+} from "@mui/material";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -9,6 +16,7 @@ import {
   faGraduationCap,
   faBook,
   faListCheck,
+  faCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import Grid from "@mui/material/Unstable_Grid2";
 import QuestionView from "../components/QuestionView";
@@ -100,24 +108,25 @@ export default function TestWindow({
           <Paper
             elevation={5}
             sx={{
-              borderRadius: 2,
+              borderBottomLeftRadius: 10,
+              borderBottomRightRadius: 10,
               padding: 2,
               position: "fixed",
               width: "70%",
-              left: { xs: "14%", md: "13.5%", lg: "22%" },
-              top: 60,
+              left: { xs: "12%", md: "13.5%", lg: "22%" },
+              top: 55,
               zIndex: 10,
             }}
           >
-            <Grid container spacing={2}>
-              <Grid display='flex' justifyContent='center' xs={4} lg={3}>
+            <Grid container spacing={1}>
+              <Grid display='flex' justifyContent='center' xs={3} xl={2}>
                 {testData.image === "" ||
                 testData.image === undefined ||
                 testData.image === null ? (
                   <Box
                     sx={{
-                      height: 150,
-                      width: 150,
+                      height: { xs: 100, md: 170 },
+                      width: "100%",
                       backgroundColor: "#cccccc",
                       display: "flex",
                       justifyContent: "center",
@@ -125,13 +134,13 @@ export default function TestWindow({
                       borderRadius: 5,
                     }}
                   >
-                    <FontAwesomeIcon color='#183153' size='5x' icon={faImage} />
+                    <FontAwesomeIcon color='#183153' size='3x' icon={faImage} />
                   </Box>
                 ) : (
                   <Box
                     sx={{
-                      height: 150,
-                      width: 150,
+                      height: { xs: 100, md: 170 },
+                      width: "100%",
                       backgroundColor: "#cccccc",
                       display: "flex",
                       justifyContent: "center",
@@ -155,11 +164,15 @@ export default function TestWindow({
                   </Box>
                 )}
               </Grid>
-              <Grid xs={8}>
-                <Grid container spacing={1} sx={{ mt: 1 }}>
-                  <Grid xs={6}>
-                    <Stack direction='row' spacing={1}>
-                      <Typography variant='h5'>Test</Typography>
+              <Grid xs={9} xl={10}>
+                <Grid container spacing={1}>
+                  <Grid xs={12}>
+                    <Stack
+                      direction='row'
+                      justifyContent='space-between'
+                      spacing={1}
+                    >
+                      <Typography variant='body1'>Test</Typography>
                       {testData.isEditing && (
                         <Box
                           component='div'
@@ -170,51 +183,81 @@ export default function TestWindow({
                           justifyContent='center'
                           alignItems='center'
                           borderRadius={10}
+                          fontSize={14}
                         >
                           Draft
                         </Box>
                       )}
                     </Stack>
-                    <Typography variant='h4'>{testData.name}</Typography>
+                  </Grid>
+                  <Grid xs={12}>
+                    <Typography
+                      variant={{ xs: "h6", md: "h5" }}
+                      fontWeight='bold'
+                    >
+                      {testData.name}
+                    </Typography>
                   </Grid>
                 </Grid>
-                <Grid container rowSpacing={1} spacing={1} sx={{ mt: 1 }}>
-                  <Grid xs={6} md={2}>
+                <Grid container spacing={1}>
+                  <Grid xs={6} xl={2}>
                     <Box
                       display='flex'
                       flexDirection='row'
                       alignItems='center'
                       color='#666666'
                     >
-                      <FontAwesomeIcon icon={faGraduationCap} />
-                      <Typography sx={{ ml: 1 }}>{testData.grade}th</Typography>
+                      <FontAwesomeIcon size='xs' icon={faGraduationCap} />
+                      <Typography fontSize={{ xs: "12px" }} sx={{ ml: 1 }}>
+                        {testData.grade}
+                        {testData.garde > 3
+                          ? "th Grade"
+                          : testData.grade === 1
+                          ? "st Grade"
+                          : testData.grade === 2
+                          ? "nd Grade"
+                          : testData.grade === 3
+                          ? "rd Grade"
+                          : "th Grade"}
+                      </Typography>
                     </Box>
                   </Grid>
-                  <Grid xs={6} md={2}>
+                  <Grid xs={6} xl={2}>
                     <Box
                       display='flex'
                       flexDirection='row'
                       alignItems='center'
                       color='#666666'
                     >
-                      <FontAwesomeIcon icon={faBook} />
-                      <Typography sx={{ ml: 1 }}>
-                        {testData.department.name}
-                      </Typography>
+                      <FontAwesomeIcon size='xs' icon={faBook} />
+                      {testData.department !== null && (
+                        <Typography fontSize={{ xs: "12px" }} sx={{ ml: 1 }}>
+                          {testData.department.name}
+                        </Typography>
+                      )}
                     </Box>
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
             <Stack
+              ml={1}
+              mt={1}
               direction='row'
               alignItems='center'
               justifyContent='space-between'
-              mt={2}
             >
               {user !== undefined && (
                 <Stack direction='row' alignItems='center'>
-                  <Avatar sx={{ backgroundColor: "red", mr: 1 }}>
+                  <Avatar
+                    sx={{
+                      backgroundColor: "red",
+                      mr: 1,
+                      width: 30,
+                      height: 30,
+                      fontSize: 14,
+                    }}
+                  >
                     {user.firstName.charAt(0)}
                   </Avatar>
                   <Stack
@@ -223,38 +266,68 @@ export default function TestWindow({
                     justifyContent='center'
                     spacing={1}
                   >
-                    <Typography variant='body1'>
+                    <Typography fontSize={{ xs: 10, md: 14 }} variant='body1'>
                       {user.firstName + " " + user.lastName}
                     </Typography>
-                    {" *"}
-                    <Typography variant='caption'>
+                    <FontAwesomeIcon fontSize={5} icon={faCircle} />
+                    <Typography fontSize={{ xs: 10, md: 12 }} variant='caption'>
                       {timeSince(new Date(testData.createdAt))}
                     </Typography>
                   </Stack>
                 </Stack>
               )}
-              <Stack direction='row' alignItems='center' spacing={1}>
+              <Stack
+                direction='row'
+                alignItems='center'
+                spacing={1}
+                display={{ xs: "none", md: "flex" }}
+              >
                 <Button
                   size='small'
+                  startIcon={<Print />}
                   variant='contained'
                   color='inherit'
-                  startIcon={<Print />}
                   onClick={() => window.open(`/print/test/${id}`, "_blank")}
                 >
                   Print
                 </Button>
-
                 <Button
                   size='small'
+                  startIcon={<Mode />}
                   variant='contained'
                   color='inherit'
                   onClick={handleEdit}
                 >
-                  <Mode fontSize='small' sx={{ mr: 1 }} /> Edit
+                  Edit
                 </Button>
-                <Button size='small' variant='contained' color='inherit'>
-                  <Folder fontSize='small' sx={{ mr: 1 }} /> Save
+                <Button
+                  size='small'
+                  startIcon={<Folder />}
+                  variant='contained'
+                  color='inherit'
+                >
+                  Save
                 </Button>
+              </Stack>
+              <Stack
+                direction='row'
+                alignItems='center'
+                spacing={1}
+                display={{ xs: "flex", md: "none" }}
+              >
+                <IconButton
+                  size='small'
+                  color='secondary'
+                  onClick={() => window.open(`/print/test/${id}`, "_blank")}
+                >
+                  <Print fontSize='small' />
+                </IconButton>
+                <IconButton size='small' color='secondary' onClick={handleEdit}>
+                  <Mode fontSize='small' />
+                </IconButton>
+                <IconButton size='small' color='secondary'>
+                  <Folder fontSize='small' />
+                </IconButton>
               </Stack>
             </Stack>
           </Paper>

@@ -175,10 +175,14 @@ const InsertWindow = ({
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
             sx={{
+              height: "90vh",
               borderRadius: 3,
               transition: "all 0.3s ease-in-out",
               width: "100%",
               paddingBottom: 5,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent:'space-between'
             }}
             className='animate__animated animate__fadeInUp animate__faster'
           >
@@ -322,7 +326,7 @@ const InsertWindow = ({
                 </Typography>
               )}
             </Box>
-            <Box mt={3} width='95%' textAlign='right'>
+            <Box mt={3} width='95%' textAlign='end' >
               <Button
                 sx={{ borderRadius: 10 }}
                 onClick={handleClose}

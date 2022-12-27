@@ -46,7 +46,6 @@ const TestView = ({ testData, user, handleDelete }) => {
         padding: 1,
 
         "&:hover": { bgcolor: "#f2f2f2" },
-        cursor: "pointer",
       }}
     >
       <Grid container spacing={1}>
@@ -56,8 +55,8 @@ const TestView = ({ testData, user, handleDelete }) => {
           testData.image === null ? (
             <Box
               sx={{
-                height: 100,
-                width: 100,
+                height: { xs: 100, md: 170 },
+                width: "100%",
                 backgroundColor: "#cccccc",
                 display: "flex",
                 justifyContent: "center",
@@ -70,8 +69,8 @@ const TestView = ({ testData, user, handleDelete }) => {
           ) : (
             <Box
               sx={{
-                height: 100,
-                width: 100,
+                height: { xs: 100, md: 170 },
+                width: "100%",
                 backgroundColor: "#cccccc",
                 display: "flex",
                 justifyContent: "center",
@@ -122,13 +121,12 @@ const TestView = ({ testData, user, handleDelete }) => {
             </Grid>
           </Grid>
           <Grid container spacing={1}>
-            <Grid xs={4}>
+            <Grid xs={4} xl={2}>
               <Box
                 display='flex'
                 flexDirection='row'
                 alignItems='center'
                 color='#666666'
-                
               >
                 <FontAwesomeIcon size='xs' icon={faListCheck} />
                 {testData.questions ? (
@@ -143,7 +141,7 @@ const TestView = ({ testData, user, handleDelete }) => {
                 )}
               </Box>
             </Grid>
-            <Grid xs={4}>
+            <Grid xs={4} xl={2}>
               <Box
                 display='flex'
                 flexDirection='row'
@@ -165,7 +163,7 @@ const TestView = ({ testData, user, handleDelete }) => {
                 </Typography>
               </Box>
             </Grid>
-            <Grid xs={4}>
+            <Grid xs={4} xl={2}>
               <Box
                 display='flex'
                 flexDirection='row'
@@ -183,7 +181,12 @@ const TestView = ({ testData, user, handleDelete }) => {
           </Grid>
         </Grid>
       </Grid>
-      <Stack direction='row' alignItems='center' justifyContent='space-between'>
+      <Stack
+        ml={1}
+        direction='row'
+        alignItems='center'
+        justifyContent='space-between'
+      >
         {user !== undefined && (
           <Stack direction='row' alignItems='center'>
             <Avatar
@@ -259,7 +262,7 @@ const TestView = ({ testData, user, handleDelete }) => {
             color='secondary'
             onClick={() => handleDelete(testData.id)}
           >
-            <Delete fontSize='small'/>
+            <Delete fontSize='small' />
           </IconButton>
           <IconButton
             size='small'
@@ -271,7 +274,7 @@ const TestView = ({ testData, user, handleDelete }) => {
             <Mode fontSize='small' />
           </IconButton>
           <IconButton size='small' color='secondary'>
-            <Folder fontSize='small'/>
+            <Folder fontSize='small' />
           </IconButton>
         </Stack>
       </Stack>
