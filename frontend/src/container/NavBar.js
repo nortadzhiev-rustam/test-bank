@@ -543,50 +543,52 @@ const NavBar = () => {
       )}
 
       <Space />
-      <Paper
-        sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 10 }}
-        elevation={3}
-      >
-        <BottomNavigation
-          showLabels
-          sx={{
-            display: { xs: "flex", lg: "none" },
-            justifyContent: "space-evenly",
-            height: "60px",
-          }}
-          value={value}
-          onChange={handleChange}
+      {isLoggedIn && (
+        <Paper
+          sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 10 }}
+          elevation={3}
         >
-          <BottomNavigationAction
-            onClick={() => history("/")}
-            label='Explore'
-            value='explore'
-            icon={<Explore fontSize='medium' />}
-          />
-          <BottomNavigationAction
-          onClick={() => history("/admin/private")}
-            label='Library'
-            value='library'
-            icon={<LibraryBooks fontSize='medium' />}
-          />
-          <BottomNavigationAction
-            label='Create'
-            onClick={handleDialogOpen}
-            icon={<AddCircle color='success' fontSize='medium' />}
-          />
-          <BottomNavigationAction
-            label='Collections'
-            value='collections'
-            icon={<Folder fontSize='medium' />}
-          />
-          <BottomNavigationAction
-          onClick={() => history("/profile")}
-            label='Profile'
-            value='profile'
-            icon={<AccountCircle fontSize='medium' />}
-          />
-        </BottomNavigation>
-      </Paper>
+          <BottomNavigation
+            showLabels
+            sx={{
+              display: { xs: "flex", lg: "none" },
+              justifyContent: "space-evenly",
+              height: "60px",
+            }}
+            value={value}
+            onChange={handleChange}
+          >
+            <BottomNavigationAction
+              onClick={() => history("/")}
+              label='Explore'
+              value='explore'
+              icon={<Explore fontSize='medium' />}
+            />
+            <BottomNavigationAction
+              onClick={() => history("/admin/private")}
+              label='Library'
+              value='library'
+              icon={<LibraryBooks fontSize='medium' />}
+            />
+            <BottomNavigationAction
+              label='Create'
+              onClick={handleDialogOpen}
+              icon={<AddCircle color='success' fontSize='medium' />}
+            />
+            <BottomNavigationAction
+              label='Collections'
+              value='collections'
+              icon={<Folder fontSize='medium' />}
+            />
+            <BottomNavigationAction
+              onClick={() => history("/profile")}
+              label='Profile'
+              value='profile'
+              icon={<AccountCircle fontSize='medium' />}
+            />
+          </BottomNavigation>
+        </Paper>
+      )}
     </Stack>
   );
 };

@@ -175,7 +175,7 @@ const InsertWindow = ({
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
             sx={{
-              height: "90vh",
+              minHeight: "90vh",
               borderRadius: 3,
               transition: "all 0.3s ease-in-out",
               width: "100%",

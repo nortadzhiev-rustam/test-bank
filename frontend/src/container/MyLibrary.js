@@ -10,6 +10,12 @@ import {
   ListItemIcon,
   ListItemText,
   Stack,
+  Slide,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
 } from "@mui/material";
 import {
   CreateNewFolder,
@@ -21,11 +27,24 @@ import {
 import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import TestView from "../components/TestView";
-
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 import axios from "axios";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction='up' ref={ref} {...props} />;
+});
 export default function MyLibrary({ showNav, setShowNav }) {
   const [testData, setTestData] = useState([]);
-
+  const [isOpen, setOpen] = useState(false);
+  const [value, setValue] = useState("Public");
+  const [collectionName, setCollectionName] = useState("");
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
   const user = useSelector((state) => state.user.user.user);
   let [searchParams, setSearchParams] = useSearchParams();
   React.useEffect(() => {
@@ -51,8 +70,64 @@ export default function MyLibrary({ showNav, setShowNav }) {
     }
   };
 
+  const handleDialogOpen = () => {
+    setOpen(!isOpen);
+  };
+
   return (
     <Grid mx={2} width='100%' container spacing={2} my={15} height='100%'>
+      <Dialog
+        maxWidth='sm'
+        fullWidth
+        open={isOpen}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleDialogOpen}
+        aria-describedby='alert-dialog-slide-description'
+      >
+        <DialogTitle>{"Create a new Collection"}</DialogTitle>
+        <DialogContent>
+          <Stack spacing={1}>
+            <TextField
+              sx={{ margin: 1 }}
+              value={collectionName}
+              onChange={(e) => setCollectionName(e.target.value)}
+              variant='outlined'
+              label='Enter collection name'
+              placeholder='e.g Exams, Physics, Quiz, etc.'
+            />
+            <FormControl>
+              <FormLabel id='demo-controlled-radio-buttons-group'>
+                Visibility
+              </FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby='demo-controlled-radio-buttons-group'
+                name='controlled-radio-buttons-group'
+                value={value}
+                onChange={handleChange}
+              >
+                <FormControlLabel
+                  value='Private'
+                  control={<Radio />}
+                  label='Private'
+                />
+                <FormControlLabel
+                  value='Public'
+                  control={<Radio />}
+                  label='Public'
+                />
+              </RadioGroup>
+            </FormControl>
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogOpen}>{"Cancel"}</Button>
+          <Button onClick={handleDialogOpen} disabled={collectionName === ""}>
+            {"Create"}
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Grid xs={12} lgOffset={1} xl={2}>
         <Stack
           spacing={4}
@@ -139,6 +214,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
               color='inherit'
               size='small'
               variant='contained'
+              onClick={handleDialogOpen}
             >
               Collections
             </Button>
