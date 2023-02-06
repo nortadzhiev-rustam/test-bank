@@ -56,7 +56,7 @@ export default function TesteditDialog({
       data.append("file", image[0]);
 
       const res = await axios.post(
-        "http://localhost:5000/api/v1/upload",
+        "https://www.backend.rustamnortadzhiev.com/api/v1/upload",
         data,
         {
           headers: {
@@ -76,7 +76,7 @@ export default function TesteditDialog({
 
   const handleDelete = async () => {
     const res = await axios.delete(
-      "http://localhost:5000/api/v1/files/" + imageName
+      "https://www.backend.rustamnortadzhiev.com/api/v1/files/" + imageName
     );
     console.log(res.message);
     setImg("");
@@ -86,11 +86,11 @@ export default function TesteditDialog({
     try {
       if (img !== "")
         return await axios.put(
-          `http://localhost:5000/api/v1/test/${id}?grade=${selected}&image=${img}`
+          `https://www.backend.rustamnortadzhiev.com/api/v1/test/${id}?grade=${selected}&image=${img}`
         );
       else
         return await axios.put(
-          `http://localhost:5000/api/v1/test/${id}?grade=${selected}&image=`
+          `https://www.backend.rustamnortadzhiev.com/api/v1/test/${id}?grade=${selected}&image=`
         );
     } catch (err) {
       console.log(err);

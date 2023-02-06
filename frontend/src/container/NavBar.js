@@ -187,7 +187,7 @@ const NavBar = () => {
 
   const handleLogOut = async () => {
     dispatch(logout());
-    const res = await axios.get("http://localhost:5000/api/v1/logout", {
+    const res = await axios.get("https://www.backend.rustamnortadzhiev.com/api/v1/logout", {
       withCredentials: true,
     });
     if (res.status === 200) {

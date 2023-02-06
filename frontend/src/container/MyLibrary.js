@@ -54,7 +54,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
     setSearchParams(search);
   };
   React.useEffect(() => {
-    axios.get("http://localhost:5000/api/v1/tests").then((res) => {
+    axios.get("https://www.backend.rustamnortadzhiev.com/api/v1/tests").then((res) => {
       console.log(res.data);
       setTestData(res.data);
     });
@@ -62,7 +62,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
 
   const handleDelete = async (id) => {
     try {
-      const res = await axios.delete(`http://localhost:5000/api/v1/test/${id}`);
+      const res = await axios.delete(`https://www.backend.rustamnortadzhiev.com/api/v1/test/${id}`);
       setTestData(testData.filter((item) => item.id !== id));
       console.log(res.message);
     } catch (err) {
@@ -132,7 +132,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
         <Stack
           spacing={4}
           position={{ xs: "static", xl: "fixed" }}
-          width={{ xs: "100%", xl: "400px" }}
+          width={{ xs: "100%", xl: "300px" }}
         >
           {" "}
           <Typography
@@ -152,7 +152,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
                 flexWrap: "wrap",
               }}
             >
-              <ListItem disablePadding sx={{ width: 400 }}>
+              <ListItem disablePadding sx={{ width: 300 }}>
                 <ListItemButton
                   selected={searchParams.has("allTest")}
                   onClick={() => handleClick("allTest=true")}
@@ -163,7 +163,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
                   <ListItemText primary='All my content' />
                 </ListItemButton>
               </ListItem>
-              <ListItem disablePadding sx={{ width: 400 }}>
+              <ListItem disablePadding sx={{ width: 300 }}>
                 <ListItemButton
                   selected={searchParams.has("madeByMe")}
                   onClick={() => handleClick("madeByMe=true")}
@@ -177,7 +177,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
                   </Typography>
                 </ListItemButton>
               </ListItem>
-              <ListItem disablePadding sx={{ width: 400 }}>
+              <ListItem disablePadding sx={{ width: 300 }}>
                 <ListItemButton
                   selected={searchParams.has("imported")}
                   onClick={() => handleClick("imported=true")}
@@ -188,7 +188,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
                   <ListItemText primary='Imported' />
                 </ListItemButton>
               </ListItem>
-              <ListItem disablePadding sx={{ width: 400 }}>
+              <ListItem disablePadding sx={{ width: 300 }}>
                 <ListItemButton
                   selected={searchParams.has("drafts")}
                   onClick={() => handleClick("drafts=true")}

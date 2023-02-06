@@ -140,7 +140,7 @@ const InsertWindow = ({
     if (isEditing) {
       try {
         const res = await axios.put(
-          `http://localhost:5000/api/v1/question/${questionId}`,
+          `https://www.backend.rustamnortadzhiev.com/api/v1/question/${questionId}`,
           data
         );
 
@@ -153,7 +153,7 @@ const InsertWindow = ({
     } else {
       try {
         const res = await axios.post(
-          "http://localhost:5000/api/v1/question",
+          "https://www.backend.rustamnortadzhiev.com/api/v1/question",
           data
         );
         setData([...questionData, res.data.question]);

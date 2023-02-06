@@ -190,7 +190,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
   const handleDelete = async (questionId) => {
     try {
       const res = await axios.delete(
-        `http://localhost:5000/api/v1/question/${questionId}`
+        `https://www.backend.rustamnortadzhiev.com/api/v1/question/${questionId}`
       );
       setMessage(res.data.message);
       const newArray = questions.filter((item) => item.id !== questionId);
@@ -221,7 +221,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
       const data = newArray[0];
       try {
         const req = await axios.post(
-          "http://localhost:5000/api/v1/question",
+          "https://www.backend.rustamnortadzhiev.com/api/v1/question",
           data
         );
 
@@ -236,7 +236,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
 
   React.useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/v1/test/${id}`)
+      .get(`https://www.backend.rustamnortadzhiev.com/api/v1/test/${id}`)
       .then((res) => {
         if (res.status === 200) {
           setName(res.data.name);
@@ -269,7 +269,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
   const handleSave = async () => {
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/v1/test/${id}?isEditing=${false}`
+        `https://www.backend.rustamnortadzhiev.com/api/v1/test/${id}?isEditing=${false}`
       );
       if (res.status === 200) history(`/admin/test/${id}/${name}`);
     } catch (err) {

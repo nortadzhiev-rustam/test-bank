@@ -51,7 +51,7 @@ const InsertPanel = ({
       grade: null,
     };
     try {
-      const req = await axios.post("http://localhost:5000/api/v1/test", data);
+      const req = await axios.post("https://www.backend.rustamnortadzhiev.com/api/v1/test", data);
       if (req.status === 200) {
         setTestName("");
         setLoading(false);
@@ -67,7 +67,7 @@ const InsertPanel = ({
     setLoading(true);
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/v1/test/${id}?name=${testName}&departmentId=${selectedDepartment.id}`
+        `https://www.backend.rustamnortadzhiev.com/api/v1/test/${id}?name=${testName}&departmentId=${selectedDepartment.id}`
       );
       setEditing(false);
       setTimeout(() => {

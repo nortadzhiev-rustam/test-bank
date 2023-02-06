@@ -88,7 +88,7 @@ const Register = ({ setIsLogin, history }) => {
     } else {
       try {
         const res = await axios.post(
-          "http://localhost:5000/api/v1/register",
+          "https://www.backend.rustamnortadzhiev.com/api/v1/register",
           {
             firstName,
             lastName,

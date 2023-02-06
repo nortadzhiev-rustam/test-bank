@@ -1,5 +1,6 @@
 {
   "name": "test-bank",
+  "homepage": "https://exam.rustamnortadzhiev.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

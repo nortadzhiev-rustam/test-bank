@@ -27,7 +27,15 @@ import {
 } from "@mui/icons-material";
 import axios from "axios";
 
-
+const IconSelector = ({type}) => {
+  if (type === "Multiple choice")
+    return <CheckBoxOutlined color='inherit' fontSize='small' />;
+  if (type === "True or False")
+    return <Flaky color='inherit' fontSize='small' />;
+  if (type === "Open ended")
+    return <Subject color='inherit' fontSize='small' />;
+  else return <Layers color='inherit' fontSize='small' />;
+};
 
 export default function QuestionView({
   data,
@@ -42,15 +50,7 @@ export default function QuestionView({
   const [quest] = useState(JSON.parse(question));
   const [correct] = useState(JSON.parse(correctAnswer));
 
-  const IconSelector = () => {
-    if (type === "Multiple choice")
-      return <CheckBoxOutlined color='inherit' fontSize='small' />;
-    if (type === "True or False")
-      return <Flaky color='inherit' fontSize='small' />;
-    if (type === "Open ended")
-      return <Subject color='inherit' fontSize='small' />;
-    else return <Layers color='inherit' fontSize='small' />;
-  };
+  
 
   const onDelete = () => {
     handleDelete(id);
@@ -85,7 +85,7 @@ export default function QuestionView({
                 justifyContent='center'
                 alignItems='center'
               >
-                <IconSelector />
+                <IconSelector type={type} />
               </Box>
               <Typography>Question {index}</Typography>
             </Stack>
