@@ -166,7 +166,7 @@ const InsertWindow = ({
   };
 
   return (
-    <Draggable handle='#styled-box'>
+   
       <Grid container>
         <Grid xs={12} sm={12} lg={!isFull ? 8 : 12} lgOffset={!isFull ? 2 : 0}>
           <Paper
@@ -349,7 +349,7 @@ const InsertWindow = ({
           </Paper>
         </Grid>
       </Grid>
-    </Draggable>
+    
   );
 };
 
