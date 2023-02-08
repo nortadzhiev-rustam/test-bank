@@ -140,8 +140,8 @@ const AnswersCard = (props) => {
 
   return (
     <>
-      {isOpen ? (
-        <Box sx={{ width: "95%" }}>
+      {isOpen && (
+        <Box sx={{ width: "100%" }}>
           <FormulaEditor
             setEquation={(eq) => setEquation(eq)}
             setOpen={(o) => setIsOpen(o)}
@@ -158,143 +158,132 @@ const AnswersCard = (props) => {
             }
           />
         </Box>
-      ) : (
-        <StyledPaper
-          elevation={10}
+      )}
+      <StyledPaper
+        elevation={10}
+        sx={{
+          backgroundColor: getRandomColor(props.index),
+          height: props.height ? props.height : null,
+          padding: 0,
+        }}
+        id={props.index}
+        className={
+          isDeleted
+            ? "animate__animated animate__fadeOutDown"
+            : "animate__animated animate__fadeInRight"
+        }
+      >
+        <Box
           sx={{
-            backgroundColor: getRandomColor(props.index),
-            height: props.height ? props.height : null,
-            padding: 0,
-           
+            height: 50,
+            width: "100%",
+            padding: props.type === "Match" ? 2 : 0,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
           }}
-          id={props.index}
-          className={
-            isDeleted
-              ? "animate__animated animate__fadeOutDown"
-              : "animate__animated animate__fadeInRight"
-          }
         >
-          <Box
-            sx={{
-              height: 50,
-              width: "100%",
-              padding: props.type === "Match" ? 2 : 0,
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <IconBoxContainer>
-              <BootstrapTooltip2
-                placement='top'
-                arrow
-                title={
-                  props.counter < 3
-                    ? "You should have at least two optoins"
-                    : ""
-                }
+          <IconBoxContainer>
+            <BootstrapTooltip2
+              placement='top'
+              arrow
+              title={
+                props.counter < 3 ? "You should have at least two optoins" : ""
+              }
+            >
+              <IconBox
+                variant='button'
+                sx={{
+                  backgroundColor: props.counter === 2 ? "#999" : "#006064",
+                }}
               >
-                <IconBox
-                  variant='button'
-                  sx={{
-                    backgroundColor: props.counter === 2 ? "#999" : "#006064",
+                <IconButton
+                  disabled={props.counter === 2}
+                  onClick={() => {
+                    setDeleted(!isDeleted);
+                    props.setDeleted(!isDeleted);
+                    props.onDelete(props.option.key);
                   }}
                 >
-                  <IconButton
-                    disabled={props.counter === 2}
-                    onClick={() => {
-                      setDeleted(!isDeleted);
-                      props.setDeleted(!isDeleted);
-                      props.onDelete(props.option.key);
-                    }}
-                  >
+                  <FontAwesomeIcon size='xs' icon={faTrashCan} color='white' />
+                </IconButton>
+              </IconBox>
+            </BootstrapTooltip2>
+            <Tooltip
+              placement='top'
+              arrow
+              title={isOpen ? "Close" : "insert equation"}
+            >
+              <IconBox bgcolor='#006064'>
+                <IconButton onClick={isOpen ? handleClose : handleOpen}>
+                  {isOpen ? (
+                    <FontAwesomeIcon size='sm' color='#fff' icon={faKeyboard} />
+                  ) : (
+                    <img style={{ height: 20 }} src={formula} alt='formula' />
+                  )}
+                </IconButton>
+              </IconBox>
+            </Tooltip>
+          </IconBoxContainer>
+          {props.type === "Multiple choice" && (
+            <BootstrapTooltip
+              placement='top'
+              title={
+                content === ""
+                  ? "Editor can't be empty"
+                  : "Mark the coorect answer"
+              }
+            >
+              <Box sx={{ height: "100%" }}>
+                <Checkbox
+                  disabled={content === ""}
+                  onChange={(e) => setCheckBox(e, props.option.key)}
+                  checked={
+                    (content !== "" && getCheckBox(props.option.key)) ||
+                    (editing &&
+                      correctAnswer &&
+                      correctAnswer.key === option.option)
+                  }
+                  onMouseEnter={() => setHover(true)}
+                  onMouseLeave={() => setHover(false)}
+                  icon={
                     <FontAwesomeIcon
-                      size='xs'
-                      icon={faTrashCan}
-                      color='white'
+                      size='xl'
+                      color={isHover ? "#fff" : "#999"}
+                      icon={faCheckCircle}
                     />
-                  </IconButton>
-                </IconBox>
-              </BootstrapTooltip2>
-              <Tooltip
-                placement='top'
-                arrow
-                title={isOpen ? "Close" : "insert equation"}
-              >
-                <IconBox bgcolor='#006064'>
-                  <IconButton onClick={isOpen ? handleClose : handleOpen}>
-                    {isOpen ? (
-                      <FontAwesomeIcon
-                        size='sm'
-                        color='#fff'
-                        icon={faKeyboard}
-                      />
-                    ) : (
-                      <img style={{ height: 20 }} src={formula} alt='formula' />
-                    )}
-                  </IconButton>
-                </IconBox>
-              </Tooltip>
-            </IconBoxContainer>
-            {props.type === "Multiple choice" && (
-              <BootstrapTooltip
-                placement='top'
-                title={
-                  content === ""
-                    ? "Editor can't be empty"
-                    : "Mark the coorect answer"
-                }
-              >
-                <Box sx={{ height: "100%" }}>
-                  <Checkbox
-                    disabled={content === ""}
-                    onChange={(e) => setCheckBox(e, props.option.key)}
-                    checked={
-                      (content !== "" && getCheckBox(props.option.key)) ||
-                      (editing &&
-                        correctAnswer &&
-                        correctAnswer.key === option.option)
-                    }
-                    onMouseEnter={() => setHover(true)}
-                    onMouseLeave={() => setHover(false)}
-                    icon={
-                      <FontAwesomeIcon
-                        size='xl'
-                        color={isHover ? "#fff" : "#999"}
-                        icon={faCheckCircle}
-                      />
-                    }
-                    checkedIcon={
-                      <FontAwesomeIcon
-                        size='xl'
-                        color='#fff'
-                        icon={checkCircle}
-                      />
-                    }
-                  />
-                </Box>
-              </BootstrapTooltip>
-            )}
-          </Box>
+                  }
+                  checkedIcon={
+                    <FontAwesomeIcon
+                      size='xl'
+                      color='#fff'
+                      icon={checkCircle}
+                    />
+                  }
+                />
+              </Box>
+            </BootstrapTooltip>
+          )}
+        </Box>
 
-          <Box width={"90%"}>
-            <MyEditor
-              latex={{ id: Date.now(), equation }}
-              setLatex={(eq) => setToEdit(eq)}
-              setEditing={(e) => setEditing(e)}
-              edited={toEdit}
-              isEditing={isEditing}
-              setEquation={(eq) => setEquation(eq)}
-              placeholder='Your answer goes here'
-              handleOpen={handleOpen}
-              editorId={`answer${props.option.key}`}
-              setContent={handleContentChange}
-              content={content}
-              editing={editing}
-            />
-          </Box>
-        </StyledPaper>
-      )}
+        <Box width={"90%"}>
+          <MyEditor
+            latex={{ id: Date.now(), equation }}
+            setLatex={(eq) => setToEdit(eq)}
+            setEditing={(e) => setEditing(e)}
+            edited={toEdit}
+            isEditing={isEditing}
+            setEquation={(eq) => setEquation(eq)}
+            placeholder='Your answer goes here'
+            handleOpen={handleOpen}
+            editorId={`answer${props.option.key}`}
+            setContent={handleContentChange}
+            content={content}
+            editing={editing}
+          />
+        </Box>
+      </StyledPaper>
+      
     </>
   );
 };

@@ -45,6 +45,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    matches: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    }
   });
   Question.associate = (models) => {
     Question.belongsTo(models.User, {

@@ -15,7 +15,7 @@ import {
 import QuestionInput from "../components/QuestionInput";
 import AnswersContainer from "../components/AnswersContainer";
 import { useParams } from "react-router-dom";
-import Draggable from "react-draggable";
+
 
 import axios from "axios";
 import TrueOrFalse from "../components/TrueOrFalse";
@@ -68,7 +68,7 @@ const InsertWindow = ({
   const [correctAnswer, setCorrectAnswer] = React.useState({});
   const [image, setImage] = React.useState("");
   const [difficulty, setDifficulty] = React.useState("");
-
+  const [matches, setMatches] = React.useState([]);
   const dispatch = useDispatch();
   const isFull = useSelector((state) => state.questionsType.isFull);
   const user = useSelector((state) => state.user.user.user);
@@ -136,6 +136,7 @@ const InsertWindow = ({
       userId: user.id,
       departmentId: test.id,
       testId: id,
+      matches: JSON.stringify(matches)                                                                   
     };
     if (isEditing) {
       try {
@@ -166,190 +167,186 @@ const InsertWindow = ({
   };
 
   return (
-   
-      <Grid container>
-        <Grid xs={12} sm={12} lg={!isFull ? 8 : 12} lgOffset={!isFull ? 2 : 0}>
-          <Paper
-            elevation={isHover ? 10 : 2}
-            id='draggable-dialog-title'
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
+    <Grid container>
+      <Grid xs={12} sm={12} lg={!isFull ? 8 : 12} lgOffset={!isFull ? 2 : 0}>
+        <Paper
+          elevation={isHover ? 10 : 2}
+          id='draggable-dialog-title'
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+          sx={{
+            minHeight: "90vh",
+            borderRadius: 3,
+            transition: "all 0.3s ease-in-out",
+            width: "100%",
+            paddingBottom: 5,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+          className='animate__animated animate__fadeInUp animate__faster'
+        >
+          <StyledBox id='styled-box'>
+            <FormPaper>
+              <div
+                style={{ display: "flex", cursor: "default" }}
+                onMouseLeave={() => setMouseIn(false)}
+                onMouseOver={() => setMouseIn(true)}
+              >
+                {mouseIn ? (
+                  <CloseButton onClick={handleClose}>
+                    <FontAwesomeIcon
+                      icon={faTimes}
+                      size='sm'
+                      style={{
+                        borderRadius: "30%",
+                      }}
+                      color='#fff'
+                    />
+                  </CloseButton>
+                ) : (
+                  <FontAwesomeIcon size='lg' color='#e63946' icon={faCircle} />
+                )}
+
+                {mouseIn ? (
+                  <MinusButton>
+                    <FontAwesomeIcon
+                      icon={faMinus}
+                      size='sm'
+                      style={{
+                        borderRadius: "30%",
+                      }}
+                      color='#fff'
+                    />
+                  </MinusButton>
+                ) : (
+                  <FontAwesomeIcon
+                    size='lg'
+                    style={{ marginLeft: 5 }}
+                    color='#ee9b00'
+                    icon={faCircle}
+                  />
+                )}
+
+                {mouseIn ? (
+                  <FullScreenButton onClick={handleFullScreen}>
+                    {!isFull ? (
+                      <FontAwesomeIcon
+                        icon={faUpRightAndDownLeftFromCenter}
+                        size='xs'
+                        style={{
+                          borderRadius: "30%",
+                        }}
+                        color='#fff'
+                      />
+                    ) : (
+                      <FontAwesomeIcon
+                        icon={faDownLeftAndUpRightToCenter}
+                        size='xs'
+                        style={{
+                          borderRadius: "30%",
+                        }}
+                        color='#fff'
+                      />
+                    )}
+                  </FullScreenButton>
+                ) : (
+                  <FontAwesomeIcon
+                    size='lg'
+                    style={{ marginLeft: 5 }}
+                    color='#43aa8b'
+                    icon={faCircle}
+                  />
+                )}
+              </div>
+            </FormPaper>
+          </StyledBox>
+
+          <Box
+            component='div'
             sx={{
-              minHeight: "90vh",
-              borderRadius: 3,
-              transition: "all 0.3s ease-in-out",
-              width: "100%",
-              paddingBottom: 5,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent:'space-between'
+              padding: 1,
+              minHeight: 300,
             }}
-            className='animate__animated animate__fadeInUp animate__faster'
           >
-            <StyledBox id='styled-box'>
-              <FormPaper>
-                <div
-                  style={{ display: "flex", cursor: "default" }}
-                  onMouseLeave={() => setMouseIn(false)}
-                  onMouseOver={() => setMouseIn(true)}
-                >
-                  {mouseIn ? (
-                    <CloseButton onClick={handleClose}>
-                      <FontAwesomeIcon
-                        icon={faTimes}
-                        size='sm'
-                        style={{
-                          borderRadius: "30%",
-                        }}
-                        color='#fff'
-                      />
-                    </CloseButton>
-                  ) : (
-                    <FontAwesomeIcon
-                      size='lg'
-                      color='#e63946'
-                      icon={faCircle}
-                    />
-                  )}
-
-                  {mouseIn ? (
-                    <MinusButton>
-                      <FontAwesomeIcon
-                        icon={faMinus}
-                        size='sm'
-                        style={{
-                          borderRadius: "30%",
-                        }}
-                        color='#fff'
-                      />
-                    </MinusButton>
-                  ) : (
-                    <FontAwesomeIcon
-                      size='lg'
-                      style={{ marginLeft: 5 }}
-                      color='#ee9b00'
-                      icon={faCircle}
-                    />
-                  )}
-
-                  {mouseIn ? (
-                    <FullScreenButton onClick={handleFullScreen}>
-                      {!isFull ? (
-                        <FontAwesomeIcon
-                          icon={faUpRightAndDownLeftFromCenter}
-                          size='xs'
-                          style={{
-                            borderRadius: "30%",
-                          }}
-                          color='#fff'
-                        />
-                      ) : (
-                        <FontAwesomeIcon
-                          icon={faDownLeftAndUpRightToCenter}
-                          size='xs'
-                          style={{
-                            borderRadius: "30%",
-                          }}
-                          color='#fff'
-                        />
-                      )}
-                    </FullScreenButton>
-                  ) : (
-                    <FontAwesomeIcon
-                      size='lg'
-                      style={{ marginLeft: 5 }}
-                      color='#43aa8b'
-                      icon={faCircle}
-                    />
-                  )}
-                </div>
-              </FormPaper>
-            </StyledBox>
-
-            <Box
-              component='div'
-              sx={{
-                padding: 1,
-                minHeight: 300,
-              }}
-            >
-              <QuestionInput
-                setQuestion={setQuestion}
-                title={title}
-                setTitle={setTitle}
-                mark={mark}
-                setMark={setMark}
-                image={image}
-                setImage={setImage}
-                setDifficulty={setDifficulty}
-                difficulty={difficulty}
-                content={question}
-                editing={isEditing}
+            <QuestionInput
+              setQuestion={setQuestion}
+              title={title}
+              setTitle={setTitle}
+              mark={mark}
+              setMark={setMark}
+              image={image}
+              setImage={setImage}
+              setDifficulty={setDifficulty}
+              difficulty={difficulty}
+              content={question}
+              editing={isEditing}
+              type={type}
+              setType={setType}
+            />
+            {type === "Multiple choice" && (
+              <AnswersContainer
+                setCorrectAnswer={setCorrectAnswer}
+                answers={answers}
+                setAnswers={setAnswers}
                 type={type}
-                setType={setType}
+                correctAnswer={correctAnswer}
+                editing={isEditing}
               />
-              {type === "Multiple choice" && (
-                <AnswersContainer
-                  setCorrectAnswer={setCorrectAnswer}
-                  answers={answers}
-                  setAnswers={setAnswers}
-                  type={type}
-                  correctAnswer={correctAnswer}
-                  editing={isEditing}
-                />
-              )}
-              {type === "True or False" && (
-                <TrueOrFalse
-                  setCorrectAnswer={setCorrectAnswer}
-                  answers={answers}
-                  setAnswers={setAnswers}
-                  correctAnswer={correctAnswer}
-                />
-              )}
-              {type === "Match" && (
-                <MatchingContainer
-                  answers={answers}
-                  setAnswers={setAnswers}
-                  type={type}
-                  setCorrectAnswer={(item) => setCorrectAnswer(item)}
-                />
-              )}
-              {type === "Open ended" && (
-                <Typography
-                  mt={10}
-                  variant='h4'
-                  fontFamily='Roboto'
-                  width='100%'
-                  textAlign='center'
-                >
-                  Participants will write their own answers!
-                </Typography>
-              )}
-            </Box>
-            <Box mt={3} width='95%' textAlign='end' >
-              <Button
-                sx={{ borderRadius: 10 }}
-                onClick={handleClose}
-                color='error'
-                variant='contained'
-                size='large'
+            )}
+            {type === "True or False" && (
+              <TrueOrFalse
+                setCorrectAnswer={setCorrectAnswer}
+                answers={answers}
+                setAnswers={setAnswers}
+                correctAnswer={correctAnswer}
+              />
+            )}
+            {type === "Match" && (
+              <MatchingContainer
+                answers={answers}
+                setAnswers={setAnswers}
+                type={type}
+                setCorrectAnswer={(item) => setCorrectAnswer(item)}
+                matches={matches}
+                setMatches={setMatches}
+              />
+            )}
+            {type === "Open ended" && (
+              <Typography
+                mt={10}
+                variant='h4'
+                fontFamily='Roboto'
+                width='100%'
+                textAlign='center'
               >
-                Cancel
-              </Button>
-              <Button
-                sx={{ marginLeft: 2, borderRadius: 10 }}
-                color='success'
-                variant='contained'
-                size='large'
-                onClick={handleSubmit}
-              >
-                Submit
-              </Button>
-            </Box>
-          </Paper>
-        </Grid>
+                Participants will write their own answers!
+              </Typography>
+            )}
+          </Box>
+          <Box mt={3} width='95%' textAlign='end'>
+            <Button
+              sx={{ borderRadius: 10 }}
+              onClick={handleClose}
+              color='error'
+              variant='contained'
+              size='large'
+            >
+              Cancel
+            </Button>
+            <Button
+              sx={{ marginLeft: 2, borderRadius: 10 }}
+              color='success'
+              variant='contained'
+              size='large'
+              onClick={handleSubmit}
+            >
+              Submit
+            </Button>
+          </Box>
+        </Paper>
       </Grid>
-    
+    </Grid>
   );
 };
 

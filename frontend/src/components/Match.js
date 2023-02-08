@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { tooltipClasses } from "@mui/material/Tooltip";
 import Grid from "@mui/material/Unstable_Grid2";
 
-export default function Match({ answers, setAnswers, setCorrectAnswer, type }) {
+export default function Match({ answers, setAnswers, setCorrectAnswer, type,matches, setMatches }) {
   const [counter, setCounter] = React.useState(4);
   const [options, setOptions] = React.useState([
     {
@@ -35,7 +35,8 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type }) {
       key: 3,
     },
   ]);
-  const [isDeleted, setDeleted] = React.useState(false);
+  const [isDeleted, setDeleted] = useState(false);
+  
   const BootstrapTooltip = styled(({ className, ...props }) => (
     <Tooltip {...props} arrow classes={{ popper: className }} />
   ))(({ theme }) => ({
@@ -104,6 +105,13 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type }) {
     setCounter(counter + 1);
   };
 
+  const handleMatch = (event, id) => {
+    const newArr = matches
+      .filter((match) => match.id !== id)
+      .map((item) => item);
+    setMatches([...newArr, { match: event.target.value, id: id }]);
+  };
+
   const deleteOption = (key) => {
     setTimeout(() => {
       setOptions(options.filter((item) => item.key !== key));
@@ -136,7 +144,7 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type }) {
           mr: 2,
         }}
       >
-        {options.map((option,idx) => (
+        {options.map((option, idx) => (
           <Grid key={option.key} xs={12 / counter} height={400}>
             <Stack
               spacing={2}
@@ -169,7 +177,7 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type }) {
                 px={2}
                 borderRadius={2}
               >
-                <Typography color='white'>{idx+1}</Typography>
+                <Typography color='white'>{idx + 1}</Typography>
                 <InputBase
                   sx={{
                     color: "white",
@@ -177,6 +185,7 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type }) {
                     borderRadius: 2,
                     padding: 1,
                   }}
+                  onChange={(e) => handleMatch(e, option.key)}
                   variant='filled'
                   multiline
                 />
