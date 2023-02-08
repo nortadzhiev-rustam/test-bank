@@ -42,9 +42,6 @@ import {
   Logout,
   MeetingRoom,
   Settings,
-  Restore,
-  Favorite,
-  LocationOn,
   AddCircle,
 } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -54,7 +51,12 @@ import logo from "../logo.svg";
 import { withRouter } from "../components/withRouter.js";
 import { logout } from "../store/userSlice";
 import axios from "axios";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import {
+  useNavigate,
+  useLocation,
+  useParams,
+  createSearchParams,
+} from "react-router-dom";
 
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import InsertPanel from "../components/InsertPanel";
@@ -131,31 +133,42 @@ const list = [
     text: "Explore",
     icon: <Explore htmlColor='inherit' />,
     id: 0,
-    path: "/admin",
+    path: { pathname: "/admin" },
   },
   {
     text: "My Library",
     icon: <LibraryBooks htmlColor='inherit' />,
     id: 1,
-    path: "/admin/private",
-  },
-  {
-    text: "Collections",
-    icon: <Folder htmlColor='inherit' />,
-    id: 2,
-    path: "#",
+    path: { pathname: "/admin/private" },
   },
   {
     text: "Settings",
     icon: <Settings htmlColor='inherit' />,
-    id: 3,
-    path: "/settings",
+    id: 2,
+    path: { pathname: "/settings" },
   },
+  {
+    text: "Collections",
+    icon: <Folder htmlColor='inherit' />,
+    id: 3,
+    path: {
+      pathname: "/profile",
+      search: createSearchParams({
+        section: "collections",
+      }).toString(),
+    },
+  },
+
   {
     text: "Profile",
     icon: <AccountCircle htmlColor='inherit' />,
     id: 4,
-    path: "/profile",
+    path: {
+      pathname: "/profile",
+      search: createSearchParams({
+        section: "library",
+      }).toString(),
+    },
   },
 ];
 
@@ -172,11 +185,11 @@ const NavBar = () => {
   const [value, setValue] = React.useState("explore");
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const user = useSelector((state) => state.user.user.user);
+  const [search, setSearch] = React.useState();
   const dispatch = useDispatch();
   const history = useNavigate();
   const location = useLocation();
   const { id } = useParams();
-
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -187,9 +200,12 @@ const NavBar = () => {
 
   const handleLogOut = async () => {
     dispatch(logout());
-    const res = await axios.get("https://www.backend.rustamnortadzhiev.com/api/v1/logout", {
-      withCredentials: true,
-    });
+    const res = await axios.get(
+      "https://www.backend.rustamnortadzhiev.com/api/v1/logout",
+      {
+        withCredentials: true,
+      }
+    );
     if (res.status === 200) {
       history("/");
     }
@@ -200,8 +216,14 @@ const NavBar = () => {
     history(path);
   };
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setValue(location.pathname|| newValue);
   };
+
+  React.useEffect(() => {
+    const arr = location.search.split("?");
+    setSearch(arr[1]);
+  }, [location.search]);
+
   const drawer = (
     <div style={{ width: "100%", position: "absolute" }}>
       <Toolbar sx={{ backgroundColor: "#15616d", position: "sticky" }}>
@@ -289,12 +311,18 @@ const NavBar = () => {
                   borderRightWidth: 5,
                   borderRightColor: "#006064",
                   borderRightStyle:
-                    idx === selected || location.pathname === li.path
+                    li.path.search === search &&
+                    location.pathname === li.path.pathname
                       ? "solid"
                       : "none",
-                  color: location.pathname === li.path ? "#006064" : "#888888",
+                  color:
+                    li.path.search === search &&
+                    location.pathname === li.path.pathname
+                      ? "#006064"
+                      : "#888888",
                   bgcolor:
-                    location.pathname === li.path
+                    li.path.search === search &&
+                    location.pathname === li.path.pathname
                       ? "rgba(0,100,102,0.1)"
                       : "default",
                 }}
@@ -567,7 +595,7 @@ const NavBar = () => {
             <BottomNavigationAction
               onClick={() => history("/admin/private")}
               label='Library'
-              value='library'
+              value='myLibrary'
               icon={<LibraryBooks fontSize='medium' />}
             />
             <BottomNavigationAction
@@ -576,14 +604,29 @@ const NavBar = () => {
               icon={<AddCircle color='success' fontSize='medium' />}
             />
             <BottomNavigationAction
+              onClick={() =>
+                history({
+                  pathname: "/profile",
+                  search: createSearchParams({
+                    section: "collections",
+                  }).toString(),
+                })
+              }
               label='Collections'
               value='collections'
               icon={<Folder fontSize='medium' />}
             />
             <BottomNavigationAction
-              onClick={() => history("/profile")}
+              onClick={() =>
+                history({
+                  pathname: "/profile",
+                  search: createSearchParams({
+                    section: "library",
+                  }).toString(),
+                })
+              }
               label='Profile'
-              value='profile'
+              value='library'
               icon={<AccountCircle fontSize='medium' />}
             />
           </BottomNavigation>
