@@ -11,13 +11,12 @@ import {
   List,
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckSquare } from "@fortawesome/free-regular-svg-icons";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { faFeatherPointed, faScroll } from "@fortawesome/free-solid-svg-icons";
 import { BlockMath } from "react-katex";
 import "katex/dist/katex.min.css";
 import { Stack } from "@mui/system";
 import {
-  CheckBoxOutlined,
+  CheckCircleRounded,
   CopyAll,
   Delete,
   Flaky,
@@ -25,11 +24,11 @@ import {
   Mode,
   Subject,
 } from "@mui/icons-material";
-import axios from "axios";
 
-const IconSelector = ({type}) => {
+
+const IconSelector = ({ type }) => {
   if (type === "Multiple choice")
-    return <CheckBoxOutlined color='inherit' fontSize='small' />;
+    return <CheckCircleRounded color='inherit' fontSize='small' />;
   if (type === "True or False")
     return <Flaky color='inherit' fontSize='small' />;
   if (type === "Open ended")
@@ -49,8 +48,6 @@ export default function QuestionView({
   const [answers] = useState(JSON.parse(options));
   const [quest] = useState(JSON.parse(question));
   const [correct] = useState(JSON.parse(correctAnswer));
-
-  
 
   const onDelete = () => {
     handleDelete(id);
@@ -128,15 +125,15 @@ export default function QuestionView({
             justifyContent='space-between'
             mb={1}
           >
-            <Paper elevation={2} sx={{ borderRadius: 1, py: 0.5, px: 1 }}>
+            <Paper elevation={0} sx={{ borderRadius: 1, py: 0.5, px: 1 }}>
               <Stack direction='row' spacing={1} alignItems='center'>
-                <IconSelector />
+                <IconSelector type={type} />
                 <Typography>{type}</Typography>
               </Stack>
             </Paper>
-            <Paper elevation={2} sx={{ borderRadius: 1, py: 0.5, px: 1 }}>
+            <Paper elevation={0} sx={{ borderRadius: 1, py: 0.5, px: 1 }}>
               <Stack direction='row' spacing={1} alignItems='center'>
-                <FontAwesomeIcon icon={faPen} />
+                <FontAwesomeIcon icon={faFeatherPointed} />
                 <Typography>{`${mark} points`}</Typography>
               </Stack>
             </Paper>
