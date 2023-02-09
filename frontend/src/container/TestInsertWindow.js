@@ -58,6 +58,8 @@ const InsertWindow = ({
   setType,
   setEditing,
   questionId,
+  setQuestions,
+  questions
 }) => {
   const [mouseIn, setMouseIn] = React.useState(false);
   const [isHover, setHover] = React.useState(false);
@@ -144,8 +146,8 @@ const InsertWindow = ({
           `https://www.backend.rustamnortadzhiev.com/api/v1/question/${questionId}`,
           data
         );
-        const oldData = questionData.filter(item => item.id !== res.data.question.id)
-        setData([...oldData, res.data.question])
+        const oldData = questions.filter(item => item.id !== questionId)
+        setQuestions([...oldData, res.data.data.question])
         setMessage(res.data.message);
         handleClose();
        

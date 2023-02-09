@@ -38,7 +38,7 @@ router.post("/question", async (req, res) => {
         userId,
         departmentId,
         testId,
-        matches
+        matches,
       });
 
       res.status(200).json({
@@ -60,9 +60,12 @@ router.put("/question/:id", async (req, res) => {
       returning: true,
       where: { id: id },
     });
-    res
-      .status(200)
-      .json({ message: "Question was updated successfully", updatedQuestion });
+
+    const getQuestion = await Question.findOne({ where: { id: id } });
+    res.status(200).json({
+      message: "Question was updated successfully",
+      data: { updatedQuestion, question: getQuestion },
+    });
   } catch (err) {
     res.status(500).json({ message: `Something went wrong: ${err}` });
   }
@@ -72,12 +75,10 @@ router.delete("/question/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const question = await Question.destroy({ where: { id: id }, force: true });
-    res
-      .status(200)
-      .json({
-        data: question,
-        message: "Question was deleted successfully ",
-      });
+    res.status(200).json({
+      data: question,
+      message: "Question was deleted successfully ",
+    });
   } catch (err) {
     res.send("Something went wrong ", err);
   }

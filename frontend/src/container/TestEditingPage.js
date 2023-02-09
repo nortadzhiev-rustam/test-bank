@@ -400,6 +400,8 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
           setType={setQuestionType}
           setEditing={setEditing}
           questionId={question.id}
+          setQuestions={setQuestions}
+          questions={questions}
         />
       ) : (
         <Grid
