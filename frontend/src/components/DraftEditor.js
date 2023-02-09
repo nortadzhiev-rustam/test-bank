@@ -75,6 +75,7 @@ export default function MyEditor({
   const handleDeleteMath = (id) => {
     const newArray = equationarray.filter((eq) => eq.id !== id);
     setEquationarray(newArray);
+    setContent(prevState => ({ ...prevState, equation: ''}))
   };
 
   const handleInput = (e) => {

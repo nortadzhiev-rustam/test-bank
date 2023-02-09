@@ -144,10 +144,11 @@ const InsertWindow = ({
           `https://www.backend.rustamnortadzhiev.com/api/v1/question/${questionId}`,
           data
         );
-
+        const oldData = questionData.filter(item => item.id !== res.data.question.id)
+        setData([...oldData, res.data.question])
         setMessage(res.data.message);
         handleClose();
-        window.location.reload();
+       
       } catch (err) {
         setError(err);
       }
