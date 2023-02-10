@@ -254,7 +254,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
         }
       })
       .catch((err) => console.log(`Something went wrong ${err}`));
-  }, [id, isEditing, openEditor, open]);
+  }, [id, isEditing, openEditor, open, questions]);
 
   React.useEffect(() => {
     if (showNav) {
@@ -501,7 +501,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
                     >
                       {types.map((type, idx) => (
                         <MenuItem
-                          key={idx}
+                          key={type.type}
                           onClick={() => handleEditorOpen(type.type)}
                           disableRipple
                         >
@@ -536,7 +536,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
                       >
                         {types.map((item, idx) => (
                           <Stack
-                            key={idx}
+                            key={item.type}
                             direction='row'
                             justifyContent='flex-start'
                             spacing={1}
@@ -607,7 +607,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
                   )}
                   {questions.map((question, idx) => (
                     <QuestionView
-                      key={idx}
+                      key={question.id}
                       data={question}
                       isEditing={true}
                       index={idx + 1}
@@ -620,7 +620,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
                 <Stack direction='row' justifyContent='center' spacing={3}>
                   {types.map((type, idx) => (
                     <Box
-                      key={idx}
+                      key={type.type}
                       width={50}
                       height={50}
                       borderRadius={2}
