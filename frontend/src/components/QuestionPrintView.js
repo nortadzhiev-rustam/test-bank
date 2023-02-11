@@ -1,7 +1,7 @@
 import { Stack, Typography, Box, Divider } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { BlockMath } from "react-katex";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import "./PrintPage.css";
 const QuestionPrintView = ({
   quest,
@@ -11,10 +11,11 @@ const QuestionPrintView = ({
   shuffleAnswers,
   questionImage,
 }) => {
-  const { question, options, image } = quest;
+  const { question, options, image, matches, type } = quest;
 
   const parsedQuestion = JSON.parse(question);
   const answers = JSON.parse(options);
+  const parsedMatches = JSON.parse(matches)
 
   const optionGenerator = (index) => {
     if (index === 0) return "A";
@@ -33,6 +34,20 @@ const QuestionPrintView = ({
     };
     return shuffledAnswers();
   }, [shuffleAnswers, answers]);
+
+  useEffect(() => {
+    console.log(answers)
+    console.log(parsedMatches)
+  }, [])
+
+  // const shMatches = useMemo(() => {
+  //   const shuffledMatches = () => {
+  //     const shufMatches = [...parsedMatches].sort(() => Math.random() - 0.5)
+  //     return shufMatches
+
+  //   };
+  //   return shuffledMatches();
+  // }, [matches]);
 
   return (
     <Grid
@@ -87,7 +102,7 @@ const QuestionPrintView = ({
       <Grid xsOffset={0.5} xs={11.5}>
         {optionOn ? (
           <Grid container rowSpacing={1} spacing={2} alignItems='center'>
-            {shAnswers.map((answer, idx) => (
+            {(type === 'Multiple choice' || type === 'True or False' || type === 'Fill in the blanks') && shAnswers.map((answer, idx) => (
               <Grid key={idx} xs={6}>
                 <Stack direction='row' spacing={2} alignItems='center'>
                   {checkBoxOn && (
@@ -106,6 +121,45 @@ const QuestionPrintView = ({
                 </Stack>
               </Grid>
             ))}
+            {type === 'Match' && (
+              <Grid xs={12}>
+                <Grid>
+                  {parsedMatches.map((match, idx) => (
+                    <Grid key={match.match} xs={6}>
+                      <Stack direction='row' spacing={2} alignItems='center'>
+                        {checkBoxOn && (
+                          <Typography fontSize='inherit' fontWeight='bold'>
+                            {match.id + 1}
+                          </Typography>
+                        )}
+                        {match.match !== undefined && (
+                          <Typography fontSize='inherit'>
+                            {" " + match.match}
+                          </Typography>
+                        )}
+                      </Stack>
+                    </Grid>
+                  ))}
+                  {shAnswers.map((answer, idx) => (
+                    <Grid key={idx} xs={6}>
+                      <Stack direction='row' spacing={2} alignItems='center'>
+                        {checkBoxOn && (
+                          <Typography fontSize='inherit' fontWeight='bold'>
+                            {optionGenerator(idx) + ") "}
+                          </Typography>
+                        )}
+                        {answer.content.text !== undefined && (
+                          <Typography fontSize='inherit'>
+                            {" " + answer.content.text}
+                          </Typography>
+                        )}
+                        {answer.content.equation !== undefined && (
+                          <BlockMath math={answer.content.equation} />
+                        )}
+                      </Stack>
+                    </Grid>
+                  ))}
+                </Grid></Grid>)}
           </Grid>
         ) : (
           <Divider orientation='horizontal' />
@@ -113,125 +167,7 @@ const QuestionPrintView = ({
       </Grid>
     </Grid>
 
-    // <table style={{ width: "100%", breakInside: "auto"  }}>
-    //   <tbody>
-    //     <tr>
-    //       <th width='5%'>{number + "."}</th>
-    //       {image !== "" && !imageOff && (
-    //         <th>
-    //           <img
-    //             src={process.env.PUBLIC_URL + "/uploads/" + image}
-    //             alt='inputImage'
-    //             style={{
-    //               width: "150px",
-    //               maxHeight: "150x",
-    //               objectFit: "contain",
-    //               borderRadius: "15px",
-    //             }}
-    //           />
-    //         </th>
-    //       )}
-    //       {parsedQuestion.text !== undefined && (
-    //         <th style={{ paddinLeft: 5, textAlign: "left" }}>
-    //           {parsedQuestion.text}
-    //         </th>
-    //       )}
-    //       {parsedQuestion.equation !== undefined && (
-    //         <th>
-    //           <BlockMath math={parsedQuestion.equation} />
-    //         </th>
-    //       )}
-    //       {(parsedQuestion.equation === undefined ||
-    //         parsedQuestion.text === undefined ||
-    //         image === "" ||
-    //         imageOff) && <th width='25%'></th>}
-    //     </tr>
-    //     <tr style={{ borderSpacing: 10 }}></tr>
-    //     <tr>
-    //       {answers.map((answer, idx) =>
-    //         idx < 2 ? (
-    //           <td key={idx} colSpan={2} style={{ paddingLeft: 30 }}>
-    //             {optionGenerator(idx) + ") "}
-    //             {answer.content.text !== undefined &&
-    //               answer.content.text + " "}{" "}
-    //             {answer.content.equation !== undefined && (
-    //               <div style={{ display: "inline-flex", marginLeft: 10 }}>
-    //                 {" "}
-    //                 <BlockMath math={answer.content.equation} />
-    //               </div>
-    //             )}
-    //           </td>
-    //         ) : null
-    //       )}
-    //     </tr>
-    //     <tr>
-    //       {answers.map((answer, idx) =>
-    //         idx > 1 ? (
-    //           <td key={idx} colSpan={2} style={{ paddingLeft: 30 }}>
-    //             {optionGenerator(idx) + ") "}
-    //             {answer.content.text !== undefined &&
-    //               answer.content.text + "  "}{" "}
-    //             {answer.content.equation !== undefined && (
-    //               <div style={{ display: "inline-flex", marginLeft: 10 }}>
-    //                 {" "}
-    //                 <BlockMath math={answer.content.equation} />
-    //               </div>
-    //             )}
-    //           </td>
-    //         ) : null
-    //       )}
-    //     </tr>
-    //   </tbody>
-    // </table>
-    // <Stack spacing={2} width='100%' mb={2} style={{pageBreakBefore: 'always'}} >
-    //   <Stack direction='row' spacing={1} width='100%' alignItems='center'>
-    //     <Typography variant='h6'>{number + "."}</Typography>
 
-    //     <Stack direction='row' spacing={2} width='100%' alignItems='center'>
-    //       {image !== "" && !imageOff && (
-    //         <img
-    //           src={process.env.PUBLIC_URL + "/uploads/" + image}
-    //           alt='inputImage'
-    //           style={{
-    //             width: "210px",
-    //             maxHeight: "210px",
-    //             objectFit: "contain",
-    //             borderRadius: "15px",
-    //           }}
-    //         />
-    //       )}
-    //       {parsedQuestion.text !== undefined && (
-    //         <Typography sx={{ overflowWrap: "anywhere" }} variant='h6'>
-    //           {parsedQuestion.text}
-    //         </Typography>
-    //       )}
-    //       {parsedQuestion.equation !== undefined && (
-    //         <BlockMath math={parsedQuestion.equation} />
-    //       )}
-    //     </Stack>
-    //   </Stack>
-    //   <Stack pl={5} mb={1} direction='row' flexWrap='wrap'>
-    //     {answers.map((answer, idx) => (
-    //       <Stack key={idx} width='50%' alignItems='center' direction='row'>
-    //         {optionGenerator(idx) + ")"}
-    //         <Stack
-    //           ml={1}
-    //           mt={0.5}
-    //           spacing={2}
-    //           direction='row'
-    //           alignItems='center'
-    //         >
-    //           {answer.content.text !== undefined && (
-    //             <Typography>{answer.content.text}</Typography>
-    //           )}
-    //           {answer.content.equation !== undefined && (
-    //             <BlockMath math={answer.content.equation} />
-    //           )}
-    //         </Stack>
-    //       </Stack>
-    //     ))}
-    //   </Stack>
-    // </Stack>
   );
 };
 
