@@ -6,7 +6,6 @@ import "./PrintPage.css";
 const QuestionPrintView = ({
   quest,
   number,
-  imageOff,
   checkBoxOn,
   optionOn,
   shuffleAnswers,
@@ -72,7 +71,7 @@ const QuestionPrintView = ({
             <Stack direction='row' spacing={2} alignItems='center'>
               {parsedQuestion.text !== undefined && (
                 <Box sx={{ whiteSpace: "normal" }}>
-                  <Typography sx={{display: 'block'}}  fontSize='inherit'>
+                  <Typography sx={{ display: "block" }} fontSize='inherit'>
                     {parsedQuestion.text}
                   </Typography>
                 </Box>
