@@ -1,7 +1,7 @@
 import { Stack, Typography, Box, Divider } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { BlockMath } from "react-katex";
-import React, { useEffect, useMemo } from "react";
+import React, {  useMemo } from "react";
 import "./PrintPage.css";
 const QuestionPrintView = ({
   quest,
@@ -15,7 +15,7 @@ const QuestionPrintView = ({
 
   const parsedQuestion = JSON.parse(question);
   const answers = JSON.parse(options);
-  const parsedMatches = JSON.parse(matches)
+  const parsedMatches = JSON.parse(matches);
 
   const optionGenerator = (index) => {
     if (index === 0) return "A";
@@ -35,19 +35,7 @@ const QuestionPrintView = ({
     return shuffledAnswers();
   }, [shuffleAnswers, answers]);
 
-  useEffect(() => {
-    console.log(answers)
-    console.log(parsedMatches)
-  }, [])
-
-  // const shMatches = useMemo(() => {
-  //   const shuffledMatches = () => {
-  //     const shufMatches = [...parsedMatches].sort(() => Math.random() - 0.5)
-  //     return shufMatches
-
-  //   };
-  //   return shuffledMatches();
-  // }, [matches]);
+  
 
   return (
     <Grid
@@ -102,47 +90,39 @@ const QuestionPrintView = ({
       <Grid xsOffset={0.5} xs={11.5}>
         {optionOn ? (
           <Grid container rowSpacing={1} spacing={2} alignItems='center'>
-            {(type === 'Multiple choice' || type === 'True or False' || type === 'Fill in the blanks') && shAnswers.map((answer, idx) => (
-              <Grid key={idx} xs={6}>
-                <Stack direction='row' spacing={2} alignItems='center'>
-                  {checkBoxOn && (
-                    <Typography fontSize='inherit' fontWeight='bold'>
-                      {optionGenerator(idx) + ") "}
-                    </Typography>
-                  )}
-                  {answer.content.text !== undefined && (
-                    <Typography fontSize='inherit'>
-                      {" " + answer.content.text}
-                    </Typography>
-                  )}
-                  {answer.content.equation !== undefined && (
-                    <BlockMath math={answer.content.equation} />
-                  )}
-                </Stack>
-              </Grid>
-            ))}
-            {type === 'Match' && (
+            {(type === "Multiple choice" ||
+              type === "True or False" ||
+              type === "Fill in the blanks") &&
+              shAnswers.map((answer, idx) => (
+                <Grid key={idx} xs={6}>
+                  <Stack direction='row' spacing={2} alignItems='center'>
+                    {checkBoxOn && (
+                      <Typography fontSize='inherit' fontWeight='bold'>
+                        {optionGenerator(idx) + ") "}
+                      </Typography>
+                    )}
+                    {answer.content.text !== undefined && (
+                      <Typography fontSize='inherit'>
+                        {" " + answer.content.text}
+                      </Typography>
+                    )}
+                    {answer.content.equation !== undefined && (
+                      <BlockMath math={answer.content.equation} />
+                    )}
+                  </Stack>
+                </Grid>
+              ))}
+            {type === "Match" && (
               <Grid xs={12}>
-                <Grid>
-                  {parsedMatches.map((match, idx) => (
-                    <Grid key={match.match} xs={6}>
-                      <Stack direction='row' spacing={2} alignItems='center'>
-                        {checkBoxOn && (
-                          <Typography fontSize='inherit' fontWeight='bold'>
-                            {match.id + 1}
-                          </Typography>
-                        )}
-                        {match.match !== undefined && (
-                          <Typography fontSize='inherit'>
-                            {" " + match.match}
-                          </Typography>
-                        )}
-                      </Stack>
-                    </Grid>
-                  ))}
-                  {shAnswers.map((answer, idx) => (
-                    <Grid key={idx} xs={6}>
-                      <Stack direction='row' spacing={2} alignItems='center'>
+                <Grid container>
+                  <Grid xs={6}>
+                    {shAnswers.map((answer, idx) => (
+                      <Stack
+                        key={idx}
+                        direction='row'
+                        spacing={2}
+                        alignItems='center'
+                      >
                         {checkBoxOn && (
                           <Typography fontSize='inherit' fontWeight='bold'>
                             {optionGenerator(idx) + ") "}
@@ -157,17 +137,41 @@ const QuestionPrintView = ({
                           <BlockMath math={answer.content.equation} />
                         )}
                       </Stack>
-                    </Grid>
-                  ))}
-                </Grid></Grid>)}
+                    ))}
+                  </Grid>
+
+                  <Grid xs={6}>
+                    {parsedMatches
+                      .sort(() => Math.random() - 0.5)
+                      .map((match) => (
+                        <Stack
+                          key={match.match}
+                          direction='row'
+                          spacing={2}
+                          alignItems='center'
+                        >
+                          {checkBoxOn && (
+                            <Typography fontSize='inherit' fontWeight='bold'>
+                              __
+                            </Typography>
+                          )}
+                          {match.match !== undefined && (
+                            <Typography fontSize='inherit'>
+                              {" " + match.match}
+                            </Typography>
+                          )}
+                        </Stack>
+                      ))}
+                  </Grid>
+                </Grid>
+              </Grid>
+            )}
           </Grid>
         ) : (
           <Divider orientation='horizontal' />
         )}
       </Grid>
     </Grid>
-
-
   );
 };
 

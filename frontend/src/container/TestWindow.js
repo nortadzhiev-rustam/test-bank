@@ -57,6 +57,7 @@ export default function TestWindow({
 
   useEffect(() => {
     if (showNav === false) setShowNav(true);
+    
   }, [showNav, setShowNav]);
 
   useEffect(() => {
@@ -73,6 +74,11 @@ export default function TestWindow({
         }
       })
       .catch((err) => console.log(`Something went wrong ${err}`));
+    return () => {
+      setTestData();
+      setUser();
+      
+    };
   }, [open, test, setError, id, setTest]);
 
   const handleEdit = async () => {
@@ -346,7 +352,7 @@ export default function TestWindow({
             </Typography>
           </Stack>
         )}
-        <Stack spacing={3} sx={{ marginTop: 200,  pb: {xs:10, lg: 0} }}>
+        <Stack spacing={3} sx={{ marginTop: 200, pb: { xs: 10, lg: 0 } }}>
           {" "}
           {testData === undefined || testData.questions.length === 0 ? (
             <Box

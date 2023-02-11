@@ -18,7 +18,7 @@ import {
   faCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { Delete, Folder, Mode } from "@mui/icons-material";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const intervals = [
   { label: "year", seconds: 31536000 },
@@ -69,7 +69,7 @@ const TestView = ({ testData, user, handleDelete }) => {
           ) : (
             <Box
               sx={{
-                height: { xs: 100, md: 170 },
+                height: { xs: 100, md: 130 },
                 width: "100%",
                 backgroundColor: "#cccccc",
                 display: "flex",

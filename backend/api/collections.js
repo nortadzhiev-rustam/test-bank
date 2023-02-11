@@ -4,11 +4,12 @@ const router = express.Router();
 
 //route to post collections
 router.post("/collection", async (req, res) => {
-  const { name } = req.body;
+  const { name, visibilty } = req.body;
   try {
     const collection = await Collection.create(
       {
         name,
+        visibilty,
       },
       { include: [Test] }
     );
@@ -32,3 +33,5 @@ router.get("/collections", async (req, res) => {
     });
   }
 });
+
+module.exports = router;

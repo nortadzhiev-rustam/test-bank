@@ -3,7 +3,6 @@ import "./Default.css";
 import { Box, InputBase, InputAdornment, Paper, Stack } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { ChevronRightTwoTone } from "@mui/icons-material";
-import { useSelector } from "react-redux";
 import { styled, alpha } from "@mui/material/styles";
 import MainDepartments from "../components/MainDepartments";
 const mainDepartments = [
@@ -58,13 +57,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const Default = ({ setShowNav, showNav }) => {
   const [name, setName] = React.useState("");
-  const departments = useSelector((state) => state.department.department);
   const [open, setOpen] = React.useState(false);
   const [focused, setFocused] = React.useState(false);
   const ref = useRef(null);
 
   React.useEffect(() => {
     if (showNav === false) setShowNav(true);
+    document.title = "Test Generator";
   }, [showNav, setShowNav]);
 
   const handleClose = () => {

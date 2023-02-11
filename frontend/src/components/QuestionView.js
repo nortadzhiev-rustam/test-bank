@@ -1,17 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2/";
-import {
-  Paper,
-  Typography,
-  Button,
-  Box,
-  Avatar,
-  Chip,
-  Divider,
-  List,
-} from "@mui/material";
+import { Paper, Typography, Button, Box, Divider } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFeatherPointed, faScroll } from "@fortawesome/free-solid-svg-icons";
+import { faFeatherPointed } from "@fortawesome/free-solid-svg-icons";
 import { BlockMath } from "react-katex";
 import "katex/dist/katex.min.css";
 import { Stack } from "@mui/system";
@@ -61,13 +52,7 @@ export default function QuestionView({
     handleDuplicate(id);
   };
 
-  const letterGenerator = (index) => {
-    if (index === 0) return "a";
-    if (index === 1) return "b";
-    if (index === 2) return "c";
-    if (index === 3) return "d";
-    if (index === 4) return "e";
-  };
+  
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -182,12 +167,7 @@ export default function QuestionView({
           <Grid container spacing={2} m={1} columns={{ xs: 4, sm: 8, md: 12 }}>
             {answers.map((option) => (
               <Grid key={option.key} xs={12} sm={6}>
-                <Box
-                  display='flex'
-                  flexDirection='row'
-                  alignItems='center'
-                  
-                >
+                <Box display='flex' flexDirection='row' alignItems='center'>
                   <Box
                     width={15}
                     height={15}

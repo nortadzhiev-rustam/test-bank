@@ -33,6 +33,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFolder } from "@fortawesome/free-solid-svg-icons";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />;
@@ -40,29 +42,44 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function MyLibrary({ showNav, setShowNav }) {
   const [testData, setTestData] = useState([]);
   const [isOpen, setOpen] = useState(false);
-  const [value, setValue] = useState("Public");
+  const [visibility, setVisibility] = useState("Public");
   const [collectionName, setCollectionName] = useState("");
+  const [collections, setCollections] = useState([]);
   const handleChange = (event) => {
-    setValue(event.target.value);
+    setVisibility(event.target.value);
   };
   const user = useSelector((state) => state.user.user.user);
   let [searchParams, setSearchParams] = useSearchParams();
   React.useEffect(() => {
     if (showNav === false) setShowNav(true);
+    document.title = "Test Generator";
   }, [showNav, setShowNav]);
   const handleClick = (search) => {
     setSearchParams(search);
   };
   React.useEffect(() => {
-    axios.get("https://www.backend.rustamnortadzhiev.com/api/v1/tests").then((res) => {
-      console.log(res.data);
-      setTestData(res.data);
-    });
+    axios
+      .get("https://www.backend.rustamnortadzhiev.com/api/v1/tests")
+      .then((res) => {
+        console.log(res.data);
+        setTestData(res.data);
+      });
+  }, []);
+
+  React.useEffect(() => {
+    axios
+      .get("https://www.backend.rustamnortadzhiev.com/api/v1/collections")
+      .then((res) => {
+        console.log(res.data);
+        setCollections(res.data);
+      });
   }, []);
 
   const handleDelete = async (id) => {
     try {
-      const res = await axios.delete(`https://www.backend.rustamnortadzhiev.com/api/v1/test/${id}`);
+      const res = await axios.delete(
+        `https://www.backend.rustamnortadzhiev.com/api/v1/test/${id}`
+      );
       setTestData(testData.filter((item) => item.id !== id));
       console.log(res.message);
     } catch (err) {
@@ -72,6 +89,25 @@ export default function MyLibrary({ showNav, setShowNav }) {
 
   const handleDialogOpen = () => {
     setOpen(!isOpen);
+    setCollectionName("");
+  };
+
+  const handleSubmit = async () => {
+    const data = {
+      name: collectionName,
+      visibility,
+      userId: user.id,
+    };
+    try {
+      const res = await axios.post(
+        `https://www.backend.rustamnortadzhiev.com/api/v1/collection`,
+        data
+      );
+      console.log(res);
+      handleDialogOpen();
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -104,7 +140,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
                 row
                 aria-labelledby='demo-controlled-radio-buttons-group'
                 name='controlled-radio-buttons-group'
-                value={value}
+                value={visibility}
                 onChange={handleChange}
               >
                 <FormControlLabel
@@ -122,8 +158,14 @@ export default function MyLibrary({ showNav, setShowNav }) {
           </Stack>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDialogOpen}>{"Cancel"}</Button>
-          <Button onClick={handleDialogOpen} disabled={collectionName === ""}>
+          <Button variant='contained' color='error' onClick={handleDialogOpen}>
+            {"Cancel"}
+          </Button>
+          <Button
+            variant='contained'
+            onClick={handleSubmit}
+            disabled={collectionName === ""}
+          >
             {"Create"}
           </Button>
         </DialogActions>
@@ -206,18 +248,61 @@ export default function MyLibrary({ showNav, setShowNav }) {
             spacing={2}
             maxWidth={{ xs: "100%", sm: "40%", md: "30%", xl: "100%" }}
           >
-            <Typography textTransform='uppercase' color='dimgray'>
-              Collections
-            </Typography>
-            <Button
-              startIcon={<CreateNewFolder />}
-              color='inherit'
-              size='small'
-              variant='contained'
-              onClick={handleDialogOpen}
+            <Typography
+              display={{ xs: "none", xl: "flex" }}
+              textTransform='uppercase'
+              color='dimgray'
             >
               Collections
-            </Button>
+            </Typography>
+            <Stack
+              spacing={2}
+              direction={{ xs: "column", xl: "column-reverse" }}
+            >
+              <Stack direction={{ xs: "row", xl: "column" }} spacing={1}>
+                {collections
+                  .filter((item) => item.userId === user.id)
+                  .map((collection) => (
+                    <Stack
+                      sx={{
+                        "&:hover": {
+                          boxShadow: 2,
+                          bgcolor: "white",
+                        },
+                        cursor: "pointer",
+                      }}
+                      key={collection.name}
+                      spacing={1}
+                      alignItems='center'
+                      direction='row'
+                      color='#6c757d'
+                      p={0.5}
+                      px={1}
+                      borderRadius={2}
+                      width='100%'
+                      justifyContent='space-between'
+                    >
+                      <Stack direction='row' spacing={1} alignItems='center'>
+                        <FontAwesomeIcon icon={faFolder} />
+
+                        <Typography>{collection.name}</Typography>
+                      </Stack>
+                      <Typography textAlign='right'>
+                        {collection.Tests.length}
+                      </Typography>
+                    </Stack>
+                  ))}
+              </Stack>
+              <Button
+                startIcon={<CreateNewFolder />}
+                color='inherit'
+                size='small'
+                variant='contained'
+                onClick={handleDialogOpen}
+              >
+                Collections
+              </Button>
+            </Stack>
           </Stack>
         </Stack>
       </Grid>

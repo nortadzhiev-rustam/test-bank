@@ -45,8 +45,8 @@ import TestInsertWindow from "./TestInsertWindow";
 import QuestionView from "../components/QuestionView";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faListCheck } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch } from 'react-redux';
-import { setFull } from '../store/questionTypeSlice';
+import { useDispatch } from "react-redux";
+import { setFull } from "../store/questionTypeSlice";
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -55,10 +55,6 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
   borderRadius: "0px 0 10px 10px",
 }));
-
-
-
-
 
 const AppBar = styled(
   MuiAppBar,
@@ -187,7 +183,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
   const { id } = useParams();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const menuOpen = Boolean(anchorEl);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -237,6 +233,10 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
       } catch (err) {
         setError(err);
       }
+      return () => {
+        setMessage("");
+        setQuestions([]);
+      };
     },
     [questions]
   );
@@ -254,12 +254,22 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
         }
       })
       .catch((err) => console.log(`Something went wrong ${err}`));
+
+    return () => {
+      setName('');
+      setGrade('');
+      setDepartment('');
+      setQuestions('');
+      setImage('');
+    };
   }, [id, isEditing, openEditor, open]);
 
   React.useEffect(() => {
     if (showNav) {
       setShowNav(false);
     }
+
+    
   }, [showNav, setShowNav]);
 
   const handleDialogOpen = () => {
@@ -271,7 +281,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
     setOpenEditor(true);
     setQuestionType(type);
     handleClose();
-    dispatch(setFull(true))
+    dispatch(setFull(true));
   };
 
   const handleSave = async () => {

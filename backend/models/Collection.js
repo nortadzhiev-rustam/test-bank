@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      visibility: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'Public'
+      },
       createdAt: {
         type: DataTypes.DATE,
         defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
@@ -34,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Collection.hasMany(models.Test, {
       foreignKey: "collectionId",
-      as: 'tests'
+      as: 'Tests'
     });
   };
 
