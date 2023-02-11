@@ -70,7 +70,6 @@ export default function MyLibrary({ showNav, setShowNav }) {
     axios
       .get("https://www.backend.rustamnortadzhiev.com/api/v1/collections")
       .then((res) => {
-        console.log(res.data);
         setCollections(res.data);
       });
   }, []);
@@ -103,7 +102,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
         `https://www.backend.rustamnortadzhiev.com/api/v1/collection`,
         data
       );
-      console.log(res);
+
       handleDialogOpen();
     } catch (e) {
       console.log(e);
