@@ -16,7 +16,6 @@ import QuestionInput from "../components/QuestionInput";
 import AnswersContainer from "../components/AnswersContainer";
 import { useParams } from "react-router-dom";
 
-
 import axios from "axios";
 import TrueOrFalse from "../components/TrueOrFalse";
 import MatchingContainer from "../components/Match";
@@ -59,7 +58,7 @@ const InsertWindow = ({
   setEditing,
   questionId,
   setQuestions,
-  questions
+  questions,
 }) => {
   const [mouseIn, setMouseIn] = React.useState(false);
   const [isHover, setHover] = React.useState(false);
@@ -105,17 +104,6 @@ const InsertWindow = ({
       setDifficulty(difficulty);
       setTitle(title);
     }
-
-    return ()=> {
-      setImage('');
-      setAnswers('');
-      setCorrectAnswer('');
-      setQuestion('');
-      setMark('');
-      setType('');
-      setDifficulty('');
-      setTitle('');
-    }
   }, [isEditing, data, setType]);
 
   const handleClose = () => {
@@ -149,7 +137,7 @@ const InsertWindow = ({
       userId: user.id,
       departmentId: test.id,
       testId: id,
-      matches: JSON.stringify(matches)                                                                   
+      matches: JSON.stringify(matches),
     };
     if (isEditing) {
       try {
@@ -157,11 +145,10 @@ const InsertWindow = ({
           `https://www.backend.rustamnortadzhiev.com/api/v1/question/${questionId}`,
           data
         );
-        const oldData = questions.filter(item => item.id !== questionId)
-        setQuestions([...oldData, res.data.data.question])
+        const oldData = questions.filter((item) => item.id !== questionId);
+        setQuestions([...oldData, res.data.data.question]);
         setMessage(res.data.message);
         handleClose();
-       
       } catch (err) {
         setError(err);
       }

@@ -298,6 +298,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
                 size='small'
                 variant='contained'
                 onClick={handleDialogOpen}
+                fullWidth
               >
                 Collections
               </Button>

@@ -95,7 +95,7 @@ const AnswersCard = (props) => {
         .filter((item) => item.key === option.option)
         .map((item) => setContent(item.content));
     }
-    return () => setContent();
+   
     // eslint-disable-next-line
   }, [editing, answers]);
 
@@ -103,7 +103,7 @@ const AnswersCard = (props) => {
     if (content !== "") {
       addAnswer({ key: option.option, content });
     }
-    return () => addAnswer();
+    
     // eslint-disable-next-line
   }, [content]);
 
