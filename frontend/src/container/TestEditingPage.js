@@ -254,7 +254,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
         }
       })
       .catch((err) => console.log(`Something went wrong ${err}`));
-  }, [id, isEditing, openEditor, open, questions]);
+  }, [id, isEditing, openEditor, open]);
 
   React.useEffect(() => {
     if (showNav) {

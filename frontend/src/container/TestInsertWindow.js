@@ -105,6 +105,17 @@ const InsertWindow = ({
       setDifficulty(difficulty);
       setTitle(title);
     }
+
+    return ()=> {
+      setImage('');
+      setAnswers('');
+      setCorrectAnswer('');
+      setQuestion('');
+      setMark('');
+      setType('');
+      setDifficulty('');
+      setTitle('');
+    }
   }, [isEditing, data, setType]);
 
   const handleClose = () => {

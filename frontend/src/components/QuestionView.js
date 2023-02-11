@@ -25,7 +25,6 @@ import {
   Subject,
 } from "@mui/icons-material";
 
-
 const IconSelector = ({ type }) => {
   if (type === "Multiple choice")
     return <CheckCircleRounded color='inherit' fontSize='small' />;
@@ -44,11 +43,12 @@ export default function QuestionView({
   handleEdit,
   handleDuplicate,
 }) {
-  const { image, question, options, type, mark, correctAnswer, id } = data;
+  const { image, question, options, type, mark, correctAnswer, id, matches } =
+    data;
   const [answers] = useState(JSON.parse(options));
   const [quest] = useState(JSON.parse(question));
   const [correct] = useState(JSON.parse(correctAnswer));
-
+  const [match] = useState(JSON.parse(matches));
   const onDelete = () => {
     handleDelete(id);
   };
@@ -59,6 +59,14 @@ export default function QuestionView({
 
   const onDuplicate = () => {
     handleDuplicate(id);
+  };
+
+  const letterGenerator = (index) => {
+    if (index === 0) return "a";
+    if (index === 1) return "b";
+    if (index === 2) return "c";
+    if (index === 3) return "d";
+    if (index === 4) return "e";
   };
 
   return (
@@ -168,19 +176,23 @@ export default function QuestionView({
 
         <Divider orientation='horizontal'>answer choices</Divider>
 
-        {type === "Multiple choice" ||
-        type === "Match" ||
-        type === "Fill in the blanks" ||
-        type === "True or False" ? (
+        {(type === "Multiple choice" ||
+          type === "Fill in the blanks" ||
+          type === "True or False") && (
           <Grid container spacing={2} m={1} columns={{ xs: 4, sm: 8, md: 12 }}>
             {answers.map((option) => (
               <Grid key={option.key} xs={12} sm={6}>
-                <Box display='flex' flexDirection='row' alignItems='center'>
+                <Box
+                  display='flex'
+                  flexDirection='row'
+                  alignItems='center'
+                  
+                >
                   <Box
                     width={15}
                     height={15}
                     borderRadius='50%'
-                    mr={2}
+                    mr={1}
                     bgcolor={correct.key === option.key ? "green" : "red"}
                   ></Box>
                   {option.content.text !== undefined && (
@@ -195,10 +207,75 @@ export default function QuestionView({
               </Grid>
             ))}
           </Grid>
-        ) : (
+        )}
+        {type === "Open ended" && (
           <Typography my={2} textAlign='center'>
             Participants will provide their own answers
           </Typography>
+        )}
+
+        {type === "Match" && (
+          <Grid container spacing={1} m={1}>
+            <Grid xs={6}>
+              {answers.map((option) => (
+                <Box
+                  key={option.key}
+                  display='flex'
+                  flexDirection='row'
+                  alignItems='center'
+                >
+                  <Box
+                    width={12}
+                    height={12}
+                    borderRadius='50%'
+                    mr={1}
+                    bgcolor='green'
+                    color='white'
+                    display='flex'
+                    flexDirection='column'
+                    alignItems='center'
+                    justifyContent='center'
+                  ></Box>
+                  {option.content.text !== undefined && (
+                    <Typography variant='caption'>
+                      {option.content.text + " "}
+                    </Typography>
+                  )}
+                  {option.content.equation !== undefined && (
+                    <BlockMath math={option.content.equation} />
+                  )}
+                </Box>
+              ))}
+            </Grid>
+
+            {match !== null && match !== undefined && (
+              <Grid xs={6}>
+                {match.map((item) => (
+                  <Box
+                    key={item.id}
+                    display='flex'
+                    flexDirection='row'
+                    alignItems='center'
+                  >
+                    <Box
+                      width={12}
+                      height={12}
+                      borderRadius='50%'
+                      mr={1}
+                      bgcolor='orange'
+                      color='white'
+                      display='flex'
+                      flexDirection='column'
+                      alignItems='center'
+                      justifyContent='center'
+                    ></Box>
+
+                    <Typography variant='caption'>{item.match}</Typography>
+                  </Box>
+                ))}
+              </Grid>
+            )}
+          </Grid>
         )}
       </Paper>
     </Box>

@@ -346,7 +346,7 @@ export default function TestWindow({
             </Typography>
           </Stack>
         )}
-        <Stack spacing={3} sx={{ marginTop: 200 }}>
+        <Stack spacing={3} sx={{ marginTop: 200,  pb: {xs:10, lg: 0} }}>
           {" "}
           {testData === undefined || testData.questions.length === 0 ? (
             <Box
@@ -362,7 +362,7 @@ export default function TestWindow({
           ) : (
             <Stack spacing={4} mb={3}>
               {testData.questions.map((item, idx) => (
-                <QuestionView key={idx} data={item} />
+                <QuestionView key={item.id} data={item} />
               ))}
             </Stack>
           )}
