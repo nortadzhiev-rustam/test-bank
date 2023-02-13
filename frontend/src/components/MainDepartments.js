@@ -38,8 +38,8 @@ export default function MainDepartments({ name, onClick }) {
       onClick={() => onClick(name)}
       style={{
         cursor: "pointer",
-        transition: "transform 0.5s ease-in",
-        transform: hover && "scale(1.5)",
+        transition: "transform 0.3s ease-in",
+        transform: hover && "scale(1.1)",
       }}
     >
       <Paper

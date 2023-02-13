@@ -4,7 +4,7 @@ import { Cancel } from "@mui/icons-material";
 import "./DraftEditor.css";
 import "katex/dist/katex.min.css";
 import { IconButton, InputBase } from "@mui/material";
-
+import Tiptap from "./Tiptap";
 export default function MyEditor({
   latex,
   setLatex,
@@ -75,12 +75,12 @@ export default function MyEditor({
   const handleDeleteMath = (id) => {
     const newArray = equationarray.filter((eq) => eq.id !== id);
     setEquationarray(newArray);
-    setContent(prevState => ({ ...prevState, equation: ''}))
+    setContent((prevState) => ({ ...prevState, equation: "" }));
   };
 
   const handleInput = (e) => {
-    setQuestionText(e.target.value);
-    setContent((prevState) => ({ ...prevState, text: e.target.value }));
+    setQuestionText(e);
+    setContent((prevState) => ({ ...prevState, text: e}));
   };
 
   return (
@@ -90,17 +90,7 @@ export default function MyEditor({
       onClick={focusEditor}
     >
       <div className='DraftEditor-root' id={editorId} ref={editor}>
-        <InputBase
-          style={{
-            color: "white",
-            fontStyle: questionText.length === 0 && "italic",
-          }}
-          variant='filled'
-          multiline
-          placeholder={equationarray.length === 0 ? placeholder : null}
-          value={questionText}
-          onChange={handleInput}
-        />
+        <Tiptap content={content} onChange={handleInput} />
         {equationarray.length !== 0 && (
           <div
             style={{
