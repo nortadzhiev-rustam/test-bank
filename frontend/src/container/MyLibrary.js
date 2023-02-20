@@ -202,6 +202,9 @@ export default function MyLibrary({ showNav, setShowNav }) {
                     <Inventory2 />
                   </ListItemIcon>
                   <ListItemText primary='All my content' />
+                  <Typography>
+                    {testData.filter((item) => item.userId === user.id).length}
+                  </Typography>
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding sx={{ width: 300 }}>
@@ -238,6 +241,13 @@ export default function MyLibrary({ showNav, setShowNav }) {
                     <TextSnippet />
                   </ListItemIcon>
                   <ListItemText primary='Drafts' />
+                  <Typography>
+                    {
+                      testData.filter(
+                        (item) => item.userId === user.id && item.isEditing
+                      ).length
+                    }
+                  </Typography>
                 </ListItemButton>
               </ListItem>
             </List>
@@ -247,13 +257,24 @@ export default function MyLibrary({ showNav, setShowNav }) {
             spacing={2}
             maxWidth={{ xs: "100%", sm: "40%", md: "30%", xl: "100%" }}
           >
-            <Typography
+            <Stack
+              direction='row'
+              justifyContent='space-between'
+              alignItems='center'
               display={{ xs: "none", xl: "flex" }}
-              textTransform='uppercase'
-              color='dimgray'
             >
-              Collections
-            </Typography>
+              <Typography color='dimgray'>My Collections</Typography>
+              <Button
+                startIcon={<CreateNewFolder />}
+                color='success'
+                size='small'
+                variant='outlined'
+                onClick={handleDialogOpen}
+              >
+                New
+              </Button>
+            </Stack>
+
             <Stack
               spacing={2}
               direction={{ xs: "column", xl: "column-reverse" }}
@@ -299,6 +320,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
                 variant='contained'
                 onClick={handleDialogOpen}
                 fullWidth
+                sx={{ display: { xs: "flex", lg: "none" } }}
               >
                 Collections
               </Button>

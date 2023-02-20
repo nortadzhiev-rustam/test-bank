@@ -98,7 +98,8 @@ const Profile = ({ showNav, setShowNav }) => {
   const [isOpen, setOpen] = React.useState(false);
   const [visibility, setVisibility] = React.useState("Public");
   const [collectionName, setCollectionName] = React.useState("");
-
+  const [isActive, setActive] = React.useState(true);
+  const [selected, setSelected] = React.useState(0);
   const handleChange = (event) => {
     setVisibility(event.target.value);
   };
@@ -149,7 +150,7 @@ const Profile = ({ showNav, setShowNav }) => {
         `https://www.backend.rustamnortadzhiev.com/api/v1/collection`,
         data
       );
-
+      setCollections((prevState) => [...prevState, res.data.collection]);
       handleDialogOpen();
     } catch (e) {
       console.log(e);
@@ -163,6 +164,11 @@ const Profile = ({ showNav, setShowNav }) => {
   React.useEffect(() => {
     if (showNav === false) setShowNav(true);
   }, [showNav, setShowNav]);
+
+  const handleSelect = (id) => {
+    setActive(true);
+    setSelected(id);
+  };
 
   return (
     <Box component='div' className={classes.root}>
@@ -274,7 +280,7 @@ const Profile = ({ showNav, setShowNav }) => {
               </Box>
             </Stack>
             <Typography variant='h5'>{user.email}</Typography>
-            <Typography>{user.department.name}</Typography>
+            <Typography>Department: {user.department.name}</Typography>
           </Stack>
         </Stack>
         <Stack spacing={2}>
@@ -317,10 +323,13 @@ const Profile = ({ showNav, setShowNav }) => {
                 variant={{ xs: "caption", md: "body1", lg: "h6" }}
                 fontWeight={{ xs: 350, md: 500, lg: 700 }}
               >
-                {collections.length}
+                {collections.filter((item) => item.userId === user.id).length}
               </Typography>
               <Typography>
-                {collections.length === 1 ? "Collection" : "Collections"}
+                {collections.filter((item) => item.userId === user.id)
+                  .length === 1
+                  ? "Collection"
+                  : "Collections"}
               </Typography>
             </Stack>
           </Stack>
@@ -353,7 +362,7 @@ const Profile = ({ showNav, setShowNav }) => {
           </Grid2>
         )}
         {search === "collections" && (
-          <Grid2 xs={3} mt={10} xsOffset={1}>
+          <Grid2 xs={12} xl={2.5} mt={10} xsOffset={1}>
             <Stack
               spacing={2}
               maxWidth={{ xs: "100%", sm: "40%", md: "30%", xl: "100%" }}
@@ -362,6 +371,7 @@ const Profile = ({ showNav, setShowNav }) => {
                 direction='row'
                 justifyContent='space-between'
                 alignItems='center'
+                width='100%'
                 display={{ xs: "none", xl: "flex" }}
               >
                 <Typography color='dimgray'>My Collections</Typography>
@@ -383,7 +393,7 @@ const Profile = ({ showNav, setShowNav }) => {
                 <Stack direction={{ xs: "row", xl: "column" }} spacing={1}>
                   {collections
                     .filter((item) => item.userId === user.id)
-                    .map((collection) => (
+                    .map((collection, idx) => (
                       <Stack
                         sx={{
                           "&:hover": {
@@ -391,6 +401,9 @@ const Profile = ({ showNav, setShowNav }) => {
                             bgcolor: "white",
                           },
                           cursor: "pointer",
+                          boxShadow: isActive && selected === idx ? 2 : 0,
+                          bgcolor:
+                            isActive && selected === idx ? "white" : "none",
                         }}
                         key={collection.name}
                         spacing={1}
@@ -399,9 +412,10 @@ const Profile = ({ showNav, setShowNav }) => {
                         color='#6c757d'
                         p={0.5}
                         px={1}
-                        borderRadius={2}
+                        borderRadius={1}
                         width='100%'
                         justifyContent='space-between'
+                        onClick={() => handleSelect(idx)}
                       >
                         <Stack direction='row' spacing={1} alignItems='center'>
                           <FontAwesomeIcon icon={faFolder} />
@@ -421,7 +435,7 @@ const Profile = ({ showNav, setShowNav }) => {
                   variant='contained'
                   onClick={handleDialogOpen}
                   fullWidth
-                  sx={{ display: { xs: "flex", lg: "none" } }}
+                  sx={{ display: { xs: "flex", xl: "none" } }}
                 >
                   Collections
                 </Button>
