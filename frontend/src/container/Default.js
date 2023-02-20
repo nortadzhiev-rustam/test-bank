@@ -203,7 +203,7 @@ const Default = ({ setShowNav, showNav }) => {
         >
           {mainDepartments.map((item, idx) => (
             <MainDepartments
-              key={idx}
+              key={item.id}
               name={item.title}
               onClick={handleClick}
             />

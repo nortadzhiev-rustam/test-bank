@@ -17,7 +17,7 @@ import {
   faListCheck,
   faCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { Delete, Folder, Mode } from "@mui/icons-material";
+import { Delete, Folder, FolderOutlined, Mode } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 const intervals = [
@@ -36,7 +36,7 @@ function timeSince(date) {
   return `${count} ${interval.label}${count !== 1 ? "s" : ""} ago`;
 }
 
-const TestView = ({ testData, user, handleDelete }) => {
+const TestView = ({ testData, user, handleDelete, isProfile }) => {
   const navigate = useNavigate();
 
   return (
@@ -61,7 +61,7 @@ const TestView = ({ testData, user, handleDelete }) => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                borderRadius: 5,
+                borderRadius: 1,
               }}
             >
               <FontAwesomeIcon color='#183153' size='3x' icon={faImage} />
@@ -75,8 +75,7 @@ const TestView = ({ testData, user, handleDelete }) => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                borderRadius: 5,
-                border: 1,
+                borderRadius: 1,
               }}
             >
               <img
@@ -182,6 +181,7 @@ const TestView = ({ testData, user, handleDelete }) => {
         </Grid>
       </Grid>
       <Stack
+        mt={isProfile ? 1 : 0}
         ml={1}
         direction='row'
         alignItems='center'
@@ -222,33 +222,39 @@ const TestView = ({ testData, user, handleDelete }) => {
           spacing={1}
           display={{ xs: "none", md: "flex" }}
         >
+          {!isProfile && (
+            <Button
+              size='small'
+              startIcon={<Delete />}
+              variant='contained'
+              color='inherit'
+              onClick={() => handleDelete(testData.id)}
+            >
+              delete
+            </Button>
+          )}
+          {!isProfile && (
+            <Button
+              size='small'
+              startIcon={<Mode />}
+              variant='contained'
+              color='inherit'
+              onClick={() =>
+                navigate(`/admin/test/${testData.id}/${testData.name}`)
+              }
+            >
+              Edit
+            </Button>
+          )}
           <Button
             size='small'
-            startIcon={<Delete />}
-            variant='contained'
-            color='inherit'
-            onClick={() => handleDelete(testData.id)}
-          >
-            delete
-          </Button>
-          <Button
-            size='small'
-            startIcon={<Mode />}
-            variant='contained'
-            color='inherit'
-            onClick={() =>
-              navigate(`/admin/test/${testData.id}/${testData.name}`)
+            startIcon={
+              testData.collectionId === null ? <FolderOutlined /> : <Folder />
             }
+            variant={isProfile ? "outlined" : "contained"}
+            color={isProfile ? "success" : "inherit"}
           >
-            Edit
-          </Button>
-          <Button
-            size='small'
-            startIcon={<Folder />}
-            variant='contained'
-            color='inherit'
-          >
-            Save
+            {testData.collectionId === null ? "Save" : "Saved"}
           </Button>
         </Stack>
         <Stack
@@ -257,24 +263,32 @@ const TestView = ({ testData, user, handleDelete }) => {
           spacing={1}
           display={{ xs: "flex", md: "none" }}
         >
-          <IconButton
-            size='small'
-            color='secondary'
-            onClick={() => handleDelete(testData.id)}
-          >
-            <Delete fontSize='small' />
-          </IconButton>
-          <IconButton
-            size='small'
-            color='secondary'
-            onClick={() =>
-              navigate(`/admin/test/${testData.id}/${testData.name}`)
-            }
-          >
-            <Mode fontSize='small' />
-          </IconButton>
+          {isProfile && (
+            <IconButton
+              size='small'
+              color='secondary'
+              onClick={() => handleDelete(testData.id)}
+            >
+              <Delete fontSize='small' />
+            </IconButton>
+          )}
+          {!isProfile && (
+            <IconButton
+              size='small'
+              color='secondary'
+              onClick={() =>
+                navigate(`/admin/test/${testData.id}/${testData.name}`)
+              }
+            >
+              <Mode fontSize='small' />
+            </IconButton>
+          )}
           <IconButton size='small' color='secondary'>
-            <Folder fontSize='small' />
+            {testData.collectionId === null ? (
+              <FolderOutlined fontSize='small' />
+            ) : (
+              <Folder fontSize='small' />
+            )}
           </IconButton>
         </Stack>
       </Stack>

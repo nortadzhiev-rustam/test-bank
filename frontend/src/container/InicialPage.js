@@ -38,16 +38,9 @@ export default function InicialPage() {
         textAlign='center'
         variant='h2'
       >
-        Welcome to Test Generatng Application
+        Preparing assignments has never been that easy
       </Typography>
-      <Typography
-        fontWeight='bold'
-        color='#83c5be'
-        textAlign='center'
-        variant='h4'
-      >
-        Login or register
-      </Typography>
+      
       <Stack direction='row' justifyContent='center' spacing={1}>
         <Paper
           elevation={loginClicked ? 2 : 10}
@@ -60,7 +53,7 @@ export default function InicialPage() {
             justifyContent: "center",
             alignItems: "center",
             width: { xs: "150px", md: "250px" },
-            height: 100,
+            height: {xs: 60, md: 100},
             borderRadius: 5,
             cursor: "pointer",
             transition: "all 0.3s ease-in",
@@ -82,7 +75,7 @@ export default function InicialPage() {
               fontSize={{xs:14, md:24}}
               variant='h4'
             >
-              Login
+              Get Started
             </Typography>
           </Stack>
         </Paper>
@@ -97,7 +90,7 @@ export default function InicialPage() {
             justifyContent: "center",
             alignItems: "center",
             width: { xs: "150px", md: "250px" },
-            height: 100,
+            height: {xs: 60, md: 100},
             borderRadius: 5,
             cursor: "pointer",
             transition: "all 0.3s ease-in",
@@ -119,7 +112,7 @@ export default function InicialPage() {
               fontSize={{xs:14, md:24}}
               variant='h4'
             >
-              Register
+              Sign up
             </Typography>
           </Stack>
         </Paper>

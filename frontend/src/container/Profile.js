@@ -8,14 +8,27 @@ import {
   Tabs,
   Tab,
   Button,
+  Dialog,
+  FormControl,
+  Radio,
+  FormControlLabel,
+  DialogActions,
+  FormLabel,
+  RadioGroup,
+  Slide,
+  DialogTitle,
+  DialogContent,
+  TextField,
 } from "@mui/material";
+import { CreateNewFolder } from "@mui/icons-material";
 import { makeStyles } from "@mui/styles";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-
+import { faPenToSquare, faFolder } from "@fortawesome/free-solid-svg-icons";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import TestView from "../components/TestView";
 function NavTabs() {
   let [searchParams, setSearchParams] = useSearchParams();
   let queryTab = searchParams.get("section");
@@ -74,12 +87,39 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction='up' ref={ref} {...props} />;
+});
+
 const Profile = ({ showNav, setShowNav }) => {
   const [tests, setTests] = React.useState([]);
   const [questions, setQuestions] = React.useState([]);
+  const [collections, setCollections] = React.useState([]);
+  const [isOpen, setOpen] = React.useState(false);
+  const [visibility, setVisibility] = React.useState("Public");
+  const [collectionName, setCollectionName] = React.useState("");
+
+  const handleChange = (event) => {
+    setVisibility(event.target.value);
+  };
+
+  React.useEffect(() => {
+    axios
+      .get("https://www.backend.rustamnortadzhiev.com/api/v1/collections")
+      .then((res) => {
+        setCollections(res.data);
+      });
+  }, []);
+
+  const handleDialogOpen = () => {
+    setOpen(!isOpen);
+    setCollectionName("");
+  };
+
   const user = useSelector((state) => state.user.user.user);
   const classes = useStyles();
-
+  let [searchParams, setSearchParams] = useSearchParams();
+  let search = searchParams.get("section");
   const getTests = async () => {
     const res = await axios.get(
       "https://backend.rustamnortadzhiev.com/api/v1/tests"
@@ -98,6 +138,23 @@ const Profile = ({ showNav, setShowNav }) => {
     }
   };
 
+  const handleSubmit = async () => {
+    const data = {
+      name: collectionName,
+      visibility,
+      userId: user.id,
+    };
+    try {
+      const res = await axios.post(
+        `https://www.backend.rustamnortadzhiev.com/api/v1/collection`,
+        data
+      );
+
+      handleDialogOpen();
+    } catch (e) {
+      console.log(e);
+    }
+  };
   React.useEffect(() => {
     getTests();
     getQuestions();
@@ -109,6 +166,64 @@ const Profile = ({ showNav, setShowNav }) => {
 
   return (
     <Box component='div' className={classes.root}>
+      <Dialog
+        maxWidth='sm'
+        fullWidth
+        open={isOpen}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleDialogOpen}
+        aria-describedby='alert-dialog-slide-description'
+      >
+        <DialogTitle>{"Create a new Collection"}</DialogTitle>
+        <DialogContent>
+          <Stack spacing={1}>
+            <TextField
+              sx={{ margin: 1 }}
+              value={collectionName}
+              onChange={(e) => setCollectionName(e.target.value)}
+              variant='outlined'
+              label='Enter collection name'
+              placeholder='e.g Exams, Physics, Quiz, etc.'
+            />
+            <FormControl>
+              <FormLabel id='demo-controlled-radio-buttons-group'>
+                Visibility
+              </FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby='demo-controlled-radio-buttons-group'
+                name='controlled-radio-buttons-group'
+                value={visibility}
+                onChange={handleChange}
+              >
+                <FormControlLabel
+                  value='Private'
+                  control={<Radio />}
+                  label='Private'
+                />
+                <FormControlLabel
+                  value='Public'
+                  control={<Radio />}
+                  label='Public'
+                />
+              </RadioGroup>
+            </FormControl>
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button variant='contained' color='error' onClick={handleDialogOpen}>
+            {"Cancel"}
+          </Button>
+          <Button
+            variant='contained'
+            onClick={handleSubmit}
+            disabled={collectionName === ""}
+          >
+            {"Create"}
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Stack
         direction='row'
         alignItems='center'
@@ -162,7 +277,7 @@ const Profile = ({ showNav, setShowNav }) => {
             <Typography>{user.department.name}</Typography>
           </Stack>
         </Stack>
-        <Stack spacing={1}>
+        <Stack spacing={2}>
           <Button
             color='inherit'
             variant='outlined'
@@ -202,14 +317,119 @@ const Profile = ({ showNav, setShowNav }) => {
                 variant={{ xs: "caption", md: "body1", lg: "h6" }}
                 fontWeight={{ xs: 350, md: 500, lg: 700 }}
               >
-                0
+                {collections.length}
               </Typography>
-              <Typography>Collections</Typography>
+              <Typography>
+                {collections.length === 1 ? "Collection" : "Collections"}
+              </Typography>
             </Stack>
           </Stack>
         </Stack>
       </Stack>
       <NavTabs />
+
+      <Grid2 container>
+        {search === "library" && (
+          <Grid2 xs={8}>
+            <Stack
+              width='100%'
+              height='100%'
+              spacing={2}
+              ml={{ xs: 0, md: "70px" }}
+              mt={10}
+              justifyContent='flex-start'
+            >
+              {tests
+                .filter((item) => item.userId === user.id)
+                .map((data, idx) => (
+                  <TestView
+                    key={idx}
+                    testData={data}
+                    user={data.user}
+                    isProfile={true}
+                  />
+                ))}
+            </Stack>
+          </Grid2>
+        )}
+        {search === "collections" && (
+          <Grid2 xs={3} mt={10} xsOffset={1}>
+            <Stack
+              spacing={2}
+              maxWidth={{ xs: "100%", sm: "40%", md: "30%", xl: "100%" }}
+            >
+              <Stack
+                direction='row'
+                justifyContent='space-between'
+                alignItems='center'
+                display={{ xs: "none", xl: "flex" }}
+              >
+                <Typography color='dimgray'>My Collections</Typography>
+                <Button
+                  startIcon={<CreateNewFolder />}
+                  color='success'
+                  size='small'
+                  variant='outlined'
+                  onClick={handleDialogOpen}
+                >
+                  New
+                </Button>
+              </Stack>
+
+              <Stack
+                spacing={2}
+                direction={{ xs: "column", xl: "column-reverse" }}
+              >
+                <Stack direction={{ xs: "row", xl: "column" }} spacing={1}>
+                  {collections
+                    .filter((item) => item.userId === user.id)
+                    .map((collection) => (
+                      <Stack
+                        sx={{
+                          "&:hover": {
+                            boxShadow: 2,
+                            bgcolor: "white",
+                          },
+                          cursor: "pointer",
+                        }}
+                        key={collection.name}
+                        spacing={1}
+                        alignItems='center'
+                        direction='row'
+                        color='#6c757d'
+                        p={0.5}
+                        px={1}
+                        borderRadius={2}
+                        width='100%'
+                        justifyContent='space-between'
+                      >
+                        <Stack direction='row' spacing={1} alignItems='center'>
+                          <FontAwesomeIcon icon={faFolder} />
+
+                          <Typography>{collection.name}</Typography>
+                        </Stack>
+                        <Typography textAlign='right'>
+                          {collection.Tests.length}
+                        </Typography>
+                      </Stack>
+                    ))}
+                </Stack>
+                <Button
+                  startIcon={<CreateNewFolder />}
+                  color='inherit'
+                  size='small'
+                  variant='contained'
+                  onClick={handleDialogOpen}
+                  fullWidth
+                  sx={{ display: { xs: "flex", lg: "none" } }}
+                >
+                  Collections
+                </Button>
+              </Stack>
+            </Stack>
+          </Grid2>
+        )}
+      </Grid2>
     </Box>
   );
 };
