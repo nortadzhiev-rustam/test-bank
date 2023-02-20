@@ -119,7 +119,7 @@ const Profile = ({ showNav, setShowNav }) => {
 
   const user = useSelector((state) => state.user.user.user);
   const classes = useStyles();
-  let [searchParams, setSearchParams] = useSearchParams();
+  let [searchParams] = useSearchParams();
   let search = searchParams.get("section");
   const getTests = async () => {
     const res = await axios.get(
@@ -350,9 +350,9 @@ const Profile = ({ showNav, setShowNav }) => {
             >
               {tests
                 .filter((item) => item.userId === user.id)
-                .map((data, idx) => (
+                .map((data) => (
                   <TestView
-                    key={idx}
+                    key={data.id}
                     testData={data}
                     user={data.user}
                     isProfile={true}

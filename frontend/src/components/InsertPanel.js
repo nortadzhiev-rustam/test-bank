@@ -100,9 +100,9 @@ const InsertPanel = ({
             justifyContent: "center",
           }}
         >
-          {category.map((item, idx) => (
+          {category.map((item) => (
             <SelctableButton
-              key={idx}
+              key={item.id}
               item={item}
               setSelected={setSelectedDepartment}
               selected={selectedDepartment}

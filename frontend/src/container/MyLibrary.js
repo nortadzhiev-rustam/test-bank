@@ -104,7 +104,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
         `https://www.backend.rustamnortadzhiev.com/api/v1/collection`,
         data
       );
-
+      setCollections((prevState) => [...prevState, res.data.collection]);
       handleDialogOpen();
     } catch (e) {
       console.log(e);
@@ -359,9 +359,9 @@ export default function MyLibrary({ showNav, setShowNav }) {
         >
           {testData
             .filter((item) => item.userId === user.id)
-            .map((data, idx) => (
+            .map((data) => (
               <TestView
-                key={idx}
+                key={data.id}
                 testData={data}
                 user={data.user}
                 handleDelete={handleDelete}
