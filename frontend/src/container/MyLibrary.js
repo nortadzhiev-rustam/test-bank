@@ -45,6 +45,8 @@ export default function MyLibrary({ showNav, setShowNav }) {
   const [visibility, setVisibility] = useState("Public");
   const [collectionName, setCollectionName] = useState("");
   const [collections, setCollections] = useState([]);
+  const [isActive, setActive] = React.useState(true);
+  const [selected, setSelected] = React.useState(0);
   const handleChange = (event) => {
     setVisibility(event.target.value);
   };
@@ -107,6 +109,11 @@ export default function MyLibrary({ showNav, setShowNav }) {
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const handleSelect = (id) => {
+    setActive(true);
+    setSelected(id);
   };
 
   return (
@@ -261,6 +268,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
               direction='row'
               justifyContent='space-between'
               alignItems='center'
+              width='100%'
               display={{ xs: "none", xl: "flex" }}
             >
               <Typography color='dimgray'>My Collections</Typography>
@@ -282,7 +290,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
               <Stack direction={{ xs: "row", xl: "column" }} spacing={1}>
                 {collections
                   .filter((item) => item.userId === user.id)
-                  .map((collection) => (
+                  .map((collection, idx) => (
                     <Stack
                       sx={{
                         "&:hover": {
@@ -290,6 +298,9 @@ export default function MyLibrary({ showNav, setShowNav }) {
                           bgcolor: "white",
                         },
                         cursor: "pointer",
+                        boxShadow: isActive && selected === idx ? 2 : 0,
+                        bgcolor:
+                          isActive && selected === idx ? "white" : "none",
                       }}
                       key={collection.name}
                       spacing={1}
@@ -298,9 +309,10 @@ export default function MyLibrary({ showNav, setShowNav }) {
                       color='#6c757d'
                       p={0.5}
                       px={1}
-                      borderRadius={2}
+                      borderRadius={1}
                       width='100%'
                       justifyContent='space-between'
+                      onClick={() => handleSelect(idx)}
                     >
                       <Stack direction='row' spacing={1} alignItems='center'>
                         <FontAwesomeIcon icon={faFolder} />
@@ -320,7 +332,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
                 variant='contained'
                 onClick={handleDialogOpen}
                 fullWidth
-                sx={{ display: { xs: "flex", lg: "none" } }}
+                sx={{ display: { xs: "flex", xl: "none" } }}
               >
                 Collections
               </Button>
