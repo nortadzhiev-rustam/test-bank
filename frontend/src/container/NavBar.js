@@ -216,7 +216,7 @@ const NavBar = () => {
     history(path);
   };
   const handleChange = (event, newValue) => {
-    setValue(location.pathname || newValue);
+    setValue(location.pathname|| newValue);
   };
 
   React.useEffect(() => {
@@ -311,28 +311,19 @@ const NavBar = () => {
                   borderRightWidth: 5,
                   borderRightColor: "#006064",
                   borderRightStyle:
+                    li.path.search === search &&
                     location.pathname === li.path.pathname
-                      ? location.pathname === "/profile"
-                        ? search === li.path.search
-                          ? "solid"
-                          : "none"
-                        : "solid"
+                      ? "solid"
                       : "none",
                   color:
+                    li.path.search === search &&
                     location.pathname === li.path.pathname
-                      ? location.pathname === "/profile"
-                        ? search === li.path.search
-                          ? "#006064"
-                          : "#888888"
-                        : "#006064"
+                      ? "#006064"
                       : "#888888",
                   bgcolor:
+                    li.path.search === search &&
                     location.pathname === li.path.pathname
-                      ? location.pathname === "/profile"
-                        ? search === li.path.search
-                          ? "rgba(0,100,102,0.1)"
-                          : "default"
-                        : "rgba(0,100,102,0.1)"
+                      ? "rgba(0,100,102,0.1)"
                       : "default",
                 }}
                 id={li.id}
