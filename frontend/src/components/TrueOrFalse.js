@@ -9,10 +9,10 @@ export default function TrueOrFalse({
 }) {
   const [clicked, setClicked] = React.useState(false);
   const [selected, setSelected] = React.useState("");
-  const options = [
+  const options = React.useMemo(() => [
     { content: { text: "True" }, key: 0 },
     { content: { text: "Flase" }, key: 1 },
-  ];
+  ],[]);
 
   const handleClick = (item) => {
     setClicked(true);
@@ -22,7 +22,10 @@ export default function TrueOrFalse({
 
   React.useEffect(() => {
     setAnswers(options);
-  }, []);
+    return () => {
+      setAnswers();
+    };
+  }, [setAnswers, options]);
 
   return (
     <div>

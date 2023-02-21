@@ -94,7 +94,7 @@ const QuestionPrintView = ({
               type === "True or False" ||
               type === "Fill in the blanks") &&
               shAnswers.map((answer, idx) => (
-                <Grid key={idx} xs={6}>
+                <Grid key={answer.key} xs={6}>
                   <Stack direction='row' spacing={2} alignItems='center'>
                     {checkBoxOn && (
                       <Typography fontSize='inherit' fontWeight='bold'>
@@ -118,7 +118,7 @@ const QuestionPrintView = ({
                   <Grid xs={6}>
                     {shAnswers.map((answer, idx) => (
                       <Stack
-                        key={idx}
+                        key={answer.key}
                         direction='row'
                         spacing={2}
                         alignItems='center'

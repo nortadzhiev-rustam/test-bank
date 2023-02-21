@@ -48,7 +48,7 @@ export default function TesteditDialog({
   }, [grade]);
   React.useEffect(() => {
     setImg(imageName);
-  }, []);
+  }, [imageName]);
 
   React.useEffect(() => {
     const uploadImage = async () => {
@@ -189,7 +189,7 @@ export default function TesteditDialog({
               {Array(9)
                 .fill()
                 .map((_, idx) => (
-                  <MenuItem key={idx} value={idx + 4}>
+                  <MenuItem key={_} value={idx + 4}>
                     {idx + 4}th Grade
                   </MenuItem>
                 ))}

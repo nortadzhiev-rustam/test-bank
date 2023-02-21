@@ -22,7 +22,7 @@ export default function Spinner({ loading }) {
         color='#006064'
         loading={loading}
         cssOverride={override}
-        size={30}
+        size={15}
         aria-label='Loading Spinner'
         data-testid='loader'
       />

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { Wallpaper } from "@mui/icons-material";
+
 const baseStyle = {
   display: "flex",
   flexDirection: "column",

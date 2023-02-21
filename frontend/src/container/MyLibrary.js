@@ -45,7 +45,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
   const [visibility, setVisibility] = useState("Public");
   const [collectionName, setCollectionName] = useState("");
   const [collections, setCollections] = useState([]);
-  const [isActive, setActive] = React.useState(true);
+  const [isActive, setActive] = React.useState(false);
   const [selected, setSelected] = React.useState(0);
   const handleChange = (event) => {
     setVisibility(event.target.value);
@@ -346,7 +346,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
         lgOffset={3}
         lg={8}
         xl={7}
-        ml={{ xs: 0, lg: 3 }}
+        ml={{ xs: 0, lg: 10 }}
         height='100%'
       >
         <Stack

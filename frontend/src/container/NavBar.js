@@ -179,7 +179,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const NavBar = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState(undefined);
   const [option, setOption] = React.useState("Test Library");
   const [isOpen, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("explore");
@@ -212,11 +211,10 @@ const NavBar = () => {
   };
 
   const handleNavigation = (id, path) => {
-    setSelected(id);
     history(path);
   };
   const handleChange = (event, newValue) => {
-    setValue(location.pathname|| newValue);
+    setValue(location.pathname || newValue);
   };
 
   React.useEffect(() => {
@@ -327,7 +325,7 @@ const NavBar = () => {
                       : "default",
                 }}
                 id={li.id}
-                key={idx}
+                key={li.id}
                 disablePadding
               >
                 <ListItemButton

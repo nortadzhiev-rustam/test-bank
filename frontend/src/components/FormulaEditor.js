@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Box, Grid, Paper, Typography } from "@mui/material";
+import { Button, Box, Grid, Paper } from "@mui/material";
 
 import { MathfieldComponent } from "react-mathlive";
 import("mathlive/dist/mathlive-static.css");

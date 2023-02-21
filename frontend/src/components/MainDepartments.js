@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Paper, Typography, Stack } from "@mui/material";
+import {  Paper, Typography, Stack } from "@mui/material";
 
 const photoSelector = (title) => {
   switch (title) {

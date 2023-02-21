@@ -34,4 +34,31 @@ router.get("/collections", async (req, res) => {
   }
 });
 
+router.put("/collection/:id", async (req, res) => {
+  console.log(req.query);
+  try {
+    const updatedCollection = await Collection.update(req.query, {
+      returning: true,
+      where: { id: req.params.id },
+    });
+    res
+      .status(200)
+      .json({ message: "Test was updated successfully", updatedCollection });
+  } catch (err) {
+    res.status(500).json({ message: `Something went wrong: ${err}` });
+  }
+});
+
+router.delete("/collections/:id", async (req, res) => {
+  try {
+    const collection = await Collection.findByPk(req.params.id);
+    await collection.destroy();
+    res.json({ message: "Collection deleted" });
+  } catch (error) {
+    res.status(400).json({
+      error: error.message,
+    });
+  }
+});
+
 module.exports = router;

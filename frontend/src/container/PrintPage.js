@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, Fragment, useMemo } from "react";
+import React, { useRef, useEffect, useState, useMemo } from "react";
 import { useReactToPrint } from "react-to-print";
 import { useParams } from "react-router-dom";
 import { experimentalStyled as styled } from "@mui/material/styles";
@@ -14,8 +14,7 @@ import {
   Button,
   Alert,
   Switch,
-  FormGroup,
-  FormControlLabel,
+  
   Divider,
   ToggleButtonGroup,
   ToggleButton,
@@ -407,7 +406,7 @@ const PrintPage = ({ showNav, setShowNav }) => {
 
                     breakAfter: "auto",
                   }}
-                  key={idx}
+                  key={question.id}
                 >
                   <QuestionPrintView
                     questionImage={questionImage}

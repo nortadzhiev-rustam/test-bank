@@ -19,8 +19,17 @@ import {
   DialogTitle,
   DialogContent,
   TextField,
+  Menu,
+  MenuItem,
+  IconButton,
+  ListItemIcon,
 } from "@mui/material";
-import { CreateNewFolder } from "@mui/icons-material";
+import {
+  CreateNewFolder,
+  Delete,
+  ModeEdit,
+  MoreVert,
+} from "@mui/icons-material";
 import { makeStyles } from "@mui/styles";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -91,6 +100,77 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />;
 });
 
+const ITEM_HEIGHT = 48;
+
+function LongMenu({ id, collection, setCollection, openEditDialog }) {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const deleteCollection = async (id) => {
+    try {
+      const res = await axios.delete(
+        `https://www.backend.rustamnortadzhiev.com/api/v1/collection/${id}`
+      );
+
+      console.log(res.data.message);
+      const newArr = collection.filter((item) => item.id !== id);
+      setCollection(newArr);
+      handleClose();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  return (
+    <div>
+      <IconButton
+        aria-label='more'
+        id='long-button'
+        aria-controls={open ? "long-menu" : undefined}
+        aria-expanded={open ? "true" : undefined}
+        aria-haspopup='true'
+        onClick={handleClick}
+      >
+        <MoreVert />
+      </IconButton>
+      <Menu
+        id='long-menu'
+        MenuListProps={{
+          "aria-labelledby": "long-button",
+        }}
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          style: {
+            maxHeight: ITEM_HEIGHT * 4.5,
+            width: "12ch",
+          },
+        }}
+      >
+        <MenuItem onClick={() => openEditDialog()}>
+          <ListItemIcon>
+            <ModeEdit />
+          </ListItemIcon>
+          <Typography>Edit</Typography>
+        </MenuItem>
+        <MenuItem onClick={() => deleteCollection(id)}>
+          <ListItemIcon>
+            <Delete />
+          </ListItemIcon>
+          <Typography>Delete</Typography>
+        </MenuItem>
+      </Menu>
+    </div>
+  );
+}
+
 const Profile = ({ showNav, setShowNav }) => {
   const [tests, setTests] = React.useState([]);
   const [questions, setQuestions] = React.useState([]);
@@ -100,21 +180,36 @@ const Profile = ({ showNav, setShowNav }) => {
   const [collectionName, setCollectionName] = React.useState("");
   const [isActive, setActive] = React.useState(true);
   const [selected, setSelected] = React.useState(0);
+  const [selectedCollection, setSelectedCollection] = React.useState(undefined);
+  const [isEditing, setEditing] = React.useState(false);
+ 
+
   const handleChange = (event) => {
     setVisibility(event.target.value);
   };
 
   React.useEffect(() => {
-    axios
-      .get("https://www.backend.rustamnortadzhiev.com/api/v1/collections")
-      .then((res) => {
-        setCollections(res.data);
-      });
-  }, []);
+    if (!isEditing) {
+      axios
+        .get("https://www.backend.rustamnortadzhiev.com/api/v1/collections")
+        .then((res) => {
+          setCollections(res.data);
+          setSelectedCollection(res.data[0].name);
+          setSelected(res.data[0].id);
+        });
+    }
+  }, [isEditing]);
 
   const handleDialogOpen = () => {
     setOpen(!isOpen);
     setCollectionName("");
+    setEditing(false);
+  };
+
+  const openEditDialog = () => {
+    setEditing(!isEditing);
+    setOpen(!isOpen);
+    setCollectionName(selectedCollection);
   };
 
   const user = useSelector((state) => state.user.user.user);
@@ -139,6 +234,18 @@ const Profile = ({ showNav, setShowNav }) => {
     }
   };
 
+  const updateCollection = async () => {
+    try {
+      const res = await axios.put(
+        `https://www.backend.rustamnortadzhiev.com/api/v1/collection/${selected}?name=${collectionName}&visibility=${visibility}`
+      );
+      console.log(res.data.message);
+      handleDialogOpen();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleSubmit = async () => {
     const data = {
       name: collectionName,
@@ -151,6 +258,7 @@ const Profile = ({ showNav, setShowNav }) => {
         data
       );
       setCollections((prevState) => [...prevState, res.data.collection]);
+
       handleDialogOpen();
     } catch (e) {
       console.log(e);
@@ -165,11 +273,14 @@ const Profile = ({ showNav, setShowNav }) => {
     if (showNav === false) setShowNav(true);
   }, [showNav, setShowNav]);
 
-  const handleSelect = (id) => {
+  const handleSelect = (id, name, visibility) => {
     setActive(true);
     setSelected(id);
+    setSelectedCollection(name);
+    setVisibility(visibility);
   };
 
+  
   return (
     <Box component='div' className={classes.root}>
       <Dialog
@@ -181,7 +292,9 @@ const Profile = ({ showNav, setShowNav }) => {
         onClose={handleDialogOpen}
         aria-describedby='alert-dialog-slide-description'
       >
-        <DialogTitle>{"Create a new Collection"}</DialogTitle>
+        <DialogTitle>
+          {isEditing ? "Edit Collection" : "Create a new Collection"}
+        </DialogTitle>
         <DialogContent>
           <Stack spacing={1}>
             <TextField
@@ -223,19 +336,20 @@ const Profile = ({ showNav, setShowNav }) => {
           </Button>
           <Button
             variant='contained'
-            onClick={handleSubmit}
+            onClick={isEditing ? updateCollection : handleSubmit}
             disabled={collectionName === ""}
           >
-            {"Create"}
+            {isEditing ? "Update" : "Create"}
           </Button>
         </DialogActions>
       </Dialog>
+      
       <Stack
         direction='row'
         alignItems='center'
         justifyContent='space-between'
         spacing={3}
-        mt={{ xs: 2, md: 5, lg: 10 }}
+        mt={{ xs: 2, md: 5 }}
         mx={{ xs: 2, md: 5, lg: 10 }}
         p={{ xs: 2, md: 3, lg: 5 }}
         bgcolor='#FFF'
@@ -266,7 +380,7 @@ const Profile = ({ showNav, setShowNav }) => {
                   alignItems: "center",
                   color: "#fff",
                   fontWeight: { xs: 200, md: 350, xl: 500 },
-                  width: { xs: 50, md: 80 },
+
                   height: 25,
                 }}
               >
@@ -339,12 +453,11 @@ const Profile = ({ showNav, setShowNav }) => {
 
       <Grid2 container>
         {search === "library" && (
-          <Grid2 xs={8}>
+          <Grid2 xs={11} xsOffset={0.5} lg={10} lgOffset={1}>
             <Stack
               width='100%'
               height='100%'
               spacing={2}
-              ml={{ xs: 0, md: "70px" }}
               mt={10}
               justifyContent='flex-start'
             >
@@ -356,23 +469,25 @@ const Profile = ({ showNav, setShowNav }) => {
                     testData={data}
                     user={data.user}
                     isProfile={true}
+                    collections={collections}
+                    setCollections={setCollections}
                   />
                 ))}
             </Stack>
           </Grid2>
         )}
         {search === "collections" && (
-          <Grid2 xs={12} xl={2.5} mt={10} xsOffset={1}>
+          <Grid2 xs={10} lg={3} xl={2.5} mt={10} xsOffset={1}>
             <Stack
               spacing={2}
-              maxWidth={{ xs: "100%", sm: "40%", md: "30%", xl: "100%" }}
+              maxWidth={{ xs: "100%", sm: "40%", md: "30%", lg: "100%" }}
             >
               <Stack
                 direction='row'
                 justifyContent='space-between'
                 alignItems='center'
                 width='100%'
-                display={{ xs: "none", xl: "flex" }}
+                display={{ xs: "none", lg: "flex" }}
               >
                 <Typography color='dimgray'>My Collections</Typography>
                 <Button
@@ -388,12 +503,16 @@ const Profile = ({ showNav, setShowNav }) => {
 
               <Stack
                 spacing={2}
-                direction={{ xs: "column", xl: "column-reverse" }}
+                direction={{ xs: "column", lg: "column-reverse" }}
               >
-                <Stack direction={{ xs: "row", xl: "column" }} spacing={1}>
+                <Stack
+                  direction={{ xs: "row", lg: "column" }}
+                  flexWrap={{ xs: "wrap", md: "noWrap" }}
+                  spacing={1}
+                >
                   {collections
                     .filter((item) => item.userId === user.id)
-                    .map((collection, idx) => (
+                    .map((collection) => (
                       <Stack
                         sx={{
                           "&:hover": {
@@ -401,9 +520,12 @@ const Profile = ({ showNav, setShowNav }) => {
                             bgcolor: "white",
                           },
                           cursor: "pointer",
-                          boxShadow: isActive && selected === idx ? 2 : 0,
+                          boxShadow:
+                            isActive && selected === collection.id ? 2 : 0,
                           bgcolor:
-                            isActive && selected === idx ? "white" : "none",
+                            isActive && selected === collection.id
+                              ? "white"
+                              : "none",
                         }}
                         key={collection.name}
                         spacing={1}
@@ -415,7 +537,13 @@ const Profile = ({ showNav, setShowNav }) => {
                         borderRadius={1}
                         width='100%'
                         justifyContent='space-between'
-                        onClick={() => handleSelect(idx)}
+                        onClick={() =>
+                          handleSelect(
+                            collection.id,
+                            collection.name,
+                            collection.visibility
+                          )
+                        }
                       >
                         <Stack direction='row' spacing={1} alignItems='center'>
                           <FontAwesomeIcon icon={faFolder} />
@@ -423,7 +551,9 @@ const Profile = ({ showNav, setShowNav }) => {
                           <Typography>{collection.name}</Typography>
                         </Stack>
                         <Typography textAlign='right'>
-                          {collection.Tests.length}
+                          {collection.Tests !== null &&
+                            collection.Tests !== undefined &&
+                            collection.Tests.length}
                         </Typography>
                       </Stack>
                     ))}
@@ -435,11 +565,44 @@ const Profile = ({ showNav, setShowNav }) => {
                   variant='contained'
                   onClick={handleDialogOpen}
                   fullWidth
-                  sx={{ display: { xs: "flex", xl: "none" } }}
+                  sx={{ display: { xs: "flex", lg: "none" } }}
                 >
                   Collections
                 </Button>
               </Stack>
+            </Stack>
+          </Grid2>
+        )}
+        {search === "collections" && (
+          <Grid2
+            mt={10}
+            xsOffset={0.5}
+            xs={10.5}
+            lgOffset={0.5}
+            lg={6.3}
+            xlOffset={0.5}
+            xl={7}
+          >
+            <Stack
+              width='100%'
+              height={80}
+              bgcolor='white'
+              borderRadius={1}
+              direction='row'
+              justifyContent='space-between'
+              alignItems='center'
+              p={2}
+            >
+              <Stack spacing={1} justifyContent='flex-start'>
+                <Typography>{selectedCollection}</Typography>
+                <Typography>0 Activities</Typography>
+              </Stack>
+              <LongMenu
+                id={selected}
+                collection={collections}
+                setCollection={setCollections}
+                openEditDialog={openEditDialog}
+              />
             </Stack>
           </Grid2>
         )}
