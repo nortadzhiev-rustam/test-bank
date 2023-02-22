@@ -245,7 +245,7 @@ const TestView = ({
               </Grid>
             </Grid>
             <Grid container spacing={1}>
-              <Grid xs={4} md={2}>
+              <Grid xs={4} lg={3}>
                 <Box
                   display='flex'
                   flexDirection='row'
@@ -267,7 +267,7 @@ const TestView = ({
                   )}
                 </Box>
               </Grid>
-              <Grid xs={4} md={2}>
+              <Grid xs={4} lg={3}>
                 <Box
                   display='flex'
                   flexDirection='row'
@@ -289,7 +289,7 @@ const TestView = ({
                   </Typography>
                 </Box>
               </Grid>
-              <Grid xs={4} md={2}>
+              <Grid xs={4} lg={3}>
                 <Box
                   display='flex'
                   flexDirection='row'

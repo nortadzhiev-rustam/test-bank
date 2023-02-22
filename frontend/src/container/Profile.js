@@ -588,7 +588,6 @@ const Profile = ({ showNav, setShowNav }) => {
                 justifyContent='space-between'
                 alignItems='center'
                 p={2}
-                
               >
                 <Stack spacing={1} justifyContent='flex-start'>
                   <Typography>{selectedCollection}</Typography>
@@ -607,18 +606,20 @@ const Profile = ({ showNav, setShowNav }) => {
                   openEditDialog={openEditDialog}
                 />
               </Stack>
-              {tests
-                .filter((test) => test.collectionId === selected)
-                .map((item) => (
-                  <TestView
-                    key={item.id}
-                    testData={item}
-                    user={user}
-                    isProfile={true}
-                    collections={collections}
-                    setCollections={setCollections}
-                  />
-                ))}
+              <Stack spacing={2}>
+                {tests
+                  .filter((test) => test.collectionId === selected)
+                  .map((item) => (
+                    <TestView
+                      key={item.id}
+                      testData={item}
+                      user={user}
+                      isProfile={true}
+                      collections={collections}
+                      setCollections={setCollections}
+                    />
+                  ))}
+              </Stack>
             </Stack>
           </Grid2>
         )}
