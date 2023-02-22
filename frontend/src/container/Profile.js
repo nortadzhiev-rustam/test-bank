@@ -180,9 +180,8 @@ const Profile = ({ showNav, setShowNav }) => {
   const [collectionName, setCollectionName] = React.useState("");
   const [isActive, setActive] = React.useState(true);
   const [selected, setSelected] = React.useState(0);
-  const [selectedCollection, setSelectedCollection] = React.useState(undefined);
+  const [selectedCollection, setSelectedCollection] = React.useState("");
   const [isEditing, setEditing] = React.useState(false);
- 
 
   const handleChange = (event) => {
     setVisibility(event.target.value);
@@ -280,7 +279,6 @@ const Profile = ({ showNav, setShowNav }) => {
     setVisibility(visibility);
   };
 
-  
   return (
     <Box component='div' className={classes.root}>
       <Dialog
@@ -343,7 +341,7 @@ const Profile = ({ showNav, setShowNav }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      
+
       <Stack
         direction='row'
         alignItems='center'
@@ -478,10 +476,7 @@ const Profile = ({ showNav, setShowNav }) => {
         )}
         {search === "collections" && (
           <Grid2 xs={10} lg={3} xl={2.5} mt={10} xsOffset={1}>
-            <Stack
-              spacing={2}
-              maxWidth={{ xs: "100%", sm: "40%", md: "30%", lg: "100%" }}
-            >
+            <Stack spacing={2} maxWidth={{ xs: "100%" }}>
               <Stack
                 direction='row'
                 justifyContent='space-between'
@@ -503,12 +498,13 @@ const Profile = ({ showNav, setShowNav }) => {
 
               <Stack
                 spacing={2}
-                direction={{ xs: "column", lg: "column-reverse" }}
+                direction={{ xs: "column", xl: "column-reverse" }}
               >
                 <Stack
                   direction={{ xs: "row", lg: "column" }}
-                  flexWrap={{ xs: "wrap", md: "noWrap" }}
-                  spacing={1}
+                  flexWrap={{ xs: "wrap", xl: "nowrap" }}
+                  spacing={{ xs: 0, sm: 1 }}
+                  justifyContent='flex-start'
                 >
                   {collections
                     .filter((item) => item.userId === user.id)
@@ -535,7 +531,6 @@ const Profile = ({ showNav, setShowNav }) => {
                         p={0.5}
                         px={1}
                         borderRadius={1}
-                        width='100%'
                         justifyContent='space-between'
                         onClick={() =>
                           handleSelect(
@@ -551,9 +546,7 @@ const Profile = ({ showNav, setShowNav }) => {
                           <Typography>{collection.name}</Typography>
                         </Stack>
                         <Typography textAlign='right'>
-                          {collection.Tests !== null &&
-                            collection.Tests !== undefined &&
-                            collection.Tests.length}
+                          {collection.Tests.length}
                         </Typography>
                       </Stack>
                     ))}
@@ -564,8 +557,10 @@ const Profile = ({ showNav, setShowNav }) => {
                   size='small'
                   variant='contained'
                   onClick={handleDialogOpen}
-                  fullWidth
-                  sx={{ display: { xs: "flex", lg: "none" } }}
+                  sx={{
+                    display: { xs: "flex", lg: "none" },
+                    width: { xs: "100%", sm: "150px" },
+                  }}
                 >
                   Collections
                 </Button>
@@ -583,26 +578,47 @@ const Profile = ({ showNav, setShowNav }) => {
             xlOffset={0.5}
             xl={7}
           >
-            <Stack
-              width='100%'
-              height={80}
-              bgcolor='white'
-              borderRadius={1}
-              direction='row'
-              justifyContent='space-between'
-              alignItems='center'
-              p={2}
-            >
-              <Stack spacing={1} justifyContent='flex-start'>
-                <Typography>{selectedCollection}</Typography>
-                <Typography>0 Activities</Typography>
+            <Stack spacing={5}>
+              <Stack
+                width='98%'
+                height={80}
+                bgcolor='white'
+                borderRadius={1}
+                direction='row'
+                justifyContent='space-between'
+                alignItems='center'
+                p={2}
+                
+              >
+                <Stack spacing={1} justifyContent='flex-start'>
+                  <Typography>{selectedCollection}</Typography>
+                  <Typography>
+                    {
+                      tests.filter((item) => item.collectionId === selected)
+                        .length
+                    }{" "}
+                    Activities
+                  </Typography>
+                </Stack>
+                <LongMenu
+                  id={selected}
+                  collection={collections}
+                  setCollection={setCollections}
+                  openEditDialog={openEditDialog}
+                />
               </Stack>
-              <LongMenu
-                id={selected}
-                collection={collections}
-                setCollection={setCollections}
-                openEditDialog={openEditDialog}
-              />
+              {tests
+                .filter((test) => test.collectionId === selected)
+                .map((item) => (
+                  <TestView
+                    key={item.id}
+                    testData={item}
+                    user={user}
+                    isProfile={true}
+                    collections={collections}
+                    setCollections={setCollections}
+                  />
+                ))}
             </Stack>
           </Grid2>
         )}

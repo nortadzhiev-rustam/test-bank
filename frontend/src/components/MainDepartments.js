@@ -45,8 +45,8 @@ export default function MainDepartments({ name, onClick }) {
       <Paper
         elevation={hover ? 10 : 2}
         style={{
-          height: 80,
-          width: 80,
+          height: 60,
+          width: 60,
           borderRadius: "50%",
           display: "flex",
           justifyContent: "center",
@@ -63,7 +63,7 @@ export default function MainDepartments({ name, onClick }) {
       </Paper>
       <Typography
         fontWeight='bold'
-        fontSize={{ xs: 6, lg: 18 }}
+        fontSize={{ xs: 6, lg: 12 }}
         fontFamily='sans-serif'
         color='GrayText'
       >

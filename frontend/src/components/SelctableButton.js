@@ -8,10 +8,12 @@ export default function SelctableButton({ item, setSelected, selected }) {
   const handleSelect = () => {
     setSelected(item);
   };
-
-  const getRandomNumber = () => {
-    return Math.floor(Math.random() * 6);
-  };
+  const gtRndNmbr = React.useMemo(() => {
+    const getRandomNumber = () => {
+      return Math.floor(Math.random() * 6);
+    };
+    return getRandomNumber();
+  }, []);
 
   useEffect(() => {
     if (selected !== undefined) {
@@ -22,7 +24,7 @@ export default function SelctableButton({ item, setSelected, selected }) {
 
   return (
     <Button
-      color={colors[getRandomNumber()]}
+      color={colors[gtRndNmbr]}
       variant={clicked ? "contained" : "outlined"}
       size='small'
       onClick={handleSelect}

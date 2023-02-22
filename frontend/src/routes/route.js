@@ -14,7 +14,7 @@ import MyLibrary from "../container/MyLibrary";
 import { useSelector } from "react-redux";
 import TestEditingPage from "../container/TestEditingPage";
 import TestWindow from "../container/TestWindow";
-import PrintPage from '../container/PrintPage';
+import PrintPage from "../container/PrintPage";
 const Routess = () => {
   const user = useSelector((state) => state.user.user.user);
   const [showNav, setShowNav] = React.useState(true);
@@ -44,12 +44,10 @@ const Routess = () => {
               <TestEditingPage setShowNav={setShowNav} showNav={showNav} />
             }
           />
-          
+
           <Route
             path='/print/test/:id'
-            element={
-              <PrintPage setShowNav={setShowNav} showNav={showNav} />
-            }
+            element={<PrintPage setShowNav={setShowNav} showNav={showNav} />}
           />
           <Route
             exact
@@ -60,14 +58,14 @@ const Routess = () => {
             exact
             path='/settings'
             element={
-              user && user.role.toLowerCase() !== "admin" ? (
+              user && user.role.toLowerCase() !== "system admin" ? (
                 <Settings setShowNav={setShowNav} showNav={showNav} />
               ) : (
                 <Admin setShowNav={setShowNav} showNav={showNav} />
               )
             }
           />
-          {user && user.role.toLowerCase() === "admin" && (
+          {user && user.role.toLowerCase() === "system admin" && (
             <Route exact path='/admin/dashboard' element={<Admin />} />
           )}
         </Route>

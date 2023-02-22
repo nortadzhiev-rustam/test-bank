@@ -372,7 +372,7 @@ const NavBar = () => {
   return (
     <Stack direction='column'>
       <Dialog
-        maxWidth='xs'
+        maxWidth='md'
         open={isOpen}
         TransitionComponent={Transition}
         keepMounted
@@ -381,7 +381,7 @@ const NavBar = () => {
       >
         <DialogTitle>{"Create a Test"}</DialogTitle>
         <DialogContent>
-          <InsertPanel setOpen={setOpen} />
+          <InsertPanel setOpen={setOpen} isOpen={isOpen} />
         </DialogContent>
       </Dialog>
       <AppBar

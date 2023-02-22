@@ -5,19 +5,20 @@ import CardHeader from "@mui/material/CardHeader";
 
 import CardContent from "@mui/material/CardContent";
 
-
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-
 export default function PersonalCard({ user }) {
   const { firstName, lastName, department, email, createdAt } = user;
-const newDate = new Date(createdAt);
+  const newDate = new Date(createdAt);
   return (
-    <Card elevation={4} sx={{ marginBlock: 5, borderRadius: 3, width: '90%', marginLeft: 2 }}>
+    <Card
+      elevation={4}
+      sx={{ marginBlock: 5, borderRadius: 3, width: "90%", marginLeft: 2 }}
+    >
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label='recipe'>
@@ -30,7 +31,7 @@ const newDate = new Date(createdAt);
           </IconButton>
         }
         title={firstName + " " + lastName}
-        subheader={`Member since: ${newDate.toUTCString()}`}
+        subheader={`Member since: ${newDate.toDateString()}`}
       />
 
       <CardContent sx={{ paddingLeft: 9 }}>

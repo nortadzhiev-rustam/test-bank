@@ -260,15 +260,11 @@ export default function MyLibrary({ showNav, setShowNav }) {
             </List>
           </Stack>
           <Divider />
-          <Stack
-            spacing={2}
-            maxWidth={{ xs: "100%", sm: "40%", md: "30%", xl: "100%" }}
-          >
+          <Stack spacing={2} maxWidth={{ xs: "100%" }}>
             <Stack
               direction='row'
               justifyContent='space-between'
               alignItems='center'
-              width='100%'
               display={{ xs: "none", xl: "flex" }}
             >
               <Typography color='dimgray'>My Collections</Typography>
@@ -287,7 +283,12 @@ export default function MyLibrary({ showNav, setShowNav }) {
               spacing={2}
               direction={{ xs: "column", xl: "column-reverse" }}
             >
-              <Stack direction={{ xs: "row", xl: "column" }} spacing={1}>
+              <Stack
+                direction={{ xs: "row", xl: "column" }}
+                flexWrap={{ xs: "wrap", xl: "nowrap" }}
+                spacing={{ xs: 0, sm: 1 }}
+                justifyContent='flex-start'
+              >
                 {collections
                   .filter((item) => item.userId === user.id)
                   .map((collection, idx) => (
@@ -310,7 +311,6 @@ export default function MyLibrary({ showNav, setShowNav }) {
                       p={0.5}
                       px={1}
                       borderRadius={1}
-                      width='100%'
                       justifyContent='space-between'
                       onClick={() => handleSelect(idx)}
                     >
@@ -331,8 +331,8 @@ export default function MyLibrary({ showNav, setShowNav }) {
                 size='small'
                 variant='contained'
                 onClick={handleDialogOpen}
-                fullWidth
-                sx={{ display: { xs: "flex", xl: "none" } }}
+                sx={{ display: { xs: "flex", xl: "none" }, width: {xs: '100%', sm:'150px'} }}
+                
               >
                 Collections
               </Button>
@@ -365,6 +365,8 @@ export default function MyLibrary({ showNav, setShowNav }) {
                 testData={data}
                 user={data.user}
                 handleDelete={handleDelete}
+                collections={collections}
+                setCollections={setCollections}
               />
             ))}
         </Stack>

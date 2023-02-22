@@ -13,7 +13,6 @@ import {
   DialogContent,
   DialogActions,
   Slide,
-  FormGroup,
   FormControlLabel,
   RadioGroup,
   Radio,
@@ -31,6 +30,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Delete, Folder, FolderOutlined, Mode } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const intervals = [
   { label: "year", seconds: 31536000 },
@@ -62,15 +62,56 @@ const TestView = ({
 }) => {
   const navigate = useNavigate();
   const [isOpen, setOpen] = React.useState(false);
-  const [collectionId, setCollectionId] = React.useState(0);
-
+  const [collectionId, setCollectionId] = React.useState(null);
+  const [newCollection, setNewCollection] = React.useState("");
   const handleSaveDialogOpen = () => {
     setOpen(!isOpen);
   };
 
-  const handleChange = (event) => {
-    setCollectionId(event.target.value);
+  const handleDone = async () => {
+    const data = {
+      name: newCollection,
+
+      userId: user.id,
+    };
+    if (newCollection !== "") {
+      try {
+        const res = await axios.post(
+          `https://www.backend.rustamnortadzhiev.com/api/v1/collection`,
+          data
+        );
+        const res2 = await axios.put(
+          `https://www.backend.rustamnortadzhiev.com/api/v1/test/${testData.id}?collectionId=${res.data.collection.id}`
+        );
+        console.log(res2.data.message);
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      handleSaveDialogOpen();
+    }
   };
+
+  const handleChange = async (event) => {
+    setCollectionId(Number(event.target.value));
+    try {
+      const res = await axios.put(
+        `https://www.backend.rustamnortadzhiev.com/api/v1/test/${
+          testData.id
+        }?collectionId=${Number(event.target.value)}`
+      );
+      console.log(res.data.message);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  React.useEffect(() => {
+    setCollectionId(testData.collectionId);
+    return () => {
+      setCollectionId(0);
+    };
+  }, [testData.collectionId]);
 
   return (
     <>
@@ -87,14 +128,16 @@ const TestView = ({
         <DialogContent>
           <FormControl>
             <RadioGroup value={collectionId} onChange={handleChange}>
-              {collections.map((item) => (
-                <FormControlLabel
-                  key={item.name}
-                  value={item.id}
-                  control={<Radio />}
-                  label={item.name}
-                />
-              ))}
+              {collections
+                .filter((item) => item.userId === user.id)
+                .map((item) => (
+                  <FormControlLabel
+                    key={item.name}
+                    value={item.id}
+                    control={<Radio />}
+                    label={item.name}
+                  />
+                ))}
             </RadioGroup>
           </FormControl>
           <Divider variant='fullWidth' sx={{ mt: 5, mb: 3 }} />
@@ -103,6 +146,7 @@ const TestView = ({
             fullWidth
             label='Input a collection name'
             placeholder='e.g Exams, Physics, Quiz, etc.'
+            onChange={(e) => setNewCollection(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
@@ -113,25 +157,26 @@ const TestView = ({
           >
             {"Cancel"}
           </Button>
-          <Button variant='contained'>{"Done"}</Button>
+          <Button variant='contained' onClick={() => handleDone()}>
+            {"Done"}
+          </Button>
         </DialogActions>
       </Dialog>
       <Paper
         sx={{
           borderRadius: 1,
           padding: 1,
-
-          "&:hover": { bgcolor: "#f2f2f2" },
+          width: "100%",
         }}
       >
-        <Grid container spacing={1}>
-          <Grid display='flex' justifyContent='center' xs={3} xl={2}>
+        <Grid width='100%' container spacing={1}>
+          <Grid display='flex' justifyContent='center' xs={2}>
             {testData.image === "" ||
             testData.image === undefined ||
             testData.image === null ? (
               <Box
                 sx={{
-                  height: { xs: 100, md: 170 },
+                  height: { xs: 100, md: 130 },
                   width: "100%",
                   backgroundColor: "#cccccc",
                   display: "flex",
@@ -167,7 +212,7 @@ const TestView = ({
               </Box>
             )}
           </Grid>
-          <Grid xs={9} xl={10}>
+          <Grid xs={10} xl={10}>
             <Grid container spacing={1}>
               <Grid xs={12}>
                 <Stack
@@ -200,7 +245,7 @@ const TestView = ({
               </Grid>
             </Grid>
             <Grid container spacing={1}>
-              <Grid xs={4} xl={2}>
+              <Grid xs={4} md={2}>
                 <Box
                   display='flex'
                   flexDirection='row'
@@ -222,7 +267,7 @@ const TestView = ({
                   )}
                 </Box>
               </Grid>
-              <Grid xs={4} xl={2}>
+              <Grid xs={4} md={2}>
                 <Box
                   display='flex'
                   flexDirection='row'
@@ -244,7 +289,7 @@ const TestView = ({
                   </Typography>
                 </Box>
               </Grid>
-              <Grid xs={4} xl={2}>
+              <Grid xs={4} md={2}>
                 <Box
                   display='flex'
                   flexDirection='row'

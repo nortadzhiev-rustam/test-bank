@@ -292,7 +292,7 @@ export default function TestWindow({
                   startIcon={<Print />}
                   variant='contained'
                   color='inherit'
-                  onClick={() => navigate(`/print/test/${id}`)}
+                  onClick={() => window.open(`/print/test/${id}`, "_blank")}
                 >
                   Print
                 </Button>

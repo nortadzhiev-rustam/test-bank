@@ -28,6 +28,7 @@ const InsertPanel = ({
   isEditing,
   setEditing,
   setMessage,
+  isOpen,
 }) => {
   const [testName, setTestName] = React.useState("");
   const [selectedDepartment, setSelectedDepartment] = React.useState(undefined);
@@ -51,7 +52,10 @@ const InsertPanel = ({
       grade: null,
     };
     try {
-      const req = await axios.post("https://www.backend.rustamnortadzhiev.com/api/v1/test", data);
+      const req = await axios.post(
+        "https://www.backend.rustamnortadzhiev.com/api/v1/test",
+        data
+      );
       if (req.status === 200) {
         setTestName("");
         setLoading(false);
@@ -90,6 +94,7 @@ const InsertPanel = ({
           label='Test name'
           sx={{ marginBottom: 2 }}
           onChange={(e) => setTestName(e.target.value)}
+          size='small'
         />
 
         <div
@@ -97,7 +102,7 @@ const InsertPanel = ({
             display: "flex",
             flexDirection: "row",
             flexWrap: "wrap",
-            justifyContent: "center",
+            justifyContent: "flex-start",
           }}
         >
           {category.map((item) => (
@@ -106,13 +111,13 @@ const InsertPanel = ({
               item={item}
               setSelected={setSelectedDepartment}
               selected={selectedDepartment}
+              isOpen={isOpen}
             />
           ))}
         </div>
       </div>
-      <Stack direction='row' spacing={2} justifyContent='center'>
+      <Stack direction='row' spacing={2} justifyContent='flex-end'>
         <Button
-          fullWidth
           variant='contained'
           color='error'
           onClick={() => setOpen(false)}
@@ -120,7 +125,6 @@ const InsertPanel = ({
           Cancel
         </Button>
         <Button
-          fullWidth
           variant='contained'
           disabled={
             (testName === "" && selectedDepartment !== undefined) || isLoading
