@@ -184,6 +184,8 @@ const NavBar = () => {
   const [value, setValue] = React.useState("explore");
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const user = useSelector((state) => state.user.user.user);
+  
+
   const [search, setSearch] = React.useState();
   const dispatch = useDispatch();
   const history = useNavigate();
@@ -222,6 +224,14 @@ const NavBar = () => {
     setSearch(arr[1]);
   }, [location.search]);
 
+  const getDepartmentName = () => {
+    
+
+    if (user.department === undefined) {
+      return ' '
+    } else return user.department.name;
+  };
+
   const drawer = (
     <div style={{ width: "100%", position: "absolute" }}>
       <Toolbar sx={{ backgroundColor: "#15616d", position: "sticky" }}>
@@ -258,7 +268,7 @@ const NavBar = () => {
             </Typography>
             <Stack direction='row'>
               <Typography fontWeight='bold' variant='caption'>
-                {user.role + " - " + user.department.name}
+                {user.role + " - " + getDepartmentName()}
               </Typography>
             </Stack>
           </Stack>

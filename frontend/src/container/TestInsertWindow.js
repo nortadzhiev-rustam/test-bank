@@ -169,7 +169,7 @@ const InsertWindow = ({
 
   return (
     <Grid container>
-      <Grid xs={12} sm={12} lg={!isFull ? 8 : 12} lgOffset={!isFull ? 2 : 0}>
+      <Grid xs={12} sm={12} lg={!isFull ? 8 : 11} lgOffset={0.5}>
         <Paper
           elevation={isHover ? 10 : 2}
           id='draggable-dialog-title'

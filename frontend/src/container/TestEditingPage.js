@@ -173,7 +173,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
   const [open, setOpen] = React.useState(false);
   const [openSettings, setOpenSettings] = React.useState(false);
   const [isEditing, setEditing] = React.useState(false);
-  const [image, setImage] = React.useState("");
+  const [image, setImage] = React.useState();
   const [message, setMessage] = React.useState("");
   const [questionType, setQuestionType] = React.useState("");
   const [question, setQuestion] = React.useState({});

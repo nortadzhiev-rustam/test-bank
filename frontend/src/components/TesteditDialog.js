@@ -35,7 +35,7 @@ export default function TesteditDialog({
 }) {
   const [selected, setSelected] = React.useState("");
   const [image, setImage] = React.useState([]);
-  const [img, setImg] = React.useState("");
+  const [img, setImg] = React.useState();
   const [publicc, setPublic] = React.useState("Public");
   const [isLoading, setLoading] = React.useState(false);
   const { id } = useParams();
@@ -47,7 +47,7 @@ export default function TesteditDialog({
     setSelected(grade);
   }, [grade]);
   React.useEffect(() => {
-    setImg(imageName);
+    if (imageName !== null) setImg(imageName);
   }, [imageName]);
 
   React.useEffect(() => {
@@ -189,7 +189,7 @@ export default function TesteditDialog({
               {Array(9)
                 .fill()
                 .map((_, idx) => (
-                  <MenuItem key={_} value={idx + 4}>
+                  <MenuItem key={idx} value={idx + 4}>
                     {idx + 4}th Grade
                   </MenuItem>
                 ))}

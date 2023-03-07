@@ -4,6 +4,7 @@ import { Cancel } from "@mui/icons-material";
 import "./DraftEditor.css";
 import "katex/dist/katex.min.css";
 import { IconButton, InputBase } from "@mui/material";
+import TipTapEditor from './TipTapEditor';
 
 export default function MyEditor({
   latex,
@@ -83,6 +84,11 @@ export default function MyEditor({
     setContent((prevState) => ({ ...prevState, text: e.target.value }));
   };
 
+  const handleChangeModel = (e) => {
+    setQuestionText(e);
+    setContent((prevState) => ({ ...prevState, text: e }));
+  };
+
   return (
     <div
       style={{ width: "100%" }}
@@ -90,7 +96,7 @@ export default function MyEditor({
       onClick={focusEditor}
     >
       <div className='DraftEditor-root' id={editorId} ref={editor}>
-        <InputBase
+        {/* <InputBase
           style={{
             color: "white",
             fontStyle: questionText.length === 0 && "italic",
@@ -100,7 +106,10 @@ export default function MyEditor({
           placeholder={equationarray.length === 0 ? placeholder : null}
           value={questionText}
           onChange={handleInput}
-        />
+        /> */}
+
+        <TipTapEditor content={questionText} handleChangeModel={handleChangeModel} />
+
         {equationarray.length !== 0 && (
           <div
             style={{

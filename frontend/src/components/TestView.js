@@ -412,7 +412,11 @@ const TestView = ({
               </IconButton>
             )}
             {!isProfile && (
-              <IconButton size='small' color='secondary'>
+              <IconButton
+                size='small'
+                color='secondary'
+                onClick={handleSaveDialogOpen}
+              >
                 {testData.collectionId === null ? (
                   <FolderOutlined fontSize='small' />
                 ) : (

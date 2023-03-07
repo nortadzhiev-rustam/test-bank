@@ -57,7 +57,7 @@ function NavTabs() {
   return (
     <Box
       sx={{
-        mx: { xs: 2, md: 5, lg: 10 },
+        mx: { xs: 2, md: 5 },
         bgcolor: "rgb(249,249,249)",
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
@@ -81,7 +81,8 @@ const useStyles = makeStyles(() => ({
     padding: 20,
     marginTop: 50,
     width: "100%",
-    height: "100vh",
+    minHeight: "100vh",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
   },
@@ -280,7 +281,7 @@ const Profile = ({ showNav, setShowNav }) => {
   };
 
   return (
-    <Box component='div' className={classes.root}>
+    <Box className={classes.root}>
       <Dialog
         maxWidth='sm'
         fullWidth
@@ -346,9 +347,10 @@ const Profile = ({ showNav, setShowNav }) => {
         direction='row'
         alignItems='center'
         justifyContent='space-between'
+        flexWrap='wrap'
         spacing={3}
         mt={{ xs: 2, md: 5 }}
-        mx={{ xs: 2, md: 5, lg: 10 }}
+        mx={{ xs: 2, md: 5 }}
         p={{ xs: 2, md: 3, lg: 5 }}
         bgcolor='#FFF'
         sx={{ borderTopLeftRadius: 10, borderTopRightRadius: 10 }}
@@ -391,7 +393,9 @@ const Profile = ({ showNav, setShowNav }) => {
                 </Typography>
               </Box>
             </Stack>
-            <Typography variant='h5'>{user.email}</Typography>
+            <Typography variant={{ xs: "caption", md: "body1", lg: "h6" }}>
+              {user.email}
+            </Typography>
             <Typography>Department: {user.department.name}</Typography>
           </Stack>
         </Stack>
@@ -400,6 +404,7 @@ const Profile = ({ showNav, setShowNav }) => {
             color='inherit'
             variant='outlined'
             size='small'
+            sx={{ width: "100%" }}
             startIcon={<FontAwesomeIcon icon={faPenToSquare} />}
           >
             Edit Profile
@@ -418,7 +423,12 @@ const Profile = ({ showNav, setShowNav }) => {
                 {tests !== [] &&
                   tests.filter((item) => item.userId === user.id).length}
               </Typography>
-              <Typography>Tests</Typography>
+              <Typography
+                variant={{ xs: "caption", md: "body1", lg: "h6" }}
+                fontWeight={{ xs: 350, md: 500, lg: 700 }}
+              >
+                Tests
+              </Typography>
             </Stack>
             <Stack spacing={1} justifyContent='center' alignItems='center'>
               <Typography
@@ -428,7 +438,12 @@ const Profile = ({ showNav, setShowNav }) => {
                 {questions !== [] &&
                   questions.filter((item) => item.userId === user.id).length}
               </Typography>
-              <Typography>Questions</Typography>
+              <Typography
+                variant={{ xs: "caption", md: "body1", lg: "h6" }}
+                fontWeight={{ xs: 350, md: 500, lg: 700 }}
+              >
+                Questions
+              </Typography>
             </Stack>
             <Stack spacing={1} justifyContent='center' alignItems='center'>
               <Typography
@@ -437,7 +452,10 @@ const Profile = ({ showNav, setShowNav }) => {
               >
                 {collections.filter((item) => item.userId === user.id).length}
               </Typography>
-              <Typography>
+              <Typography
+                variant={{ xs: "caption", md: "body1", lg: "h6" }}
+                fontWeight={{ xs: 350, md: 500, lg: 700 }}
+              >
                 {collections.filter((item) => item.userId === user.id)
                   .length === 1
                   ? "Collection"
@@ -449,9 +467,9 @@ const Profile = ({ showNav, setShowNav }) => {
       </Stack>
       <NavTabs />
 
-      <Grid2 container>
+      <Grid2 pb={10} container>
         {search === "library" && (
-          <Grid2 xs={11} xsOffset={0.5} lg={10} lgOffset={1}>
+          <Grid2 xs={10.8} xsOffset={0.5}>
             <Stack
               width='100%'
               height='100%'
@@ -475,7 +493,7 @@ const Profile = ({ showNav, setShowNav }) => {
           </Grid2>
         )}
         {search === "collections" && (
-          <Grid2 xs={10} lg={3} xl={2.5} mt={10} xsOffset={1}>
+          <Grid2 xs={10} lg={3} xl={2} mt={10} xsOffset={0.5}>
             <Stack spacing={2} maxWidth={{ xs: "100%" }}>
               <Stack
                 direction='row'
@@ -574,12 +592,12 @@ const Profile = ({ showNav, setShowNav }) => {
             xsOffset={0.5}
             xs={10.5}
             lgOffset={0.5}
-            lg={6.3}
+            lg={7.2}
             xlOffset={0.5}
-            xl={7}
+            xl={8}
           >
             <Stack spacing={5}>
-              <Stack
+             { <Stack
                 width='98%'
                 height={80}
                 bgcolor='white'
@@ -593,8 +611,11 @@ const Profile = ({ showNav, setShowNav }) => {
                   <Typography>{selectedCollection}</Typography>
                   <Typography>
                     {
-                      tests.filter((item) => item.collectionId === selected)
-                        .length
+                      tests.filter(
+                        (item) =>
+                          item.collectionId === selected &&
+                          item.userId === user.id
+                      ).length
                     }{" "}
                     Activities
                   </Typography>
@@ -605,10 +626,13 @@ const Profile = ({ showNav, setShowNav }) => {
                   setCollection={setCollections}
                   openEditDialog={openEditDialog}
                 />
-              </Stack>
+              </Stack>}
               <Stack spacing={2}>
                 {tests
-                  .filter((test) => test.collectionId === selected)
+                  .filter(
+                    (test) =>
+                      test.collectionId === selected && test.userId === user.id
+                  )
                   .map((item) => (
                     <TestView
                       key={item.id}

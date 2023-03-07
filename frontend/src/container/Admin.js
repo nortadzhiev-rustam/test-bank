@@ -62,7 +62,7 @@ const Admin = ({ showNav, setShowNav }) => {
     <Box
       style={{
         width: "98%",
-        height: "100vh",
+        minHeight: "100vh",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

@@ -52,7 +52,9 @@ export default function QuestionView({
     handleDuplicate(id);
   };
 
-  
+  function createMarkup(content) {
+    return { __html: content };
+  }
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -149,7 +151,8 @@ export default function QuestionView({
           )}
           <Grid xs={12} md={image !== "" ? 10 : 12} p='0px'>
             {quest.text !== undefined ? (
-              <Typography variant='body1'>Q: {quest.text}</Typography>
+              // <Typography variant='body1'>Q: {quest.text}</Typography>
+              <div dangerouslySetInnerHTML={createMarkup(`Q: ${quest.text}`)}></div>
             ) : (
               <Typography variant='body1'>Q:</Typography>
             )}
@@ -176,9 +179,14 @@ export default function QuestionView({
                     bgcolor={correct.key === option.key ? "green" : "red"}
                   ></Box>
                   {option.content.text !== undefined && (
-                    <Typography variant='caption'>
-                      {option.content.text + " "}
-                    </Typography>
+                    // <Typography variant='caption'>
+                    //   {option.content.text + " "}
+                    // </Typography>
+                    <div
+                      dangerouslySetInnerHTML={createMarkup(
+                        option.content.text
+                      )}
+                    ></div>
                   )}
                   {option.content.equation !== undefined && (
                     <BlockMath math={option.content.equation} />
@@ -217,9 +225,14 @@ export default function QuestionView({
                     justifyContent='center'
                   ></Box>
                   {option.content.text !== undefined && (
-                    <Typography variant='caption'>
-                      {option.content.text + " "}
-                    </Typography>
+                    // <Typography variant='caption'>
+                    //   {option.content.text + " "}
+                    // </Typography>
+                    <div
+                      dangerouslySetInnerHTML={createMarkup(
+                        option.content.text
+                      )}
+                    ></div>
                   )}
                   {option.content.equation !== undefined && (
                     <BlockMath math={option.content.equation} />
