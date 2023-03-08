@@ -15,7 +15,7 @@ import {
   Mode,
   Subject,
 } from "@mui/icons-material";
-
+import './QuestionView.css'
 const IconSelector = ({ type }) => {
   if (type === "Multiple choice")
     return <CheckCircleRounded color='inherit' fontSize='small' />;
@@ -152,7 +152,7 @@ export default function QuestionView({
           <Grid xs={12} md={image !== "" ? 10 : 12} p='0px'>
             {quest.text !== undefined ? (
               // <Typography variant='body1'>Q: {quest.text}</Typography>
-              <div dangerouslySetInnerHTML={createMarkup(`Q: ${quest.text}`)}></div>
+              <div dangerouslySetInnerHTML={createMarkup(quest.text)}></div>
             ) : (
               <Typography variant='body1'>Q:</Typography>
             )}

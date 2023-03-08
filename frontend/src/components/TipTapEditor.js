@@ -5,7 +5,26 @@ import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import InlineMath from "./InlineMath";
+import Underline from '@tiptap/extension-underline'
 import React from "react";
+import { Button, Divider } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowRotateLeft,
+  faArrowRotateRight,
+  faBold,
+  faCode,
+  faItalic,
+  faListOl,
+  faListUl,
+  faParagraph,
+  faQuoteRight,
+  faRulerHorizontal,
+  faSquareRootVariable,
+  faStrikethrough,
+  faUnderline,
+} from "@fortawesome/free-solid-svg-icons";
 
 const MenuBar = ({ editor }) => {
   if (!editor) {
@@ -14,138 +33,149 @@ const MenuBar = ({ editor }) => {
 
   return (
     <>
-      <button
+      {/* <Button
+        variant='outlined'
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.1 }}
+        color='inherit'
+        type='Button'
+        onClick={() => editor?.chain().focus().addInlineMath().run()}
+      >
+        <FontAwesomeIcon icon={faSquareRootVariable}/>
+      </Button> */}
+      <Button
+        variant='outlined'
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.1 }}
+        color='inherit'
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
         className={editor.isActive("bold") ? "is-active" : ""}
       >
-        bold
-      </button>
-      <button
+        <FontAwesomeIcon icon={faBold} />
+      </Button>
+      <Button
+        color='inherit'
+        variant='outlined'
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.1 }}
         onClick={() => editor.chain().focus().toggleItalic().run()}
         disabled={!editor.can().chain().focus().toggleItalic().run()}
         className={editor.isActive("italic") ? "is-active" : ""}
       >
-        italic
-      </button>
-      <button
+        <FontAwesomeIcon icon={faItalic} />
+      </Button>
+      <Button
+        color='inherit'
+        variant='outlined'
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.1 }}
+        onClick={() => editor.chain().focus().toggleUnderline().run()}
+        disabled={!editor.can().chain().focus().toggleUnderline().run()}
+        className={editor.isActive("underline") ? "is-active" : ""}
+      >
+        <FontAwesomeIcon icon={faUnderline} />
+      </Button>
+      <Button
+        color='inherit'
+        variant='outlined'
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.1 }}
         onClick={() => editor.chain().focus().toggleStrike().run()}
         disabled={!editor.can().chain().focus().toggleStrike().run()}
         className={editor.isActive("strike") ? "is-active" : ""}
       >
-        strike
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleCode().run()}
-        disabled={!editor.can().chain().focus().toggleCode().run()}
-        className={editor.isActive("code") ? "is-active" : ""}
-      >
-        code
-      </button>
-      <button onClick={() => editor.chain().focus().unsetAllMarks().run()}>
-        clear marks
-      </button>
-      <button onClick={() => editor.chain().focus().clearNodes().run()}>
-        clear nodes
-      </button>
-      <button
+        <FontAwesomeIcon icon={faStrikethrough} />
+      </Button>
+
+      <Button
+        variant='outlined'
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.1 }}
+        color='inherit'
         onClick={() => editor.chain().focus().setParagraph().run()}
         className={editor.isActive("paragraph") ? "is-active" : ""}
       >
-        paragraph
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        className={editor.isActive("heading", { level: 1 }) ? "is-active" : ""}
-      >
-        h1
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className={editor.isActive("heading", { level: 2 }) ? "is-active" : ""}
-      >
-        h2
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        className={editor.isActive("heading", { level: 3 }) ? "is-active" : ""}
-      >
-        h3
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-        className={editor.isActive("heading", { level: 4 }) ? "is-active" : ""}
-      >
-        h4
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
-        className={editor.isActive("heading", { level: 5 }) ? "is-active" : ""}
-      >
-        h5
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
-        className={editor.isActive("heading", { level: 6 }) ? "is-active" : ""}
-      >
-        h6
-      </button>
-      <button
+        <FontAwesomeIcon icon={faParagraph} />
+      </Button>
+
+      <Button
+        color='inherit'
+        variant='outlined'
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.1 }}
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         className={editor.isActive("bulletList") ? "is-active" : ""}
       >
-        bullet list
-      </button>
-      <button
+        <FontAwesomeIcon icon={faListUl} />
+      </Button>
+      <Button
+        variant='outlined'
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.1 }}
+        color='inherit'
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
         className={editor.isActive("orderedList") ? "is-active" : ""}
       >
-        ordered list
-      </button>
-      <button
+        <FontAwesomeIcon icon={faListOl} />
+      </Button>
+      <Button
+        variant='outlined'
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.1 }}
+        color='inherit'
         onClick={() => editor.chain().focus().toggleCodeBlock().run()}
         className={editor.isActive("codeBlock") ? "is-active" : ""}
       >
-        code block
-      </button>
-      <button
+        <FontAwesomeIcon icon={faCode} />
+      </Button>
+      <Button
+        variant='outlined'
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.1 }}
+        color='inherit'
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
         className={editor.isActive("blockquote") ? "is-active" : ""}
       >
-        blockquote
-      </button>
-      <button onClick={() => editor.chain().focus().setHorizontalRule().run()}>
-        horizontal rule
-      </button>
-      <button onClick={() => editor.chain().focus().setHardBreak().run()}>
-        hard break
-      </button>
-      <button
+        <FontAwesomeIcon icon={faQuoteRight} />
+      </Button>
+      <Button
+        variant='outlined'
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.1 }}
+        color='inherit'
+        onClick={() => editor.chain().focus().setHorizontalRule().run()}
+      >
+        <FontAwesomeIcon icon={faRulerHorizontal} />
+      </Button>
+
+      <Button
+        color='inherit'
+        variant='outlined'
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.1 }}
         onClick={() => editor.chain().focus().undo().run()}
         disabled={!editor.can().chain().focus().undo().run()}
       >
-        undo
-      </button>
-      <button
+        <FontAwesomeIcon icon={faArrowRotateLeft} />
+      </Button>
+      <Button
+        color='inherit'
+        variant='outlined'
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.1 }}
         onClick={() => editor.chain().focus().redo().run()}
         disabled={!editor.can().chain().focus().redo().run()}
       >
-        redo
-      </button>
-      <button
-        onClick={() => editor.chain().focus().setColor("#958DF1").run()}
-        className={
-          editor.isActive("textStyle", { color: "#958DF1" }) ? "is-active" : ""
-        }
-      >
-        purple
-      </button>
+        <FontAwesomeIcon icon={faArrowRotateRight} />
+      </Button>
     </>
   );
 };
 
-export default ({ content, handleChangeModel }) => {
+const TipTapEditor = ({ contentText, handleChangeModel, math }) => {
   const editor = useEditor({
+    content: "",
     extensions: [
       Color.configure({ types: [TextStyle.name, ListItem.name] }),
       TextStyle.configure({ types: [ListItem.name] }),
@@ -159,17 +189,29 @@ export default ({ content, handleChangeModel }) => {
           keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
         },
       }),
+      InlineMath.configure({ content: math }),
+      Underline
     ],
     onUpdate: (editor) => {
       handleChangeModel(editor.editor.getHTML());
     },
-    content: `<p>${content}</p>`,
   });
+
+  React.useEffect(() => {
+    console.log(contentText);
+    if (editor !== null) {
+      editor.commands.setContent(contentText);
+    }
+    //eslint-disable-next-line
+  }, [editor, contentText]);
 
   return (
     <div>
       <MenuBar editor={editor} />
+      <Divider sx={{ bgcolor: "#FFF", my: 1 }} />
       <EditorContent editor={editor} />
     </div>
   );
 };
+
+export default TipTapEditor;

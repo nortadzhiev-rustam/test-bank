@@ -152,7 +152,7 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type,matc
               height={400}
               width='95%'
               overflow='hidden'
-              px={2}
+              px={1}
             >
               <AnswersCard
                 index={option.key + 1}
@@ -177,14 +177,16 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type,matc
                 px={2}
                 borderRadius={2}
               >
-                <Typography color='white'>{idx + 1}</Typography>
+                <Typography p={0} m={0} color='white'>{idx + 1}</Typography>
                 <InputBase
                   sx={{
                     color: "white",
                     bgcolor: "rgba(255,255,255,0.1)",
                     borderRadius: 2,
                     padding: 1,
+                    
                   }}
+                  fullWidth
                   onChange={(e) => handleMatch(e, option.key)}
                   variant='filled'
                   multiline

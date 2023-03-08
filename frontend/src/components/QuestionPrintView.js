@@ -35,7 +35,9 @@ const QuestionPrintView = ({
     return shuffledAnswers();
   }, [shuffleAnswers, answers]);
 
-  
+  function createMarkup(content) {
+    return { __html: content };
+  }
 
   return (
     <Grid
@@ -74,9 +76,7 @@ const QuestionPrintView = ({
             <Stack direction='row' spacing={2} alignItems='center'>
               {parsedQuestion.text !== undefined && (
                 <Box sx={{ whiteSpace: "normal" }}>
-                  <Typography sx={{ display: "block" }} fontSize='inherit'>
-                    {parsedQuestion.text}
-                  </Typography>
+                  <div dangerouslySetInnerHTML={createMarkup(parsedQuestion.text)}></div>
                 </Box>
               )}
               {parsedQuestion.equation !== undefined && (
@@ -102,9 +102,7 @@ const QuestionPrintView = ({
                       </Typography>
                     )}
                     {answer.content.text !== undefined && (
-                      <Typography fontSize='inherit'>
-                        {" " + answer.content.text}
-                      </Typography>
+                      <div dangerouslySetInnerHTML={createMarkup(answer.content.text)}></div>
                     )}
                     {answer.content.equation !== undefined && (
                       <BlockMath math={answer.content.equation} />
@@ -129,9 +127,7 @@ const QuestionPrintView = ({
                           </Typography>
                         )}
                         {answer.content.text !== undefined && (
-                          <Typography fontSize='inherit'>
-                            {" " + answer.content.text}
-                          </Typography>
+                          <div dangerouslySetInnerHTML={createMarkup(answer.content.text)}></div>
                         )}
                         {answer.content.equation !== undefined && (
                           <BlockMath math={answer.content.equation} />

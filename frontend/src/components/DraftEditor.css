@@ -2,16 +2,16 @@
   min-height: 150px;
   margin-top: 5px;
   margin-bottom: 20;
-  height: 200px;
+  height: 300px;
   display: flex;
   flex-direction: column;
 
   border-radius: 10px;
   text-overflow: ellipsis;
-  padding-inline: 10px;
+  padding-inline: 2px;
   white-space: normal;
   overflow: auto;
-  padding-block: 10px;
+  padding-block: 5px;
   color: white;
 }
 
