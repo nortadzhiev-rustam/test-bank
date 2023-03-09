@@ -35,6 +35,7 @@ import FormLabel from "@mui/material/FormLabel";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolder } from "@fortawesome/free-solid-svg-icons";
+import Skeleton from "@mui/material/Skeleton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />;
@@ -47,6 +48,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
   const [collections, setCollections] = useState([]);
   const [isActive, setActive] = React.useState(false);
   const [selected, setSelected] = React.useState(0);
+  const [isLoading, setLoading] = React.useState(false);
   const handleChange = (event) => {
     setVisibility(event.target.value);
   };
@@ -60,11 +62,13 @@ export default function MyLibrary({ showNav, setShowNav }) {
     setSearchParams(search);
   };
   React.useEffect(() => {
+    setLoading(true);
     axios
       .get("https://www.backend.rustamnortadzhiev.com/api/v1/tests")
       .then((res) => {
         console.log(res.data);
         setTestData(res.data);
+        setLoading(false);
       });
   }, []);
 
@@ -176,7 +180,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
           </Button>
         </DialogActions>
       </Dialog>
-      <Grid xs={12} lgOffset={1} xl={2}>
+      <Grid xs={12} lgOffset={0.5} lg={3} xl={2}>
         <Stack
           spacing={4}
           position={{ xs: "static", xl: "fixed" }}
@@ -191,185 +195,278 @@ export default function MyLibrary({ showNav, setShowNav }) {
           >
             My Library
           </Typography>
-          <Stack width='100%' direction='row' flexWrap='wrap'>
-            <List
-              component='nav'
-              sx={{
-                display: "flex",
-                flexDirection: { xs: "row", xl: "column" },
-                flexWrap: "wrap",
-              }}
-            >
-              <ListItem disablePadding sx={{ width: 300 }}>
-                <ListItemButton
-                  selected={searchParams.has("allTest")}
-                  onClick={() => handleClick("allTest=true")}
-                >
-                  <ListItemIcon>
-                    <Inventory2 />
-                  </ListItemIcon>
-                  <ListItemText primary='All my content' />
-                  <Typography>
-                    {testData.filter((item) => item.userId === user.id).length}
-                  </Typography>
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding sx={{ width: 300 }}>
-                <ListItemButton
-                  selected={searchParams.has("madeByMe")}
-                  onClick={() => handleClick("madeByMe=true")}
-                >
-                  <ListItemIcon>
-                    <Person />
-                  </ListItemIcon>
-                  <ListItemText primary='Prepared by me' />
-                  <Typography>
-                    {testData.filter((item) => item.userId === user.id).length}
-                  </Typography>
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding sx={{ width: 300 }}>
-                <ListItemButton
-                  selected={searchParams.has("imported")}
-                  onClick={() => handleClick("imported=true")}
-                >
-                  <ListItemIcon>
-                    <SaveAlt />
-                  </ListItemIcon>
-                  <ListItemText primary='Imported' />
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding sx={{ width: 300 }}>
-                <ListItemButton
-                  selected={searchParams.has("drafts")}
-                  onClick={() => handleClick("drafts=true")}
-                >
-                  <ListItemIcon>
-                    <TextSnippet />
-                  </ListItemIcon>
-                  <ListItemText primary='Drafts' />
-                  <Typography>
-                    {
-                      testData.filter(
-                        (item) => item.userId === user.id && item.isEditing
-                      ).length
-                    }
-                  </Typography>
-                </ListItemButton>
-              </ListItem>
-            </List>
-          </Stack>
+          {isLoading && (
+            <Stack spacing={1}>
+              {Array(4)
+                .fill()
+                .map((_, idx) => (
+                  <Stack width='100%' direction='row' key={idx} spacing={2}>
+                    {" "}
+                    <Skeleton variant='rounded' width={40} height={40} />
+                    <Skeleton
+                      variant='text'
+                      sx={{ fontSize: "1rem", width: "90%" }}
+                    />
+                    <Skeleton
+                      variant='text'
+                      sx={{ fontSize: "1rem", width: "10%" }}
+                    />
+                  </Stack>
+                ))}
+            </Stack>
+          )}
+          {!isLoading && (
+            <Stack width='100%' direction='row' flexWrap='wrap'>
+              <List
+                component='nav'
+                sx={{
+                  display: "flex",
+                  flexDirection: { xs: "row", lg: "column" },
+                  flexWrap: "wrap",
+                }}
+              >
+                <ListItem disablePadding sx={{ width: 250 }}>
+                  <ListItemButton
+                    selected={searchParams.has("allTest")}
+                    onClick={() => handleClick("allTest=true")}
+                  >
+                    <ListItemIcon>
+                      <Inventory2 />
+                    </ListItemIcon>
+                    <ListItemText primary='All my content' />
+                    <Typography>
+                      {
+                        testData.filter((item) => item.userId === user.id)
+                          .length
+                      }
+                    </Typography>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding sx={{ width: 250 }}>
+                  <ListItemButton
+                    selected={searchParams.has("madeByMe")}
+                    onClick={() => handleClick("madeByMe=true")}
+                  >
+                    <ListItemIcon>
+                      <Person />
+                    </ListItemIcon>
+                    <ListItemText primary='Prepared by me' />
+                    <Typography>
+                      {
+                        testData.filter((item) => item.userId === user.id)
+                          .length
+                      }
+                    </Typography>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding sx={{ width: 250 }}>
+                  <ListItemButton
+                    selected={searchParams.has("imported")}
+                    onClick={() => handleClick("imported=true")}
+                  >
+                    <ListItemIcon>
+                      <SaveAlt />
+                    </ListItemIcon>
+                    <ListItemText primary='Imported' />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding sx={{ width: 250 }}>
+                  <ListItemButton
+                    selected={searchParams.has("drafts")}
+                    onClick={() => handleClick("drafts=true")}
+                  >
+                    <ListItemIcon>
+                      <TextSnippet />
+                    </ListItemIcon>
+                    <ListItemText primary='Drafts' />
+                    <Typography>
+                      {
+                        testData.filter(
+                          (item) => item.userId === user.id && item.isEditing
+                        ).length
+                      }
+                    </Typography>
+                  </ListItemButton>
+                </ListItem>
+              </List>
+            </Stack>
+          )}
           <Divider />
-          <Stack spacing={2} maxWidth={{ xs: "100%" }}>
-            <Stack
-              direction='row'
-              justifyContent='space-between'
-              alignItems='center'
-              display={{ xs: "none", xl: "flex" }}
-            >
-              <Typography color='dimgray'>My Collections</Typography>
-              <Button
-                startIcon={<CreateNewFolder />}
-                color='success'
-                size='small'
-                variant='outlined'
-                onClick={handleDialogOpen}
-              >
-                New
-              </Button>
-            </Stack>
-
-            <Stack
-              spacing={2}
-              direction={{ xs: "column", xl: "column-reverse" }}
-            >
-              <Stack
-                direction={{ xs: "row", xl: "column" }}
-                flexWrap={{ xs: "wrap", xl: "nowrap" }}
-                spacing={{ xs: 0, sm: 1 }}
-                justifyContent='flex-start'
-              >
-                {collections
-                  .filter((item) => item.userId === user.id)
-                  .map((collection, idx) => (
-                    <Stack
-                      sx={{
-                        "&:hover": {
-                          boxShadow: 2,
-                          bgcolor: "white",
-                        },
-                        cursor: "pointer",
-                        boxShadow: isActive && selected === idx ? 2 : 0,
-                        bgcolor:
-                          isActive && selected === idx ? "white" : "none",
-                      }}
-                      key={collection.name}
-                      spacing={1}
-                      alignItems='center'
-                      direction='row'
-                      color='#6c757d'
-                      p={0.5}
-                      px={1}
-                      borderRadius={1}
-                      justifyContent='space-between'
-                      onClick={() => handleSelect(idx)}
-                    >
-                      <Stack direction='row' spacing={1} alignItems='center'>
-                        <FontAwesomeIcon icon={faFolder} />
-
-                        <Typography>{collection.name}</Typography>
-                      </Stack>
-                      <Typography textAlign='right'>
-                        {collection.Tests.length}
-                      </Typography>
-                    </Stack>
-                  ))}
+          {isLoading && (
+            <Stack width='100%' spacing={1}>
+              <Stack width='100%' direction='row' spacing={2}>
+                <Skeleton
+                  variant='text'
+                  sx={{ fontSize: "1rem", width: "100%" }}
+                />
+                <Skeleton variant='rounded' width={60} height={30} />
               </Stack>
-              <Button
-                startIcon={<CreateNewFolder />}
-                color='inherit'
-                size='small'
-                variant='contained'
-                onClick={handleDialogOpen}
-                sx={{ display: { xs: "flex", xl: "none" }, width: {xs: '100%', sm:'150px'} }}
-                
-              >
-                Collections
-              </Button>
+              {Array(5)
+                .fill()
+                .map((_, idx) => (
+                  <Stack width='100%' direction='row' key={idx} spacing={2}>
+                    {" "}
+                    <Skeleton variant='rounded' width={20} height={20} />
+                    <Skeleton
+                      variant='text'
+                      sx={{ fontSize: "1rem", width: "90%" }}
+                    />
+                    <Skeleton
+                      variant='text'
+                      sx={{ fontSize: "1rem", width: "10%" }}
+                    />
+                  </Stack>
+                ))}
             </Stack>
-          </Stack>
+          )}
+          {!isLoading && (
+            <Stack spacing={2} maxWidth={{ xs: "100%" }}>
+              <Stack
+                direction='row'
+                justifyContent='space-between'
+                alignItems='center'
+                display={{ xs: "none", lg: "flex" }}
+              >
+                <Typography color='dimgray'>My Collections</Typography>
+                <Button
+                  startIcon={<CreateNewFolder />}
+                  color='success'
+                  size='small'
+                  variant='outlined'
+                  onClick={handleDialogOpen}
+                >
+                  New
+                </Button>
+              </Stack>
+
+              <Stack
+                spacing={2}
+                direction={{ xs: "column", lg: "column-reverse" }}
+              >
+                <Stack
+                  direction={{ xs: "row", lg: "column" }}
+                  flexWrap={{ xs: "wrap", lg: "nowrap" }}
+                  spacing={{ xs: 0, sm: 1 }}
+                  justifyContent='flex-start'
+                >
+                  {collections
+                    .filter((item) => item.userId === user.id)
+                    .map((collection, idx) => (
+                      <Stack
+                        sx={{
+                          "&:hover": {
+                            boxShadow: 2,
+                            bgcolor: "white",
+                          },
+                          cursor: "pointer",
+                          boxShadow: isActive && selected === idx ? 2 : 0,
+                          bgcolor:
+                            isActive && selected === idx ? "white" : "none",
+                        }}
+                        key={collection.name}
+                        spacing={1}
+                        alignItems='center'
+                        direction='row'
+                        color='#6c757d'
+                        p={0.5}
+                        px={1}
+                        borderRadius={1}
+                        justifyContent='space-between'
+                        onClick={() => handleSelect(idx)}
+                      >
+                        <Stack direction='row' spacing={1} alignItems='center'>
+                          <FontAwesomeIcon icon={faFolder} />
+
+                          <Typography>{collection.name}</Typography>
+                        </Stack>
+                        <Typography textAlign='right'>
+                          {collection.Tests.length}
+                        </Typography>
+                      </Stack>
+                    ))}
+                </Stack>
+                <Button
+                  startIcon={<CreateNewFolder />}
+                  color='inherit'
+                  size='small'
+                  variant='contained'
+                  onClick={handleDialogOpen}
+                  sx={{
+                    display: { xs: "flex", lg: "none" },
+                    width: { xs: "150px" },
+                  }}
+                >
+                  Collections
+                </Button>
+              </Stack>
+            </Stack>
+          )}
         </Stack>
       </Grid>
-      <Grid
-        xs={12}
-        md={11}
-        lgOffset={3}
-        lg={8}
-        xl={7}
-        ml={{ xs: 0, lg: 10 }}
-        height='100%'
-      >
-        <Stack
-          width='100%'
-          height='100%'
-          spacing={2}
-          ml={{ xs: 0, md: "70px" }}
-          mt={10}
-          justifyContent='flex-start'
-        >
-          {testData
-            .filter((item) => item.userId === user.id)
-            .map((data) => (
-              <TestView
-                key={data.id}
-                testData={data}
-                user={data.user}
-                handleDelete={handleDelete}
-                collections={collections}
-                setCollections={setCollections}
-              />
-            ))}
-        </Stack>
+      <Grid xs={12} lg={7} xl={8} ml={{ xs: 0, lg: 5 }} height='100%'>
+        {isLoading && (
+          <Stack mt={10}>
+            {Array(5)
+              .fill()
+              .map((_, idx) => (
+                <Stack
+                  width='100%'
+                  spacing={1}
+                  bgcolor='white'
+                  p={1.5}
+                  borderRadius={1}
+                  key={idx}
+                  mb={2}
+                >
+                  <Stack width='100%' direction='row' spacing={1}>
+                    <Stack spacing={1}>
+                      <Skeleton variant='rounded' width={100} height={100} />
+                    </Stack>
+                    <Stack width='100%' spacing={1}>
+                      <Skeleton variant='text' sx={{ fontSize: "1rem" }} />
+                      <Skeleton variant='text' sx={{ fontSize: "1rem" }} />
+                      <Skeleton variant='text' sx={{ fontSize: "1rem" }} />
+                    </Stack>
+                  </Stack>
+                  <Stack direction='row' spacing={1} alignItems='center'>
+                    <Skeleton variant='circular' width={40} height={40} />
+                    <Skeleton
+                      variant='text'
+                      sx={{ fontSize: "1rem", width: 230 }}
+                    />
+                    <Skeleton variant='rounded' width={100} height={30} />
+                    <Skeleton variant='rounded' width={100} height={30} />
+                    <Skeleton variant='rounded' width={100} height={30} />
+                  </Stack>
+                </Stack>
+              ))}
+          </Stack>
+        )}
+
+        {!isLoading && (
+          <Stack
+            width='100%'
+            height='100%'
+            spacing={2}
+            ml={{ xs: 0, md: "30px" }}
+            mr={{ xs: 0, md: "50px", lg: 0 }}
+            mt={10}
+            justifyContent='flex-start'
+          >
+            {testData
+              .filter((item) => item.userId === user.id)
+              .map((data) => (
+                <TestView
+                  key={data.id}
+                  testData={data}
+                  user={data.user}
+                  handleDelete={handleDelete}
+                  collections={collections}
+                  setCollections={setCollections}
+                />
+              ))}
+          </Stack>
+        )}
       </Grid>
     </Grid>
   );

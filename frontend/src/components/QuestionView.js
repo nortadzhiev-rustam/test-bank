@@ -57,7 +57,7 @@ export default function QuestionView({
   }
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box component='div' sx={{ width: "100%" }}>
       <Paper elevation={5} sx={{ padding: 1, borderRadius: 2 }}>
         {isEditing ? (
           <Stack
@@ -183,6 +183,7 @@ export default function QuestionView({
                     //   {option.content.text + " "}
                     // </Typography>
                     <div
+                    
                       dangerouslySetInnerHTML={createMarkup(
                         option.content.text
                       )}
@@ -249,6 +250,8 @@ export default function QuestionView({
                     display='flex'
                     flexDirection='row'
                     alignItems='center'
+                    mt={2}
+                    mb={4}
                   >
                     <Box
                       width={12}

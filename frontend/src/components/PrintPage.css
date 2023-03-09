@@ -3,7 +3,6 @@ body {
   padding: 0;
 }
 @media print {
- 
   .container {
     margin-top: 20px;
   }
@@ -20,10 +19,22 @@ body {
   tfoot {
     display: table-footer-group;
   }
+  pre {
+    background-color: #0d0d0d;
+    color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+  }
+  /* .page-break {
+    height: 1182.197px;
+    border-top: 1px solid #999;
+    margin-bottom: 13px;
+    page-break-after: always;
+  } */
 }
 
 @page {
-  size: auto;
+  size: A4;
 
   margin: 20mm 20mm;
 }

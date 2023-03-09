@@ -176,7 +176,7 @@ const TestView = ({
             testData.image === null ? (
               <Box
                 sx={{
-                  height: { xs: 100, md: 130 },
+                  height: { xs: 100, md: 100 },
                   width: "100%",
                   backgroundColor: "#cccccc",
                   display: "flex",
@@ -185,7 +185,7 @@ const TestView = ({
                   borderRadius: 1,
                 }}
               >
-                <FontAwesomeIcon color='#183153' size='3x' icon={faImage} />
+                <FontAwesomeIcon color='#183153' size='2x' icon={faImage} />
               </Box>
             ) : (
               <Box

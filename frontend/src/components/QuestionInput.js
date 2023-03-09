@@ -99,7 +99,7 @@ const QuestionInput = ({
         marginInline: "2px",
         backgroundColor: "#006064",
         minHeight: 280,
-        height: isOpen && 450,
+        
         transition: "all 0.5s ease-in",
       }}
       elevation={10}

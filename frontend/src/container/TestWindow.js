@@ -52,13 +52,30 @@ export default function TestWindow({
 }) {
   const [testData, setTestData] = useState(undefined);
   const [user, setUser] = useState(undefined);
+  const [hide, setHide] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
     if (showNav === false) setShowNav(true);
-    
   }, [showNav, setShowNav]);
+
+  
+  useEffect(() => {
+    const listenToScroll = () => {
+      let heightToHideFrom = 50;
+      const winScroll =
+        document.body.scrollTop || document.documentElement.scrollTop;
+  
+      if (winScroll > heightToHideFrom) {
+         setHide(true);
+      } else {
+        setHide(false);
+      }
+    };
+    window.addEventListener("scroll", listenToScroll);
+    return () => window.removeEventListener("scroll", listenToScroll);
+  }, []);
 
   useEffect(() => {
     axios
@@ -77,7 +94,6 @@ export default function TestWindow({
     return () => {
       setTestData();
       setUser();
-      
     };
   }, [open, test, setError, id, setTest]);
 
@@ -123,15 +139,19 @@ export default function TestWindow({
               zIndex: 10,
             }}
           >
-            <Grid container spacing={1}>
+            <Grid
+              sx={{ display: hide ? "none" : "flex" }}
+              container
+              spacing={1}
+            >
               <Grid display='flex' justifyContent='center' xs={3} xl={2}>
                 {testData.image === "" ||
                 testData.image === undefined ||
                 testData.image === null ? (
                   <Box
                     sx={{
-                      height: { xs: 100, md: 170 },
-                      width: "100%",
+                      height: 150,
+                      width: 150,
                       backgroundColor: "#cccccc",
                       display: "flex",
                       justifyContent: "center",
@@ -144,8 +164,8 @@ export default function TestWindow({
                 ) : (
                   <Box
                     sx={{
-                      height: { xs: 100, md: 170 },
-                      width: "100%",
+                      height: 150,
+                      width: 150,
                       backgroundColor: "#cccccc",
                       display: "flex",
                       justifyContent: "center",

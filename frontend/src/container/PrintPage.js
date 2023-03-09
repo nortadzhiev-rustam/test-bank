@@ -14,7 +14,6 @@ import {
   Button,
   Alert,
   Switch,
-  
   Divider,
   ToggleButtonGroup,
   ToggleButton,
@@ -332,29 +331,33 @@ const PrintPage = ({ showNav, setShowNav }) => {
         </Toolbar>
       </AppBar>
       {message !== "" && (
-        <Alert sx={{ width: "826px", mb: 5 }}>{message}</Alert>
+        <Alert sx={{ width: "860px", mb: 5 }}>{message}</Alert>
       )}
       <div
         style={{
           backgroundColor: "#fff",
-          padding: 60,
+          padding: 30,
           fontSize: font,
           whiteSpace: "break-space",
         }}
       >
         <div
+          className='page-break'
           style={{
-            width: "826px",
+            width: "860px",
             backgroundColor: "#ffffff",
+           
+            padding: 20,
+            display: "block",
           }}
           ref={componentRef}
         >
           <Stack
-            width='100%'
-            border={1}
+            width='98%'
             direction='row'
             justifyContent='space-between'
             alignItems='center'
+            border={1}
             p={2}
             mb={4}
           >
@@ -397,27 +400,135 @@ const PrintPage = ({ showNav, setShowNav }) => {
               </Stack>
             </Stack>
           </Stack>
-          <div style={{ display: "block" }}>
+          <div style={{ display: "block", width: "100%", breakInside: "auto" }}>
             {questions &&
-              shQuestion.map((question, idx) => (
-                <div
-                  style={{
-                    display: "block",
+              questions.filter((item) => item.type === "Multiple choice")
+                .length !== 0 && (
+                <Divider sx={{ my: 5, fontWeight: 600 }} textAlign='center'>
+                  {"Multiple choice".toLocaleUpperCase()}
+                </Divider>
+              )}
+            {questions &&
+              shQuestion
+                .filter((item) => item.type === "Multiple choice")
+                .map((question, idx) => (
+                  <div
+                    style={{
+                      display: "block",
 
-                    breakAfter: "auto",
-                  }}
-                  key={question.id}
-                >
-                  <QuestionPrintView
-                    questionImage={questionImage}
-                    checkBoxOn={checkBoxOn}
-                    quest={question}
-                    number={idx + 1}
-                    optionOn={optionOn}
-                    shuffleAnswers={shuffleAnswers}
-                  />
-                </div>
-              ))}
+                      breakAfter: "auto",
+                    }}
+                    key={question.id}
+                  >
+                    <QuestionPrintView
+                      questionImage={questionImage}
+                      checkBoxOn={checkBoxOn}
+                      quest={question}
+                      number={idx + 1}
+                      optionOn={optionOn}
+                      shuffleAnswers={shuffleAnswers}
+                    />
+                  </div>
+                ))}
+            <div
+              style={{
+                display: "block",
+                breakAfter: "always",
+                breakBefore: "always",
+              }}
+            >
+              {questions &&
+                questions.filter((item) => item.type === "Open ended")
+                  .length !== 0 && (
+                  <Divider sx={{ my: 5, fontWeight: 600 }} textAlign='center'>
+                    {"Open ended".toLocaleUpperCase()}
+                  </Divider>
+                )}
+              {questions &&
+                shQuestion
+                  .filter((item) => item.type === "Open ended")
+                  .map((question, idx) => (
+                    <div
+                      style={{
+                        display: "block",
+
+                        breakAfter: "always",
+                      }}
+                      key={question.id}
+                    >
+                      <QuestionPrintView
+                        questionImage={questionImage}
+                        checkBoxOn={checkBoxOn}
+                        quest={question}
+                        number={idx + 1}
+                        optionOn={optionOn}
+                        shuffleAnswers={shuffleAnswers}
+                      />
+                    </div>
+                  ))}
+            </div>
+
+            {questions &&
+              questions.filter((item) => item.type === "True or False")
+                .length !== 0 && (
+                <Divider sx={{ my: 5, fontWeight: 600 }} textAlign='center'>
+                  {"True or False".toLocaleUpperCase()}
+                </Divider>
+              )}
+            {questions &&
+              shQuestion
+                .filter((item) => item.type === "True or False")
+                .map((question, idx) => (
+                  <div
+                    style={{
+                      display: "block",
+
+                      breakAfter: "auto",
+                    }}
+                    key={question.id}
+                  >
+                    <QuestionPrintView
+                      questionImage={questionImage}
+                      checkBoxOn={checkBoxOn}
+                      quest={question}
+                      number={idx + 1}
+                      optionOn={optionOn}
+                      shuffleAnswers={shuffleAnswers}
+                    />
+                  </div>
+                ))}
+
+            <div style={{ display: "block" }}>
+              {questions &&
+                questions.filter((item) => item.type === "Match").length !==
+                  0 && (
+                  <Divider sx={{ my: 5, fontWeight: 600 }} textAlign='center'>
+                    {"Match".toLocaleUpperCase()}
+                  </Divider>
+                )}
+              {questions &&
+                shQuestion
+                  .filter((item) => item.type === "Match")
+                  .map((question, idx) => (
+                    <div
+                      style={{
+                        display: "block",
+
+                        breakAfter: "auto",
+                      }}
+                      key={question.id}
+                    >
+                      <QuestionPrintView
+                        questionImage={questionImage}
+                        checkBoxOn={checkBoxOn}
+                        quest={question}
+                        number={idx + 1}
+                        optionOn={optionOn}
+                        shuffleAnswers={shuffleAnswers}
+                      />
+                    </div>
+                  ))}
+            </div>
 
             {showAnswerKey && (
               <div

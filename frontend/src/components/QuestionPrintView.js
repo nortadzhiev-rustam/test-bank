@@ -1,7 +1,7 @@
 import { Stack, Typography, Box, Divider } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { BlockMath } from "react-katex";
-import React, {  useMemo } from "react";
+import React, { useMemo } from "react";
 import "./PrintPage.css";
 const QuestionPrintView = ({
   quest,
@@ -45,7 +45,7 @@ const QuestionPrintView = ({
       container
       rowSpacing={2}
       spacing={1}
-      sx={{ display: "block", breakAfter: "always" }}
+      sx={{ display: "block", breakAfter: "always", breakBefore: "always" }}
     >
       <Grid xs={12}>
         <div style={{ display: "block", breakBefore: "auto" }}>
@@ -54,6 +54,7 @@ const QuestionPrintView = ({
             alignItems='center'
             spacing={1}
             flexWrap={Number(questionImage) > 300 ? "wrap" : "nowrap"}
+            mb={type === "Open ended" ? 30 : 1}
           >
             <Typography fontSize='inherit' fontWeight='bold'>
               {number + "."}
@@ -76,7 +77,9 @@ const QuestionPrintView = ({
             <Stack direction='row' spacing={2} alignItems='center'>
               {parsedQuestion.text !== undefined && (
                 <Box sx={{ whiteSpace: "normal" }}>
-                  <div dangerouslySetInnerHTML={createMarkup(parsedQuestion.text)}></div>
+                  <div
+                    dangerouslySetInnerHTML={createMarkup(parsedQuestion.text)}
+                  ></div>
                 </Box>
               )}
               {parsedQuestion.equation !== undefined && (
@@ -102,7 +105,11 @@ const QuestionPrintView = ({
                       </Typography>
                     )}
                     {answer.content.text !== undefined && (
-                      <div dangerouslySetInnerHTML={createMarkup(answer.content.text)}></div>
+                      <div
+                        dangerouslySetInnerHTML={createMarkup(
+                          answer.content.text
+                        )}
+                      ></div>
                     )}
                     {answer.content.equation !== undefined && (
                       <BlockMath math={answer.content.equation} />
@@ -127,7 +134,11 @@ const QuestionPrintView = ({
                           </Typography>
                         )}
                         {answer.content.text !== undefined && (
-                          <div dangerouslySetInnerHTML={createMarkup(answer.content.text)}></div>
+                          <div
+                            dangerouslySetInnerHTML={createMarkup(
+                              answer.content.text
+                            )}
+                          ></div>
                         )}
                         {answer.content.equation !== undefined && (
                           <BlockMath math={answer.content.equation} />
@@ -145,6 +156,8 @@ const QuestionPrintView = ({
                           direction='row'
                           spacing={2}
                           alignItems='center'
+                          mt={1}
+                          mb={4}
                         >
                           {checkBoxOn && (
                             <Typography fontSize='inherit' fontWeight='bold'>
