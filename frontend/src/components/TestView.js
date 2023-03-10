@@ -28,7 +28,12 @@ import {
   faListCheck,
   faCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { Delete, Folder, FolderOutlined, Mode } from "@mui/icons-material";
+import {
+  Delete,
+  Folder,
+  FolderOutlined,
+  Visibility,
+} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -77,13 +82,14 @@ const TestView = ({
     if (newCollection !== "") {
       try {
         const res = await axios.post(
-          `https://www.backend.rustamnortadzhiev.com/api/v1/collection`,
+          `https://backend.rustamnortadzhiev.com/api/v1/collection`,
           data
         );
         const res2 = await axios.put(
-          `https://www.backend.rustamnortadzhiev.com/api/v1/test/${testData.id}?collectionId=${res.data.collection.id}`
+          `https://backend.rustamnortadzhiev.com/api/v1/test/${testData.id}?collectionId=${res.data.collection.id}`
         );
         console.log(res2.data.message);
+        handleSaveDialogOpen();
       } catch (e) {
         console.log(e);
       }
@@ -96,7 +102,7 @@ const TestView = ({
     setCollectionId(Number(event.target.value));
     try {
       const res = await axios.put(
-        `https://www.backend.rustamnortadzhiev.com/api/v1/test/${
+        `https://backend.rustamnortadzhiev.com/api/v1/test/${
           testData.id
         }?collectionId=${Number(event.target.value)}`
       );
@@ -354,7 +360,7 @@ const TestView = ({
                 size='small'
                 startIcon={<Delete />}
                 variant='contained'
-                color='inherit'
+                color='error'
                 onClick={() => handleDelete(testData.id)}
               >
                 delete
@@ -363,14 +369,14 @@ const TestView = ({
             {!isProfile && (
               <Button
                 size='small'
-                startIcon={<Mode />}
+                startIcon={<Visibility />}
                 variant='contained'
-                color='inherit'
+                color='info'
                 onClick={() =>
                   navigate(`/admin/test/${testData.id}/${testData.name}`)
                 }
               >
-                Edit
+                View
               </Button>
             )}
             <Button
@@ -379,7 +385,13 @@ const TestView = ({
                 testData.collectionId === null ? <FolderOutlined /> : <Folder />
               }
               variant={isProfile ? "outlined" : "contained"}
-              color={isProfile ? "success" : "inherit"}
+              color={
+                isProfile
+                  ? testData.collectionId !== null
+                    ? "success"
+                    : "warning"
+                  : "secondary"
+              }
               onClick={handleSaveDialogOpen}
             >
               {testData.collectionId === null ? "Save" : "Saved"}
@@ -408,7 +420,7 @@ const TestView = ({
                   navigate(`/admin/test/${testData.id}/${testData.name}`)
                 }
               >
-                <Mode fontSize='small' />
+                <Visibility fontSize='small' />
               </IconButton>
             )}
             {!isProfile && (

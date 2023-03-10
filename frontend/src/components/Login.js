@@ -79,7 +79,7 @@ const Login = ({ history }) => {
     dispatch(setLoading(true));
     try {
       const res = await axios.post(
-        "https://www.backend.rustamnortadzhiev.com/api/v1/login",
+        "https://backend.rustamnortadzhiev.com/api/v1/login",
         {
           email,
           password,

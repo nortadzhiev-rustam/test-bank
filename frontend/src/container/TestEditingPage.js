@@ -47,6 +47,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faListCheck } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { setFull } from "../store/questionTypeSlice";
+import QuestionList from "../components/QuestionReorder";
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -180,6 +181,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
   const history = useNavigate();
   const [error, setError] = React.useState("");
   const [openEditor, setOpenEditor] = React.useState(false);
+  const [isReorder, setReorder] = React.useState(true);
   const { id } = useParams();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const menuOpen = Boolean(anchorEl);
@@ -193,7 +195,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
   const handleDelete = async (questionId) => {
     try {
       const res = await axios.delete(
-        `https://www.backend.rustamnortadzhiev.com/api/v1/question/${questionId}`
+        `https://backend.rustamnortadzhiev.com/api/v1/question/${questionId}`
       );
       setMessage(res.data.message);
       const newArray = questions.filter((item) => item.id !== questionId);
@@ -224,7 +226,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
       const data = newArray[0];
       try {
         const req = await axios.post(
-          "https://www.backend.rustamnortadzhiev.com/api/v1/question",
+          "https://backend.rustamnortadzhiev.com/api/v1/question",
           data
         );
 
@@ -243,7 +245,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
 
   React.useEffect(() => {
     axios
-      .get(`https://www.backend.rustamnortadzhiev.com/api/v1/test/${id}`)
+      .get(`https://backend.rustamnortadzhiev.com/api/v1/test/${id}`)
       .then((res) => {
         if (res.status === 200) {
           setName(res.data.name);
@@ -256,11 +258,11 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
       .catch((err) => console.log(`Something went wrong ${err}`));
 
     return () => {
-      setName('');
-      setGrade('');
-      setDepartment('');
-      setQuestions('');
-      setImage('');
+      setName("");
+      setGrade("");
+      setDepartment("");
+      setQuestions("");
+      setImage("");
     };
   }, [id, isEditing, openEditor, open]);
 
@@ -268,8 +270,6 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
     if (showNav) {
       setShowNav(false);
     }
-
-    
   }, [showNav, setShowNav]);
 
   const handleDialogOpen = () => {
@@ -287,7 +287,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
   const handleSave = async () => {
     try {
       const res = await axios.put(
-        `https://www.backend.rustamnortadzhiev.com/api/v1/test/${id}?isEditing=${false}`
+        `https://backend.rustamnortadzhiev.com/api/v1/test/${id}?isEditing=${false}`
       );
       if (res.status === 200) history(`/admin/test/${id}/${name}`);
     } catch (err) {
@@ -596,61 +596,73 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
                 mt={20}
                 zIndex={1}
               >
-                <Stack direction='row' alignItems='center' spacing={1}>
-                  <FontAwesomeIcon icon={faListCheck} />
-                  <Typography>
-                    {`${questions.length} ${
-                      questions.length < 2 ? " question" : " questions"
-                    }`}
-                  </Typography>
-                </Stack>
-                <Stack direction='column' spacing={5} alignItems='center'>
-                  {message !== "" && (
-                    <Alert severity='success' sx={{ width: "100%" }}>
-                      {message}
-                    </Alert>
-                  )}
-                  {error !== "" && (
-                    <Alert severity='error' sx={{ width: "100%" }}>
-                      {error}
-                    </Alert>
-                  )}
-                  {questions.map((question, idx) => (
-                    <QuestionView
-                      key={question.id}
-                      data={question}
-                      isEditing={true}
-                      index={idx + 1}
-                      handleDelete={handleDelete}
-                      handleEdit={handleEdit}
-                      handleDuplicate={handleDuplicate}
-                    />
-                  ))}
-                </Stack>
-                <Stack direction='row' justifyContent='center' spacing={3}>
-                  {types.map((type, idx) => (
-                    <Box
-                      key={type.type}
-                      width={50}
-                      height={50}
-                      borderRadius={2}
-                      bgcolor='#006064'
-                      alignItems='center'
-                      display='flex'
-                      justifyContent='center'
-                      color='#ffffff'
-                      fontSize={30}
-                      onClick={() => handleEditorOpen(type.type)}
-                      sx={{
-                        cursor: "pointer",
-                        "&:hover": { boxShadow: 10 },
-                        transition: "box-shadow 0.3s ease-in",
-                      }}
-                    >
-                      {type.icon}
-                    </Box>
-                  ))}
-                </Stack>
+                {isReorder && (
+                  <QuestionList
+                    questions={questions}
+                    setQuestions={setQuestions}
+                  />
+                )}
+                {!isReorder && (
+                  <Stack direction='row' alignItems='center' spacing={1}>
+                    <FontAwesomeIcon icon={faListCheck} />
+                    <Typography>
+                      {`${questions.length} ${
+                        questions.length < 2 ? " question" : " questions"
+                      }`}
+                    </Typography>
+                  </Stack>
+                )}
+                {!isReorder && (
+                  <Stack direction='column' spacing={5} alignItems='center'>
+                    {message !== "" && (
+                      <Alert severity='success' sx={{ width: "100%" }}>
+                        {message}
+                      </Alert>
+                    )}
+                    {error !== "" && (
+                      <Alert severity='error' sx={{ width: "100%" }}>
+                        {error}
+                      </Alert>
+                    )}
+                    {questions.map((question, idx) => (
+                      <QuestionView
+                        key={question.id}
+                        data={question}
+                        isEditing={true}
+                        index={idx + 1}
+                        handleDelete={handleDelete}
+                        handleEdit={handleEdit}
+                        handleDuplicate={handleDuplicate}
+                      />
+                    ))}
+                  </Stack>
+                )}
+                {!isReorder && (
+                  <Stack direction='row' justifyContent='center' spacing={3}>
+                    {types.map((type, idx) => (
+                      <Box
+                        key={type.type}
+                        width={50}
+                        height={50}
+                        borderRadius={2}
+                        bgcolor='#006064'
+                        alignItems='center'
+                        display='flex'
+                        justifyContent='center'
+                        color='#ffffff'
+                        fontSize={30}
+                        onClick={() => handleEditorOpen(type.type)}
+                        sx={{
+                          cursor: "pointer",
+                          "&:hover": { boxShadow: 10 },
+                          transition: "box-shadow 0.3s ease-in",
+                        }}
+                      >
+                        {type.icon}
+                      </Box>
+                    ))}
+                  </Stack>
+                )}
               </Stack>
             )}
           </Grid>

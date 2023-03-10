@@ -64,7 +64,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
   React.useEffect(() => {
     setLoading(true);
     axios
-      .get("https://www.backend.rustamnortadzhiev.com/api/v1/tests")
+      .get("https://backend.rustamnortadzhiev.com/api/v1/tests")
       .then((res) => {
         console.log(res.data);
         setTestData(res.data);
@@ -74,7 +74,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
 
   React.useEffect(() => {
     axios
-      .get("https://www.backend.rustamnortadzhiev.com/api/v1/collections")
+      .get("https://backend.rustamnortadzhiev.com/api/v1/collections")
       .then((res) => {
         setCollections(res.data);
       });
@@ -83,7 +83,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
   const handleDelete = async (id) => {
     try {
       const res = await axios.delete(
-        `https://www.backend.rustamnortadzhiev.com/api/v1/test/${id}`
+        `https://backend.rustamnortadzhiev.com/api/v1/test/${id}`
       );
       setTestData(testData.filter((item) => item.id !== id));
       console.log(res.message);
@@ -98,6 +98,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     const data = {
       name: collectionName,
       visibility,
@@ -105,11 +106,12 @@ export default function MyLibrary({ showNav, setShowNav }) {
     };
     try {
       const res = await axios.post(
-        `https://www.backend.rustamnortadzhiev.com/api/v1/collection`,
+        `https://backend.rustamnortadzhiev.com/api/v1/collection`,
         data
       );
       setCollections((prevState) => [...prevState, res.data.collection]);
       handleDialogOpen();
+      setLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -380,7 +382,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
                           <Typography>{collection.name}</Typography>
                         </Stack>
                         <Typography textAlign='right'>
-                          {collection.Tests.length}
+                          {collection.Tests && collection.Tests.length}
                         </Typography>
                       </Stack>
                     ))}

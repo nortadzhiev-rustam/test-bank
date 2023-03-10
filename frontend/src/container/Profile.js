@@ -116,7 +116,7 @@ function LongMenu({ id, collection, setCollection, openEditDialog }) {
   const deleteCollection = async (id) => {
     try {
       const res = await axios.delete(
-        `https://www.backend.rustamnortadzhiev.com/api/v1/collection/${id}`
+        `https://backend.rustamnortadzhiev.com/api/v1/collection/${id}`
       );
 
       console.log(res.data.message);
@@ -191,7 +191,7 @@ const Profile = ({ showNav, setShowNav }) => {
   React.useEffect(() => {
     if (!isEditing) {
       axios
-        .get("https://www.backend.rustamnortadzhiev.com/api/v1/collections")
+        .get("https://backend.rustamnortadzhiev.com/api/v1/collections")
         .then((res) => {
           setCollections(res.data);
           setSelectedCollection(res.data[0].name);
@@ -237,7 +237,7 @@ const Profile = ({ showNav, setShowNav }) => {
   const updateCollection = async () => {
     try {
       const res = await axios.put(
-        `https://www.backend.rustamnortadzhiev.com/api/v1/collection/${selected}?name=${collectionName}&visibility=${visibility}`
+        `https://backend.rustamnortadzhiev.com/api/v1/collection/${selected}?name=${collectionName}&visibility=${visibility}`
       );
       console.log(res.data.message);
       handleDialogOpen();
@@ -254,7 +254,7 @@ const Profile = ({ showNav, setShowNav }) => {
     };
     try {
       const res = await axios.post(
-        `https://www.backend.rustamnortadzhiev.com/api/v1/collection`,
+        `https://backend.rustamnortadzhiev.com/api/v1/collection`,
         data
       );
       setCollections((prevState) => [...prevState, res.data.collection]);

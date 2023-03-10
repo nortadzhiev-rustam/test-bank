@@ -79,7 +79,7 @@ export default function TestWindow({
 
   useEffect(() => {
     axios
-      .get(`https://www.backend.rustamnortadzhiev.com/api/v1/test/${id}`)
+      .get(`https://backend.rustamnortadzhiev.com/api/v1/test/${id}`)
       .then((res) => {
         if (res.status === 200) {
           setTestData(res.data);
@@ -100,7 +100,7 @@ export default function TestWindow({
   const handleEdit = async () => {
     try {
       const res = await axios.put(
-        `https://www.backend.rustamnortadzhiev.com/api/v1/test/${id}?isEditing=${true}`
+        `https://backend.rustamnortadzhiev.com/api/v1/test/${id}?isEditing=${true}`
       );
       if (res.status === 200) navigate(`/test/editor/${id}/edit`);
     } catch (err) {

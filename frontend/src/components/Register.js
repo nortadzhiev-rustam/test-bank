@@ -88,7 +88,7 @@ const Register = ({ setIsLogin, history }) => {
     } else {
       try {
         const res = await axios.post(
-          "https://www.backend.rustamnortadzhiev.com/api/v1/register",
+          "https://backend.rustamnortadzhiev.com/api/v1/register",
           {
             firstName,
             lastName,

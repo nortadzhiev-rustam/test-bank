@@ -10,7 +10,7 @@ function App() {
 
   React.useEffect(() => {
     const fetchLogin = async () => {
-      const res = await axios.get("https://www.backend.rustamnortadzhiev.com/api/v1/isAuth", {
+      const res = await axios.get("https://backend.rustamnortadzhiev.com/api/v1/isAuth", {
         withCredentials: true,
       });
       if (res.status === 200) {
@@ -31,7 +31,7 @@ function App() {
   }, []);
   React.useEffect(() => {
     const fetchDepartments = async () => {
-      const res = await axios.get("https://www.backend.rustamnortadzhiev.com/api/v1/departments", {
+      const res = await axios.get("https://backend.rustamnortadzhiev.com/api/v1/departments", {
         withCredentials: true,
       });
       dispatch(getDepartmentSuccess(res.data));

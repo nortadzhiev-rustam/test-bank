@@ -16,7 +16,18 @@ router.use(express.static(__dirname + "/public"));
 router.use("/uploads", express.static("uploads"));
 router.delete("/files/:name", controller.remove);
 router.post("/upload", upload.single("file"), async (req, res) => {
-  res.status(200).send(req.file.filename || "");
+  try {
+    // The file is available as req.file
+    console.log(req.file);
+
+    // Send a success response
+    res.status(200).send(req.file.filename || "");
+  } catch (error) {
+    // Handle any errors that occur during the file upload
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred while uploading the file.' });
+  }
+ 
 });
 
 module.exports = router;
