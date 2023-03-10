@@ -84,13 +84,13 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Divider } from "@mui/material";
 function QuestionList({ questions, setQuestions }) {
-    const handleOnDragEnd = (result) => {
-        if (!result.destination) return;
-        const newQuestions = Array.from(questions);
-        const [reorderedItem] = newQuestions.splice(result.source.index, 1);
-        newQuestions.splice(result.destination.index, 0, reorderedItem);
-        setQuestions(newQuestions);
-      };
+  const handleOnDragEnd = (result) => {
+    if (!result.destination) return;
+    const newQuestions = Array.from(questions);
+    const [reorderedItem] = newQuestions.splice(result.source.index, 1);
+    newQuestions.splice(result.destination.index, 0, reorderedItem);
+    setQuestions(newQuestions);
+  };
 
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -99,8 +99,8 @@ function QuestionList({ questions, setQuestions }) {
           <div {...provided.droppableProps} ref={provided.innerRef}>
             {questions.map((question, index) => (
               <Draggable
-                key={question.id}
-                draggableId={question.id}
+                key={JSON.parse(question).id}
+                draggableId={JSON.parse(question).id}
                 index={index}
               >
                 {(provided) => (
