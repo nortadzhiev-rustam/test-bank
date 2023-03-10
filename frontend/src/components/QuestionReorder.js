@@ -99,16 +99,14 @@ function QuestionList({ questions, setQuestions }) {
           <div {...provided.droppableProps} ref={provided.innerRef}>
             {questions.map((question, index) => (
               <Draggable
-                key={JSON.parse(question).id}
-                draggableId={JSON.parse(question).id}
+                key={question.id}
+                draggableId={question.id.toString()}
                 index={index}
               >
                 {(provided) => (
                   <div
                     ref={provided.innerRef}
                     {...provided.draggableProps}
-                    key={index}
-                    draggable={true}
                     style={{
                       backgroundColor: "#FFF",
                       borderRadius: 10,
@@ -123,6 +121,7 @@ function QuestionList({ questions, setQuestions }) {
                         borderTopRightRadius: 10,
                         borderTopLeftRadius: 10,
                       }}
+                      {...provided.dragHandleProps}
                     >
                       <FontAwesomeIcon icon={faBars} />
                       <span style={{ marginLeft: 10 }}>
@@ -132,10 +131,10 @@ function QuestionList({ questions, setQuestions }) {
                     <Divider />
                     <div
                       style={{ padding: 10 }}
+                      className='question-text'
                       dangerouslySetInnerHTML={{
                         __html: JSON.parse(question.question).text,
                       }}
-                      className='question-text'
                     />
                   </div>
                 )}

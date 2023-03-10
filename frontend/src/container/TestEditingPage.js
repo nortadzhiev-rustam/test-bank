@@ -181,7 +181,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
   const history = useNavigate();
   const [error, setError] = React.useState("");
   const [openEditor, setOpenEditor] = React.useState(false);
-  const [isReorder, setReorder] = React.useState(true);
+  const [isReorder, setReorder] = React.useState(false);
   const { id } = useParams();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const menuOpen = Boolean(anchorEl);
