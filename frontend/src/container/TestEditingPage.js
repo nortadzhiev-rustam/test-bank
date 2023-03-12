@@ -441,88 +441,118 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
                 zIndex: 10,
               }}
             >
-              <Stack direction='row' alignItems='center' spacing={2}>
+              {isReorder && (
                 <Stack
-                  direction='column'
-                  justifyContent='center'
-                  alignItems='flex-start'
+                  direction='row'
+                  alignItems='center'
                   width='100%'
-                  spacing={1}
+                  justifyContent='space-between'
                 >
-                  <Typography fontWeight='bold'>
-                    Teleport questions from test library
+                  <Typography variant='h6'>
+                    Drag questions to reorder
                   </Typography>
-                  <Search elevation={5}>
-                    <StyledInputBase
-                      fullWidth
-                      sx={{ fontSize: "1rem", pr: 1 }}
-                      placeholder='Search for test on any topic'
-                      inputProps={{ "aria-label": "search" }}
-                      value={search}
-                      onChange={(e) => setSearch(e.target.value)}
-                      endAdornment={
-                        <InputAdornment position='end'>
-                          <Button variant='contained' size='medium'>
-                            Search
-                          </Button>
-                        </InputAdornment>
-                      }
-                      startAdornment={
-                        <InputAdornment position='start'>
-                          <SearchIconWrapper>
-                            <SearchIcon fontSize='large' />
-                          </SearchIconWrapper>
-                        </InputAdornment>
-                      }
-                    />
-                  </Search>
+                  <Stack direction='row' alignItems='center' spacing={2}>
+                    <Button
+                      variant='contained'
+                      color='error'
+                      onClick={() => setReorder(!isReorder)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant='contained'
+                      color='success'
+                      onClick={() => setReorder(!isReorder)}
+                    >
+                      Save
+                    </Button>
+                  </Stack>
                 </Stack>
-                {questions.length !== 0 ? (
+              )}
+              {!isReorder && (
+                <Stack direction='row' alignItems='center' spacing={2}>
                   <Stack
+                    direction='column'
                     justifyContent='center'
                     alignItems='flex-start'
-                    width={250}
+                    width='100%'
                     spacing={1}
                   >
-                    <Typography fontWeight='bold'>Create test</Typography>
-                    <Button
-                      id='demo-customized-button'
-                      aria-controls={
-                        menuOpen ? "demo-customized-menu" : undefined
-                      }
-                      aria-haspopup='true'
-                      aria-expanded={menuOpen ? "true" : undefined}
-                      variant='contained'
-                      size='large'
-                      fullWidth
-                      onClick={handleClick}
-                      endIcon={<AddCircleOutline />}
-                    >
-                      Create
-                    </Button>
-                    <StyledMenu
-                      id='demo-customized-menu'
-                      MenuListProps={{
-                        "aria-labelledby": "demo-customized-button",
-                      }}
-                      anchorEl={anchorEl}
-                      open={menuOpen}
-                      onClose={handleClose}
-                    >
-                      {types.map((type, idx) => (
-                        <MenuItem
-                          key={type.type}
-                          onClick={() => handleEditorOpen(type.type)}
-                          disableRipple
-                        >
-                          {type.icon}
-                          {type.type}
-                        </MenuItem>
-                      ))}
-                    </StyledMenu>
+                    <Typography fontWeight='bold'>
+                      Teleport questions from test library
+                    </Typography>
+                    <Search elevation={5}>
+                      <StyledInputBase
+                        fullWidth
+                        sx={{ fontSize: "1rem", pr: 1 }}
+                        placeholder='Search for test on any topic'
+                        inputProps={{ "aria-label": "search" }}
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        endAdornment={
+                          <InputAdornment position='end'>
+                            <Button variant='contained' size='medium'>
+                              Search
+                            </Button>
+                          </InputAdornment>
+                        }
+                        startAdornment={
+                          <InputAdornment position='start'>
+                            <SearchIconWrapper>
+                              <SearchIcon fontSize='large' />
+                            </SearchIconWrapper>
+                          </InputAdornment>
+                        }
+                      />
+                    </Search>
                   </Stack>
-                ) : null}
-              </Stack>
+                  {questions.length !== 0 ? (
+                    <Stack
+                      justifyContent='center'
+                      alignItems='flex-start'
+                      width={250}
+                      spacing={1}
+                    >
+                      <Typography fontWeight='bold'>Create test</Typography>
+                      <Button
+                        id='demo-customized-button'
+                        aria-controls={
+                          menuOpen ? "demo-customized-menu" : undefined
+                        }
+                        aria-haspopup='true'
+                        aria-expanded={menuOpen ? "true" : undefined}
+                        variant='contained'
+                        size='large'
+                        fullWidth
+                        onClick={handleClick}
+                        endIcon={<AddCircleOutline />}
+                      >
+                        Create
+                      </Button>
+                      <StyledMenu
+                        id='demo-customized-menu'
+                        MenuListProps={{
+                          "aria-labelledby": "demo-customized-button",
+                        }}
+                        anchorEl={anchorEl}
+                        open={menuOpen}
+                        onClose={handleClose}
+                      >
+                        {types.map((type, idx) => (
+                          <MenuItem
+                            key={type.type}
+                            onClick={() => handleEditorOpen(type.type)}
+                            disableRipple
+                          >
+                            {type.icon}
+                            {type.type}
+                          </MenuItem>
+                        ))}
+                      </StyledMenu>
+                    </Stack>
+                  ) : null}
+                </Stack>
+              )}
             </Item>
 
             {questions.length === 0 ? (
@@ -633,6 +663,8 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
                         handleDelete={handleDelete}
                         handleEdit={handleEdit}
                         handleDuplicate={handleDuplicate}
+                        setReorder={setReorder}
+                        isReorder={isReorder}
                       />
                     ))}
                   </Stack>

@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Paper, Box, Checkbox, IconButton, Tooltip } from "@mui/material";
+import {
+  Paper,
+  Box,
+  Checkbox,
+  IconButton,
+  Tooltip,
+  styled,
+} from "@mui/material";
 import { tooltipClasses } from "@mui/material/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -8,48 +15,40 @@ import {
   faCheckCircle as checkCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
-
-import { styled } from "@mui/material/styles";
 import "animate.css";
 import MyEditor from "./DraftEditor";
 import formula from "../formula-fx-icon.svg";
 import FormulaEditor from "./FormulaEditor";
 
+// Generate random color for answer card background
 const getRandomColor = (index) => {
   switch (index) {
     case 1:
       return "#6a040f";
-
     case 2:
       return "#bc6c25";
-
     case 3:
       return "#606c38";
-
     case 4:
       return "#457b9d";
-
     case 5:
       return "#bb3e03";
-
     default:
       return "#006064";
   }
 };
 
 const AnswersCard = (props) => {
-  // const [image, setImage] = React.useState('');
-  //const [answer, setAnswer] = useState([]);
   const [equation, setEquation] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [toEdit, setToEdit] = useState("");
-  // const [tempImageURL, setTempImageURL] = useState("");
   const [isEditing, setEditing] = useState(false);
   const [isClosing, setClosing] = useState(false);
   const [isDeleted, setDeleted] = useState(false);
   const [content, setContent] = useState("");
   const [isHover, setHover] = useState(false);
 
+  // Create Bootstrap tooltip with MUI
   const BootstrapTooltip = styled(({ className, ...props }) => (
     <Tooltip {...props} arrow classes={{ popper: className }} />
   ))(({ theme }) => ({
@@ -60,6 +59,7 @@ const AnswersCard = (props) => {
       backgroundColor: content ? "#000000" : "#d50000",
     },
   }));
+
   const BootstrapTooltip2 = styled(({ className, ...props }) => (
     <Tooltip {...props} arrow classes={{ popper: className }} />
   ))(({ theme }) => ({
@@ -70,12 +70,15 @@ const AnswersCard = (props) => {
       backgroundColor: props.counter > 2 ? "#000000" : "#d50000",
     },
   }));
+
+  // Open answer card and reset its content
   const handleOpen = () => {
     setClosing(false);
     setIsOpen(true);
     setToEdit("");
   };
 
+  // Close answer card after a delay to animate close
   const handleClose = () => {
     setClosing(true);
     setTimeout(() => {
@@ -83,27 +86,35 @@ const AnswersCard = (props) => {
     }, 1500);
   };
 
-  //method for watching content change and settitng it to props.answer
+  // Watch content change and update parent state
   const handleContentChange = (content) => {
     setContent(content);
   };
-  const { addAnswer, option, answers, correctAnswer, editing } = props;
+
+  const {
+    addAnswer,
+    option,
+    answers,
+    correctAnswer,
+    editing,
+  
+  } = props;
 
   useEffect(() => {
+    // Load content from parent's state when editing
     if (editing && answers) {
       answers
         .filter((item) => item.key === option.option)
         .map((item) => setContent(item.content));
     }
-   
-    // eslint-disable-next-line
   }, [editing, answers]);
 
   useEffect(() => {
+    // Update parent's state when content changes
     if (content !== "") {
       addAnswer({ key: option.option, content });
     }
-    
+
     // eslint-disable-next-line
   }, [content]);
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2/";
 import { Paper, Typography, Button, Box, Divider } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFeatherPointed } from "@fortawesome/free-solid-svg-icons";
+import { faFeatherPointed, faSort } from "@fortawesome/free-solid-svg-icons";
 import { BlockMath } from "react-katex";
 import "katex/dist/katex.min.css";
 import { Stack } from "@mui/system";
@@ -15,7 +15,7 @@ import {
   Mode,
   Subject,
 } from "@mui/icons-material";
-import './QuestionView.css'
+import "./QuestionView.css";
 const IconSelector = ({ type }) => {
   if (type === "Multiple choice")
     return <CheckCircleRounded color='inherit' fontSize='small' />;
@@ -33,6 +33,8 @@ export default function QuestionView({
   handleDelete,
   handleEdit,
   handleDuplicate,
+  setReorder,
+  isReorder,
 }) {
   const { image, question, options, type, mark, correctAnswer, id, matches } =
     data;
@@ -67,6 +69,14 @@ export default function QuestionView({
             mx={1}
           >
             <Stack direction='row' spacing={1}>
+              <Button
+                variant='contained'
+                color='inherit'
+                sx={{ minWidth: 15, maxWidth: 20 }}
+                onClick={() => setReorder(!isReorder)}
+              >
+                <FontAwesomeIcon icon={faSort} />
+              </Button>
               <Box
                 width={25}
                 height={25}
@@ -183,7 +193,6 @@ export default function QuestionView({
                     //   {option.content.text + " "}
                     // </Typography>
                     <div
-                    
                       dangerouslySetInnerHTML={createMarkup(
                         option.content.text
                       )}
