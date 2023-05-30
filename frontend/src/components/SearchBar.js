@@ -1,55 +1,108 @@
 import { useState, useEffect } from "react";
-import { InputBase, InputAdornment,  Paper,Box, Stack, List, ListItem, ListItemText } from "@mui/material";
+import {
+  InputBase,
+  InputAdornment,
+  Paper,
+  Box,
+  Stack,
+  List,
+  ListItem,
+  Typography,
+  Divider,
+  ListItemText,
+  ListItemButton,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { ChevronRightTwoTone } from "@mui/icons-material";
 import { styled, alpha } from "@mui/material/styles";
+import axios from "axios";
 const MAX_RECENT_SEARCHES = 10;
 
 const Search = styled(Paper)(({ theme }) => ({
-    position: "relative",
-    height: 70,
-  
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: "100%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 15,
-  }));
-  
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "#006064",
-  }));
-  
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      width: "100%",
-    },
-  }));
-  
+  position: "relative",
+  height: 70,
 
-function SearchBar({name, ref,open, setOpen, setFocused, setName, focused}) {
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  borderRadius: 15,
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: "#006064",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(1)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+  },
+}));
+
+const topics = [
+  "Integers",
+  "Fractions",
+  "Decimals",
+  "Algebra",
+  "Geometry",
+  "Genetics",
+  "Micro Biology",
+  "Artificial Intelligence",
+  "Python",
+  "Java",
+];
+
+function SearchBar({
+  name,
+  innerRef,
+  open,
+  setOpen,
+  setFocused,
+  setName,
+  focused,
+}) {
   const [searchQuery, setSearchQuery] = useState("");
   const [recentSearches, setRecentSearches] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [questions, setQuestions] = useState([]);
+  const [randomElements, setRandomElements] = useState([]);
 
+  useEffect(() => {
+    const getRandomElements = (arr, numElements) => {
+      const shuffledArray = arr.sort(() => 0.5 - Math.random());
+      return shuffledArray.slice(0, numElements);
+    };
+
+    const currentDate = new Date();
+    const dayOfMonth = currentDate.getDate();
+
+    Math.seed = dayOfMonth;
+    Math.random = function () {
+      Math.seed = (Math.seed * 9301 + 49297) % 233280;
+      return Math.seed / 233280;
+    };
+
+    const randomElements = getRandomElements(topics, 4);
+    setRandomElements(randomElements);
+  }, [topics]);
   // Retrieve the list of recent searches from local storage on mount
   useEffect(() => {
     const storedSearches = JSON.parse(localStorage.getItem("recentSearches"));
@@ -60,7 +113,10 @@ function SearchBar({name, ref,open, setOpen, setFocused, setName, focused}) {
   function handleSearch(event) {
     event.preventDefault();
     if (searchQuery.trim() !== "") {
-      const updatedSearches = [searchQuery, ...recentSearches.slice(0, MAX_RECENT_SEARCHES - 1)];
+      const updatedSearches = [
+        searchQuery,
+        ...recentSearches.slice(0, MAX_RECENT_SEARCHES - 1),
+      ];
       setRecentSearches(updatedSearches);
       localStorage.setItem("recentSearches", JSON.stringify(updatedSearches));
     }
@@ -74,93 +130,137 @@ function SearchBar({name, ref,open, setOpen, setFocused, setName, focused}) {
   // Display the list of recent searches when the user clicks on the search bar
   function handleSearchBarClick(event) {
     setAnchorEl(anchorEl ? null : event.currentTarget);
+    setOpen(true);
   }
+
+  useEffect(() => {
+    axios
+      .get("https://backend.rustamnortadzhiev.com/api/v1/questions")
+      .then((res) => {
+        setQuestions(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const searchInArray = (array, searchTerm) => {
+    searchTerm = searchTerm.toLowerCase();
+
+    return array.filter((obj) => {
+      return Object.values(obj).some((value) => {
+        if (typeof value === "string") {
+          return value.toLowerCase().includes(searchTerm);
+        }
+        return false;
+      });
+    });
+  };
 
   return (
     <Box width='100%' display='flex' justifyContent='center'>
-    <Stack
-      width={{ xs: "85%", md: "65%" }}
-      direction='column'
-      justifyContent='center'
-      alignItems='center'
-    >
-      <Search
-        sx={{ marginTop: 3, marginLeft: 1 }}
-        elevation={5}
-        onBlur={() => {
-          setFocused(false);
-          setOpen(false);
-          setName("");
-        }}
+      <Stack
+        width={{ xs: "85%", md: "65%" }}
+        direction='column'
+        justifyContent='center'
+        alignItems='center'
       >
-        <StyledInputBase
-          ref={ref}
-          onFocus={() => setFocused(true)}
-          onBlur={() => (open ? setFocused(false) : null)}
-          fullWidth
-          sx={{ fontSize: { xs: "1rem", md: "1.3rem" } }}
-          placeholder='Search for test on any topic'
-          inputProps={{ "aria-label": "search" }}
-          endAdornment={
-            <InputAdornment
-              position='end'
-              sx={{
-                display: { xs: "none", md: "flex" },
-                padding: "10px",
-                cursor: "pointer",
-              }}
-            >
-              <Box
+        <Search
+          sx={{ marginTop: 3, marginLeft: 1 }}
+          elevation={5}
+          onBlur={() => {
+            setFocused(false);
+            setOpen(false);
+            setName("");
+          }}
+        >
+          <StyledInputBase
+            inputRef={innerRef}
+            onFocus={() => setFocused(true)}
+            onBlur={() => (open ? setFocused(false) : null)}
+            fullWidth
+            sx={{ fontSize: { xs: "1rem", md: "1.3rem" } }}
+            placeholder='Search for test on any topic'
+            inputProps={{ "aria-label": "search" }}
+            value={searchQuery}
+            onChange={handleChange}
+            onClick={handleSearchBarClick}
+            endAdornment={
+              <InputAdornment
+                position='end'
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginRight: 1,
+                  display: { xs: "none", md: "flex" },
+                  padding: "10px",
+                  cursor: "pointer",
                 }}
               >
-                <ChevronRightTwoTone fontSize='large' />
-              </Box>
-            </InputAdornment>
-          }
-          startAdornment={
-            name === "" ? (
-              <InputAdornment position='start'>
-                <SearchIconWrapper>
-                  <SearchIcon fontSize='large' />
-                </SearchIconWrapper>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginRight: 1,
+                  }}
+                >
+                  <ChevronRightTwoTone fontSize='large' />
+                </Box>
               </InputAdornment>
-            ) : (
-              <Box
-                ml={2}
-                bgcolor='#9a031e'
-                p={1}
-                color='white'
-                borderRadius={3}
-                width={250}
-                justifyContent='center'
-                display='flex'
-              >
-                {name}
-              </Box>
-            )
-          }
-        />
-      </Search>
+            }
+            startAdornment={
+              name !== "" && (
+                <Box
+                  ml={2}
+                  bgcolor='#9a031e'
+                  p={1}
+                  color='white'
+                  borderRadius={3}
+                  width={250}
+                  justifyContent='center'
+                  display='flex'
+                >
+                  {name}
+                </Box>
+              )
+            }
+          />
+        </Search>
 
-      {open || focused ? (
-        <Paper
-          onClick={() => setFocused(true)}
-          elevation={10}
-          sx={{
-            mt: 2,
-            marginRight: 1,
-            width: "100%",
-            height: "200px",
-            borderRadius: 3,
-          }}
-        ></Paper>
-      ) : null}
-    </Stack>
-  </Box>
+        {open ? (
+          <Paper
+            onClick={() => setFocused(true)}
+            elevation={10}
+            sx={{
+              mt: 2,
+              marginRight: 1,
+              width: "100%",
+              minHeight: "200px",
+              borderRadius: 3,
+            }}
+          >
+            {searchQuery.length < 3 && (
+              <List dense>
+                <ListItem>
+                  <Typography variant='h5' color='initial' fontWeight='bold'>
+                    Popular Topics
+                  </Typography>
+                </ListItem>
+                <Divider component='li' sx={{ marginBlock: 1 }} />
+                {randomElements.map((topic, index) => (
+                  <ListItemButton
+                    key={index}
+                    onClick={() => {
+                      setName(topic);
+                      setOpen(false);
+                    }}
+                  >
+                    <ListItemText primary={topic} />
+                  </ListItemButton>
+                ))}
+              </List>
+            )}
+          </Paper>
+        ) : null}
+      </Stack>
+    </Box>
   );
 }
 

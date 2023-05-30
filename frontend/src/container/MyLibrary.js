@@ -405,7 +405,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
           )}
         </Stack>
       </Grid>
-      <Grid xs={12} lg={7} xl={8} ml={{ xs: 0, lg: 5 }} height='100%'>
+      <Grid xs={12} lg={7} xl={8} ml={{ xs: 0, lg: 5, xl: 10 }} height='100%'>
         {isLoading && (
           <Stack mt={10}>
             {Array(5)

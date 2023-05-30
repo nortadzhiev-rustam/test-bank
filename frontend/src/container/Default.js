@@ -20,7 +20,7 @@ const Default = ({ setShowNav, showNav }) => {
   const [name, setName] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const [focused, setFocused] = React.useState(false);
-  const [questions, setQuestions] = React.useState([]);
+  
   const ref = useRef(null);
 
   React.useEffect(() => {
@@ -39,20 +39,11 @@ const Default = ({ setShowNav, showNav }) => {
   const handleClick = (name) => {
     ref.current.focus();
     setName(name);
-    handleToggle();
+    
     console.log(ref.current);
   };
 
-  React.useEffect(() => {
-    axios
-      .get("https://backend.rustamnortadzhiev.com/api/v1/questions")
-      .then((res) => {
-        setQuestions(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  
 
   React.useEffect(() => {
     document.addEventListener("keydown", (e) => {
@@ -62,6 +53,8 @@ const Default = ({ setShowNav, showNav }) => {
       }
     });
   }, []);
+
+  
 
   return (
     <Box
@@ -82,11 +75,11 @@ const Default = ({ setShowNav, showNav }) => {
           setFocused={setFocused}
           open={open}
           setOpen={setOpen}
-          ref={ref}
+          innerRef={ref}
           focused={focused}
         />
       }
-      {!open && !focused && (
+      {!open && (
         <Stack
           className='department-stack'
           overflow='scroll'
