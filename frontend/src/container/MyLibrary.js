@@ -419,6 +419,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
                   borderRadius={1}
                   key={idx}
                   mb={2}
+                  ml={3}
                 >
                   <Stack width='100%' direction='row' spacing={1}>
                     <Stack spacing={1}>

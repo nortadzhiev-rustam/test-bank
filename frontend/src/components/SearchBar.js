@@ -102,7 +102,7 @@ function SearchBar({
 
     const randomElements = getRandomElements(topics, 4);
     setRandomElements(randomElements);
-  }, [topics]);
+  }, []);
   // Retrieve the list of recent searches from local storage on mount
   useEffect(() => {
     const storedSearches = JSON.parse(localStorage.getItem("recentSearches"));
@@ -144,16 +144,25 @@ function SearchBar({
       });
   }, []);
 
-  const searchInArray = (array, searchTerm) => {
-    searchTerm = searchTerm.toLowerCase();
+  const filteredData = questions.filter((obj) => {
+    for (const key in obj) {
+      const value = obj[key];
+      if (typeof value === "string" && value.includes(searchQuery)) {
+        return true;
+      }
+    }
+    return false;
+  });
 
-    return array.filter((obj) => {
-      return Object.values(obj).some((value) => {
-        if (typeof value === "string") {
-          return value.toLowerCase().includes(searchTerm);
-        }
-        return false;
-      });
+  const renderBoldText = (text) => {
+    const words = text.split(" ");
+    return words.map((word, index) => {
+      const isMatch = word.toLowerCase().includes(searchQuery.toLowerCase());
+      return isMatch ? (
+        <strong key={index}>{word} </strong>
+      ) : (
+        <span key={index}>{word} </span>
+      );
     });
   };
 
@@ -229,10 +238,10 @@ function SearchBar({
             onClick={() => setFocused(true)}
             elevation={10}
             sx={{
-              mt: 2,
+              mt: 1,
               marginRight: 1,
               width: "100%",
-              minHeight: "200px",
+
               borderRadius: 3,
             }}
           >
@@ -255,6 +264,32 @@ function SearchBar({
                     <ListItemText primary={topic} />
                   </ListItemButton>
                 ))}
+              </List>
+            )}
+            {searchQuery.length >= 3 && (
+              <List dense sx={{ maxHeight: 250, overflowY: "scroll" }}>
+                
+                  {filteredData.map((question) => (
+                    <ListItemButton
+                      sx={{
+                        "&:hover": {
+                          backgroundColor: "#4db6ac", // Customize the hover background color here
+                          opacity: 0.5,
+                        },
+                      }}
+                      key={question.id}
+                      onClick={() => {
+                        setName(question.title);
+                        setOpen(false);
+                      }}
+                    >
+                      <p>
+                        {renderBoldText(question.title || JSON.parse(question.question).text.substr(0, 60)+"...")
+                          }
+                      </p>
+                    </ListItemButton>
+                  ))}
+                
               </List>
             )}
           </Paper>
