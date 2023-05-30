@@ -60,15 +60,14 @@ export default function TestWindow({
     if (showNav === false) setShowNav(true);
   }, [showNav, setShowNav]);
 
-  
   useEffect(() => {
     const listenToScroll = () => {
       let heightToHideFrom = 50;
       const winScroll =
         document.body.scrollTop || document.documentElement.scrollTop;
-  
+
       if (winScroll > heightToHideFrom) {
-         setHide(true);
+        setHide(true);
       } else {
         setHide(false);
       }
@@ -272,35 +271,81 @@ export default function TestWindow({
               alignItems='center'
               justifyContent='space-between'
             >
-              {user !== undefined && (
-                <Stack direction='row' alignItems='center'>
-                  <Avatar
-                    sx={{
-                      backgroundColor: "red",
-                      mr: 1,
-                      width: 30,
-                      height: 30,
-                      fontSize: 14,
-                    }}
-                  >
-                    {user.firstName.charAt(0)}
-                  </Avatar>
-                  <Stack
-                    direction='row'
-                    alignItems='center'
-                    justifyContent='center'
-                    spacing={1}
-                  >
-                    <Typography fontSize={{ xs: 10, md: 14 }} variant='body1'>
-                      {user.firstName + " " + user.lastName}
-                    </Typography>
-                    <FontAwesomeIcon fontSize={5} icon={faCircle} />
-                    <Typography fontSize={{ xs: 10, md: 12 }} variant='caption'>
-                      {timeSince(new Date(testData.createdAt))}
-                    </Typography>
+              {user !== undefined &&
+                (!hide ? (
+                  <Stack direction='row' alignItems='center'>
+                    <Avatar
+                      sx={{
+                        backgroundColor: "red",
+                        mr: 1,
+                        width: 30,
+                        height: 30,
+                        fontSize: 14,
+                      }}
+                    >
+                      {user.firstName.charAt(0)}
+                    </Avatar>
+                    <Stack
+                      direction='row'
+                      alignItems='center'
+                      justifyContent='center'
+                      spacing={1}
+                    >
+                      <Typography fontSize={{ xs: 10, md: 14 }} variant='body1'>
+                        {user.firstName + " " + user.lastName}
+                      </Typography>
+                      <FontAwesomeIcon fontSize={5} icon={faCircle} />
+                      <Typography
+                        fontSize={{ xs: 10, md: 12 }}
+                        variant='caption'
+                      >
+                        {timeSince(new Date(testData.createdAt))}
+                      </Typography>
+                    </Stack>
                   </Stack>
-                </Stack>
-              )}
+                ) : (
+                  <Stack direction='row' alignItems='baseline' spacing={1} >
+                    <Typography
+                      variant={{ xs: "h6", md: "h5" }}
+                      fontWeight='bold'
+                    >
+                      {testData.name}
+                    </Typography>
+                    <Box
+                      display='flex'
+                      flexDirection='row'
+                      alignItems='center'
+                      color='#666666'
+                    >
+                      <FontAwesomeIcon size='xs' icon={faGraduationCap} />
+                      <Typography fontSize={{ xs: "12px" }} sx={{ ml: 1 }}>
+                        {testData.grade}
+                        {testData.garde > 3
+                          ? "th Grade"
+                          : testData.grade === 1
+                          ? "st Grade"
+                          : testData.grade === 2
+                          ? "nd Grade"
+                          : testData.grade === 3
+                          ? "rd Grade"
+                          : "th Grade"}
+                      </Typography>
+                    </Box>
+                    <Box
+                      display='flex'
+                      flexDirection='row'
+                      alignItems='center'
+                      color='#666666'
+                    >
+                      <FontAwesomeIcon size='xs' icon={faBook} />
+                      {testData.department !== null && (
+                        <Typography fontSize={{ xs: "12px" }} sx={{ ml: 1 }}>
+                          {testData.department.name}
+                        </Typography>
+                      )}
+                    </Box>
+                  </Stack>
+                ))}
               <Stack
                 direction='row'
                 alignItems='center'
@@ -325,14 +370,6 @@ export default function TestWindow({
                 >
                   Edit
                 </Button>
-                <Button
-                  size='small'
-                  startIcon={<Folder />}
-                  variant='contained'
-                  color='inherit'
-                >
-                  Save
-                </Button>
               </Stack>
               <Stack
                 direction='row'
@@ -350,9 +387,7 @@ export default function TestWindow({
                 <IconButton size='small' color='secondary' onClick={handleEdit}>
                   <Mode fontSize='small' />
                 </IconButton>
-                <IconButton size='small' color='secondary'>
-                  <Folder fontSize='small' />
-                </IconButton>
+               
               </Stack>
             </Stack>
           </Paper>

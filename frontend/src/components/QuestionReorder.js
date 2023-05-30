@@ -78,7 +78,7 @@
 
 // export default QuestionList;
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -95,6 +95,8 @@ function QuestionList({ questions, setQuestions }) {
     newQuestions.splice(result.destination.index, 0, reorderedItem);
     setQuestions(newQuestions);
   };
+
+  
 
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>

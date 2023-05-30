@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
-
 import { Grid, Box, Alert } from "@mui/material";
 import "animate.css";
-import GeneratePanel from "../components/GeneratePanel";
-import InserPanel from "../components/InsertPanel";
 import { useSelector } from "react-redux";
 import InsertWindow from "../container/TestInsertWindow";
 import GenerateWindow from "../container/TestGenerateWindow";
 import { styled } from "@mui/styles";
-import Switcher from "../components/Switcher";
-import { Navigate, useParams } from "react-router-dom";
+
 import TestWindow from "./TestWindow";
 
 const BoxContainer = styled(Box)({
@@ -23,7 +19,7 @@ const BoxContainer = styled(Box)({
 
 const Home = (props) => {
   let { swt, id } = useParams();
-  const isFull = useSelector((state) => state.questionsType.isFull);
+
   const open = useSelector((state) => state.questionsType.isOpen);
   const isVisible = useSelector((state) => state.questionsType.isVisible);
   const [data, setData] = useState([]);
@@ -88,8 +84,7 @@ const Home = (props) => {
         </Alert>
       )}
       <Grid container justifyContent={isVisible && "space-between"} spacing={1}>
-        
-        <Grid item xs={12} >
+        <Grid item xs={12}>
           {isVisible && openWindow()}
           {openTest ||
           (!isVisible && id !== "" && id !== undefined && id !== null) ? (

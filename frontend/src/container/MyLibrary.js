@@ -447,7 +447,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
 
         {!isLoading && (
           <Stack
-            width='100%'
+            width='95%'
             height='100%'
             spacing={2}
             ml={{ xs: 0, md: "30px" }}
