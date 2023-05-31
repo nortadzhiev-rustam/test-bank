@@ -82,7 +82,7 @@ function SearchBar({
   const [searchQuery, setSearchQuery] = useState("");
   const [recentSearches, setRecentSearches] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [questions, setQuestions] = useState([]);
+  const [tests, setTests] = useState([]);
   const [randomElements, setRandomElements] = useState([]);
 
   useEffect(() => {
@@ -135,24 +135,20 @@ function SearchBar({
 
   useEffect(() => {
     axios
-      .get("https://backend.rustamnortadzhiev.com/api/v1/questions")
+      .get("https://backend.rustamnortadzhiev.com/api/v1/tests")
       .then((res) => {
-        setQuestions(res.data);
+        setTests(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
-  const filteredData = questions.filter((obj) => {
-    for (const key in obj) {
-      const value = obj[key];
-      if (typeof value === "string" && value.includes(searchQuery)) {
-        return true;
-      }
-    }
-    return false;
-  });
+  const filterArrayByName = (array, input) => {
+    return array.filter((obj) =>
+      obj.name.toLowerCase().includes(input.toLowerCase())
+    );
+  };
 
   const renderBoldText = (text) => {
     const words = text.split(" ");
@@ -257,7 +253,6 @@ function SearchBar({
                   <ListItemButton
                     key={index}
                     onClick={() => {
-                      setName(topic);
                       setOpen(false);
                     }}
                   >
@@ -266,32 +261,34 @@ function SearchBar({
                 ))}
               </List>
             )}
-            {searchQuery.length >= 3 && (
-              <List dense sx={{ maxHeight: 250, overflowY: "scroll" }}>
-                
-                  {filteredData.map((question) => (
+            {searchQuery.length >= 3 &&
+              filterArrayByName(tests, searchQuery).length > 0 && (
+                <List
+                  dense={true}
+                  sx={{
+                    maxHeight: 250,
+                    overflowY: "hidden",
+                    paddingBlock: 1.5,
+                  }}
+                >
+                  {filterArrayByName(tests, searchQuery).map((test) => (
                     <ListItemButton
                       sx={{
                         "&:hover": {
-                          backgroundColor: "#4db6ac", // Customize the hover background color here
-                          opacity: 0.5,
+                          backgroundColor: "rgba(77,182,172,0.3)", // Customize the hover background color here
+                          color: "#00796b",
                         },
                       }}
-                      key={question.id}
+                      key={test.id}
                       onClick={() => {
-                        setName(question.title);
                         setOpen(false);
                       }}
                     >
-                      <p>
-                        {renderBoldText(question.title || JSON.parse(question.question).text.substr(0, 60)+"...")
-                          }
-                      </p>
+                      <ListItemText>{renderBoldText(test.name)}</ListItemText>
                     </ListItemButton>
                   ))}
-                
-              </List>
-            )}
+                </List>
+              )}
           </Paper>
         ) : null}
       </Stack>

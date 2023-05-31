@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 import TestEditingPage from "../container/TestEditingPage";
 import TestWindow from "../container/TestWindow";
 import PrintPage from "../container/PrintPage";
-
+import SearchPage from '../container/SearchByTerm';
 const Routess = () => {
   const user = useSelector((state) => state.user.user.user);
   const [showNav, setShowNav] = React.useState(true);
@@ -33,6 +33,10 @@ const Routess = () => {
           <Route
             path='/admin/private'
             element={<MyLibrary setShowNav={setShowNav} showNav={showNav} />}
+          />
+          <Route
+            path='/admin/search/:name'
+            element={<SearchPage setShowNav={setShowNav} showNav={showNav} />}
           />
           <Route
             exact
