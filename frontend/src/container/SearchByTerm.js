@@ -12,23 +12,43 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 const SearchPage = ({ showNav, setShowNav }) => {
   const [state, setState] = useState({
     gilad: true,
     jason: false,
     antoine: false,
+    
   });
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [tests, setTests] = useState([]);
+  const navigate = useNavigate();
+  const { name } = useParams();
+
+  useEffect(() => {
+    axios
+      .get("https://backend.rustamnortadzhiev.com/api/v1/tests")
+      .then((res) => {
+        setTests(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  const handleExpandChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
   const handleChange = (event) => {
     setState({
       ...state,
       [event.target.name]: event.target.checked,
-      
     });
     setExpanded(true);
   };
   useEffect(() => {
-    setExpanded(true);
+    setExpanded("panel1");
   }, []);
   const { gilad, jason, antoine } = state;
 
@@ -55,7 +75,10 @@ const SearchPage = ({ showNav, setShowNav }) => {
             Filters
           </Typography>
           <Divider sx={{ marginBottom: 2 }} fullWidth />
-          <Accordion expanded={expanded} onClick={() => setExpanded(!expanded)}>
+          <Accordion
+            expanded={expanded === "panel1"}
+            onChange={handleExpandChange("panel1")}
+          >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls='panel1a-content'
@@ -108,51 +131,61 @@ const SearchPage = ({ showNav, setShowNav }) => {
               </FormGroup>
             </AccordionDetails>
           </Accordion>
-          <Accordion>
+
+          <Accordion
+            expanded={expanded === "panel2"}
+            onChange={handleExpandChange("panel2")}
+          >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              aria-controls='panel2a-content'
-              id='panel2a-header'
+              aria-controls='panel2bh-content'
+              id='panel2bh-header'
             >
-              <Typography>Question types</Typography>
+              <Typography sx={{ flexShrink: 0 }}>Type of questions</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                eget.
+                Donec placerat, lectus sed mattis semper, neque lectus feugiat
+                lectus, varius pulvinar diam eros in elit. Pellentesque
+                convallis laoreet laoreet.
               </Typography>
             </AccordionDetails>
           </Accordion>
-          <Accordion>
+          <Accordion
+            expanded={expanded === "panel3"}
+            onChange={handleExpandChange("panel3")}
+          >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              aria-controls='panel1a-content'
-              id='panel1a-header'
+              aria-controls='panel3bh-content'
+              id='panel3bh-header'
             >
-              <Typography>Subjects</Typography>
+              <Typography sx={{ flexShrink: 0 }}>Subjects</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                eget.
+                Nunc vitae orci ultricies, auctor nunc in, volutpat nisl.
+                Integer sit amet egestas eros, vitae egestas augue. Duis vel est
+                augue.
               </Typography>
             </AccordionDetails>
           </Accordion>
-          <Accordion>
+          <Accordion
+            expanded={expanded === "panel4"}
+            onChange={handleExpandChange("panel4")}
+          >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              aria-controls='panel2a-content'
-              id='panel2a-header'
+              aria-controls='panel4bh-content'
+              id='panel4bh-header'
             >
-              <Typography>Grades</Typography>
+              <Typography sx={{ flexShrink: 0 }}>Grades</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                eget.
+                Nunc vitae orci ultricies, auctor nunc in, volutpat nisl.
+                Integer sit amet egestas eros, vitae egestas augue. Duis vel est
+                augue.
               </Typography>
             </AccordionDetails>
           </Accordion>

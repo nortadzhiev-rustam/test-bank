@@ -1,5 +1,5 @@
 import React from "react";
-import { styled, alpha } from "@mui/material/styles";
+import { styled, alpha, useTheme } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -12,7 +12,6 @@ import MenuItem from "@mui/material/MenuItem";
 import {
   InputAdornment,
   Divider,
-  Drawer,
   Button,
   Avatar,
   Stack,
@@ -29,6 +28,7 @@ import {
   BottomNavigation,
   BottomNavigationAction,
   Paper,
+  Drawer,
 } from "@mui/material";
 import Slide from "@mui/material/Slide";
 import SearchIcon from "@mui/icons-material/Search";
@@ -43,9 +43,10 @@ import {
   MeetingRoom,
   Settings,
   AddCircle,
+  ChevronLeftRounded,
 } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
-
+import MuiDrawer from "@mui/material/Drawer";
 import { useSelector, useDispatch } from "react-redux";
 import logo from "../logo.svg";
 import { withRouter } from "../components/withRouter.js";
@@ -83,6 +84,27 @@ const Search = styled("div")(({ theme }) => ({
   alignItems: "center",
 }));
 
+const openedMixin = (theme) => ({
+  width: drawerWidth,
+  transition: theme.transitions.create("width", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: "hidden",
+});
+
+const closedMixin = (theme) => ({
+  transition: theme.transitions.create("width", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: "hidden",
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up("sm")]: {
+    width: `calc(${theme.spacing(9)} + 1px)`,
+  },
+});
+
 const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: "100%",
@@ -110,6 +132,23 @@ const AppBar = styled(MuiAppBar, {
     }),
   }),
   backgroundColor: "#006064",
+}));
+
+const MiniDrawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
+  ...(open && {
+    ...openedMixin(theme),
+    "& .MuiDrawer-paper": openedMixin(theme),
+  }),
+  ...(!open && {
+    ...closedMixin(theme),
+    "& .MuiDrawer-paper": closedMixin(theme),
+  }),
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -172,7 +211,7 @@ const list = [
   },
 ];
 
-const drawerWidth = 250;
+const drawerWidth = 240;
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />;
 });
@@ -182,10 +221,10 @@ const NavBar = () => {
   const [option, setOption] = React.useState("Test Library");
   const [isOpen, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("explore");
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const user = useSelector((state) => state.user.user.user);
-  
-
+  const theme = useTheme();
   const [search, setSearch] = React.useState();
   const dispatch = useDispatch();
   const history = useNavigate();
@@ -193,12 +232,15 @@ const NavBar = () => {
   const { id } = useParams();
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+    setDrawerOpen(!drawerOpen);
   };
 
   const handleDialogOpen = () => {
     setOpen(!isOpen);
   };
-
+  React.useEffect(() => {
+    setDrawerOpen(true);
+  }, []);
   const handleLogOut = async () => {
     dispatch(logout());
     const res = await axios.get(
@@ -225,16 +267,14 @@ const NavBar = () => {
   }, [location.search]);
 
   const getDepartmentName = () => {
-    
-
     if (user.department === undefined) {
-      return ' '
+      return " ";
     } else return user.department.name;
   };
 
   const drawer = (
-    <div style={{ width: "100%", position: "absolute" }}>
-      <Toolbar sx={{ backgroundColor: "#15616d", position: "sticky" }}>
+    <>
+      <Toolbar>
         <div
           style={{
             width: "100%",
@@ -250,14 +290,16 @@ const NavBar = () => {
             variant='h6'
             noWrap
             component='div'
-            color='white'
+            color='#15616d'
+            fontWeight={900}
           >
             Test Generator
           </Typography>
         </div>
       </Toolbar>
       <Divider />
-      {user && (
+
+      {user && drawerOpen && (
         <Toolbar disableGutters>
           <Avatar sx={{ bgcolor: "red", mx: 1 }}>
             {user.firstName.charAt(0) + user.lastName.charAt(0)}
@@ -280,21 +322,20 @@ const NavBar = () => {
       <Toolbar disableGutters>
         <Button
           sx={{
-            paddingX: 1,
-            mx: 1,
+            paddingX: drawerOpen ? 1 : 0,
+            mx: 0.5,
             bgcolor: "#006064",
             "&:hover": {
               bgcolor: "#15616d",
             },
-            justifyContent: "flex-start",
           }}
           size='large'
-          fullWidth
+          fullWidth={drawerOpen || mobileOpen}
           variant='contained'
           onClick={handleDialogOpen}
         >
-          <AddCircleOutlineIcon sx={{ mr: 1 }} />
-          Create
+          <AddCircleOutlineIcon sx={{ mr: drawerOpen ? 1 : 0 }} />
+          {drawerOpen || mobileOpen ? "Create Test" : ""}
         </Button>
       </Toolbar>
       <Divider sx={{ mb: 2 }} />
@@ -302,6 +343,7 @@ const NavBar = () => {
         direction='column'
         justifyContent='space-between'
         overflow='scrroll'
+        height='100%'
       >
         <Toolbar
           disableGutters
@@ -316,6 +358,7 @@ const NavBar = () => {
               <ListItem
                 sx={{
                   width: "100%",
+
                   borderRightWidth: 5,
                   borderRightColor: "#006064",
                   borderRightStyle:
@@ -339,6 +382,7 @@ const NavBar = () => {
                 disablePadding
               >
                 <ListItemButton
+                  sx={{ pl: drawerOpen ? 2 : 3 }}
                   onClick={() => handleNavigation(li.id, li.path)}
                 >
                   <ListItemIcon
@@ -348,9 +392,11 @@ const NavBar = () => {
                   >
                     {li.icon}
                   </ListItemIcon>
-                  <ListItemText>
-                    <Typography fontWeight='bold'>{li.text}</Typography>
-                  </ListItemText>
+                  {(drawerOpen || mobileOpen) && (
+                    <ListItemText>
+                      <Typography fontWeight='bold'>{li.text}</Typography>
+                    </ListItemText>
+                  )}
                 </ListItemButton>
               </ListItem>
             ))}
@@ -364,7 +410,10 @@ const NavBar = () => {
               }}
               disablePadding
             >
-              <ListItemButton onClick={handleLogOut}>
+              <ListItemButton
+                sx={{ pl: drawerOpen ? 2 : 3 }}
+                onClick={handleLogOut}
+              >
                 <ListItemIcon>
                   <Logout />
                 </ListItemIcon>
@@ -376,7 +425,7 @@ const NavBar = () => {
           </List>
         </Toolbar>
       </Stack>
-    </div>
+    </>
   );
 
   return (
@@ -396,16 +445,9 @@ const NavBar = () => {
       </Dialog>
       <AppBar
         position='fixed'
-        sx={{
-          width:
-            isLoggedIn && location.pathname !== `/test/editor/${id}/edit`
-              ? { lg: `calc(100% - ${drawerWidth}px)` }
-              : "100%",
-          ml: isLoggedIn &&
-            location.pathname !== `/test/editor/${id}/edit` && {
-              lg: `${drawerWidth}px`,
-            },
-        }}
+        // sx={{
+        //   zIndex: (theme) => theme.zIndex.drawer + 1,
+        // }}
         color='secondary'
         elevation={10}
       >
@@ -416,10 +458,25 @@ const NavBar = () => {
               aria-label='open drawer'
               edge='start'
               onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { lg: "none" } }}
+              sx={{
+                mr: 2,
+              }}
             >
               <MenuIcon />
             </IconButton>
+          )}
+          {isLoggedIn && (
+            <Divider
+              orientation='vertical'
+              flexItem
+              variant='middle'
+              sx={{
+                bgcolor: "#fff",
+                mr: 2,
+
+                display: { xs: "none", lg: "flex" },
+              }}
+            />
           )}
           {!isLoggedIn && (
             <div
@@ -442,12 +499,15 @@ const NavBar = () => {
               </Typography>
             </div>
           )}
+
           {isLoggedIn ? (
             <Box
               sx={{
                 width: "100%",
                 display: { xs: "none", md: "flex" },
                 alignItems: "center",
+                ml: drawerOpen ? 21 : 0,
+                transition: "all 0.2s ease-in-out",
               }}
             >
               <Search sx={{ width: "100%", py: "4px" }}>
@@ -537,7 +597,7 @@ const NavBar = () => {
       {isLoggedIn && location.pathname !== `/test/editor/${id}/edit` && (
         <Box
           component='nav'
-          sx={{ width: { lg: drawerWidth }, flexShrink: { sm: 0 } }}
+          sx={{ flexShrink: { sm: 0 } }}
           aria-label='mailbox folders'
         >
           {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
@@ -559,22 +619,18 @@ const NavBar = () => {
           >
             {drawer}
           </Drawer>
-          <Drawer
+          <MiniDrawer
+            sx={{ display: { xs: "none", lg: "flex" } }}
             variant='permanent'
-            sx={{
-              display: { xs: "none", lg: "flex" },
-              height: "100%",
-              "& .MuiDrawer-paper": {
-                boxSizing: "border-box",
-
-                width: drawerWidth,
-                height: "100%",
-              },
+            open={drawerOpen}
+            onMouseEnter={() => setDrawerOpen(true)}
+            onMouseLeave={() => {
+              setDrawerOpen(false);
+              setMobileOpen(false);
             }}
-            open
           >
             {drawer}
-          </Drawer>
+          </MiniDrawer>
         </Box>
       )}
 
