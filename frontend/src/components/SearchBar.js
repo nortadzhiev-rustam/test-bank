@@ -15,6 +15,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import { ChevronRightTwoTone } from "@mui/icons-material";
 import { styled, alpha } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 const MAX_RECENT_SEARCHES = 10;
 
@@ -84,7 +85,7 @@ function SearchBar({
   const [anchorEl, setAnchorEl] = useState(null);
   const [tests, setTests] = useState([]);
   const [randomElements, setRandomElements] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const getRandomElements = (arr, numElements) => {
       const shuffledArray = arr.sort(() => 0.5 - Math.random());
@@ -162,6 +163,10 @@ function SearchBar({
     });
   };
 
+  const handleNavigation = (name) => {
+    navigate(`/admin/search/${name}`);
+  };
+
   return (
     <Box width='100%' display='flex' justifyContent='center'>
       <Stack
@@ -229,9 +234,8 @@ function SearchBar({
           />
         </Search>
 
-        {open ? (
+        {open || searchQuery !== "" ? (
           <Paper
-            onClick={() => setFocused(true)}
             elevation={10}
             sx={{
               mt: 1,
@@ -254,6 +258,7 @@ function SearchBar({
                     key={index}
                     onClick={() => {
                       setOpen(false);
+                      navigate(`/admin/search/${topic}`);
                     }}
                   >
                     <ListItemText primary={topic} />
@@ -280,9 +285,7 @@ function SearchBar({
                         },
                       }}
                       key={test.id}
-                      onClick={() => {
-                        setOpen(false);
-                      }}
+                      onClick={() => navigate(`/admin/search/${test.name}`)}
                     >
                       <ListItemText>{renderBoldText(test.name)}</ListItemText>
                     </ListItemButton>

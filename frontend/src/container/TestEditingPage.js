@@ -24,7 +24,7 @@ import {
 import Slide from "@mui/material/Slide";
 import SearchIcon from "@mui/icons-material/Search";
 import AddCircleOutline from "@mui/icons-material/AddCircleOutline";
-import logo from "../logo.svg";
+import logo2 from "../logo-white.svg";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import {
@@ -352,7 +352,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
             }}
             onClick={() => history(`/admin/test/${id}/${name}`)}
           >
-            <img src={logo} width='30' height='30' alt='logo' />
+            <img src={logo2} width='30' height='30' alt='logo' />
             <Typography
               sx={{ marginLeft: 2 }}
               variant='h6'

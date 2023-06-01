@@ -10,6 +10,7 @@ const QuestionPrintView = ({
   optionOn,
   shuffleAnswers,
   questionImage,
+  font,
 }) => {
   const { question, options, image, matches, type } = quest;
 
@@ -56,7 +57,7 @@ const QuestionPrintView = ({
             flexWrap={Number(questionImage) > 300 ? "wrap" : "nowrap"}
             mb={type === "Open ended" ? 30 : 1}
           >
-            <Typography fontSize='inherit' fontWeight='bold'>
+            <Typography fontSize={font} fontWeight='bold'>
               {number + "."}
             </Typography>
             {image !== "" && questionImage !== "OFF" && (
@@ -78,6 +79,7 @@ const QuestionPrintView = ({
               {parsedQuestion.text !== undefined && (
                 <Box sx={{ whiteSpace: "normal" }}>
                   <div
+                    style={{ fontSize: font }}
                     dangerouslySetInnerHTML={createMarkup(parsedQuestion.text)}
                   ></div>
                 </Box>
@@ -100,12 +102,13 @@ const QuestionPrintView = ({
                 <Grid key={answer.key} xs={6}>
                   <Stack direction='row' spacing={2} alignItems='center'>
                     {checkBoxOn && (
-                      <Typography fontSize='inherit' fontWeight='bold'>
+                      <Typography fontSize={font} fontWeight='bold'>
                         {optionGenerator(idx) + ") "}
                       </Typography>
                     )}
                     {answer.content.text !== undefined && (
                       <div
+                        style={{ fontSize: font }}
                         dangerouslySetInnerHTML={createMarkup(
                           answer.content.text
                         )}
@@ -129,12 +132,13 @@ const QuestionPrintView = ({
                         alignItems='center'
                       >
                         {checkBoxOn && (
-                          <Typography fontSize='inherit' fontWeight='bold'>
+                          <Typography fontSize={font} fontWeight='bold'>
                             {optionGenerator(idx) + ") "}
                           </Typography>
                         )}
                         {answer.content.text !== undefined && (
                           <div
+                            style={{ fontSize: font }}
                             dangerouslySetInnerHTML={createMarkup(
                               answer.content.text
                             )}
@@ -160,12 +164,12 @@ const QuestionPrintView = ({
                           mb={4}
                         >
                           {checkBoxOn && (
-                            <Typography fontSize='inherit' fontWeight='bold'>
+                            <Typography fontSize={font} fontWeight='bold'>
                               __
                             </Typography>
                           )}
                           {match.match !== undefined && (
-                            <Typography fontSize='inherit'>
+                            <Typography fontSize={font}>
                               {" " + match.match}
                             </Typography>
                           )}

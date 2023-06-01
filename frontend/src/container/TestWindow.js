@@ -116,6 +116,7 @@ export default function TestWindow({
       direction='row'
       spacing={2}
       justifyContent='center'
+      
     >
       {loading && <Spinner loading={loading} />}
       <Stack
@@ -133,7 +134,7 @@ export default function TestWindow({
               padding: 2,
               position: "fixed",
               width: "70%",
-              left: { xs: "12%", md: "13.5%", lg: "22%" },
+              left: { xs: "12%", md: "13.5%", lg: "17%" },
               top: 55,
               zIndex: 10,
             }}

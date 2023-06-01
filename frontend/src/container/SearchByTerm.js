@@ -9,17 +9,21 @@ import {
   FormControlLabel,
   FormGroup,
   Checkbox,
+  Paper,
+  Stack,
+  ButtonBase,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGraduationCap, faListUl } from "@fortawesome/free-solid-svg-icons";
 const SearchPage = ({ showNav, setShowNav }) => {
   const [state, setState] = useState({
     gilad: true,
     jason: false,
     antoine: false,
-    
   });
   const [expanded, setExpanded] = useState(false);
   const [tests, setTests] = useState([]);
@@ -56,6 +60,12 @@ const SearchPage = ({ showNav, setShowNav }) => {
     if (showNav === false) setShowNav(true);
     document.title = "Test Generator";
   }, [showNav, setShowNav]);
+
+  const filterArrayByName = (array, input) => {
+    return array.filter((obj) =>
+      obj.name.toLowerCase().includes(input.toLowerCase())
+    );
+  };
 
   return (
     <Box p={2} height='88vh' width='100%' mt={10}>
@@ -192,7 +202,68 @@ const SearchPage = ({ showNav, setShowNav }) => {
         </Grid>
 
         {/* Found column */}
-        <Grid xs={12} lg={4} mr={1} bgcolor='#fff' borderRadius={2}></Grid>
+        <Grid
+          xs={12}
+          lg={4}
+          mr={1}
+          borderRadius={2}
+          sx={{ overflowY: "scroll" }}
+        >
+          {filterArrayByName(tests, name).map((test) => (
+            <Stack
+              direction='row'
+              spacing={1}
+              bgcolor='#fff'
+              mb={1}
+              padding={1}
+              borderRadius={2}
+              sx={{ cursor: "pointer", "&:hover": { boxShadow: 1 } }}
+              component={ButtonBase}
+              justifyContent='flex-start'
+              width='100%'
+              key={test.id}
+              onClick={() => {
+                navigate(`/admin/test/${test.id}/${test.name}}`);
+              }}
+            >
+              <Box width={100} height={100}>
+                <img
+                  width='100%'
+                  src={process.env.PUBLIC_URL + "/uploads/" + test.image}
+                  alt={test.name}
+                />
+              </Box>
+              <Stack direction='column' spacing={1} alignItems='flex-start'>
+                <Typography variant='body1' fontWeight='bold'>
+                  {test.name}
+                </Typography>
+                <Stack direction='row' spacing={1} alignItems='center'>
+                  <Stack direction='row' spacing={1} alignItems='center'>
+                    <FontAwesomeIcon icon={faListUl} />
+                    <Typography variant='body2' c>
+                      {test.questions.length} questions
+                    </Typography>
+                  </Stack>
+                  <Stack direction='row' spacing={1} alignItems='center'>
+                    <FontAwesomeIcon icon={faGraduationCap} />
+                    <Typography variant='body2'>
+                      {test.grade}
+                      {test.garde > 3
+                        ? "th Grade"
+                        : test.grade === 1
+                        ? "st Grade"
+                        : test.grade === 2
+                        ? "nd Grade"
+                        : test.grade === 3
+                        ? "rd Grade"
+                        : "th Grade"}
+                    </Typography>
+                  </Stack>
+                </Stack>
+              </Stack>
+            </Stack>
+          ))}
+        </Grid>
 
         {/* View column */}
         <Grid

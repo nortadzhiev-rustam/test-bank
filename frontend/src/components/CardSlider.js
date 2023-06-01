@@ -18,7 +18,7 @@ export default function CardSlider() {
     <Box height={200} width='100%' mb={10} mt={5}>
       <Swiper
         slidesPerView={5}
-        spaceBetween={30}
+        spaceBetween={3}
         keyboard={{
           enabled: true,
         }}

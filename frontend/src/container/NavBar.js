@@ -49,6 +49,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import MuiDrawer from "@mui/material/Drawer";
 import { useSelector, useDispatch } from "react-redux";
 import logo from "../logo.svg";
+import logo2 from "../logo-white.svg";
 import { withRouter } from "../components/withRouter.js";
 import { logout } from "../store/userSlice";
 import axios from "axios";
@@ -240,6 +241,9 @@ const NavBar = () => {
   };
   React.useEffect(() => {
     setDrawerOpen(true);
+    setTimeout(() => {
+      setDrawerOpen(false);
+    }, 1000);
   }, []);
   const handleLogOut = async () => {
     dispatch(logout());
@@ -301,19 +305,24 @@ const NavBar = () => {
 
       {user && drawerOpen && (
         <Toolbar disableGutters>
-          <Avatar sx={{ bgcolor: "red", mx: 1 }}>
-            {user.firstName.charAt(0) + user.lastName.charAt(0)}
-          </Avatar>
-          <Stack direction='column' justifyContent='flex-start'>
-            <Typography fontWeight='bold' fontSize={14}>
-              {user.firstName + " " + user.lastName}
-            </Typography>
-            <Stack direction='row'>
-              <Typography fontWeight='bold' variant='caption'>
-                {user.role + " - " + getDepartmentName()}
+          <ListItem
+            sx={{ cursor: "pointer" }}
+            onClick={() => history("/profile?section=library")}
+          >
+            <Avatar sx={{ bgcolor: "red", mx: 1 }}>
+              {user.firstName.charAt(0) + user.lastName.charAt(0)}
+            </Avatar>
+            <Stack direction='column' justifyContent='flex-start'>
+              <Typography fontWeight='bold' fontSize={14}>
+                {user.firstName + " " + user.lastName}
               </Typography>
+              <Stack direction='row'>
+                <Typography fontWeight='bold' variant='caption'>
+                  {user.role + " - " + getDepartmentName()}
+                </Typography>
+              </Stack>
             </Stack>
-          </Stack>
+          </ListItem>
         </Toolbar>
       )}
       <Divider />
@@ -487,7 +496,7 @@ const NavBar = () => {
               }}
               onClick={() => history("/")}
             >
-              <img src={logo} width='30' height='30' alt='logo' />
+              <img src={logo2} width='30' height='30' alt='logo' />
               <Typography
                 sx={{ marginLeft: 2 }}
                 variant='h6'

@@ -3,7 +3,7 @@ import { useReactToPrint } from "react-to-print";
 import { useParams } from "react-router-dom";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import axios from "axios";
-import QuestionPrintView from "../components/QuestionPrintView";
+import QuestionPrintView from "../components/QuestionPrintView"
 
 import {
   Box,
@@ -421,6 +421,7 @@ const PrintPage = ({ showNav, setShowNav }) => {
                     key={question.id}
                   >
                     <QuestionPrintView
+                      font={font}
                       questionImage={questionImage}
                       checkBoxOn={checkBoxOn}
                       quest={question}
@@ -457,6 +458,7 @@ const PrintPage = ({ showNav, setShowNav }) => {
                       key={question.id}
                     >
                       <QuestionPrintView
+                        font={font}
                         questionImage={questionImage}
                         checkBoxOn={checkBoxOn}
                         quest={question}
@@ -488,6 +490,7 @@ const PrintPage = ({ showNav, setShowNav }) => {
                     key={question.id}
                   >
                     <QuestionPrintView
+                      font={font}
                       questionImage={questionImage}
                       checkBoxOn={checkBoxOn}
                       quest={question}
@@ -519,6 +522,7 @@ const PrintPage = ({ showNav, setShowNav }) => {
                       key={question.id}
                     >
                       <QuestionPrintView
+                        font={font}
                         questionImage={questionImage}
                         checkBoxOn={checkBoxOn}
                         quest={question}

@@ -65,7 +65,7 @@ const Default = ({ setShowNav, showNav }) => {
         justifyContent: "flex-start",
         alignItems: "center",
 
-        paddingTop: { xs: 10, md: 20 },
+        paddingTop: { xs: 10, md: 40 },
       }}
     >
       {
