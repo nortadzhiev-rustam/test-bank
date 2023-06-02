@@ -12,12 +12,10 @@ import {
   ListItemText,
   ListItemButton,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import { ChevronRightTwoTone } from "@mui/icons-material";
 import { styled, alpha } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-const MAX_RECENT_SEARCHES = 10;
 
 const Search = styled(Paper)(({ theme }) => ({
   position: "relative",
@@ -34,17 +32,6 @@ const Search = styled(Paper)(({ theme }) => ({
   justifyContent: "center",
   alignItems: "center",
   borderRadius: 15,
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  color: "#006064",
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -81,7 +68,7 @@ function SearchBar({
   focused,
 }) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [recentSearches, setRecentSearches] = useState([]);
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [tests, setTests] = useState([]);
   const [randomElements, setRandomElements] = useState([]);
@@ -105,23 +92,6 @@ function SearchBar({
     setRandomElements(randomElements);
   }, []);
   // Retrieve the list of recent searches from local storage on mount
-  useEffect(() => {
-    const storedSearches = JSON.parse(localStorage.getItem("recentSearches"));
-    setRecentSearches(storedSearches || []);
-  }, []);
-
-  // Add the new search query to the list of recent searches and save to local storage
-  function handleSearch(event) {
-    event.preventDefault();
-    if (searchQuery.trim() !== "") {
-      const updatedSearches = [
-        searchQuery,
-        ...recentSearches.slice(0, MAX_RECENT_SEARCHES - 1),
-      ];
-      setRecentSearches(updatedSearches);
-      localStorage.setItem("recentSearches", JSON.stringify(updatedSearches));
-    }
-  }
 
   // Update searchQuery state as user types
   function handleChange(event) {
@@ -161,10 +131,6 @@ function SearchBar({
         <span key={index}>{word} </span>
       );
     });
-  };
-
-  const handleNavigation = (name) => {
-    navigate(`/admin/search/${name}`);
   };
 
   return (
@@ -257,7 +223,7 @@ function SearchBar({
                   <ListItemButton
                     key={index}
                     onClick={() => {
-                      setOpen(false);
+                      setOpen(true);
                       navigate(`/admin/search/${topic}`);
                     }}
                   >
@@ -285,7 +251,7 @@ function SearchBar({
                         },
                       }}
                       key={test.id}
-                      onClick={() => navigate(`/admin/search/${test.name}`)}
+                      onClick={() => navigate(`/admin/search/${searchQuery}`)}
                     >
                       <ListItemText>{renderBoldText(test.name)}</ListItemText>
                     </ListItemButton>

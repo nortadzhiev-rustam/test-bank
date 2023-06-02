@@ -9,7 +9,6 @@ import {
   FormControlLabel,
   FormGroup,
   Checkbox,
-  Paper,
   Stack,
   ButtonBase,
 } from "@mui/material";
@@ -19,6 +18,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGraduationCap, faListUl } from "@fortawesome/free-solid-svg-icons";
+import SearchQuestionView from "../components/SearchQuestionView";
 const SearchPage = ({ showNav, setShowNav }) => {
   const [state, setState] = useState({
     gilad: true,
@@ -26,7 +26,9 @@ const SearchPage = ({ showNav, setShowNav }) => {
     antoine: false,
   });
   const [expanded, setExpanded] = useState(false);
+  const [hoveredTest, setHoveredTest] = useState(null);
   const [tests, setTests] = useState([]);
+  const [questions, setQuestions] = useState([]);
   const navigate = useNavigate();
   const { name } = useParams();
 
@@ -67,9 +69,23 @@ const SearchPage = ({ showNav, setShowNav }) => {
     );
   };
 
+  useEffect(() => {
+    filterArrayById(tests, hoveredTest).forEach((test) => {
+      setQuestions(test.questions);
+    });
+  }, [tests, hoveredTest]);
+
+  const filterArrayById = (array, input) => {
+    return array.filter((obj) => obj.id === input);
+  };
+
+  const handleHover = (testId) => {
+    setHoveredTest(testId);
+  };
+
   return (
-    <Box p={2} height='88vh' width='100%' mt={10}>
-      <Grid pl={2} container spacing={2} height='100%'>
+    <Box p={2} height='85vh' width='100%' pt={10}>
+      <Grid pl={2} container spacing={2}>
         {/* Filter column */}
         <Grid
           xs={12}
@@ -84,7 +100,7 @@ const SearchPage = ({ showNav, setShowNav }) => {
           <Typography m={2} variant='body1' fontWeight='bold' color='#006064'>
             Filters
           </Typography>
-          <Divider sx={{ marginBottom: 2 }} fullWidth />
+          <Divider sx={{ marginBottom: 2 }} />
           <Accordion
             expanded={expanded === "panel1"}
             onChange={handleExpandChange("panel1")}
@@ -202,67 +218,73 @@ const SearchPage = ({ showNav, setShowNav }) => {
         </Grid>
 
         {/* Found column */}
-        <Grid
-          xs={12}
-          lg={4}
-          mr={1}
-          borderRadius={2}
-          sx={{ overflowY: "scroll" }}
-        >
-          {filterArrayByName(tests, name).map((test) => (
-            <Stack
-              direction='row'
-              spacing={1}
-              bgcolor='#fff'
-              mb={1}
-              padding={1}
-              borderRadius={2}
-              sx={{ cursor: "pointer", "&:hover": { boxShadow: 1 } }}
-              component={ButtonBase}
-              justifyContent='flex-start'
-              width='100%'
-              key={test.id}
-              onClick={() => {
-                navigate(`/admin/test/${test.id}/${test.name}}`);
-              }}
-            >
-              <Box width={100} height={100}>
-                <img
-                  width='100%'
-                  src={process.env.PUBLIC_URL + "/uploads/" + test.image}
-                  alt={test.name}
-                />
-              </Box>
-              <Stack direction='column' spacing={1} alignItems='flex-start'>
-                <Typography variant='body1' fontWeight='bold'>
-                  {test.name}
-                </Typography>
-                <Stack direction='row' spacing={1} alignItems='center'>
+        <Grid xs={12} lg={4} mr={1} borderRadius={2} p={0}>
+          <Box bgcolor='#fff'  p={1}>
+            <Typography variant='body1' fontWeight='bold'>
+              {filterArrayByName(tests, name).length}{" "}
+              {filterArrayByName(tests, name).length > 1 ||
+              filterArrayByName(tests, name).length === 0
+                ? "Results"
+                : "Result"}
+            </Typography>
+          </Box>
+          <Box sx={{ overflowY: "scroll" }}>
+            {filterArrayByName(tests, name).map((test) => (
+              <Stack
+                direction='row'
+                spacing={1}
+                bgcolor='#fff'
+                mb={1}
+                padding={1}
+                borderRadius={2}
+                sx={{ cursor: "pointer", "&:hover": { boxShadow: 1 } }}
+                component={ButtonBase}
+                justifyContent='flex-start'
+                width='100%'
+                key={test.id}
+                onClick={() => {
+                  navigate(`/admin/test/${test.id}/${test.name}}`);
+                }}
+                onMouseEnter={() => handleHover(test.id)}
+              >
+                <Box width={100} height={100}>
+                  <img
+                    width='100%'
+                    src={process.env.PUBLIC_URL + "/uploads/" + test.image}
+                    alt={test.name}
+                  />
+                </Box>
+                <Stack direction='column' spacing={1} alignItems='flex-start'>
+                  <Typography variant='body1' fontWeight='bold'>
+                    {test.name}
+                  </Typography>
                   <Stack direction='row' spacing={1} alignItems='center'>
-                    <FontAwesomeIcon icon={faListUl} />
-                    <Typography variant='body2' c>
-                      {test.questions.length} questions
-                    </Typography>
-                  </Stack>
-                  <Stack direction='row' spacing={1} alignItems='center'>
-                    <FontAwesomeIcon icon={faGraduationCap} />
-                    <Typography variant='body2'>
-                      {test.grade}
-                      {test.garde > 3
-                        ? "th Grade"
-                        : test.grade === 1
-                        ? "st Grade"
-                        : test.grade === 2
-                        ? "nd Grade"
-                        : test.grade === 3
-                        ? "rd Grade"
-                        : "th Grade"}
-                    </Typography>
+                    <Stack direction='row' spacing={1} alignItems='center'>
+                      <FontAwesomeIcon icon={faListUl} />
+                      <Typography variant='body2'>
+                        {test.questions.length} questions
+                      </Typography>
+                    </Stack>
+                    <Stack direction='row' spacing={1} alignItems='center'>
+                      <FontAwesomeIcon icon={faGraduationCap} />
+                      <Typography variant='body2'>
+                        {test.grade}
+                        {test.garde > 3
+                          ? "th Grade"
+                          : test.grade === 1
+                          ? "st Grade"
+                          : test.grade === 2
+                          ? "nd Grade"
+                          : test.grade === 3
+                          ? "rd Grade"
+                          : "th Grade"}
+                      </Typography>
+                    </Stack>
                   </Stack>
                 </Stack>
               </Stack>
-            </Stack>
-          ))}
+            ))}
+          </Box>
         </Grid>
 
         {/* View column */}
@@ -270,11 +292,40 @@ const SearchPage = ({ showNav, setShowNav }) => {
           xs={12}
           lg={5.75}
           mr={1}
+          pr={1}
           bgcolor='#fff'
           borderRadius={2}
           display={{ xs: "none", lg: "flex" }}
+          sx={{ flexDirection: "column" }}
+          height='90vh'
+          overflow='auto'
         >
+          <Box width='100%'>
+            <Typography variant='body1' fontWeight='bold'>
+              Preview
+            </Typography>
+
+          </Box>
           {/* Add your view component here */}
+          {hoveredTest && ( // if selectedTest is not null
+            <Box
+              sx={{
+                
+
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                overflowY: "auto",
+                mt: 2,
+                p: 1,
+              }}
+            >
+              {questions.map((question) => (
+                <SearchQuestionView key={question.id} data={question} />
+              ))}
+            </Box>
+          )}
         </Grid>
       </Grid>
     </Box>
