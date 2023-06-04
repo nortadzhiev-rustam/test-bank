@@ -11,6 +11,9 @@ import {
   Checkbox,
   Stack,
   ButtonBase,
+  Button,
+  Switch,
+  Tooltip,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -19,6 +22,9 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGraduationCap, faListUl } from "@fortawesome/free-solid-svg-icons";
 import SearchQuestionView from "../components/SearchQuestionView";
+import { FolderOutlined, Print, AddCircleRounded } from "@mui/icons-material";
+import CollectionDialog from "../components/CollectionDialog";
+import { useSelector } from "react-redux";
 const SearchPage = ({ showNav, setShowNav }) => {
   const [state, setState] = useState({
     gilad: true,
@@ -29,6 +35,16 @@ const SearchPage = ({ showNav, setShowNav }) => {
   const [hoveredTest, setHoveredTest] = useState(null);
   const [tests, setTests] = useState([]);
   const [questions, setQuestions] = useState([]);
+  const [showAnswers, setShowAnswers] = useState(true);
+  const [showCollections, setShowCollections] = useState(false);
+  const [collections, setCollections] = useState([]);
+
+  const user = useSelector((state) => state.user.user.user);
+
+  const handleSaveDialogOpen = () => {
+    setShowCollections(!showCollections);
+  };
+
   const navigate = useNavigate();
   const { name } = useParams();
 
@@ -41,6 +57,8 @@ const SearchPage = ({ showNav, setShowNav }) => {
       .catch((err) => {
         console.log(err);
       });
+
+    
   }, []);
   const handleExpandChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -70,6 +88,12 @@ const SearchPage = ({ showNav, setShowNav }) => {
   };
 
   useEffect(() => {
+    filterArrayByName(tests, name).forEach((test, index) => {
+      if (index === 0) setHoveredTest(test.id);
+    });
+  }, [tests, name]);
+
+  useEffect(() => {
     filterArrayById(tests, hoveredTest).forEach((test) => {
       setQuestions(test.questions);
     });
@@ -84,7 +108,17 @@ const SearchPage = ({ showNav, setShowNav }) => {
   };
 
   return (
-    <Box p={2} height='85vh' width='100%' pt={10}>
+    <Box p={2} maxHeight='90vh' width='100%' pt={15} overflow='auto'>
+      <CollectionDialog
+        isOpen={showCollections}
+        collections={user.collections}
+        setCollections={setCollections}
+        user={user}
+        testData={
+          tests.filter((test) => test.id === hoveredTest).map((test) => test)[0]
+        }
+        handleSaveDialogOpen={handleSaveDialogOpen}
+      />
       <Grid pl={2} container spacing={2}>
         {/* Filter column */}
         <Grid
@@ -219,7 +253,7 @@ const SearchPage = ({ showNav, setShowNav }) => {
 
         {/* Found column */}
         <Grid xs={12} lg={4} mr={1} borderRadius={2} p={0}>
-          <Box bgcolor='#fff'  p={1}>
+          <Box bgcolor='#fff' p={1}>
             <Typography variant='body1' fontWeight='bold'>
               {filterArrayByName(tests, name).length}{" "}
               {filterArrayByName(tests, name).length > 1 ||
@@ -255,7 +289,11 @@ const SearchPage = ({ showNav, setShowNav }) => {
                   />
                 </Box>
                 <Stack direction='column' spacing={1} alignItems='flex-start'>
-                  <Typography variant='body1' fontWeight='bold'>
+                  <Typography
+                    variant='body1'
+                    fontWeight='bold'
+                    textAlign='start'
+                  >
                     {test.name}
                   </Typography>
                   <Stack direction='row' spacing={1} alignItems='center'>
@@ -298,20 +336,75 @@ const SearchPage = ({ showNav, setShowNav }) => {
           display={{ xs: "none", lg: "flex" }}
           sx={{ flexDirection: "column" }}
           height='90vh'
-          overflow='auto'
         >
           <Box width='100%'>
             <Typography variant='body1' fontWeight='bold'>
               Preview
             </Typography>
-
+            <Stack
+              direction='row'
+              spacing={2}
+              justifyContent='space-between'
+              bgcolor='#eee'
+              m={1}
+            >
+              <Stack direction='column' spacing={0} p={1} maxWidth='30%'>
+                <Tooltip
+                  title={tests
+                    .filter((test) => test.id === hoveredTest)
+                    .map((obj) => obj.name)}
+                  placement='right'
+                >
+                  <Typography
+                    variant='h6'
+                    fontWeight='bold'
+                    display='block'
+                    overflow='hidden'
+                    whiteSpace='nowrap'
+                    textOverflow='ellipsis'
+                  >
+                    {tests
+                      .filter((test) => test.id === hoveredTest)
+                      .map((obj) => obj.name)}
+                  </Typography>
+                </Tooltip>
+                <Typography variant='caption'>
+                  by{" "}
+                  {tests
+                    .filter((test) => test.id === hoveredTest)
+                    .map((obj) => obj.user.firstName + " " + obj.user.lastName)}
+                </Typography>
+              </Stack>
+              <Stack direction='row' spacing={1} p={2}>
+                <Button
+                  variant='contained'
+                  size='small'
+                  color='inherit'
+                  startIcon={<FolderOutlined />}
+                  sx={{ maxHeight: 30 }}
+                  onClick={() => handleSaveDialogOpen()}
+                >
+                  Save test
+                </Button>
+                <Button
+                  variant='contained'
+                  size='small'
+                  color='inherit'
+                  startIcon={<Print />}
+                  sx={{ maxHeight: 30 }}
+                  onClick={() =>
+                    window.open(`/print/test/${hoveredTest}`, "_blank")
+                  }
+                >
+                  Print
+                </Button>
+              </Stack>
+            </Stack>
           </Box>
           {/* Add your view component here */}
           {hoveredTest && ( // if selectedTest is not null
             <Box
               sx={{
-                
-
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -321,8 +414,43 @@ const SearchPage = ({ showNav, setShowNav }) => {
                 p: 1,
               }}
             >
+              <Stack
+                direction='row'
+                spacing={1}
+                alignItems='center'
+                justifyContent='space-between'
+                width='100%'
+                bgcolor='#fff'
+                p={1}
+              >
+                <Typography variant='body1' fontWeight='bold' pl={1}>
+                  {questions.length}{" "}
+                  {questions.length > 1 || questions.length === 0
+                    ? "Questions"
+                    : "Question"}
+                </Typography>
+                <Stack direction='row' spacing={1} alignItems='center' pr={1}>
+                  <FormControlLabel
+                    control={<Switch value={showAnswers} defaultChecked />}
+                    labelPlacement='start'
+                    label='show answers'
+                    onChange={() => setShowAnswers(!showAnswers)}
+                  />
+                  <Button
+                    size='small'
+                    variant='outlined'
+                    startIcon={<AddCircleRounded />}
+                  >
+                    Add all
+                  </Button>
+                </Stack>
+              </Stack>
               {questions.map((question) => (
-                <SearchQuestionView key={question.id} data={question} />
+                <SearchQuestionView
+                  key={question.id}
+                  data={question}
+                  showAnswers={showAnswers}
+                />
               ))}
             </Box>
           )}

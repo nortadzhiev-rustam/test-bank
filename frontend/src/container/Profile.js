@@ -151,7 +151,7 @@ function LongMenu({ id, collection, setCollection, openEditDialog }) {
         PaperProps={{
           style: {
             maxHeight: ITEM_HEIGHT * 4.5,
-            width: "12ch",
+            width: "15ch",
           },
         }}
       >
@@ -564,7 +564,7 @@ const Profile = ({ showNav, setShowNav }) => {
                           <Typography>{collection.name}</Typography>
                         </Stack>
                         <Typography textAlign='right'>
-                          {collection.Tests.length}
+                          { collection.Tests?.length || 0}
                         </Typography>
                       </Stack>
                     ))}
@@ -597,36 +597,38 @@ const Profile = ({ showNav, setShowNav }) => {
             xl={8}
           >
             <Stack spacing={5}>
-             { <Stack
-                width='98%'
-                height={80}
-                bgcolor='white'
-                borderRadius={1}
-                direction='row'
-                justifyContent='space-between'
-                alignItems='center'
-                p={2}
-              >
-                <Stack spacing={1} justifyContent='flex-start'>
-                  <Typography>{selectedCollection}</Typography>
-                  <Typography>
-                    {
-                      tests.filter(
-                        (item) =>
-                          item.collectionId === selected &&
-                          item.userId === user.id
-                      ).length
-                    }{" "}
-                    Activities
-                  </Typography>
+              {
+                <Stack
+                  width='98%'
+                  height={80}
+                  bgcolor='white'
+                  borderRadius={1}
+                  direction='row'
+                  justifyContent='space-between'
+                  alignItems='center'
+                  p={2}
+                >
+                  <Stack spacing={1} justifyContent='flex-start'>
+                    <Typography>{selectedCollection}</Typography>
+                    <Typography>
+                      {
+                        tests.filter(
+                          (item) =>
+                            item.collectionId === selected &&
+                            item.userId === user.id
+                        ).length
+                      }{" "}
+                      Activities
+                    </Typography>
+                  </Stack>
+                  <LongMenu
+                    id={selected}
+                    collection={collections}
+                    setCollection={setCollections}
+                    openEditDialog={openEditDialog}
+                  />
                 </Stack>
-                <LongMenu
-                  id={selected}
-                  collection={collections}
-                  setCollection={setCollections}
-                  openEditDialog={openEditDialog}
-                />
-              </Stack>}
+              }
               <Stack spacing={2}>
                 {tests
                   .filter(

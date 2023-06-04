@@ -134,7 +134,13 @@ function SearchBar({
   };
 
   return (
-    <Box width='100%' display='flex' justifyContent='center'>
+    <Box
+      component='form'
+      onSubmit={() => navigate(`/admin/search/${searchQuery}`)}
+      width='100%'
+      display='flex'
+      justifyContent='center'
+    >
       <Stack
         width={{ xs: "85%", md: "65%" }}
         direction='column'

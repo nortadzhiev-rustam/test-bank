@@ -117,6 +117,8 @@ export default function MyLibrary({ showNav, setShowNav }) {
     }
   };
 
+  
+
   const handleSelect = (id) => {
     setActive(true);
     setSelected(id);
@@ -382,7 +384,7 @@ export default function MyLibrary({ showNav, setShowNav }) {
                           <Typography>{collection.name}</Typography>
                         </Stack>
                         <Typography textAlign='right'>
-                          {collection.Tests && collection.Tests.length}
+                          {collection.Tests?.length || 0}
                         </Typography>
                       </Stack>
                     ))}

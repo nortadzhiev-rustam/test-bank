@@ -23,7 +23,7 @@ const IconSelector = ({ type }) => {
   else return <Layers color='inherit' fontSize='small' />;
 };
 
-export default function SearchQuestionView({ data }) {
+export default function SearchQuestionView({ data, showAnswers }) {
   const { image, question, options, type, correctAnswer, matches } = data;
   const [answers] = useState(JSON.parse(options));
   const [quest] = useState(JSON.parse(question));
@@ -36,7 +36,7 @@ export default function SearchQuestionView({ data }) {
 
   return (
     <Box component='div' sx={{ width: "100%", mb: 1 }}>
-      <Paper elevation={5} sx={{ padding: 1, borderRadius: 2 }}>
+      <Paper elevation={2} sx={{ padding: 1, borderRadius: 1 }}>
         <Box
           width='100%'
           display='flex'
@@ -51,6 +51,7 @@ export default function SearchQuestionView({ data }) {
             </Stack>
           </Paper>
           <Button
+          sx={{maxHeight: 30}}
             variant='outlined'
             size='small'
             startIcon={<FontAwesomeIcon icon={faPlusCircle} />}
@@ -87,21 +88,31 @@ export default function SearchQuestionView({ data }) {
           </Grid>
         </Grid>
 
-        <Divider orientation='horizontal'>answer choices</Divider>
+        {showAnswers && (
+          <Divider orientation='horizontal'>answer choices</Divider>
+        )}
 
         {(type === "Multiple choice" ||
           type === "Fill in the blanks" ||
           type === "True or False") && (
-          <Grid container spacing={2} m={1} columns={{ xs: 4, sm: 8, md: 12 }}>
+          <Grid container spacing={1} m={1} columns={{ xs: 4, sm: 8, md: 12 }}>
             {answers.map((option) => (
-              <Grid key={option.key} xs={12} sm={6}>
+              <Grid key={option.key} sx={{height: 35}} xs={12} sm={6}>
                 <Box display='flex' flexDirection='row' alignItems='center'>
                   <Box
                     width={15}
                     height={15}
                     borderRadius='50%'
                     mr={1}
-                    bgcolor={correct.key === option.key ? "green" : "red"}
+                    bgcolor={
+                      correct.key === option.key
+                        ? showAnswers
+                          ? "green"
+                          : "#ccc"
+                        : showAnswers
+                        ? "red"
+                        : "#ccc"
+                    }
                   ></Box>
                   {option.content.text !== undefined && (
                     // <Typography variant='caption'>
@@ -121,7 +132,7 @@ export default function SearchQuestionView({ data }) {
             ))}
           </Grid>
         )}
-        {type === "Open ended" && (
+        {type === "Open ended" && showAnswers && (
           <Typography my={2} textAlign='center'>
             Participants will provide their own answers
           </Typography>
