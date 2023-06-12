@@ -229,8 +229,9 @@ function SearchBar({
                   <ListItemButton
                     key={index}
                     onClick={() => {
-                      setOpen(true);
                       navigate(`/admin/search/${topic}`);
+                      setOpen(true);
+                      setFocused(true);
                     }}
                   >
                     <ListItemText primary={topic} />

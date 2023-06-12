@@ -633,7 +633,7 @@ const Profile = ({ showNav, setShowNav }) => {
                 {tests
                   .filter(
                     (test) =>
-                      test.collectionId === selected && test.userId === user.id
+                      test.collectionId === selected 
                   )
                   .map((item) => (
                     <TestView

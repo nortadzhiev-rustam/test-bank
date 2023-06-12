@@ -37,6 +37,7 @@ const SearchPage = ({ showNav, setShowNav }) => {
   const [questions, setQuestions] = useState([]);
   const [showAnswers, setShowAnswers] = useState(true);
   const [showCollections, setShowCollections] = useState(false);
+  // eslint-disable-next-line
   const [collections, setCollections] = useState([]);
 
   const user = useSelector((state) => state.user.user.user);
@@ -262,7 +263,7 @@ const SearchPage = ({ showNav, setShowNav }) => {
                 : "Result"}
             </Typography>
           </Box>
-          <Box sx={{ overflowY: "scroll" }}>
+          <Box sx={{ overflowY: "suto" }}>
             {filterArrayByName(tests, name).map((test) => (
               <Stack
                 direction='row'
@@ -328,7 +329,8 @@ const SearchPage = ({ showNav, setShowNav }) => {
         {/* View column */}
         <Grid
           xs={12}
-          lg={5.75}
+          lg={5.5}
+          xl={5.8}
           mr={1}
           pr={1}
           bgcolor='#fff'
@@ -410,6 +412,7 @@ const SearchPage = ({ showNav, setShowNav }) => {
                 alignItems: "center",
                 justifyContent: "flex-start",
                 overflowY: "auto",
+                overflowX: "hidden",
                 mt: 2,
                 p: 1,
               }}

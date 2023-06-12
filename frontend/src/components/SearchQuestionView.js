@@ -13,6 +13,7 @@ import {
   Subject,
 } from "@mui/icons-material";
 import "./QuestionView.css";
+
 const IconSelector = ({ type }) => {
   if (type === "Multiple choice")
     return <CheckCircleRounded color='inherit' fontSize='small' />;

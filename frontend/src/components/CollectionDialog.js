@@ -92,7 +92,7 @@ const CollectionDialog = ({
       <DialogContent>
         <FormControl>
           <RadioGroup value={collectionId} onChange={handleChange}>
-            {collections
+            {collections.filter((item) => item.userId === user.id)
               .map((item) => (
                 <FormControlLabel
                   key={item.name}
