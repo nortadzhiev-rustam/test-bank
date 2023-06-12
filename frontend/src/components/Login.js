@@ -79,7 +79,11 @@ const Login = ({ history }) => {
     dispatch(setLoading(true));
     try {
       const res = await axios.post(
-        "https://backend.rustamnortadzhiev.com/api/v1/login",
+        `${
+          process.env.NODE_ENV === "production"
+            ? "https://backend.rustamnortadzhiev.com"
+            : "http://localhost:5000"
+        }/api/v1/login`,
         {
           email,
           password,

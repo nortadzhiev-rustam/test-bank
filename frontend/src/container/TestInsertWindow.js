@@ -142,7 +142,11 @@ const InsertWindow = ({
     if (isEditing) {
       try {
         const res = await axios.put(
-          `https://backend.rustamnortadzhiev.com/api/v1/question/${questionId}`,
+          `${
+            process.env.NODE_ENV === "production"
+              ? "https://backend.rustamnortadzhiev.com"
+              : "http://localhost:5000"
+          }/api/v1/question/${questionId}`,
           data
         );
         const oldData = questions.filter((item) => item.id !== questionId);
@@ -155,7 +159,11 @@ const InsertWindow = ({
     } else {
       try {
         const res = await axios.post(
-          "https://backend.rustamnortadzhiev.com/api/v1/question",
+          `${
+            process.env.NODE_ENV === "production"
+              ? "https://backend.rustamnortadzhiev.com"
+              : "http://localhost:5000"
+          }/api/v1/question`,
           data
         );
         setData([...questionData, res.data.question]);

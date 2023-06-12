@@ -28,8 +28,8 @@ export default function MyEditor({
 
   useEffect(() => {
     if (editing) {
-      if (content && content.text) setQuestionText(content.text);
-      if (content && content.equation)
+      if (content?.text) setQuestionText(content.text);
+      if (content?.equation)
         setEquationarray([{ id: 1, equation: content.equation }]);
     }
   }, [editing, content]);
@@ -79,10 +79,7 @@ export default function MyEditor({
     setContent((prevState) => ({ ...prevState, equation: "" }));
   };
 
-  const handleInput = (e) => {
-    setQuestionText(e.target.value);
-    setContent((prevState) => ({ ...prevState, text: e.target.value }));
-  };
+  
 
   const handleChangeModel = (e) => {
     setQuestionText(e);

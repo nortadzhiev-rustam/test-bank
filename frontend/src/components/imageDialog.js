@@ -22,7 +22,11 @@ export default function AlertDialogSlide({ open, setOpen, setImage }) {
   const handleSubmit = async () => {
     let data = new FormData();
     data.append("file", file[0]);
-    let req = await axios.post("https://www.backend.rustamnortadzhiev.com/api/v1/upload", data, {
+    let req = await axios.post(`${
+      process.env.NODE_ENV === "production"
+        ? "https://backend.rustamnortadzhiev.com"
+        : "http://localhost:5000"
+    }/api/v1/upload`, data, {
       headers: {
         "Content-Type": "application/json",
       },

@@ -75,7 +75,11 @@ const QuestionInput = ({
 
   const handleDelete = async () => {
     const res = await axios.delete(
-      "https://backend.rustamnortadzhiev.com/api/v1/files/" + image
+      `${
+        process.env.NODE_ENV === "production"
+          ? "https://backend.rustamnortadzhiev.com"
+          : "http://localhost:5000"
+      }/api/v1/files/${image}`
     );
     setMessage(res.data.message);
     setImage("");
@@ -99,7 +103,7 @@ const QuestionInput = ({
         marginInline: "2px",
         backgroundColor: "#006064",
         minHeight: 280,
-        
+
         transition: "all 0.5s ease-in",
       }}
       elevation={10}

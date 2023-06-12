@@ -218,7 +218,11 @@ const Profile = ({ showNav, setShowNav }) => {
   let search = searchParams.get("section");
   const getTests = async () => {
     const res = await axios.get(
-      "https://backend.rustamnortadzhiev.com/api/v1/tests"
+      `${
+        process.env.NODE_ENV === "production"
+          ? "https://backend.rustamnortadzhiev.com"
+          : "http://localhost:5000"
+      }/api/v1/tests`
     );
     if (res.status === 200) {
       setTests(res.data);
@@ -227,7 +231,11 @@ const Profile = ({ showNav, setShowNav }) => {
 
   const getQuestions = async () => {
     const res = await axios.get(
-      "https://backend.rustamnortadzhiev.com/api/v1/questions"
+      `${
+        process.env.NODE_ENV === "production"
+          ? "https://backend.rustamnortadzhiev.com"
+          : "http://localhost:5000"
+      }/api/v1/questions`
     );
     if (res.status === 200) {
       setQuestions(res.data);
@@ -237,7 +245,11 @@ const Profile = ({ showNav, setShowNav }) => {
   const updateCollection = async () => {
     try {
       const res = await axios.put(
-        `https://backend.rustamnortadzhiev.com/api/v1/collection/${selected}?name=${collectionName}&visibility=${visibility}`
+        `${
+          process.env.NODE_ENV === "production"
+            ? "https://backend.rustamnortadzhiev.com"
+            : "http://localhost:5000"
+        }/api/v1/collection/${selected}?name=${collectionName}&visibility=${visibility}`
       );
       console.log(res.data.message);
       handleDialogOpen();
@@ -254,7 +266,11 @@ const Profile = ({ showNav, setShowNav }) => {
     };
     try {
       const res = await axios.post(
-        `https://backend.rustamnortadzhiev.com/api/v1/collection`,
+        `${
+          process.env.NODE_ENV === "production"
+            ? "https://backend.rustamnortadzhiev.com"
+            : "http://localhost:5000"
+        }/api/v1/collection`,
         data
       );
       setCollections((prevState) => [...prevState, res.data.collection]);
@@ -564,7 +580,7 @@ const Profile = ({ showNav, setShowNav }) => {
                           <Typography>{collection.name}</Typography>
                         </Stack>
                         <Typography textAlign='right'>
-                          { collection.Tests?.length || 0}
+                          {collection.Tests?.length || 0}
                         </Typography>
                       </Stack>
                     ))}
@@ -631,10 +647,7 @@ const Profile = ({ showNav, setShowNav }) => {
               }
               <Stack spacing={2}>
                 {tests
-                  .filter(
-                    (test) =>
-                      test.collectionId === selected 
-                  )
+                  .filter((test) => test.collectionId === selected)
                   .map((item) => (
                     <TestView
                       key={item.id}

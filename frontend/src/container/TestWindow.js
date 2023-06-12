@@ -78,7 +78,13 @@ export default function TestWindow({
 
   useEffect(() => {
     axios
-      .get(`https://backend.rustamnortadzhiev.com/api/v1/test/${id}`)
+      .get(
+        `${
+          process.env.NODE_ENV === "production"
+            ? "https://backend.rustamnortadzhiev.com"
+            : "http://localhost:5000"
+        }/api/v1/test/${id}`
+      )
       .then((res) => {
         if (res.status === 200) {
           setTestData(res.data);
@@ -99,7 +105,11 @@ export default function TestWindow({
   const handleEdit = async () => {
     try {
       const res = await axios.put(
-        `https://backend.rustamnortadzhiev.com/api/v1/test/${id}?isEditing=${true}`
+        `${
+          process.env.NODE_ENV === "production"
+            ? "https://backend.rustamnortadzhiev.com"
+            : "http://localhost:5000"
+        }/api/v1/test/${id}?isEditing=${true}`
       );
       if (res.status === 200) navigate(`/test/editor/${id}/edit`);
     } catch (err) {
@@ -116,7 +126,6 @@ export default function TestWindow({
       direction='row'
       spacing={2}
       justifyContent='center'
-      
     >
       {loading && <Spinner loading={loading} />}
       <Stack
@@ -305,7 +314,7 @@ export default function TestWindow({
                     </Stack>
                   </Stack>
                 ) : (
-                  <Stack direction='row' alignItems='baseline' spacing={1} >
+                  <Stack direction='row' alignItems='baseline' spacing={1}>
                     <Typography
                       variant={{ xs: "h6", md: "h5" }}
                       fontWeight='bold'
@@ -388,7 +397,6 @@ export default function TestWindow({
                 <IconButton size='small' color='secondary' onClick={handleEdit}>
                   <Mode fontSize='small' />
                 </IconButton>
-               
               </Stack>
             </Stack>
           </Paper>

@@ -248,7 +248,11 @@ const NavBar = () => {
   const handleLogOut = async () => {
     dispatch(logout());
     const res = await axios.get(
-      "https://backend.rustamnortadzhiev.com/api/v1/logout",
+      `${
+        process.env.NODE_ENV === "production"
+          ? "https://backend.rustamnortadzhiev.com"
+          : "http://localhost:5000"
+      }/api/v1/logout`,
       {
         withCredentials: true,
       }

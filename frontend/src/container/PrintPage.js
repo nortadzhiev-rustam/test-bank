@@ -3,7 +3,7 @@ import { useReactToPrint } from "react-to-print";
 import { useParams } from "react-router-dom";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import axios from "axios";
-import QuestionPrintView from "../components/QuestionPrintView"
+import QuestionPrintView from "../components/QuestionPrintView";
 
 import {
   Box,
@@ -105,7 +105,13 @@ const PrintPage = ({ showNav, setShowNav }) => {
 
   useEffect(() => {
     axios
-      .get(`https://backend.rustamnortadzhiev.com/api/v1/test/${id}`)
+      .get(
+        `${
+          process.env.NODE_ENV === "production"
+            ? "https://backend.rustamnortadzhiev.com"
+            : "http://localhost:5000"
+        }/api/v1/test/${id}`
+      )
       .then((res) => {
         if (res.status === 200) {
           setData(res.data);
@@ -346,7 +352,7 @@ const PrintPage = ({ showNav, setShowNav }) => {
           style={{
             width: "860px",
             backgroundColor: "#ffffff",
-           
+
             padding: 20,
             display: "block",
           }}

@@ -62,21 +62,23 @@ const CollectionDialog = ({
     setCollectionId(Number(event.target.value));
     try {
       const res = await axios.put(
-        `https://backend.rustamnortadzhiev.com/api/v1/test/${
-          testData.id
-        }?collectionId=${Number(event.target.value)}`
+        `${
+          process.env.NODE_ENV === "production"
+            ? "https://backend.rustamnortadzhiev.com"
+            : "http://localhost:5000"
+        }/api/v1/test/${testData.id}?collectionId=${Number(event.target.value)}`
       );
       console.log(res.data.message);
     } catch (e) {
       console.log(e);
     }
   };
-    useEffect(() => {
-      setCollectionId(testData?.collectionId);
-      return () => {
-        setCollectionId(0);
-      };
-    }, [testData?.collectionId]);
+  useEffect(() => {
+    setCollectionId(testData?.collectionId);
+    return () => {
+      setCollectionId(0);
+    };
+  }, [testData?.collectionId]);
 
   return (
     <Dialog
@@ -92,12 +94,13 @@ const CollectionDialog = ({
       <DialogContent>
         <FormControl>
           <RadioGroup value={collectionId} onChange={handleChange}>
-            {collections.filter((item) => item.userId === user.id)
+            {collections
+              .filter((item) => item.userId === user.id)
               .map((item) => (
                 <FormControlLabel
                   key={item.name}
                   value={item.id}
-                  control={<Radio/>}
+                  control={<Radio />}
                   label={item.name}
                 />
               ))}

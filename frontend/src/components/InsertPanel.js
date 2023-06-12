@@ -53,7 +53,11 @@ const InsertPanel = ({
     };
     try {
       const req = await axios.post(
-        "https://www.backend.rustamnortadzhiev.com/api/v1/test",
+        `${
+          process.env.NODE_ENV === "production"
+            ? "https://backend.rustamnortadzhiev.com"
+            : "http://localhost:5000"
+        }/api/v1/test`,
         data
       );
       if (req.status === 200) {
@@ -71,7 +75,13 @@ const InsertPanel = ({
     setLoading(true);
     try {
       const res = await axios.put(
-        `https://www.backend.rustamnortadzhiev.com/api/v1/test/${id}?name=${testName}&departmentId=${selectedDepartment.id}`
+        `${
+          process.env.NODE_ENV === "production"
+            ? "https://backend.rustamnortadzhiev.com"
+            : "http://localhost:5000"
+        }/api/v1/test/${id}?name=${testName}&departmentId=${
+          selectedDepartment.id
+        }`
       );
       setEditing(false);
       setTimeout(() => {

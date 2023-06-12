@@ -101,18 +101,30 @@ function SearchBar({
   // Display the list of recent searches when the user clicks on the search bar
   function handleSearchBarClick(event) {
     setAnchorEl(anchorEl ? null : event.currentTarget);
-    setOpen(true);
+    if (!open) {
+      setOpen(true);
+    }
   }
 
   useEffect(() => {
     axios
-      .get("https://backend.rustamnortadzhiev.com/api/v1/tests")
+      .get(
+        `${
+          process.env.NODE_ENV === "production"
+            ? "https://backend.rustamnortadzhiev.com"
+            : "http://localhost:5000"
+        }/api/v1/tests`
+      )
       .then((res) => {
         setTests(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
+
+    return () => {
+      setTests([]);
+    };
   }, []);
 
   const filterArrayByName = (array, input) => {
@@ -152,7 +164,7 @@ function SearchBar({
           elevation={5}
           onBlur={() => {
             setFocused(false);
-            setOpen(false);
+            // setOpen(false);
             setName("");
           }}
         >
@@ -230,7 +242,6 @@ function SearchBar({
                     key={index}
                     onClick={() => {
                       navigate(`/admin/search/${topic}`);
-                      setOpen(true);
                       setFocused(true);
                     }}
                   >

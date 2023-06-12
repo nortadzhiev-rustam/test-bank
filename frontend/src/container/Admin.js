@@ -27,7 +27,13 @@ const Admin = ({ showNav, setShowNav }) => {
   //get departments
   useEffect(() => {
     const getDepartments = async () => {
-      const res = await axios.get("https://backend.rustamnortadzhiev.com/api/v1/departments");
+      const res = await axios.get(
+        `${
+          process.env.NODE_ENV === "production"
+            ? "https://backend.rustamnortadzhiev.com"
+            : "http://localhost:5000"
+        }/api/v1/departments`
+      );
       setDepartments(res.data);
     };
     getDepartments();
@@ -36,7 +42,13 @@ const Admin = ({ showNav, setShowNav }) => {
   //get users
   useEffect(() => {
     const getUsers = async () => {
-      const res = await axios.get("https://backend.rustamnortadzhiev.com/api/v1/users");
+      const res = await axios.get(
+        `${
+          process.env.NODE_ENV === "production"
+            ? "https://backend.rustamnortadzhiev.com"
+            : "http://localhost:5000"
+        }/api/v1/users`
+      );
       setUsers(res.data);
     };
     getUsers();
@@ -45,16 +57,29 @@ const Admin = ({ showNav, setShowNav }) => {
   //add department
   const addDepartment = async (e) => {
     e.preventDefault();
-    const res = await axios.post("https://backend.rustamnortadzhiev.com/api/v1/departments", {
-      name: department,
-    });
+    const res = await axios.post(
+      `${
+        process.env.NODE_ENV === "production"
+          ? "https://backend.rustamnortadzhiev.com"
+          : "http://localhost:5000"
+      }/api/v1/departments`,
+      {
+        name: department,
+      }
+    );
     setDepartments([...departments, res.data.department]);
     setDepartment("");
   };
 
   //delete department
   const deleteDepartment = async (id) => {
-    await axios.delete(`https://backend.rustamnortadzhiev.com/api/v1/departments/${id}`);
+    await axios.delete(
+      `${
+        process.env.NODE_ENV === "production"
+          ? "https://backend.rustamnortadzhiev.com"
+          : "http://localhost:5000"
+      }/api/v1/departments/${id}`
+    );
     setDepartments(departments.filter((department) => department.id !== id));
   };
 

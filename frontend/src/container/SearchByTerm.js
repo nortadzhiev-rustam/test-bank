@@ -51,15 +51,19 @@ const SearchPage = ({ showNav, setShowNav }) => {
 
   useEffect(() => {
     axios
-      .get("https://backend.rustamnortadzhiev.com/api/v1/tests")
+      .get(
+        `${
+          process.env.NODE_ENV === "production"
+            ? "https://backend.rustamnortadzhiev.com"
+            : "http://localhost:5000"
+        }/api/v1/tests`
+      )
       .then((res) => {
         setTests(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
-
-    
   }, []);
   const handleExpandChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);

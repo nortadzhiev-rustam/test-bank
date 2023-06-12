@@ -64,7 +64,13 @@ export default function MyLibrary({ showNav, setShowNav }) {
   React.useEffect(() => {
     setLoading(true);
     axios
-      .get("https://backend.rustamnortadzhiev.com/api/v1/tests")
+      .get(
+        `${
+          process.env.NODE_ENV === "production"
+            ? "https://backend.rustamnortadzhiev.com"
+            : "http://localhost:5000"
+        }/api/v1/tests`
+      )
       .then((res) => {
         console.log(res.data);
         setTestData(res.data);
@@ -74,7 +80,13 @@ export default function MyLibrary({ showNav, setShowNav }) {
 
   React.useEffect(() => {
     axios
-      .get("https://backend.rustamnortadzhiev.com/api/v1/collections")
+      .get(
+        `${
+          process.env.NODE_ENV === "production"
+            ? "https://backend.rustamnortadzhiev.com"
+            : "http://localhost:5000"
+        }/api/v1/collections`
+      )
       .then((res) => {
         setCollections(res.data);
       });
@@ -83,7 +95,11 @@ export default function MyLibrary({ showNav, setShowNav }) {
   const handleDelete = async (id) => {
     try {
       const res = await axios.delete(
-        `https://backend.rustamnortadzhiev.com/api/v1/test/${id}`
+        `${
+          process.env.NODE_ENV === "production"
+            ? "https://backend.rustamnortadzhiev.com"
+            : "http://localhost:5000"
+        }/api/v1/test/${id}`
       );
       setTestData(testData.filter((item) => item.id !== id));
       console.log(res.message);
@@ -106,7 +122,11 @@ export default function MyLibrary({ showNav, setShowNav }) {
     };
     try {
       const res = await axios.post(
-        `https://backend.rustamnortadzhiev.com/api/v1/collection`,
+        `${
+          process.env.NODE_ENV === "production"
+            ? "https://backend.rustamnortadzhiev.com"
+            : "http://localhost:5000"
+        }/api/v1/collection`,
         data
       );
       setCollections((prevState) => [...prevState, res.data.collection]);
@@ -116,8 +136,6 @@ export default function MyLibrary({ showNav, setShowNav }) {
       console.log(e);
     }
   };
-
-  
 
   const handleSelect = (id) => {
     setActive(true);
