@@ -6,8 +6,8 @@ import TextStyle from "@tiptap/extension-text-style";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import InlineMath from "./InlineMath";
-import Underline from '@tiptap/extension-underline'
-import React from "react";
+import Underline from "@tiptap/extension-underline";
+import React, { useEffect } from "react";
 import { Button, Divider } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -33,7 +33,7 @@ const MenuBar = ({ editor }) => {
 
   return (
     <>
-      {/* <Button
+      <Button
         variant='outlined'
         size='medium'
         sx={{ minWidth: 15, maxWidth: 20, mr: 0.1 }}
@@ -41,8 +41,8 @@ const MenuBar = ({ editor }) => {
         type='Button'
         onClick={() => editor?.chain().focus().addInlineMath().run()}
       >
-        <FontAwesomeIcon icon={faSquareRootVariable}/>
-      </Button> */}
+        <FontAwesomeIcon icon={faSquareRootVariable} />
+      </Button>
       <Button
         variant='outlined'
         size='medium'
@@ -173,7 +173,11 @@ const MenuBar = ({ editor }) => {
   );
 };
 
-const TipTapEditor = ({ contentText, handleChangeModel, math }) => {
+const TipTapEditor = ({ contentText, handleChangeModel, math, setShowNav }) => {
+  useEffect(() => {
+    setShowNav(false);
+  }, [setShowNav]);
+
   const editor = useEditor({
     content: "",
     extensions: [
@@ -190,7 +194,7 @@ const TipTapEditor = ({ contentText, handleChangeModel, math }) => {
         },
       }),
       InlineMath.configure({ content: math }),
-      Underline
+      Underline,
     ],
     onUpdate: (editor) => {
       handleChangeModel(editor.editor.getHTML());

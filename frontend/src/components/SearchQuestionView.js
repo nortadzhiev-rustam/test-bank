@@ -97,7 +97,7 @@ export default function SearchQuestionView({ data, showAnswers }) {
           type === "True or False") && (
           <Grid container spacing={1} m={1} columns={{ xs: 4, sm: 8, md: 12 }}>
             {answers.map((option) => (
-              <Grid key={option.key} sx={{height: 35}} xs={12} sm={6}>
+              <Grid key={option.key} sx={{height: 50}} xs={12} sm={6}>
                 <Box display='flex' flexDirection='row' alignItems='center'>
                   <Box
                     width={15}
