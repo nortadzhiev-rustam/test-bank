@@ -2,7 +2,7 @@ const fs = require("fs");
 
 const remove = (req, res) => {
   const fileName = req.params.name;
-  const directoryPath = "../exam.rustamnortadzhiev.com/uploads/";
+  const directoryPath = "../localhost:3000/uploads/";
 
   fs.unlink(directoryPath + fileName, (err) => {
     if (err) {
