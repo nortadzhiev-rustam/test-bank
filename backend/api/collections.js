@@ -4,14 +4,13 @@ const router = express.Router();
 
 //route to post collections
 router.post("/collection", async (req, res) => {
-  const { name, visibilty } = req.body;
+  const { name, visibility, userId } = req.body;
   try {
     const collection = await Collection.create(
       {
-        name,
-        visibilty,
+        name, visibility, userId
       },
-      { include: [Test] }
+      { include: [{ model: Test, as: "Tests" }] }
     );
     res.json({ collection });
   } catch (error) {
@@ -43,13 +42,13 @@ router.put("/collection/:id", async (req, res) => {
     });
     res
       .status(200)
-      .json({ message: "Test was updated successfully", updatedCollection });
+      .json({ message: "Collection was updated successfully", updatedCollection });
   } catch (err) {
     res.status(500).json({ message: `Something went wrong: ${err}` });
   }
 });
 
-router.delete("/collections/:id", async (req, res) => {
+router.delete("/collection/:id", async (req, res) => {
   try {
     const collection = await Collection.findByPk(req.params.id);
     await collection.destroy();

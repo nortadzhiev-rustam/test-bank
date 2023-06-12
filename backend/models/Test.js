@@ -41,17 +41,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "collectionId",
       as: "collection",
     });
-    Test.belongsToMany(models.User, {
-      through: "UserTest",
-      as: "users",
-      foreignKey: "testId",
-    });
-
-    Test.belongsToMany(models.Question, {
-      through: "TestQuestion",
-      as: "testQuestions",
-      foreignKey: "testId",
-    });
   };
 
   return Test;

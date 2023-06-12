@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       visibility: {
         type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: 'Public'
+        allowNull: true,
+        
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -35,12 +35,14 @@ module.exports = (sequelize, DataTypes) => {
   Collection.associate = function (models) {
     Collection.belongsTo(models.User, {
       foreignKey: "userId",
+      as: 'collections'
     });
-
+    
     Collection.hasMany(models.Test, {
-      foreignKey: "collectionId",
-      as: 'Tests'
-    });
+        foreignKey: 'collectionId',
+        as: 'Tests'
+    })
+    
   };
 
   return Collection;

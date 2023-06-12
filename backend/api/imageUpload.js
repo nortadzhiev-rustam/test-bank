@@ -13,7 +13,7 @@ const corsOptions = {
 
 let storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "../frontend/public/uploads");
+    cb(null, "../exam.rustamnortadzhiev.com/uploads/");
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + "-" + file.originalname);

@@ -22,6 +22,7 @@ router.post("/question", async (req, res) => {
       departmentId,
       type,
       testId,
+      matches
     } = req.body;
     if (question !== "") {
       const newQuestion = await Question.create({

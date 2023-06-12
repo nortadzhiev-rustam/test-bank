@@ -9,6 +9,7 @@ const isAuth = require("./auth");
 const image = require("./imageUpload");
 const users = require("./users");
 const test = require("./test");
+const collection = require("./collections");
 const router = express.Router();
 
 router.use(registerApi);
@@ -21,4 +22,5 @@ router.use(isAuth);
 router.use(image);
 router.use(users);
 router.use(test);
+router.use(collection);
 module.exports = router;

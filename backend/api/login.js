@@ -2,7 +2,7 @@ const express = require("express");
 const { User } = require("../models/");
 const bcrypt = require("bcryptjs");
 const router = express.Router();
-const { Department } = require("../models");
+const { Department, Collection } = require("../models/");
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -14,6 +14,11 @@ router.post("/login", async (req, res) => {
         as: "department",
         attributes: ["name"],
       },
+      {
+          model: Collection,
+          as: 'collections',
+          attributes: ['name', 'id']
+      }
     ],
   }).catch((err) => {
     console.log("Error: ", err);
@@ -40,7 +45,8 @@ router.post("/login", async (req, res) => {
       createdAt: userWithEmail.createdAt,
       role: userWithEmail.role,
       department: userWithEmail.department,
-      id: userWithEmail.id
+      id: userWithEmail.id,
+      collections: userWithEmail.collections
     },
     isAuth: req.session.isAuth,
     loading: false,

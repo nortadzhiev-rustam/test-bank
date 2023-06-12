@@ -48,17 +48,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "userId",
       as: "owner",
     });
-
-    User.belongsToMany(models.Test, {
-      through: "UserTest",
-      as: "tests",
+    
+    User.hasMany(models.Collection, {
       foreignKey: "userId",
-    });
-
-    User.belongsToMany(models.Question, {
-      through: "UserQuestion",
-      as: "questions",
-      foreignKey: "userId",
+      as: "collections",
     });
   };
 
