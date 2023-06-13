@@ -163,9 +163,11 @@ function SearchBar({
           sx={{ marginTop: 3, marginLeft: 1 }}
           elevation={5}
           onBlur={() => {
-            setFocused(false);
-            // setOpen(false);
-            setName("");
+            setTimeout(() => {
+              setFocused(false);
+              setOpen(false);
+              setName("");
+            }, 100);
           }}
         >
           <StyledInputBase

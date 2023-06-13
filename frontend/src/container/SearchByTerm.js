@@ -334,7 +334,7 @@ const SearchPage = ({ showNav, setShowNav }) => {
         <Grid
           xs={12}
           lg={5.5}
-          xl={5.8}
+          
           mr={1}
           pr={1}
           bgcolor='#fff'

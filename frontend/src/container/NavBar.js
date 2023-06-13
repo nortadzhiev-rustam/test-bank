@@ -43,7 +43,6 @@ import {
   MeetingRoom,
   Settings,
   AddCircle,
-  ChevronLeftRounded,
 } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import MuiDrawer from "@mui/material/Drawer";
@@ -62,28 +61,7 @@ import {
 
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import InsertPanel from "../components/InsertPanel";
-
-const Search = styled("div")(({ theme }) => ({
-  height: 40,
-  borderRadius: 10,
-
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  paddingRight: 10,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
-    width: "100%",
-  },
-  cursor: "pointer",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-}));
+import NavSearchBar from "../components/NavSearchBar";
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -105,17 +83,6 @@ const closedMixin = (theme) => ({
     width: `calc(${theme.spacing(9)} + 1px)`,
   },
 });
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  color: "white",
-}));
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -150,18 +117,6 @@ const MiniDrawer = styled(MuiDrawer, {
     ...closedMixin(theme),
     "& .MuiDrawer-paper": closedMixin(theme),
   }),
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  width: "100%",
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-  },
 }));
 
 const Space = styled("div")(({ theme }) => ({
@@ -219,13 +174,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const NavBar = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [option, setOption] = React.useState("Test Library");
+
   const [isOpen, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("explore");
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const user = useSelector((state) => state.user.user.user);
-  const theme = useTheme();
+
   const [search, setSearch] = React.useState();
   const dispatch = useDispatch();
   const history = useNavigate();
@@ -239,12 +194,15 @@ const NavBar = () => {
   const handleDialogOpen = () => {
     setOpen(!isOpen);
   };
+  const pathname = window.location.pathname;
   React.useEffect(() => {
     setDrawerOpen(true);
-    setTimeout(() => {
-      setDrawerOpen(false);
-    }, 1000);
-  }, []);
+    if (pathname.includes("/admin/search")) {
+      setTimeout(() => {
+        setDrawerOpen(false);
+      }, 1000);
+    }
+  }, [pathname]);
   const handleLogOut = async () => {
     dispatch(logout());
     const res = await axios.get(
@@ -514,58 +472,19 @@ const NavBar = () => {
           )}
 
           {isLoggedIn ? (
-            <Box
+            <Stack
+              spacing={1}
               sx={{
                 width: "100%",
-                display: { xs: "none", md: "flex" },
+                display: { xs: "none", lg: "flex" },
                 alignItems: "center",
                 ml: drawerOpen ? 21 : 0,
                 transition: "all 0.2s ease-in-out",
+                maxHeight: "50px",
               }}
+              direction='row'
             >
-              <Search sx={{ width: "100%", py: "4px" }}>
-                <StyledInputBase
-                  sx={{ width: "100%" }}
-                  placeholder='Search…'
-                  inputProps={{ "aria-label": "search" }}
-                  startAdornment={
-                    <InputAdornment position='start'>
-                      <SearchIconWrapper>
-                        <SearchIcon />
-                      </SearchIconWrapper>
-                    </InputAdornment>
-                  }
-                />
-                <Divider
-                  orientation='vertical'
-                  sx={{ display: { xs: "none", lg: "flex" } }}
-                />
-                <FormControl
-                  sx={{
-                    width: 140,
-                    padding: 1,
-                    display: { xs: "none", lg: "flex" },
-                  }}
-                  size='small'
-                >
-                  <Select
-                    disableUnderline
-                    variant='standard'
-                    value={option}
-                    sx={{
-                      padding: 1,
-                      color: "white",
-                      boxShadow: "none",
-                    }}
-                    labelId='demo-simple-select-label'
-                    id='demo-simple-select'
-                    onChange={(e) => setOption(e.target.value)}
-                  >
-                    <MenuItem value='Test Library'>Test Library</MenuItem>
-                    <MenuItem value='My Library'>My Library</MenuItem>
-                  </Select>
-                </FormControl>
-              </Search>
+              <NavSearchBar drawerOpen={drawerOpen} />
               <IconButton>
                 <Badge
                   badgeContent={5}
@@ -578,7 +497,7 @@ const NavBar = () => {
                   <NotificationsIcon htmlColor='white' />
                 </Badge>
               </IconButton>
-            </Box>
+            </Stack>
           ) : (
             <Stack
               width='100%'
@@ -638,7 +557,9 @@ const NavBar = () => {
             open={drawerOpen}
             onMouseEnter={() => setDrawerOpen(true)}
             onMouseLeave={() => {
-              setDrawerOpen(false);
+              if (pathname.includes("/admin/search")) {
+                setDrawerOpen(false);
+              }
               setMobileOpen(false);
             }}
           >
