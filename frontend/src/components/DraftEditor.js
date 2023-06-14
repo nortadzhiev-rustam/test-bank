@@ -21,6 +21,8 @@ export default function MyEditor({
   correctAnswer,
   editing,
   content,
+  isOpen,
+  setIsOpen
 }) {
   const [isMathHover, setIsMathHover] = useState(false);
   const [questionText, setQuestionText] = useState("");
@@ -109,6 +111,8 @@ export default function MyEditor({
           contentText={questionText}
           handleChangeModel={handleChangeModel}
           math={equationarray[0]}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
           
         />
 

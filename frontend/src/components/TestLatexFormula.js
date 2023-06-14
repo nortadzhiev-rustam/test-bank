@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import "mathquill/build/mathquill.css";
 import { addStyles, EditableMathField } from "react-mathquill";
 import { formulas } from "../constants/formulas";
-import { Button, Stack } from "@mui/material";
+import { Button, Stack, Box } from "@mui/material";
 import { BlockMath } from "react-katex";
 import "katex/dist/katex.min.css";
 addStyles();
@@ -32,10 +32,9 @@ const LatexEditor = ({ setLatexCode }) => {
             width: "100%",
             minHeight: 80,
             display: "flex",
-            justifyContent: "center",
             alignItems: "center",
-            pl: '50px',
-            
+            pl: "50px",
+            borderRadius: 10,
           }}
           latex=''
           config={{
@@ -53,30 +52,33 @@ const LatexEditor = ({ setLatexCode }) => {
       </Stack>
       <Stack
         direction='row'
-        useFlexGap
         flexWrap='wrap'
-        spacing={1}
-        alignItems='flex-start'
+        spacing={2}
+        alignItems='flex-end'
         justifyContent='flex-start'
+        width='95%'
+        p={1}
       >
         {formulas.map((formula) => (
-          <Button
-            color='secondary'
-            variant='contained'
-            sx={{
-              textTransform: "lowercase",
-              fontSize: formula.fontSize,
-              minWidth: 30,
-              maxWidth: 40,
-              minHeight: 30,
-              maxHeight: 40,
-              mb: 1,
-            }}
+          <Box
             key={formula.id}
+            component={Button}
+            bgcolor='inherit'
+            variant='contained'
+            textTransform='lowercase'
+            width={50}
+            height={50}
+            ml={2}
+            mt={2}
+            p={2}
+            sx={{
+              color: "black",
+              fontSize: ".7rem",
+            }}
             onClick={() => handleButtonClick(formula.latex)}
           >
             <BlockMath math={formula.formula} />
-          </Button>
+          </Box>
         ))}
       </Stack>
     </Stack>

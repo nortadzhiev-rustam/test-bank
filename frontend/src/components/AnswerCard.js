@@ -91,14 +91,7 @@ const AnswersCard = (props) => {
     setContent(content);
   };
 
-  const {
-    addAnswer,
-    option,
-    answers,
-    correctAnswer,
-    editing,
-  
-  } = props;
+  const { addAnswer, option, answers, correctAnswer, editing } = props;
 
   useEffect(() => {
     // Load content from parent's state when editing
@@ -155,7 +148,7 @@ const AnswersCard = (props) => {
 
   return (
     <>
-      {isOpen && (
+      {/* {isOpen && (
         <Box sx={{ width: "100%" }}>
           <FormulaEditor
             setEquation={(eq) => setEquation(eq)}
@@ -173,7 +166,7 @@ const AnswersCard = (props) => {
             }
           />
         </Box>
-      )}
+      )} */}
       <StyledPaper
         elevation={10}
         sx={{
@@ -295,6 +288,8 @@ const AnswersCard = (props) => {
             setContent={handleContentChange}
             content={content}
             editing={editing}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
           />
         </Box>
       </StyledPaper>

@@ -385,10 +385,12 @@ const QuestionInput = ({
             setContent={setQuestion}
             content={content}
             editing={editing}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
           />
         </Grid>
       </Grid>
-      {isOpen && (
+      {/* {isOpen && (
         <Box width={"100%"} pl={0}>
           <FormulaEditor
             setEquation={(eq) => setEquation(eq)}
@@ -400,7 +402,7 @@ const QuestionInput = ({
             setClosing={(e) => setClosing(e)}
           />
         </Box>
-      )}
+      )} */}
     </Paper>
   );
 };
