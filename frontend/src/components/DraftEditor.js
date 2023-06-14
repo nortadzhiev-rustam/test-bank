@@ -109,6 +109,7 @@ export default function MyEditor({
           contentText={questionText}
           handleChangeModel={handleChangeModel}
           math={equationarray[0]}
+          
         />
 
         {equationarray.length !== 0 && (

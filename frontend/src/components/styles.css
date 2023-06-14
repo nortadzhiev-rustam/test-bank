@@ -1,5 +1,15 @@
 .inline-math {
-    border: dashed blue;
-    display: inline-block;
-    /* white-space: pre;   */
-  }
+  display: inline-block;
+  background-color: rgba(47, 79, 79, 0.393);
+  padding: 10px;
+  margin-inline: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  /* white-space: pre;   */
+}
+
+.inline-math:hover {
+  background-color: rgba(141, 169, 169, 0.52);
+  border: 0.5px dashed #fff;
+  cursor: pointer;
+}

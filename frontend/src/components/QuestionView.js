@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Unstable_Grid2/";
 import { Paper, Typography, Button, Box, Divider } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFeatherPointed, faSort } from "@fortawesome/free-solid-svg-icons";
 import { BlockMath } from "react-katex";
+import katex from "katex";
 import "katex/dist/katex.min.css";
 import { Stack } from "@mui/system";
 import {
@@ -16,6 +17,8 @@ import {
   Subject,
 } from "@mui/icons-material";
 import "./QuestionView.css";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 const IconSelector = ({ type }) => {
   if (type === "Multiple choice")
     return <CheckCircleRounded color='inherit' fontSize='small' />;
@@ -42,6 +45,24 @@ export default function QuestionView({
   const [quest] = useState(JSON.parse(question));
   const [correct] = useState(JSON.parse(correctAnswer));
   const [match] = useState(JSON.parse(matches));
+  const [editable, setEditable] = useState(false);
+  const editor = useEditor({
+    editable,
+    content: quest?.text,
+    extensions: [StarterKit],
+  });
+
+  useEffect(() => {
+    if (!editor) {
+      return undefined;
+    }
+
+    editor.setEditable(false);
+  }, [editor, editable]);
+
+  if (!editor) {
+    return null;
+  }
   const onDelete = () => {
     handleDelete(id);
   };
@@ -54,8 +75,32 @@ export default function QuestionView({
     handleDuplicate(id);
   };
 
+  const renderLatex = (latex) => {
+    const options = {
+      throwOnError: false,
+      strict: false,
+      displayMode: true, // Set this to true if you want to render LaTeX in display mode
+    };
+
+    try {
+      return katex.renderToString(latex, options);
+    } catch (error) {
+      console.error("Error rendering LaTeX:", error);
+      return latex;
+    }
+  };
+
+  const renderContent = (content) => {
+    const regex = /<span data-type="inlineMath" content="(.*?)"><\/span>/g;
+  
+    return content.replace(regex, (match, latex) => {
+      const renderedLatex = renderLatex(latex);
+      return `<span class="latex-rendered">${renderedLatex}</span>`;
+    });
+  };
+
   function createMarkup(content) {
-    return { __html: content };
+    return { __html: renderContent(content) };
   }
 
   return (
@@ -170,6 +215,7 @@ export default function QuestionView({
               <BlockMath math={quest.equation} />
             )}
           </Grid>
+          
         </Grid>
 
         <Divider orientation='horizontal'>answer choices</Divider>

@@ -8,7 +8,14 @@ import StarterKit from "@tiptap/starter-kit";
 import InlineMath from "./InlineMath";
 import Underline from "@tiptap/extension-underline";
 import React, { useEffect } from "react";
-import { Button, Divider } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  Divider,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRotateLeft,
@@ -25,8 +32,9 @@ import {
   faStrikethrough,
   faUnderline,
 } from "@fortawesome/free-solid-svg-icons";
+import LatexEditor from "./TestLatexFormula";
 
-const MenuBar = ({ editor }) => {
+const MenuBar = ({ editor, setOpen }) => {
   if (!editor) {
     return null;
   }
@@ -39,7 +47,7 @@ const MenuBar = ({ editor }) => {
         sx={{ minWidth: 15, maxWidth: 20, mr: 0.1 }}
         color='inherit'
         type='Button'
-        onClick={() => editor?.chain().focus().addInlineMath().run()}
+        onClick={() => setOpen(true)}
       >
         <FontAwesomeIcon icon={faSquareRootVariable} />
       </Button>
@@ -173,10 +181,10 @@ const MenuBar = ({ editor }) => {
   );
 };
 
-const TipTapEditor = ({ contentText, handleChangeModel, math, setShowNav }) => {
-  useEffect(() => {
-    setShowNav(false);
-  }, [setShowNav]);
+const TipTapEditor = ({ contentText, handleChangeModel }) => {
+  const [open, setOpen] = React.useState(false);
+  const [latexCode, setLatexCode] = React.useState("");
+  
 
   const editor = useEditor({
     content: "",
@@ -193,7 +201,7 @@ const TipTapEditor = ({ contentText, handleChangeModel, math, setShowNav }) => {
           keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
         },
       }),
-      InlineMath.configure({ content: math }),
+      InlineMath.configure(),
       Underline,
     ],
     onUpdate: (editor) => {
@@ -209,9 +217,27 @@ const TipTapEditor = ({ contentText, handleChangeModel, math, setShowNav }) => {
     //eslint-disable-next-line
   }, [editor, contentText]);
 
+  const insertInlineMath = () => {
+    editor?.chain().focus().addInlineMath({ content: latexCode }).run();
+    setLatexCode("");
+    setOpen(false);
+  };
+
   return (
     <div>
-      <MenuBar editor={editor} />
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>Math Editor</DialogTitle>
+        <DialogContent>
+          <LatexEditor setLatexCode={setLatexCode} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)} color={"error"}>
+            Cancel
+          </Button>
+          <Button onClick={insertInlineMath}>Save</Button>
+        </DialogActions>
+      </Dialog>
+      <MenuBar editor={editor} setOpen={setOpen} />
       <Divider sx={{ bgcolor: "#FFF", my: 1 }} />
       <EditorContent editor={editor} />
     </div>

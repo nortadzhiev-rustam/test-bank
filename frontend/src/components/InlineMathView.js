@@ -19,7 +19,6 @@ export default function InlineMathView(props) {
 
   return (
     <NodeViewWrapper className="inline-math">
-      <textarea value={content} onChange={handleChange} />
       <div dangerouslySetInnerHTML={{ __html: preview }} />
       
     </NodeViewWrapper>

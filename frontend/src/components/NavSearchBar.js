@@ -213,7 +213,7 @@ function NavSearchBar({ drawerOpen }) {
       <Stack direction='row' width='100%'>
         <Search sx={{ width: "100%", py: "4px" }}>
           <StyledInputBase
-            sx={{ width: "100%" }}
+            sx={{ width: "100%", zIndex: 10 }}
             placeholder='Search…'
             inputProps={{ "aria-label": "search" }}
             startAdornment={
@@ -267,22 +267,26 @@ function NavSearchBar({ drawerOpen }) {
         <Paper
           sx={{
             width: {
-              lg: drawerOpen ? "70.5%" : "84%",
-              xl: drawerOpen ? "78%" : "88%",
+              lg: drawerOpen ? "58%" : "71.5%",
+              xl: drawerOpen ? "68.5%" : "78.5%",
             },
             position: "absolute",
-            top: 60,
-            right: 85,
+            top: 45,
+            right: {lg:235 ,xl:243},
             p: 0.5,
             transition: "all 0.2s ease-in-out",
-            borderRadius: 2,
+            borderBottomLeftRadius: 10,
+            borderBottomRightRadius: 10,
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
+            zIndex: 1,
           }}
           elevation={3}
         >
           {recentSearches.length > 0 && searchQuery.length < 3 && (
             <List dense>
               <ListItem>
-                <Typography variant='h5' color='initial' fontWeight='bold'>
+                <Typography variant='h6' color='initial' fontWeight='bold'>
                   Recent Searches
                 </Typography>
               </ListItem>
@@ -296,7 +300,8 @@ function NavSearchBar({ drawerOpen }) {
                   }}
                   sx={{
                     "&:hover": {
-                      backgroundColor: alpha(theme.palette.common.white, 0.15),
+                      backgroundColor: "rgba(77,182,172,0.3)", // Customize the hover background color here
+                      color: "#00796b",
                     },
                   }}
                 >
@@ -321,6 +326,12 @@ function NavSearchBar({ drawerOpen }) {
               <Divider component='li' sx={{ marginBlock: 1 }} />
               {randomElements.map((topic, index) => (
                 <ListItemButton
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "rgba(77,182,172,0.3)", // Customize the hover background color here
+                      color: "#00796b",
+                    },
+                  }}
                   key={index}
                   onClick={() => {
                     navigate(`/admin/search/${topic}`);

@@ -143,7 +143,7 @@ export default function TestWindow({
               padding: 2,
               position: "fixed",
               width: "70%",
-              left: { xs: "12%", md: "13.5%", lg: "17%" },
+              left: { xs: "12%", md: "13.5%", lg: "23%" },
               top: 55,
               zIndex: 10,
             }}
@@ -407,7 +407,7 @@ export default function TestWindow({
             alignItems='center'
             spacing={1}
             mt={200}
-            ml={40}
+            
           >
             <FontAwesomeIcon icon={faListCheck} />{" "}
             <Typography>

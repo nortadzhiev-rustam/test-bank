@@ -15,10 +15,10 @@ router.post("/login", async (req, res) => {
         attributes: ["name"],
       },
       {
-          model: Collection,
-          as: 'collections',
-          attributes: ['name', 'id']
-      }
+        model: Collection,
+        as: "collections",
+        attributes: ["name", "id"],
+      },
     ],
   }).catch((err) => {
     console.log("Error: ", err);
@@ -36,7 +36,7 @@ router.post("/login", async (req, res) => {
 
   req.session.user = userWithEmail;
   req.session.isAuth = true;
-
+  console.log(req.session);
   res.json({
     message: `Welcome Back! ${userWithEmail.firstName}`,
     user: {
@@ -46,7 +46,7 @@ router.post("/login", async (req, res) => {
       role: userWithEmail.role,
       department: userWithEmail.department,
       id: userWithEmail.id,
-      collections: userWithEmail.collections
+      collections: userWithEmail.collections,
     },
     isAuth: req.session.isAuth,
     loading: false,

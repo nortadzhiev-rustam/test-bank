@@ -14,7 +14,7 @@ function App() {
           process.env.NODE_ENV === "production"
             ? "https://backend.rustamnortadzhiev.com"
             : "http://localhost:5000"
-        }Ï/api/v1/isAuth`, {
+        }/api/v1/isAuth`, {
         withCredentials: true,
       });
       if (res.status === 200) {
@@ -39,7 +39,7 @@ function App() {
           process.env.NODE_ENV === "production"
             ? "https://backend.rustamnortadzhiev.com"
             : "http://localhost:5000"
-        }Ï/api/v1/departments`, {
+        }/api/v1/departments`, {
         withCredentials: true,
       });
       dispatch(getDepartmentSuccess(res.data));

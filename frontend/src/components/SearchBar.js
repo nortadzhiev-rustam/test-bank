@@ -13,7 +13,7 @@ import {
   ListItemButton,
 } from "@mui/material";
 import { ChevronRightTwoTone } from "@mui/icons-material";
-import { styled, alpha } from "@mui/material/styles";
+import { styled, alpha, useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -68,11 +68,44 @@ function SearchBar({
   focused,
 }) {
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [recentSearches, setRecentSearches] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [tests, setTests] = useState([]);
   const [randomElements, setRandomElements] = useState([]);
   const navigate = useNavigate();
+  const theme = useTheme();
+  useEffect(() => {
+    const getRecentSearchesFromStorage = () => {
+      const recentSearchesString = localStorage.getItem("recentSearches");
+      if (recentSearchesString) {
+        return JSON.parse(recentSearchesString);
+      }
+      return [];
+    };
+
+    const saveRecentSearchesToStorage = (searches) => {
+      localStorage.setItem("recentSearches", JSON.stringify(searches));
+    };
+
+    const recentSearchesFromStorage = getRecentSearchesFromStorage();
+    setRecentSearches(recentSearchesFromStorage);
+
+    const storedDate = localStorage.getItem("resetDate");
+    const currentDate = new Date().toISOString().split("T")[0];
+
+    if (storedDate !== currentDate) {
+      // Clear the recent searches and update the reset date
+      setRecentSearches([]);
+      localStorage.removeItem("recentSearches");
+      localStorage.setItem("resetDate", currentDate);
+    }
+  }, []);
+  const addRecentSearch = (query) => {
+    const updatedSearches = [query, ...recentSearches.slice(0, 4)];
+    setRecentSearches(updatedSearches);
+    localStorage.setItem("recentSearches", JSON.stringify(updatedSearches));
+  };
+
   useEffect(() => {
     const getRandomElements = (arr, numElements) => {
       const shuffledArray = arr.sort(() => 0.5 - Math.random());
@@ -231,7 +264,40 @@ function SearchBar({
               borderRadius: 3,
             }}
           >
-            {searchQuery.length < 3 && (
+            {recentSearches.length > 0 && searchQuery.length < 3 && (
+              <List dense>
+                <ListItem>
+                  <Typography variant='h5' color='initial' fontWeight='bold'>
+                    Recent Searches
+                  </Typography>
+                </ListItem>
+                <Divider component='li' sx={{ marginBlock: 1 }} />
+                {recentSearches.map((recentSearch, index) => (
+                  <ListItemButton
+                    sx={{
+                      "&:hover": {
+                        backgroundColor: "rgba(77,182,172,0.3)", // Customize the hover background color here
+                        color: "#00796b",
+                      },
+                    }}
+                    key={index}
+                    disablePadding
+                    onClick={() => {
+                      navigate(`/admin/search/${recentSearch}`);
+                    }}
+                  >
+                    <ListItemText
+                      primary={
+                        <Typography variant='body2' color='inherit'>
+                          {renderBoldText(recentSearch)}
+                        </Typography>
+                      }
+                    />
+                  </ListItemButton>
+                ))}
+              </List>
+            )}
+            {searchQuery.length < 3 && recentSearches.length < 1 && (
               <List dense>
                 <ListItem>
                   <Typography variant='h5' color='initial' fontWeight='bold'>
@@ -241,6 +307,12 @@ function SearchBar({
                 <Divider component='li' sx={{ marginBlock: 1 }} />
                 {randomElements.map((topic, index) => (
                   <ListItemButton
+                    sx={{
+                      "&:hover": {
+                        backgroundColor: "rgba(77,182,172,0.3)", // Customize the hover background color here
+                        color: "#00796b",
+                      },
+                    }}
                     key={index}
                     onClick={() => {
                       navigate(`/admin/search/${topic}`);
@@ -271,7 +343,10 @@ function SearchBar({
                         },
                       }}
                       key={test.id}
-                      onClick={() => navigate(`/admin/search/${searchQuery}`)}
+                      onClick={() => {
+                        navigate(`/admin/search/${searchQuery}`);
+                        addRecentSearch(searchQuery);
+                      }}
                     >
                       <ListItemText>{renderBoldText(test.name)}</ListItemText>
                     </ListItemButton>
