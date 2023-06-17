@@ -15,7 +15,7 @@ import {
 import QuestionInput from "../components/QuestionInput";
 import AnswersContainer from "../components/AnswersContainer";
 import { useParams } from "react-router-dom";
-
+import uuid from "react-uuid";
 import axios from "axios";
 import TrueOrFalse from "../components/TrueOrFalse";
 import MatchingContainer from "../components/Match";
@@ -124,6 +124,7 @@ const InsertWindow = ({
 
   const handleSubmit = async () => {
     const data = {
+      id: uuid(),
       type: type,
       category: test.name,
       difficulty: difficulty,
@@ -214,7 +215,7 @@ const InsertWindow = ({
                     />
                   </CloseButton>
                 ) : (
-                  <FontAwesomeIcon size='lg' color='#e63946' icon={faCircle} />
+                  <FontAwesomeIcon size='xl' color='#e63946' icon={faCircle} />
                 )}
 
                 {mouseIn ? (
@@ -230,7 +231,7 @@ const InsertWindow = ({
                   </MinusButton>
                 ) : (
                   <FontAwesomeIcon
-                    size='lg'
+                    size='xl'
                     style={{ marginLeft: 5 }}
                     color='#ee9b00'
                     icon={faCircle}
@@ -261,7 +262,7 @@ const InsertWindow = ({
                   </FullScreenButton>
                 ) : (
                   <FontAwesomeIcon
-                    size='lg'
+                    size='xl'
                     style={{ marginLeft: 5 }}
                     color='#43aa8b'
                     icon={faCircle}
@@ -363,8 +364,8 @@ const CloseButton = styled("div")({
   display: "inline-flex",
   backgroundColor: "#e63946",
   borderRadius: "50%",
-  height: 20,
-  width: 20,
+  height: 21,
+  width: 21,
   justifyContent: "center",
   alignItems: "center",
 });
@@ -374,8 +375,8 @@ const MinusButton = styled("div")({
   backgroundColor: "#ee9b00",
   borderRadius: "50%",
   marginLeft: 5,
-  height: 20,
-  width: 20,
+  height: 21,
+  width: 21,
   justifyContent: "center",
   alignItems: "center",
 });
@@ -385,8 +386,8 @@ const FullScreenButton = styled("div")({
   backgroundColor: "#43aa8b",
   marginLeft: 5,
   borderRadius: "50%",
-  height: 20,
-  width: 20,
+  height: 21,
+  width: 21,
   justifyContent: "center",
   alignItems: "center",
 });

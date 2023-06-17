@@ -1,10 +1,10 @@
 import React, { useRef } from "react";
 import "./Default.css";
 import { Box, Stack } from "@mui/material";
-import CardSlider from "../components/CardSlider";
+
 import MainDepartments from "../components/MainDepartments";
 import SearchBar from "../components/SearchBar";
-import axios from "axios";
+
 const mainDepartments = [
   { title: "Computers", id: 1 },
   { title: "Maths", id: 2 },
@@ -32,9 +32,7 @@ const Default = ({ setShowNav, showNav }) => {
     setOpen(false);
     setFocused(false);
   };
-  const handleToggle = () => {
-    setOpen(!open);
-  };
+  
 
   const handleClick = (name) => {
     ref.current.focus();

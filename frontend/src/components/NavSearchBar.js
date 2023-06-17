@@ -16,6 +16,7 @@ import {
   FormControl,
   MenuItem,
   Select,
+  useMediaQuery,
 } from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
@@ -79,7 +80,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 function NavSearchBar({ drawerOpen }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [recentSearches, setRecentSearches] = useState([]);
-
+  const [searchBarWidth, setSearchBarWidth] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [tests, setTests] = useState([]);
   const [randomElements, setRandomElements] = useState([]);
@@ -87,8 +88,8 @@ function NavSearchBar({ drawerOpen }) {
   const [open, setOpen] = useState(false);
   const [focused, setFocused] = useState(false);
   const navigate = useNavigate();
-
-  const theme = useTheme();
+  const match1 = useMediaQuery("(min-width:1440px)");
+  const match2 = useMediaQuery("(min-width:1200px)");
 
   useEffect(() => {
     const getRandomElements = (arr, numElements) => {
@@ -192,6 +193,8 @@ function NavSearchBar({ drawerOpen }) {
     if (!open) {
       setOpen(true);
     }
+    const searchBar = document.getElementById("search-bar");
+    setSearchBarWidth(searchBar.getBoundingClientRect().width);
   }
 
   const handleSubmit = (e) => {
@@ -213,6 +216,7 @@ function NavSearchBar({ drawerOpen }) {
       <Stack direction='row' width='100%'>
         <Search sx={{ width: "100%", py: "4px" }}>
           <StyledInputBase
+            id='search-bar'
             sx={{ width: "100%", zIndex: 10 }}
             placeholder='Search…'
             inputProps={{ "aria-label": "search" }}
@@ -266,13 +270,10 @@ function NavSearchBar({ drawerOpen }) {
       {open && (
         <Paper
           sx={{
-            width: {
-              lg: drawerOpen ? "58%" : "71.5%",
-              xl: drawerOpen ? "68.5%" : "78.5%",
-            },
+            width: searchBarWidth,
             position: "absolute",
-            top: 45,
-            right: {lg:235 ,xl:243},
+            top: 43,
+            right: { lg: 233, xl: 240 },
             p: 0.5,
             transition: "all 0.2s ease-in-out",
             borderBottomLeftRadius: 10,
@@ -280,6 +281,7 @@ function NavSearchBar({ drawerOpen }) {
             borderTopLeftRadius: 0,
             borderTopRightRadius: 0,
             zIndex: 1,
+            
           }}
           elevation={3}
         >

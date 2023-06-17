@@ -113,6 +113,7 @@ export default function MyEditor({
           math={equationarray[0]}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
+          editing={editing}
           
         />
 

@@ -15,10 +15,7 @@ const LatexEditor = ({ setLatexCode }) => {
     mathFieldRef.current.write(value);
   };
 
-  const handleClearClick = () => {
-    mathFieldRef.current.focus();
-    mathFieldRef.current.clear();
-  };
+ 
 
   const handleChange = (latex) => {
     setLatexCode(latex);

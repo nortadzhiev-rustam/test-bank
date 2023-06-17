@@ -1,8 +1,4 @@
 import "./tiptap.scss";
-
-import { Color } from "@tiptap/extension-color";
-import ListItem from "@tiptap/extension-list-item";
-import TextStyle from "@tiptap/extension-text-style";
 import {
   EditorContent,
   useEditor,
@@ -265,43 +261,38 @@ const TipTapEditor = ({
   handleChangeModel,
   isOpen,
   setIsOpen,
+  editing,
 }) => {
   const [latexCode, setLatexCode] = React.useState("");
 
   const editor = useEditor({
     content: "",
     extensions: [
-      Color.configure({ types: [TextStyle.name, ListItem.name] }),
-      TextStyle.configure({ types: [ListItem.name] }),
-      StarterKit.configure({
-        bulletList: {
-          keepMarks: true,
-          keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-        },
-        orderedList: {
-          keepMarks: true,
-          keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-        },
-      }),
+      StarterKit,
+
       Placeholder.configure({
         placeholder: "Start typing here...",
       }),
       InlineMath.configure(),
       Underline,
     ],
+    parseOptions: {
+      preserveWhitespace: false,
+    },
     onUpdate: (editor) => {
       handleChangeModel(editor.editor.getHTML());
     },
   });
-
   React.useEffect(() => {
     console.log(contentText);
-    if (editor !== null) {
-      editor.commands.setContent(contentText);
+
+    if (editing) {
+      if (editor !== null) {
+        editor.commands.setContent(contentText);
+      }
     }
     //eslint-disable-next-line
-  }, [editor, contentText]);
-
+  }, [editing, editor, contentText]);
   const insertInlineMath = () => {
     editor?.chain().focus().addInlineMath({ content: latexCode }).run();
     setLatexCode("");

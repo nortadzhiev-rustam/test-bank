@@ -67,7 +67,7 @@ export const formulas = [
     name: "int",
   },
   {
-    id: 15,
+    id: 10,
     formula: "\\int_{x}^{y}",
     latex: "\\int",
     type: "math",

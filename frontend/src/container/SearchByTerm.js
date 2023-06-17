@@ -25,6 +25,7 @@ import SearchQuestionView from "../components/SearchQuestionView";
 import { FolderOutlined, Print, AddCircleRounded } from "@mui/icons-material";
 import CollectionDialog from "../components/CollectionDialog";
 import { useSelector } from "react-redux";
+import uuid from "react-uuid";
 const SearchPage = ({ showNav, setShowNav }) => {
   const [state, setState] = useState({
     gilad: true,
@@ -37,13 +38,21 @@ const SearchPage = ({ showNav, setShowNav }) => {
   const [questions, setQuestions] = useState([]);
   const [showAnswers, setShowAnswers] = useState(true);
   const [showCollections, setShowCollections] = useState(false);
+  const [testId, setTestId] = useState("");
+  const [newQuestions, setNewQuestions] = useState([]);
   // eslint-disable-next-line
   const [collections, setCollections] = useState([]);
 
   const user = useSelector((state) => state.user.user.user);
+  const department = useSelector((state) => state.department.department);
 
   const handleSaveDialogOpen = () => {
     setShowCollections(!showCollections);
+  };
+
+  //check newQuestion array if the question is already added
+  const isAdded = (question) => {
+    return newQuestions.some((item) => item.question === question);
   };
 
   const navigate = useNavigate();
@@ -110,6 +119,74 @@ const SearchPage = ({ showNav, setShowNav }) => {
 
   const handleHover = (testId) => {
     setHoveredTest(testId);
+  };
+
+  const createTest = async () => {
+    const userDepartment = department.filter(
+      (dep) => dep.name === user.department.name
+    )[0];
+    const data = {
+      id: uuid(),
+      name: "untitled",
+      userId: user.id,
+      departmentId: userDepartment.id,
+      grade: null,
+    };
+    try {
+      const req = await axios.post(
+        `${
+          process.env.NODE_ENV === "production"
+            ? "https://backend.rustamnortadzhiev.com"
+            : "http://localhost:5000"
+        }/api/v1/test`,
+        data
+      );
+      if (req.status === 200) {
+        setTestId(req.data.test.id);
+      }
+    } catch (err) {
+      console.log("Something went wrong", err);
+    }
+  };
+
+  const handeAddAllQuestions = async () => {
+    //add all questions from hovered test to new test by changing their ids
+    const newQuests = questions.map((question) => {
+      return {
+        ...question,
+        id: uuid(),
+        testId: testId,
+      };
+    });
+
+    setNewQuestions(newQuests);
+    // fetch all questions from new test
+  };
+
+  const handleAddQuestion = async (question) => {
+    const newQuestion = {
+      ...question,
+      id: uuid(),
+      testId: testId,
+    };
+    setNewQuestions([...newQuestions, newQuestion]);
+  };
+
+  //delete a question by its testId
+  const handleDeleteQuestion = async () => {
+    newQuestions.forEach(async (question) => {
+      const req = await axios.delete(
+        `${
+          process.env.NODE_ENV === "production"
+            ? "https://backend.rustamnortadzhiev.com"
+            : "http://localhost:5000"
+        }/api/v1/question/${question.id}`
+      );
+      if (req.status === 200) {
+        console.log("Question deleted");
+      }
+    });
+    setNewQuestions([]);
   };
 
   return (
@@ -334,7 +411,6 @@ const SearchPage = ({ showNav, setShowNav }) => {
         <Grid
           xs={12}
           lg={5.5}
-          
           mr={1}
           pr={1}
           bgcolor='#fff'
@@ -354,6 +430,7 @@ const SearchPage = ({ showNav, setShowNav }) => {
               bgcolor='#eee'
               m={1}
             >
+              
               <Stack direction='column' spacing={0} p={1} maxWidth='30%'>
                 <Tooltip
                   title={tests
@@ -447,6 +524,7 @@ const SearchPage = ({ showNav, setShowNav }) => {
                     size='small'
                     variant='outlined'
                     startIcon={<AddCircleRounded />}
+                    onClick={handeAddAllQuestions}
                   >
                     Add all
                   </Button>
@@ -457,12 +535,69 @@ const SearchPage = ({ showNav, setShowNav }) => {
                   key={question.id}
                   data={question}
                   showAnswers={showAnswers}
+                  handleAddQuestion={handleAddQuestion}
+                  newQuestions={newQuestions}
+                  isAdded={isAdded}
                 />
               ))}
             </Box>
           )}
         </Grid>
       </Grid>
+      {newQuestions.length > 0 && (
+        <Box width='70%' position='absolute' bottom={10} left={"25%"}>
+          <Stack
+            bgcolor='#8fb996'
+            border='1px dashed #006d77'
+            p={1}
+            borderRadius={2}
+            direction='row'
+            justifyContent='space-between'
+          >
+            <Stack
+              direction='row'
+              bgcolor='#fff'
+              spacing={1}
+              alignItems='center'
+              width={110}
+              p={1}
+              borderRadius={1}
+            >
+              <Box bgcolor='#709775' px={1} py={0.5}>
+                {newQuestions.length}
+              </Box>
+              <Typography>
+                {newQuestions.length === 1 ? "Question" : "Questions"}
+              </Typography>
+            </Stack>
+            <Box
+              display='flex'
+              width='40%'
+              justifyContent='center'
+              alignItems='center'
+            >
+              <Typography
+                fontFamily='poppins'
+                fontWeight='bold'
+                color='#006d77'
+              >
+                teleport quickly
+              </Typography>
+            </Box>
+            <Stack direction='row' spacing={2}>
+              <Button variant='contained' color='inherit'>
+                Review
+              </Button>{" "}
+              <Button variant='contained' color='inherit'>
+                Discard
+              </Button>
+              <Button variant='contained' color='inherit'>
+                Open Editor
+              </Button>
+            </Stack>
+          </Stack>
+        </Box>
+      )}
     </Box>
   );
 };

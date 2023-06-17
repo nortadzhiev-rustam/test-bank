@@ -1,9 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
   const Question = sequelize.define("Question", {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       primaryKey: true,
-      autoIncrement: true,
+      allowNull: false,
     },
     title: {
       type: DataTypes.STRING,
@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
     matches: {
       type: DataTypes.STRING,
       allowNull: true,
-    }
+    },
   });
   Question.associate = (models) => {
     Question.belongsTo(models.User, {

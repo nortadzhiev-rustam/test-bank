@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2/";
 import { Paper, Typography, Button, Box, Divider } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { BlockMath } from "react-katex";
+import katex from "katex";
 import "katex/dist/katex.min.css";
 import { Stack } from "@mui/system";
 import {
@@ -24,17 +25,49 @@ const IconSelector = ({ type }) => {
   else return <Layers color='inherit' fontSize='small' />;
 };
 
-export default function SearchQuestionView({ data, showAnswers }) {
+export default function SearchQuestionView({
+  data,
+  showAnswers,
+  handleAddQuestion,
+  isAdded,
+}) {
+  
   const { image, question, options, type, correctAnswer, matches } = data;
   const [answers] = useState(JSON.parse(options));
   const [quest] = useState(JSON.parse(question));
   const [correct] = useState(JSON.parse(correctAnswer));
   const [match] = useState(JSON.parse(matches));
 
-  function createMarkup(content) {
-    return { __html: content };
-  }
+  const renderLatex = (latex) => {
+    const options = {
+      throwOnError: false,
+      strict: false,
+      displayMode: true, // Set this to true if you want to render LaTeX in display mode
+    };
 
+    try {
+      return katex.renderToString(latex, options);
+    } catch (error) {
+      console.error("Error rendering LaTeX:", error);
+      return latex;
+    }
+  };
+
+ 
+
+  const renderContent = (content) => {
+    const regex = /<span data-type="inlineMath" content="(.*?)"><\/span>/g;
+
+    return content.replace(regex, (match, latex) => {
+      const renderedLatex = renderLatex(latex);
+      return `<span class="latex-rendered">${renderedLatex}</span>`;
+    });
+  };
+
+  function createMarkup(content) {
+    return { __html: renderContent(content) };
+  }
+  
   return (
     <Box component='div' sx={{ width: "100%", mb: 1 }}>
       <Paper elevation={2} sx={{ padding: 1, borderRadius: 1 }}>
@@ -52,12 +85,13 @@ export default function SearchQuestionView({ data, showAnswers }) {
             </Stack>
           </Paper>
           <Button
-          sx={{maxHeight: 30}}
+            sx={{ maxHeight: 30 }}
             variant='outlined'
             size='small'
             startIcon={<FontAwesomeIcon icon={faPlusCircle} />}
+            onClick={() => handleAddQuestion(data)}
           >
-            Add
+            {isAdded(question) ? "Add again" : "Add"}
           </Button>
         </Box>
 
@@ -98,7 +132,7 @@ export default function SearchQuestionView({ data, showAnswers }) {
           type === "True or False") && (
           <Grid container spacing={1} m={1} columns={{ xs: 4, sm: 8, md: 12 }}>
             {answers.map((option) => (
-              <Grid key={option.key} sx={{height: 50}} xs={12} sm={6}>
+              <Grid key={option.key} sx={{ height: 50 }} xs={12} sm={6}>
                 <Box display='flex' flexDirection='row' alignItems='center'>
                   <Box
                     width={15}

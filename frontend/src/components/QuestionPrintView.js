@@ -1,6 +1,8 @@
 import { Stack, Typography, Box, Divider } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { BlockMath } from "react-katex";
+import katex from "katex";
+import "katex/dist/katex.min.css";
 import React, { useMemo } from "react";
 import "./PrintPage.css";
 const QuestionPrintView = ({
@@ -36,8 +38,32 @@ const QuestionPrintView = ({
     return shuffledAnswers();
   }, [shuffleAnswers, answers]);
 
+  const renderLatex = (latex) => {
+    const options = {
+      throwOnError: false,
+      strict: false,
+      displayMode: true, // Set this to true if you want to render LaTeX in display mode
+    };
+
+    try {
+      return katex.renderToString(latex, options);
+    } catch (error) {
+      console.error("Error rendering LaTeX:", error);
+      return latex;
+    }
+  };
+
+  const renderContent = (content) => {
+    const regex = /<span data-type="inlineMath" content="(.*?)"><\/span>/g;
+
+    return content.replace(regex, (match, latex) => {
+      const renderedLatex = renderLatex(latex);
+      return `<span class="latex-rendered">${renderedLatex}</span>`;
+    });
+  };
+
   function createMarkup(content) {
-    return { __html: content };
+    return { __html: renderContent(content) };
   }
 
   return (

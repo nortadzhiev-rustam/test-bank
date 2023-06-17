@@ -23,7 +23,7 @@ import QuestionView from "../components/QuestionView";
 import axios from "axios";
 import { Stack } from "@mui/system";
 import Spinner from "../components/Spinner";
-import { Folder, Mode, Print } from "@mui/icons-material";
+import {  Mode, Print } from "@mui/icons-material";
 
 const intervals = [
   { label: "year", seconds: 31536000 },
