@@ -14,13 +14,22 @@ import {
   Button,
   Switch,
   Tooltip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  IconButton,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGraduationCap, faListUl } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleXmark,
+  faGraduationCap,
+  faListUl,
+} from "@fortawesome/free-solid-svg-icons";
 import SearchQuestionView from "../components/SearchQuestionView";
 import { FolderOutlined, Print, AddCircleRounded } from "@mui/icons-material";
 import CollectionDialog from "../components/CollectionDialog";
@@ -42,7 +51,7 @@ const SearchPage = ({ showNav, setShowNav }) => {
   const [newQuestions, setNewQuestions] = useState([]);
   // eslint-disable-next-line
   const [collections, setCollections] = useState([]);
-
+  const [open, setOpen] = useState(false);
   const user = useSelector((state) => state.user.user.user);
   const department = useSelector((state) => state.department.department);
 
@@ -57,6 +66,10 @@ const SearchPage = ({ showNav, setShowNav }) => {
 
   const navigate = useNavigate();
   const { name } = useParams();
+
+  const handlePreviewDialogOpen = () => {
+    setOpen(!open);
+  };
 
   useEffect(() => {
     axios
@@ -120,7 +133,13 @@ const SearchPage = ({ showNav, setShowNav }) => {
   const handleHover = (testId) => {
     setHoveredTest(testId);
   };
+  useEffect(() => {
+    if (newQuestions.length === 0) {
+      setOpen(false);
+    }
+  }, [newQuestions]);
 
+  // eslint-disable-next-line
   const createTest = async () => {
     const userDepartment = department.filter(
       (dep) => dep.name === user.department.name
@@ -149,6 +168,11 @@ const SearchPage = ({ showNav, setShowNav }) => {
     }
   };
 
+  const handleDeleteNewQuestion = (id) => {
+    const newQuests = newQuestions.filter((question) => question.id !== id);
+    setNewQuestions(newQuests);
+  };
+
   const handeAddAllQuestions = async () => {
     //add all questions from hovered test to new test by changing their ids
     const newQuests = questions.map((question) => {
@@ -173,6 +197,7 @@ const SearchPage = ({ showNav, setShowNav }) => {
   };
 
   //delete a question by its testId
+  // eslint-disable-next-line
   const handleDeleteQuestion = async () => {
     newQuestions.forEach(async (question) => {
       const req = await axios.delete(
@@ -430,7 +455,6 @@ const SearchPage = ({ showNav, setShowNav }) => {
               bgcolor='#eee'
               m={1}
             >
-              
               <Stack direction='column' spacing={0} p={1} maxWidth='30%'>
                 <Tooltip
                   title={tests
@@ -553,18 +577,28 @@ const SearchPage = ({ showNav, setShowNav }) => {
             borderRadius={2}
             direction='row'
             justifyContent='space-between'
+            sx={{ maxHeight: 30 }}
           >
             <Stack
               direction='row'
-              bgcolor='#fff'
+              bgcolor='#eee'
               spacing={1}
               alignItems='center'
-              width={110}
               p={1}
               borderRadius={1}
+              component={Button}
+              boxShadow={1}
+              sx={{
+                color: "#000",
+                cursor: "pointer",
+                width: 140,
+                textTransform: "capitalize",
+                "&:hover": { backgroundColor: "#fff" },
+              }}
+              onClick={() => handlePreviewDialogOpen()}
             >
-              <Box bgcolor='#709775' px={1} py={0.5}>
-                {newQuestions.length}
+              <Box bgcolor='#709775' px={1}>
+                <Typography fontSize={16}>{newQuestions.length}</Typography>
               </Box>
               <Typography>
                 {newQuestions.length === 1 ? "Question" : "Questions"}
@@ -585,19 +619,74 @@ const SearchPage = ({ showNav, setShowNav }) => {
               </Typography>
             </Box>
             <Stack direction='row' spacing={2}>
-              <Button variant='contained' color='inherit'>
-                Review
+              <Button
+                variant='contained'
+                color='inherit'
+                sx={{ textTransform: "capitalize" }}
+                onClick={() => handlePreviewDialogOpen()}
+              >
+                Preview
               </Button>{" "}
-              <Button variant='contained' color='inherit'>
-                Discard
+              <Button
+                variant='contained'
+                color='inherit'
+                sx={{ textTransform: "capitalize" }}
+              >
+                Open in Editor
               </Button>
-              <Button variant='contained' color='inherit'>
-                Open Editor
+              <Button
+                variant='contained'
+                color='inherit'
+                sx={{ textTransform: "capitalize" }}
+              >
+                Save Test
               </Button>
             </Stack>
           </Stack>
         </Box>
       )}
+      <Dialog
+        open={open}
+        onClose={handlePreviewDialogOpen}
+        fullwidth
+        maxWidth='lg'
+      >
+        <DialogTitle
+          display='flex'
+          justifyContent='space-between'
+          alignItems='center'
+          paddingX={1}
+        >
+          <Typography variant='h5' fontWeight={900}>
+            Review
+          </Typography>
+          <IconButton onClick={() => handlePreviewDialogOpen()}>
+            <FontAwesomeIcon icon={faCircleXmark} />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent sx={{ width: 600, maxHeight: 600, overflowY: "auto" }}>
+          {newQuestions.map((question) => (
+            <SearchQuestionView
+              key={question.id}
+              data={question}
+              showAnswers={false}
+              handleAddQuestion={handleAddQuestion}
+              newQuestions={newQuestions}
+              isAdded={isAdded}
+              isReview={true}
+              handleDeleteNewQuestion={handleDeleteNewQuestion}
+            />
+          ))}
+        </DialogContent>
+        <DialogActions>
+          <Button variant='contained' color='success'>
+            Open in Editor
+          </Button>
+          <Button variant='contained' color='success'>
+            Save Test
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

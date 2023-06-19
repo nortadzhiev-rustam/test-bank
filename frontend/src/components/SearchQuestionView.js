@@ -1,8 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2/";
-import { Paper, Typography, Button, Box, Divider } from "@mui/material";
+import {
+  Paper,
+  Typography,
+  Button,
+  Box,
+  Divider,
+  IconButton,
+} from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { BlockMath } from "react-katex";
 import katex from "katex";
 import "katex/dist/katex.min.css";
@@ -30,8 +37,9 @@ export default function SearchQuestionView({
   showAnswers,
   handleAddQuestion,
   isAdded,
+  isReview,
+  handleDeleteNewQuestion,
 }) {
-  
   const { image, question, options, type, correctAnswer, matches } = data;
   const [answers] = useState(JSON.parse(options));
   const [quest] = useState(JSON.parse(question));
@@ -53,8 +61,6 @@ export default function SearchQuestionView({
     }
   };
 
- 
-
   const renderContent = (content) => {
     const regex = /<span data-type="inlineMath" content="(.*?)"><\/span>/g;
 
@@ -67,7 +73,7 @@ export default function SearchQuestionView({
   function createMarkup(content) {
     return { __html: renderContent(content) };
   }
-  
+
   return (
     <Box component='div' sx={{ width: "100%", mb: 1 }}>
       <Paper elevation={2} sx={{ padding: 1, borderRadius: 1 }}>
@@ -84,15 +90,24 @@ export default function SearchQuestionView({
               <Typography>{type}</Typography>
             </Stack>
           </Paper>
-          <Button
-            sx={{ maxHeight: 30 }}
-            variant='outlined'
-            size='small'
-            startIcon={<FontAwesomeIcon icon={faPlusCircle} />}
-            onClick={() => handleAddQuestion(data)}
-          >
-            {isAdded(question) ? "Add again" : "Add"}
-          </Button>
+          {!isReview ? (
+            <Button
+              sx={{ maxHeight: 30 }}
+              variant='outlined'
+              size='small'
+              startIcon={<FontAwesomeIcon icon={faPlusCircle} />}
+              onClick={() => handleAddQuestion(data)}
+            >
+              {isAdded(question) ? "Add again" : "Add"}
+            </Button>
+          ) : (
+            <IconButton
+              onClick={() => handleDeleteNewQuestion(data.id)}
+              color='secondary'
+            >
+              <FontAwesomeIcon icon={faTrash} />
+            </IconButton>
+          )}
         </Box>
 
         <Grid container spacing={2} sx={{ alignItems: "center", m: 1 }}>
