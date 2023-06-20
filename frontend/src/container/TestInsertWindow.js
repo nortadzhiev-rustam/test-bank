@@ -90,10 +90,12 @@ const InsertWindow = ({
         type,
         difficulty,
         title,
+        matches
       } = data;
       const answers = JSON.parse(options);
       const quest = JSON.parse(question);
       const correct = JSON.parse(correctAnswer);
+      const parsedMatches = JSON.parse(matches)
 
       setImage(image);
       setAnswers(answers);
@@ -103,6 +105,7 @@ const InsertWindow = ({
       setType(type);
       setDifficulty(difficulty);
       setTitle(title);
+      setMatches(parsedMatches)
     }
   }, [isEditing, data, setType]);
 
@@ -320,6 +323,7 @@ const InsertWindow = ({
                 setCorrectAnswer={(item) => setCorrectAnswer(item)}
                 matches={matches}
                 setMatches={setMatches}
+                editing={isEditing}
               />
             )}
             {type === "Open ended" && (

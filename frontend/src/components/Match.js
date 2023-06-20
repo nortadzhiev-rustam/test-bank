@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { tooltipClasses } from "@mui/material/Tooltip";
 import Grid from "@mui/material/Unstable_Grid2";
 
-export default function Match({ answers, setAnswers, setCorrectAnswer, type,matches, setMatches }) {
+export default function Match({ answers, setAnswers, setCorrectAnswer, type,matches, setMatches, editing }) {
   const [counter, setCounter] = React.useState(4);
   const [options, setOptions] = React.useState([
     {
@@ -164,7 +164,8 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type,matc
                 addAnswer={addAnswer}
                 type={type}
                 height={200}
-                answer={answers[option.key]}
+                answers={answers}
+                editing={editing}
               />
 
               <Stack
@@ -189,6 +190,7 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type,matc
                   fullWidth
                   onChange={(e) => handleMatch(e, option.key)}
                   variant='filled'
+                  value={matches[option.key]?.match}
                   multiline
                 />
               </Stack>

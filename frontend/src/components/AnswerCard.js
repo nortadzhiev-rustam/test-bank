@@ -290,6 +290,7 @@ const AnswersCard = (props) => {
             editing={editing}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
+            type={props.type}
           />
         </Box>
       </StyledPaper>

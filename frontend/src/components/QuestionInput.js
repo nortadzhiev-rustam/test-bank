@@ -16,7 +16,7 @@ import { PhotoCamera } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Formula from "../formula-fx-icon.svg";
-import FormulaEditor from "../components/FormulaEditor";
+// import FormulaEditor from "../components/FormulaEditor";
 import MyEditor from "./DraftEditor";
 import ImageUpload from "./imageDialog";
 import axios from "axios";
@@ -50,6 +50,7 @@ const QuestionInput = ({
   const [isOpen, setIsOpen] = useState(false);
   const [toEdit, setToEdit] = useState("");
   const [isEditing, setEditing] = useState(false);
+  //eslint-disable-next-line
   const [isClosing, setClosing] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [message, setMessage] = useState("");

@@ -22,7 +22,8 @@ export default function MyEditor({
   editing,
   content,
   isOpen,
-  setIsOpen
+  setIsOpen,
+  type
 }) {
   const [isMathHover, setIsMathHover] = useState(false);
   const [questionText, setQuestionText] = useState("");

@@ -92,7 +92,7 @@ export default function QuestionView({
 
   const renderContent = (content) => {
     const regex = /<span data-type="inlineMath" content="(.*?)"><\/span>/g;
-  
+
     return content.replace(regex, (match, latex) => {
       const renderedLatex = renderLatex(latex);
       return `<span class="latex-rendered">${renderedLatex}</span>`;
@@ -215,7 +215,6 @@ export default function QuestionView({
               <BlockMath math={quest.equation} />
             )}
           </Grid>
-          
         </Grid>
 
         <Divider orientation='horizontal'>answer choices</Divider>
