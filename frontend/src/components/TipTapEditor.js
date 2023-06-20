@@ -288,7 +288,9 @@ const TipTapEditor = ({
 
     if (editing) {
       if (editor !== null) {
-        editor.commands.setContent(contentText);
+        setTimeout(() => {
+          editor.commands.setContent(contentText);
+        });
       }
     }
     //eslint-disable-next-line
@@ -304,10 +306,16 @@ const TipTapEditor = ({
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <DialogTitle>Math Editor</DialogTitle>
         <DialogContent>
-          <LatexEditor setLatexCode={setLatexCode} />
+          <LatexEditor setLatexCode={setLatexCode} latexCode={latexCode} />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setIsOpen(false)} color={"error"}>
+          <Button
+            onClick={() => {
+              setIsOpen(false);
+              setLatexCode("");
+            }}
+            color={"error"}
+          >
             Cancel
           </Button>
           <Button onClick={insertInlineMath}>Save</Button>

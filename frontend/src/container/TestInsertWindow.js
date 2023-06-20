@@ -215,7 +215,7 @@ const InsertWindow = ({
                     />
                   </CloseButton>
                 ) : (
-                  <FontAwesomeIcon size='xl' color='#e63946' icon={faCircle} />
+                  <FontAwesomeIcon size='lg' color='#e63946' icon={faCircle} />
                 )}
 
                 {mouseIn ? (
@@ -231,7 +231,7 @@ const InsertWindow = ({
                   </MinusButton>
                 ) : (
                   <FontAwesomeIcon
-                    size='xl'
+                    size='lg'
                     style={{ marginLeft: 5 }}
                     color='#ee9b00'
                     icon={faCircle}
@@ -262,7 +262,7 @@ const InsertWindow = ({
                   </FullScreenButton>
                 ) : (
                   <FontAwesomeIcon
-                    size='xl'
+                    size='lg'
                     style={{ marginLeft: 5 }}
                     color='#43aa8b'
                     icon={faCircle}

@@ -139,7 +139,7 @@ export const formulas = [
   },
   {
     id: 41,
-    formula: "\\log_10 y",
+    formula: "\\log_{10} y",
     latex: "\\log_10 {}",
     type: "math",
     fontSize: 15,

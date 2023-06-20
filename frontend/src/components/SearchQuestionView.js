@@ -7,13 +7,13 @@ import {
   Box,
   Divider,
   IconButton,
+  Stack,
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { BlockMath } from "react-katex";
 import katex from "katex";
 import "katex/dist/katex.min.css";
-import { Stack } from "@mui/system";
 import {
   CheckCircleRounded,
   Flaky,

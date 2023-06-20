@@ -1,10 +1,16 @@
 /* Basic editor styles */
 
 .ProseMirror {
+  background-color: #1212113d;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.8rem;
   > * + * {
     margin-top: 0.75em;
-    height: 200px;
-    background-color: #616161;
+    
   }
 
   ul,

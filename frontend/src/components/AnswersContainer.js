@@ -156,7 +156,7 @@ export default function AnswersContainer({
       container
       spacing={2}
       sx={{
-        marginTop: 10,
+        marginTop: 3,
         marginInline: 1,
 
         display: "flex",

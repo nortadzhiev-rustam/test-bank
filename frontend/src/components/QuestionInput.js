@@ -98,11 +98,11 @@ const QuestionInput = ({
     <Paper
       style={{
         borderRadius: "10px",
-        paddingBlock: "20px",
+        paddingTop: "20px",
         paddingInline: "20px",
         marginInline: "2px",
         backgroundColor: "#006064",
-        minHeight: 280,
+        minHeight: 260,
 
         transition: "all 0.5s ease-in",
       }}

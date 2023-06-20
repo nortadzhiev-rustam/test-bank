@@ -674,7 +674,7 @@ const TestEditingPage = ({ setShowNav, showNav }) => {
                     )}
                     {questions.map((question, idx) => (
                       <QuestionView
-                        key={question.id}
+                        key={idx}
                         data={question}
                         isEditing={true}
                         index={idx + 1}
