@@ -3,7 +3,7 @@ import { BlockMath } from "react-katex";
 import { Cancel } from "@mui/icons-material";
 import "./DraftEditor.css";
 import "katex/dist/katex.min.css";
-import { IconButton, InputBase } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import TipTapEditor from "./TipTapEditor";
 
 export default function MyEditor({
@@ -23,7 +23,7 @@ export default function MyEditor({
   content,
   isOpen,
   setIsOpen,
-  type
+  type,
 }) {
   const [isMathHover, setIsMathHover] = useState(false);
   const [questionText, setQuestionText] = useState("");
@@ -82,8 +82,6 @@ export default function MyEditor({
     setContent((prevState) => ({ ...prevState, equation: "" }));
   };
 
-  
-
   const handleChangeModel = (e) => {
     setQuestionText(e);
     setContent((prevState) => ({ ...prevState, text: e }));
@@ -95,19 +93,13 @@ export default function MyEditor({
       className={className || ""}
       onClick={focusEditor}
     >
-      <div className='DraftEditor-root' id={editorId} ref={editor}>
-        {/* <InputBase
-          style={{
-            color: "white",
-            fontStyle: questionText.length === 0 && "italic",
-          }}
-          variant='filled'
-          multiline
-          placeholder={equationarray.length === 0 ? placeholder : null}
-          value={questionText}
-          onChange={handleInput}
-        /> */}
-
+      <Box
+        className='DraftEditor-root'
+        id={editorId}
+        ref={editor}
+       
+        
+      >
         <TipTapEditor
           contentText={questionText}
           handleChangeModel={handleChangeModel}
@@ -115,7 +107,6 @@ export default function MyEditor({
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           editing={editing}
-          
         />
 
         {equationarray.length !== 0 && (
@@ -166,7 +157,7 @@ export default function MyEditor({
             ))}
           </div>
         )}
-      </div>
+      </Box>
     </div>
   );
 }

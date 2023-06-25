@@ -17,7 +17,7 @@ import {
   Subject,
 } from "@mui/icons-material";
 import "./QuestionView.css";
-import { EditorContent, useEditor } from "@tiptap/react";
+import {  useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 const IconSelector = ({ type }) => {
   if (type === "Multiple choice")
@@ -45,6 +45,7 @@ export default function QuestionView({
   const [quest] = useState(JSON.parse(question));
   const [correct] = useState(JSON.parse(correctAnswer));
   const [match] = useState(JSON.parse(matches));
+  //eslint-disable-next-line
   const [editable, setEditable] = useState(false);
   const editor = useEditor({
     editable,

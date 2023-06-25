@@ -2,7 +2,7 @@
   min-height: 150px;
   margin-top: 5px;
   margin-bottom: 20;
-  height: 300px;
+  height: 200px;
   display: flex;
   flex-direction: column;
 
@@ -11,13 +11,13 @@
   padding-inline: 2px;
   white-space: normal;
   overflow: auto;
-  padding-block: 5px;
+  padding: 5px;
   color: white;
 }
 
-.DraftEditor-root:focus {
-  border: solid 4px #00000048;
-  background-color: rgba(49, 49, 49, 0.493);
+.DraftEditor-root:focus-within {
+  background-color: rgba(34, 33, 33, 0.318);
+  margin-bottom: 1rem;
 }
 
 [data-placeholder]:empty:before {
@@ -43,5 +43,3 @@
   right: -20px;
   color: #ffffff;
 }
-
-

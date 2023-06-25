@@ -1,10 +1,5 @@
 import "./tiptap.scss";
-import {
-  EditorContent,
-  useEditor,
-  BubbleMenu,
-  FloatingMenu,
-} from "@tiptap/react";
+import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import InlineMath from "./InlineMath";
 import Underline from "@tiptap/extension-underline";
@@ -16,6 +11,9 @@ import {
   DialogContent,
   DialogActions,
   Box,
+  Typography,
+  Stack,
+  IconButton,
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -26,233 +24,153 @@ import {
   faListOl,
   faListUl,
   faQuoteRight,
+  faSquareRootVariable,
   faStrikethrough,
+  faTimes,
   faUnderline,
 } from "@fortawesome/free-solid-svg-icons";
 import LatexEditor from "./TestLatexFormula";
 import Placeholder from "@tiptap/extension-placeholder";
 
-const FloatingMenuContent = ({ editor }) => {
+const BubbleMenuBar = ({ editor, setFocused }) => {
   if (!editor) {
     return null;
   }
 
   return (
-    <FloatingMenu editor={editor} tippyOptions={{ duration: 100 }}>
-      <Box ml={1} p={1} width='100%'>
-        <Button
-          variant='outlined'
-          size='medium'
-          sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
-          color='inherit'
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          disabled={!editor.can().chain().focus().toggleBold().run()}
-          className={editor.isActive("bold") ? "is-active" : ""}
-        >
-          <FontAwesomeIcon icon={faBold} />
-        </Button>
-        <Button
-          color='inherit'
-          variant='outlined'
-          size='medium'
-          sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          disabled={!editor.can().chain().focus().toggleItalic().run()}
-          className={editor.isActive("italic") ? "is-active" : ""}
-        >
-          <FontAwesomeIcon icon={faItalic} />
-        </Button>
-        <Button
-          color='inherit'
-          variant='outlined'
-          size='medium'
-          sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
-          onClick={() => editor.chain().focus().toggleUnderline().run()}
-          disabled={!editor.can().chain().focus().toggleUnderline().run()}
-          className={editor.isActive("underline") ? "is-active" : ""}
-        >
-          <FontAwesomeIcon icon={faUnderline} />
-        </Button>
-        <Button
-          color='inherit'
-          variant='outlined'
-          size='medium'
-          sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          disabled={!editor.can().chain().focus().toggleStrike().run()}
-          className={editor.isActive("strike") ? "is-active" : ""}
-        >
-          <FontAwesomeIcon icon={faStrikethrough} />
-        </Button>
+    <Box
+      width='100%'
+      borderRadius={2}
+      display='flex'
+      justifyContent='flex-start'
+      alignItems='center'
+      sx={{ overflowX: "auto" }}
+    >
+      <Button
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
+        color='inherit'
+        variant={editor.isActive("bold") ? "outlined" : "text"}
+        onClick={() => {
+          setFocused(true);
+          editor.chain().focus().toggleBold().run();
+        }}
+        disabled={!editor.can().chain().focus().toggleBold().run()}
+        className={editor.isActive("bold") ? "is-active" : ""}
+      >
+        <FontAwesomeIcon icon={faBold} />
+      </Button>
+      <Button
+        color='inherit'
+        variant={editor.isActive("italic") ? "outlined" : "text"}
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
+        onClick={() => {
+          setFocused(true);
+          editor.chain().focus().toggleItalic().run();
+        }}
+        disabled={!editor.can().chain().focus().toggleItalic().run()}
+        className={editor.isActive("italic") ? "is-active" : ""}
+      >
+        <FontAwesomeIcon icon={faItalic} />
+      </Button>
+      <Button
+        color='inherit'
+        variant={editor.isActive("underline") ? "outlined" : "text"}
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
+        onClick={() => {
+          setFocused(true);
+          editor.chain().focus().toggleUnderline().run();
+        }}
+        disabled={!editor.can().chain().focus().toggleUnderline().run()}
+        className={editor.isActive("underline") ? "is-active" : ""}
+      >
+        <FontAwesomeIcon icon={faUnderline} />
+      </Button>
+      <Button
+        color='inherit'
+        variant={editor.isActive("strike") ? "outlined" : "text"}
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
+        onClick={() => {
+          setFocused(true);
+          editor.chain().focus().toggleStrike().run();
+        }}
+        disabled={!editor.can().chain().focus().toggleStrike().run()}
+        className={editor.isActive("strike") ? "is-active" : ""}
+      >
+        <FontAwesomeIcon icon={faStrikethrough} />
+      </Button>
 
+      <Button
+        color='inherit'
+        variant={editor.isActive("bulletList") ? "outlined" : "text"}
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
+        onClick={() => {
+          setFocused(true);
+          editor.chain().focus().toggleBulletList().run();
+        }}
+        className={editor.isActive("bulletList") ? "is-active" : ""}
+      >
+        <FontAwesomeIcon icon={faListUl} />
+      </Button>
+      <Button
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
+        color='inherit'
+        variant={editor.isActive("orderedList") ? "outlined" : "text"}
+        onClick={() => {
+          setFocused(true);
+          editor.chain().focus().toggleOrderedList().run();
+        }}
+        className={editor.isActive("orderedList") ? "is-active" : ""}
+      >
+        <FontAwesomeIcon icon={faListOl} />
+      </Button>
+
+      <Button
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
+        color='inherit'
+        variant={editor.isActive("blockquote") ? "outlined" : "text"}
+        onClick={() => {
+          setFocused(true);
+          editor.chain().focus().toggleBlockquote().run();
+        }}
+        className={editor.isActive("blockquote") ? "is-active" : ""}
+      >
+        <FontAwesomeIcon icon={faQuoteRight} />
+      </Button>
+
+      <Button
+        color='inherit'
+        size='medium'
+        sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
+        onClick={() => {
+          setFocused(true);
+          editor.chain().focus().undo().run();
+        }}
+        disabled={!editor.can().chain().focus().undo().run()}
+      >
+        <FontAwesomeIcon icon={faArrowRotateLeft} />
+      </Button>
+      {editor.can().chain().focus().redo().run() && (
         <Button
           color='inherit'
-          variant='outlined'
           size='medium'
           sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={editor.isActive("bulletList") ? "is-active" : ""}
+          onClick={() => {
+            setFocused(true);
+            editor.chain().focus().redo().run();
+          }}
+          disabled={!editor.can().chain().focus().redo().run()}
         >
-          <FontAwesomeIcon icon={faListUl} />
+          <FontAwesomeIcon icon={faArrowRotateRight} />
         </Button>
-        <Button
-          variant='outlined'
-          size='medium'
-          sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
-          color='inherit'
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={editor.isActive("orderedList") ? "is-active" : ""}
-        >
-          <FontAwesomeIcon icon={faListOl} />
-        </Button>
-
-        <Button
-          variant='outlined'
-          size='medium'
-          sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
-          color='inherit'
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className={editor.isActive("blockquote") ? "is-active" : ""}
-        >
-          <FontAwesomeIcon icon={faQuoteRight} />
-        </Button>
-
-        <Button
-          color='inherit'
-          variant='outlined'
-          size='medium'
-          sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
-          onClick={() => editor.chain().focus().undo().run()}
-          disabled={!editor.can().chain().focus().undo().run()}
-        >
-          <FontAwesomeIcon icon={faArrowRotateLeft} />
-        </Button>
-        {editor.can().chain().focus().redo().run() && (
-          <Button
-            color='inherit'
-            variant='outlined'
-            size='medium'
-            sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
-            onClick={() => editor.chain().focus().redo().run()}
-            disabled={!editor.can().chain().focus().redo().run()}
-          >
-            <FontAwesomeIcon icon={faArrowRotateRight} />
-          </Button>
-        )}
-      </Box>
-    </FloatingMenu>
-  );
-};
-
-const BubbleMenuBar = ({ editor }) => {
-  if (!editor) {
-    return null;
-  }
-
-  return (
-    <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-      <Box ml={10} p={1} width='90%' bgcolor='#e5e5e5' borderRadius={2}>
-        <Button
-          variant='outlined'
-          size='medium'
-          sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
-          color='primary'
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          disabled={!editor.can().chain().focus().toggleBold().run()}
-          className={editor.isActive("bold") ? "is-active" : ""}
-        >
-          <FontAwesomeIcon icon={faBold} />
-        </Button>
-        <Button
-          color='primary'
-          variant='outlined'
-          size='medium'
-          sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          disabled={!editor.can().chain().focus().toggleItalic().run()}
-          className={editor.isActive("italic") ? "is-active" : ""}
-        >
-          <FontAwesomeIcon icon={faItalic} />
-        </Button>
-        <Button
-          color='primary'
-          variant='outlined'
-          size='medium'
-          sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
-          onClick={() => editor.chain().focus().toggleUnderline().run()}
-          disabled={!editor.can().chain().focus().toggleUnderline().run()}
-          className={editor.isActive("underline") ? "is-active" : ""}
-        >
-          <FontAwesomeIcon icon={faUnderline} />
-        </Button>
-        <Button
-          color='primary'
-          variant='outlined'
-          size='medium'
-          sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          disabled={!editor.can().chain().focus().toggleStrike().run()}
-          className={editor.isActive("strike") ? "is-active" : ""}
-        >
-          <FontAwesomeIcon icon={faStrikethrough} />
-        </Button>
-
-        <Button
-          color='primary'
-          variant='outlined'
-          size='medium'
-          sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={editor.isActive("bulletList") ? "is-active" : ""}
-        >
-          <FontAwesomeIcon icon={faListUl} />
-        </Button>
-        <Button
-          variant='outlined'
-          size='medium'
-          sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
-          color='primary'
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={editor.isActive("orderedList") ? "is-active" : ""}
-        >
-          <FontAwesomeIcon icon={faListOl} />
-        </Button>
-
-        <Button
-          variant='outlined'
-          size='medium'
-          sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
-          color='primary'
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className={editor.isActive("blockquote") ? "is-active" : ""}
-        >
-          <FontAwesomeIcon icon={faQuoteRight} />
-        </Button>
-
-        <Button
-          color='primary'
-          variant='outlined'
-          size='medium'
-          sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
-          onClick={() => editor.chain().focus().undo().run()}
-          disabled={!editor.can().chain().focus().undo().run()}
-        >
-          <FontAwesomeIcon icon={faArrowRotateLeft} />
-        </Button>
-        {editor.can().chain().focus().redo().run() && (
-          <Button
-            color='primary'
-            variant='outlined'
-            size='medium'
-            sx={{ minWidth: 15, maxWidth: 20, mr: 0.5, mb: 0.5 }}
-            onClick={() => editor.chain().focus().redo().run()}
-            disabled={!editor.can().chain().focus().redo().run()}
-          >
-            <FontAwesomeIcon icon={faArrowRotateRight} />
-          </Button>
-        )}
-      </Box>
-    </BubbleMenu>
+      )}
+    </Box>
   );
 };
 
@@ -264,7 +182,7 @@ const TipTapEditor = ({
   editing,
 }) => {
   const [latexCode, setLatexCode] = React.useState("");
-
+  const [focused, setFocused] = React.useState(false);
   const editor = useEditor({
     content: "",
     extensions: [
@@ -302,9 +220,25 @@ const TipTapEditor = ({
   };
 
   return (
-    <div>
+    <div
+      style={{ width: "100%" }}
+      onMouseEnter={() => setFocused(true)}
+      onMouseLeave={() => setFocused(false)}
+    >
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-        <DialogTitle>Math Editor</DialogTitle>
+        <DialogTitle
+          display='flex'
+          flexDirection='row'
+          justifyContent='space-between'
+        >
+          <Stack direction='row' alignItems='center' spacing={1}>
+            <FontAwesomeIcon icon={faSquareRootVariable} color='#398' />
+            <Typography>Math Editor</Typography>
+          </Stack>
+          <IconButton onClick={() => setIsOpen(false)}>
+            <FontAwesomeIcon icon={faTimes} size='xs' />
+          </IconButton>
+        </DialogTitle>
         <DialogContent>
           <LatexEditor setLatexCode={setLatexCode} latexCode={latexCode} />
         </DialogContent>
@@ -321,9 +255,14 @@ const TipTapEditor = ({
           <Button onClick={insertInlineMath}>Save</Button>
         </DialogActions>
       </Dialog>
-      <BubbleMenuBar editor={editor} setIsOpen={setIsOpen} />
-      <FloatingMenuContent editor={editor} />
-      <EditorContent editor={editor} />
+      {focused && (
+        <BubbleMenuBar
+          editor={editor}
+          setIsOpen={setIsOpen}
+          setFocused={setFocused}
+        />
+      )}
+      <EditorContent editor={editor} onFocus={() => setFocused(true)} />
     </div>
   );
 };

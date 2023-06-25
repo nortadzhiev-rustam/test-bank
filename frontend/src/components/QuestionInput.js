@@ -391,19 +391,6 @@ const QuestionInput = ({
           />
         </Grid>
       </Grid>
-      {/* {isOpen && (
-        <Box width={"100%"} pl={0}>
-          <FormulaEditor
-            setEquation={(eq) => setEquation(eq)}
-            setOpen={(o) => setIsOpen(o)}
-            equation={toEdit}
-            isEditing={isEditing}
-            setEditEquation={(eq) => setToEdit(eq)}
-            isClosing={isClosing}
-            setClosing={(e) => setClosing(e)}
-          />
-        </Box>
-      )} */}
     </Paper>
   );
 };

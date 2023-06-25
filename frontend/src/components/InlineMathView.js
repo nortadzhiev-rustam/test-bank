@@ -5,11 +5,7 @@ import katex from "katex";
 
 export default function InlineMathView(props) {
   const content = props.node.attrs.content;
-  const handleChange = (e) => {
-    props.updateAttributes({
-      content: e.target.value,
-    });
-  };
+  
   const options = {
     throwOnError: false,
     strict: false,

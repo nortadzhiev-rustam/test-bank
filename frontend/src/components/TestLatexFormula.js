@@ -2,18 +2,16 @@ import React, { useRef } from "react";
 import "mathquill/build/mathquill.css";
 import { addStyles, EditableMathField } from "react-mathquill";
 import { formulas } from "../constants/formulas";
-import { Button, Stack, Box, Typography } from "@mui/material";
-import { BlockMath } from "react-katex";
+import { Stack, Box, Typography } from "@mui/material";
+
 import "katex/dist/katex.min.css";
+import FormulaTabs from "./FormulaTabs";
 addStyles();
 
 const LatexEditor = ({ setLatexCode, latexCode }) => {
   const mathFieldRef = useRef(null);
 
-  const handleButtonClick = (value) => {
-    mathFieldRef.current.focus();
-    mathFieldRef.current.write(value);
-  };
+ 
 
   const handleChange = (latex) => {
     setLatexCode(latex);
@@ -24,12 +22,13 @@ const LatexEditor = ({ setLatexCode, latexCode }) => {
       <Stack width='100%'>
         <EditableMathField
           style={{
-            width: "100%",
-            minHeight: 80,
+            width: "96%",
+            minHeight: 100,
             display: "flex",
             alignItems: "center",
-            pl: "50px",
+            paddingLeft: 20,
             borderRadius: 10,
+            marginTop: 5,
           }}
           latex=''
           config={{
@@ -69,27 +68,7 @@ const LatexEditor = ({ setLatexCode, latexCode }) => {
         p={1}
         ml={2}
       >
-        {formulas.map((formula) => (
-          <Box
-            key={formula.id}
-            component={Button}
-            bgcolor='inherit'
-            variant='contained'
-            textTransform='lowercase'
-            maxWidth={40}
-            height={50}
-            ml={2}
-            mt={2}
-            p={1}
-            sx={{
-              color: "black",
-              fontSize: ".6rem",
-            }}
-            onClick={() => handleButtonClick(formula.latex)}
-          >
-            <BlockMath math={formula.formula} />
-          </Box>
-        ))}
+        <FormulaTabs formulas={formulas} mathFieldRef={mathFieldRef} />
       </Stack>
     </Stack>
   );

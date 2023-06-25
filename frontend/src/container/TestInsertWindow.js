@@ -1,5 +1,16 @@
 import React from "react";
-import { Paper, Box, Button, Typography } from "@mui/material";
+import {
+  Paper,
+  Box,
+  Button,
+  Typography,
+  Stack,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  IconButton,
+} from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { styled } from "@mui/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +22,7 @@ import {
   faTimes,
   faUpRightAndDownLeftFromCenter,
   faDownLeftAndUpRightToCenter,
+  faSquareRootVariable,
 } from "@fortawesome/free-solid-svg-icons";
 import QuestionInput from "../components/QuestionInput";
 import AnswersContainer from "../components/AnswersContainer";
@@ -19,6 +31,7 @@ import uuid from "react-uuid";
 import axios from "axios";
 import TrueOrFalse from "../components/TrueOrFalse";
 import MatchingContainer from "../components/Match";
+import TipTapEditor from "../components/TipTapEditor";
 const StyledBox = styled(Box)({
   display: "flex",
   position: "relative",
@@ -73,7 +86,8 @@ const InsertWindow = ({
   const dispatch = useDispatch();
   const isFull = useSelector((state) => state.questionsType.isFull);
   const user = useSelector((state) => state.user.user.user);
-
+  const [open, setOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
   const { id } = useParams();
   const handleFullScreen = () => {
     dispatch(setFull(!isFull));
@@ -90,14 +104,14 @@ const InsertWindow = ({
         type,
         difficulty,
         title,
-        matches
+        matches,
       } = data;
       const answers = JSON.parse(options);
       const quest = JSON.parse(question);
       const correct = JSON.parse(correctAnswer);
-      const parsedMatches = JSON.parse(matches)
+      const parsedMatches = JSON.parse(matches);
 
-      setImage(image);
+      setImage(image || "");
       setAnswers(answers);
       setCorrectAnswer(correct);
       setQuestion(quest);
@@ -105,8 +119,19 @@ const InsertWindow = ({
       setType(type);
       setDifficulty(difficulty);
       setTitle(title);
-      setMatches(parsedMatches)
+      setMatches(parsedMatches);
     }
+    return () => {
+      setImage("");
+      setAnswers("");
+      setCorrectAnswer("");
+      setQuestion("");
+      setMark("");
+      setType("");
+      setDifficulty("");
+      setTitle("");
+      setMatches("");
+    };
   }, [isEditing, data, setType]);
 
   const handleClose = () => {
@@ -127,7 +152,7 @@ const InsertWindow = ({
 
   const handleSubmit = async () => {
     const data = {
-      id: uuid(),
+      id: isEditing ? question.id : uuid(),
       type: type,
       category: test.name,
       difficulty: difficulty,
@@ -179,6 +204,10 @@ const InsertWindow = ({
     }
   };
 
+  const handleCorrectAnswer = (answer) => {
+    setCorrectAnswer({ key: 1, content: { text: answer } });
+  };
+
   return (
     <Grid container>
       <Grid xs={12} sm={12} lg={!isFull ? 8 : 11} lgOffset={0.5}>
@@ -188,14 +217,14 @@ const InsertWindow = ({
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
           sx={{
-            minHeight: "90vh",
+            marginTop: 2,
             borderRadius: 3,
             transition: "all 0.3s ease-in-out",
             width: "100%",
             paddingBottom: 5,
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between",
+            justifyContent: "flex-start",
           }}
           className='animate__animated animate__fadeInUp animate__faster'
         >
@@ -327,15 +356,63 @@ const InsertWindow = ({
               />
             )}
             {type === "Open ended" && (
-              <Typography
-                mt={10}
-                variant='h4'
-                fontFamily='Roboto'
+              <Stack
+                spacing={2}
                 width='100%'
-                textAlign='center'
+                justifyContent='center'
+                alignItems='center'
               >
-                Participants will write their own answers!
-              </Typography>
+                <Typography
+                  mt={10}
+                  variant='h4'
+                  fontFamily='Roboto'
+                  width='100%'
+                  textAlign='center'
+                >
+                  Participants will write their own answers!
+                </Typography>
+                <Button
+                  sx={{ textTransform: "capitalize", width: "30%" }}
+                  variant='contained'
+                  color='secondary'
+                  onClick={() => setOpen(true)}
+                >
+                  Add Your Answer
+                </Button>
+                <Dialog open={open} onClose={() => setOpen(false)}>
+                  <DialogTitle
+                    display='flex'
+                    justifyContent='space-between'
+                    alignItems='center'
+                  >
+                    <Typography>Your Answer</Typography>
+                    <IconButton onClick={() => setIsOpen(true)}>
+                      <FontAwesomeIcon icon={faSquareRootVariable} />
+                    </IconButton>
+                  </DialogTitle>
+                  <DialogContent sx={{ width: 300 }}>
+                    <Stack
+                      width='95%'
+                      height={150}
+                      justifyContent='flex-start'
+                      bgcolor='rgba(0, 0, 0, 0.1)'
+                      p={1}
+                      borderRadius={2}
+                      overflow='auto'
+                    >
+                      <TipTapEditor
+                        handleChangeModel={handleCorrectAnswer}
+                        isOpen={isOpen}
+                        setIsOpen={setIsOpen}
+                      />
+                    </Stack>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={() => setOpen(false)}>Close</Button>
+                    <Button>Submit</Button>
+                  </DialogActions>
+                </Dialog>
+              </Stack>
             )}
           </Box>
           <Box mt={3} width='95%' textAlign='end'>

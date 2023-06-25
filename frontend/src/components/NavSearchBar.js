@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { styled, alpha, useTheme } from "@mui/material/styles";
+import { styled, alpha } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -16,7 +16,7 @@ import {
   FormControl,
   MenuItem,
   Select,
-  useMediaQuery,
+ 
 } from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
@@ -86,10 +86,10 @@ function NavSearchBar({ drawerOpen }) {
   const [randomElements, setRandomElements] = useState([]);
   const [option, setOption] = React.useState("Test Library");
   const [open, setOpen] = useState(false);
+  //eslint-disable-next-line
   const [focused, setFocused] = useState(false);
   const navigate = useNavigate();
-  const match1 = useMediaQuery("(min-width:1440px)");
-  const match2 = useMediaQuery("(min-width:1200px)");
+  
 
   useEffect(() => {
     const getRandomElements = (arr, numElements) => {
@@ -119,9 +119,7 @@ function NavSearchBar({ drawerOpen }) {
       return [];
     };
 
-    const saveRecentSearchesToStorage = (searches) => {
-      localStorage.setItem("recentSearches", JSON.stringify(searches));
-    };
+   
 
     const recentSearchesFromStorage = getRecentSearchesFromStorage();
     setRecentSearches(recentSearchesFromStorage);

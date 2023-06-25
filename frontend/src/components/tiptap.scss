@@ -1,16 +1,18 @@
 /* Basic editor styles */
 
 .ProseMirror {
-  background-color: #1212113d;
-  
+  width: 92%;
+  padding-inline: 1rem;
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
+  white-space: nowrap;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   border-radius: 0.8rem;
+
   > * + * {
     margin-top: 0.75em;
-    
   }
 
   ul,
@@ -72,5 +74,3 @@
   pointer-events: none;
   font-size: 18px;
 }
-
-

@@ -18,7 +18,7 @@ import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
 import "animate.css";
 import MyEditor from "./DraftEditor";
 import formula from "../formula-fx-icon.svg";
-import FormulaEditor from "./FormulaEditor";
+
 
 // Generate random color for answer card background
 const getRandomColor = (index) => {
@@ -43,6 +43,7 @@ const AnswersCard = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [toEdit, setToEdit] = useState("");
   const [isEditing, setEditing] = useState(false);
+  // eslint-disable-next-line
   const [isClosing, setClosing] = useState(false);
   const [isDeleted, setDeleted] = useState(false);
   const [content, setContent] = useState("");
@@ -100,6 +101,7 @@ const AnswersCard = (props) => {
         .filter((item) => item.key === option.option)
         .map((item) => setContent(item.content));
     }
+    // eslint-disable-next-line
   }, [editing, answers]);
 
   useEffect(() => {

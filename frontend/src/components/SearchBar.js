@@ -13,7 +13,7 @@ import {
   ListItemButton,
 } from "@mui/material";
 import { ChevronRightTwoTone } from "@mui/icons-material";
-import { styled, alpha, useTheme } from "@mui/material/styles";
+import { styled, alpha } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -73,7 +73,7 @@ function SearchBar({
   const [tests, setTests] = useState([]);
   const [randomElements, setRandomElements] = useState([]);
   const navigate = useNavigate();
-  const theme = useTheme();
+  
   useEffect(() => {
     const getRecentSearchesFromStorage = () => {
       const recentSearchesString = localStorage.getItem("recentSearches");
@@ -83,9 +83,7 @@ function SearchBar({
       return [];
     };
 
-    const saveRecentSearchesToStorage = (searches) => {
-      localStorage.setItem("recentSearches", JSON.stringify(searches));
-    };
+   
 
     const recentSearchesFromStorage = getRecentSearchesFromStorage();
     setRecentSearches(recentSearchesFromStorage);

@@ -15,7 +15,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { tooltipClasses } from "@mui/material/Tooltip";
 import Grid from "@mui/material/Unstable_Grid2";
 
-export default function Match({ answers, setAnswers, setCorrectAnswer, type,matches, setMatches, editing }) {
+export default function Match({
+  answers,
+  setAnswers,
+  setCorrectAnswer,
+  type,
+  matches,
+  setMatches,
+  editing,
+}) {
   const [counter, setCounter] = React.useState(4);
   const [options, setOptions] = React.useState([
     {
@@ -36,7 +44,7 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type,matc
     },
   ]);
   const [isDeleted, setDeleted] = useState(false);
-  
+
   const BootstrapTooltip = styled(({ className, ...props }) => (
     <Tooltip {...props} arrow classes={{ popper: className }} />
   ))(({ theme }) => ({
@@ -133,25 +141,25 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type,matc
       spacing={2}
       justifyContent='center'
       alignItems='center'
-      mb={10}
-      height={400}
+      
+      height={450}
     >
       <Grid
         container
         spacing={2}
         sx={{
-          marginTop: 10,
+         
           mr: 2,
         }}
       >
         {options.map((option, idx) => (
-          <Grid key={option.key} xs={12 / counter} height={400}>
+          <Grid key={option.key} xs={12 / counter} height={300} >
             <Stack
               spacing={2}
-              justifyContent='flex-end'
-              height={400}
+              justifyContent='flex-start'
+              height={350}
               width='95%'
-              overflow='hidden'
+              
               px={1}
             >
               <AnswersCard
@@ -163,7 +171,7 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type,matc
                 isDeleted={isDeleted}
                 addAnswer={addAnswer}
                 type={type}
-                height={200}
+                height={300}
                 answers={answers}
                 editing={editing}
               />
@@ -178,14 +186,15 @@ export default function Match({ answers, setAnswers, setCorrectAnswer, type,matc
                 px={2}
                 borderRadius={2}
               >
-                <Typography p={0} m={0} color='white'>{idx + 1}</Typography>
+                <Typography p={0} m={0} color='white'>
+                  {idx + 1}
+                </Typography>
                 <InputBase
                   sx={{
                     color: "white",
                     bgcolor: "rgba(255,255,255,0.1)",
                     borderRadius: 2,
                     padding: 1,
-                    
                   }}
                   fullWidth
                   onChange={(e) => handleMatch(e, option.key)}
