@@ -257,10 +257,9 @@ export const formulas = [
     type: "greek",
     fontSize: 15,
   },
-  
-  
+
   // latex vectors
-  
+
   {
     id: 27,
     formula: "\\overleftarrow{xy}",
@@ -302,5 +301,169 @@ export const formulas = [
     latex: "\\phi",
     type: "greek",
     fontSize: 15,
-  }
+  },
+  {
+    id: 33,
+    formula: "\\lceil x \\rceil",
+    latex: "\\lceil {} \\rceil",
+    type: "basic",
+    fontSize: 15,
+  },
+  {
+    id: 34,
+    formula: "\\lfloor x \\rfloor",
+    latex: "\\lfloor {} \\rfloor",
+    type: "basic",
+    fontSize: 15,
+  },
+  //operators
+  {
+    id: 46,
+    formula: "\\times",
+    latex: "\\times",
+    type: "basic",
+    fontSize: 15,
+  },
+  {
+    id: 47,
+    formula: "\\div",
+    latex: "\\div",
+    type: "basic",
+    fontSize: 15,
+  },
+  {
+    id: 48,
+    formula: "\\pm",
+    latex: "\\pm",
+    type: "basic",
+    fontSize: 15,
+  },
+  {
+    id: 49,
+    formula: "\\mp",
+    latex: "\\mp",
+    type: "basic",
+    fontSize: 15,
+  },
+  {
+    id: 50,
+    formula: "\\cdot",
+    latex: "\\cdot",
+    type: "basic",
+    fontSize: 15,
+  },
+  {
+    id: 51,
+    formula: "\\cup",
+    latex: "\\cup",
+    type: "basic",
+    fontSize: 15,
+  },
+  {
+    id: 52,
+    formula: "\\cap",
+    latex: "\\cap",
+    type: "basic",
+    fontSize: 15,
+  },
+  {
+    id: 53,
+    formula: "\\neq",
+    latex: "\\neq",
+    type: "basic",
+    fontSize: 15,
+  },
+  {
+    id: 54,
+    formula: "\\leq",
+    latex: "\\leq",
+    type: "basic",
+    fontSize: 15,
+  },
+  {
+    id: 55,
+    formula: "\\geq",
+    latex: "\\geq",
+    type: "basic",
+    fontSize: 15,
+  },
+  // rest of greek letters
+  {
+    id: 56,
+    formula: "\\nu",
+    latex: "\\nu",
+    type: "greek",
+    fontSize: 15,
+  },
+  {
+    id: 57,
+    formula: "\\xi",
+    latex: "\\xi",
+    type: "greek",
+    fontSize: 15,
+  },
+  {
+    id: 58,
+    formula: "\\omicron",
+    latex: "\\omicron",
+    type: "greek",
+    fontSize: 15,
+  },
+  {
+    id: 59,
+    formula: "\\pi",
+
+    latex: "\\pi",
+    type: "greek",
+    fontSize: 15,
+  },
+  {
+    id: 60,
+    formula: "\\rho",
+    latex: "\\rho",
+    type: "greek",
+    fontSize: 15,
+  },
+  {
+    id: 61,
+    formula: "\\sigma",
+    latex: "\\sigma",
+    type: "greek",
+    fontSize: 15,
+  },
+  {
+    id: 62,
+    formula: "\\tau",
+    latex: "\\tau",
+    type: "greek",
+    fontSize: 15,
+  },
+  {
+    id: 63,
+    formula: "\\upsilon",
+    latex: "\\upsilon",
+    type: "greek",
+    fontSize: 15,
+  },
+  {
+    id: 64,
+    formula: "\\psi",
+    latex: "\\psi",
+    type: "greek",
+    fontSize: 15,
+  },
+  {
+    id: 65,
+    formula: "\\omega",
+    latex: "\\omega",
+    type: "greek",
+    fontSize: 15,
+  },
+  {
+    id: 66,
+    formula: "\\chi",
+    latex: "\\chi",
+    type: "greek",
+    fontSize: 15,
+  },
 ];

@@ -20,6 +20,7 @@ import {
   faArrowRotateLeft,
   faArrowRotateRight,
   faBold,
+  faCircleXmark,
   faItalic,
   faListOl,
   faListUl,
@@ -31,7 +32,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import LatexEditor from "./TestLatexFormula";
 import Placeholder from "@tiptap/extension-placeholder";
-
+import Formula from "../formula-fx-icon-dark.svg";
 const BubbleMenuBar = ({ editor, setFocused }) => {
   if (!editor) {
     return null;
@@ -232,11 +233,22 @@ const TipTapEditor = ({
           justifyContent='space-between'
         >
           <Stack direction='row' alignItems='center' spacing={1}>
-            <FontAwesomeIcon icon={faSquareRootVariable} color='#398' />
+            <Box
+              width={20}
+              borderRadius={10}
+              height={20}
+              bgcolor='#fefae0'
+              p={1}
+              display='flex'
+              justifyContent='center'
+              alignItems='center'
+            >
+              <img src={Formula} alt='formula' />
+            </Box>
             <Typography>Math Editor</Typography>
           </Stack>
           <IconButton onClick={() => setIsOpen(false)}>
-            <FontAwesomeIcon icon={faTimes} size='xs' />
+            <FontAwesomeIcon icon={faCircleXmark} size='xs' />
           </IconButton>
         </DialogTitle>
         <DialogContent>
