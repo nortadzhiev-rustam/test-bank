@@ -20,7 +20,7 @@ function TabPanel(props) {
       id={`full-width-tabpanel-${index}`}
       aria-labelledby={`full-width-tab-${index}`}
       {...other}
-      style={{ minHeight: 250 }}
+      style={{ minHeight: 300 }}
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
@@ -108,10 +108,10 @@ export default function FormulaTabs({ formulas, mathFieldRef }) {
                 mt={2}
                 sx={{
                   color: "black",
-                  fontSize: "0.5rem",
-                  height: 30,
+                  fontSize: "0.6rem",
+                  height: 35,
                   minWidth: 5,
-                  maxWidth: 5,
+                  maxWidth: 35,
                   "&:hover": {
                     color: "white",
                   },
@@ -137,9 +137,9 @@ export default function FormulaTabs({ formulas, mathFieldRef }) {
                 sx={{
                   color: "black",
                   fontSize: "1rem",
-                  height: 30,
+                  height: 35,
                   minWidth: 5,
-                  maxWidth: 5,
+                  maxWidth: 35,
                   "&:hover": {
                     color: "white",
                   },
@@ -165,7 +165,7 @@ export default function FormulaTabs({ formulas, mathFieldRef }) {
                 sx={{
                   color: "black",
                   fontSize: "0.7rem",
-                  height: 30,
+                  height: 35,
                   maxWidth: 5,
                 }}
                 onClick={() => handleButtonClick(formula.latex)}

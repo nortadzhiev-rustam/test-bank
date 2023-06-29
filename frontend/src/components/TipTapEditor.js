@@ -25,9 +25,7 @@ import {
   faListOl,
   faListUl,
   faQuoteRight,
-  faSquareRootVariable,
   faStrikethrough,
-  faTimes,
   faUnderline,
 } from "@fortawesome/free-solid-svg-icons";
 import LatexEditor from "./TestLatexFormula";
@@ -184,6 +182,8 @@ const TipTapEditor = ({
 }) => {
   const [latexCode, setLatexCode] = React.useState("");
   const [focused, setFocused] = React.useState(false);
+
+  const ref = React.useRef(null);
   const editor = useEditor({
     content: "",
     extensions: [
@@ -220,12 +220,20 @@ const TipTapEditor = ({
     setIsOpen(false);
   };
 
+  React.useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        setFocused(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [ref]);
+
   return (
-    <div
-      style={{ width: "100%" }}
-      onMouseEnter={() => setFocused(true)}
-      onMouseLeave={() => setFocused(false)}
-    >
+    <div ref={ref} style={{ width: "100%" }}>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <DialogTitle
           display='flex'
