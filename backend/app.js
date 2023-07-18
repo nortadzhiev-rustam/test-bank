@@ -155,6 +155,7 @@ app.use(
     store: new SequelizeStore({
       db: require("./models").sequelize,
     }),
+    name: "testGeneratorCookie",
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // 1 day
       sameSite: "none",

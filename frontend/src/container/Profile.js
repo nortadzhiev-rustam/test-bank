@@ -191,7 +191,13 @@ const Profile = ({ showNav, setShowNav }) => {
   React.useEffect(() => {
     if (!isEditing) {
       axios
-        .get("https://backend.rustamnortadzhiev.com/api/v1/collections")
+        .get(
+          `${
+            process.env.NODE_ENV === "production"
+              ? "https://backend.rustamnortadzhiev.com"
+              : "http://localhost:5000"
+          }/api/v1/collections`
+        )
         .then((res) => {
           setCollections(res.data);
           setSelectedCollection(res.data[0].name);

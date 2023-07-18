@@ -93,7 +93,7 @@ const Login = ({ history }) => {
 
       dispatch(login(res.data));
 
-      navigate("/admin");
+      navigate(-1);
     } catch (err) {
       setError(err.message);
     }
