@@ -23,7 +23,7 @@ A full-stack web application for creating, managing, and organizing educational 
 
 - **User authentication** — registration, login, and session management with JWT
 - **Question management** — create, view, and organize multiple-choice questions (A/B/C/D)
-- **Rich-text editing** — CKEditor 5 and Froala Editor with full formatting support
+- **Rich-text editing** — CKEditor 5 with full formatting support
 - **Math expressions** — MathType, MathJax, KaTeX, and MathQuill integration
 - **Image uploads** — attach images to questions via drag-and-drop or file picker
 - **Department organization** — group users and questions by department
