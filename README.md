@@ -63,8 +63,7 @@ A full-stack web application for creating, managing, and organizing educational 
 | Redux Toolkit | ^1.9 | State management |
 | React Router v6 | ^6.30 | Client-side routing |
 | Material-UI (MUI) | ^5.18 | Component library |
-| CKEditor 5 | ^41.x | Rich-text editor |
-| Froala Editor | ^4.x | Alternative rich-text editor |
+|| CKEditor 5 | ^41.x | Rich-text editor |
 | MathType (Wiris) | ^8.x | Math expression editor |
 | KaTeX | ^0.17 | Math rendering |
 | Axios | ^1.x | HTTP client |
