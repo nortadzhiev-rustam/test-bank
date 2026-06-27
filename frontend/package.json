@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ckeditor/ckeditor5-build-balloon": "^41.4.2",
-    "@ckeditor/ckeditor5-build-classic": "^41.4.2",
     "@ckeditor/ckeditor5-react": "^8.0.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
@@ -20,20 +18,18 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^14.3.1",
     "@testing-library/user-event": "^14.6.1",
-    "@wiris/mathtype-ckeditor5": "^8.15.2",
     "@wiris/mathtype-froala3": "^7.31.0",
     "animate.css": "^4.1.1",
     "axios": "^1.9.0",
     "better-react-mathjax": "^2.0.3",
     "browserlist": "^1.0.1",
-    "ckeditor5-build-classic-mathtype": "^1.0.0",
     "ckeditor5-classic-with-mathtype": "^1.0.0",
     "draft-js": "^0.11.7",
     "froala-editor": "^4.3.3",
     "html2canvas": "^1.4.1",
     "jquery": "^3.7.1",
     "jsonwebtoken": "^9.0.3",
-    "jspdf": "^2.5.2",
+    "jspdf": "^4.2.1",
     "katex": "^0.17.0",
     "mathjax3-react": "^1.2.0",
     "mathlive": "^0.110.0",
@@ -49,6 +45,10 @@
     "react-router-dom": "^6.30.0",
     "typescript": "^5.8.3",
     "web-vitals": "^3.5.2"
+  },
+  "overrides": {
+    "serialize-javascript": "^7.0.6",
+    "uuid": "^11.1.1"
   },
   "scripts": {
     "dev": "vite",
