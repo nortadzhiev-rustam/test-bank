@@ -17,7 +17,6 @@ import { IconButton, Typography, Box, TextField } from "@mui/material";
 import { CancelRounded } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
-const MathQuill = require("mathquill/build/mathquill");
 addStyles();
 function PaperComponent(props) {
   return (
