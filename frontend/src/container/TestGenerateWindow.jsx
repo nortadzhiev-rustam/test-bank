@@ -115,13 +115,13 @@ const GenerateWindow = () => {
 
   return (
     <Grid
-      item
-      xs={12}
-      sm={12}
-      md={isFull ? 12 : 8}
-      lg={isFull ? 12 : 8}
-      xl={isFull ? 12 : 8}
-    >
+      size={{
+        xs: 12,
+        sm: 12,
+        md: isFull ? 12 : 8,
+        lg: isFull ? 12 : 8,
+        xl: isFull ? 12 : 8
+      }}>
       <Paper
         elevation={isHover ? 10 : 2}
         onMouseEnter={() => setHover(true)}

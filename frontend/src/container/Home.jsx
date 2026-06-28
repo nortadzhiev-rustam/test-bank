@@ -7,7 +7,7 @@ import InserPanel from '../components/InsertPanel';
 import { useSelector } from 'react-redux';
 import InsertWindow from '../container/TestInsertWindow';
 import GenerateWindow from '../container/TestGenerateWindow';
-import { styled } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import Switcher from '../components/Switcher';
 
 const BoxContainer = styled(Box)({
@@ -38,15 +38,15 @@ const Home = () => {
       <Grid container justifyContent={isVisible && 'space-around'} spacing={1}>
         {!isFull && (
           <Grid
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            lg={3}
-            xl={2.5}
             style={{ paddingInline: 20, paddingBottom: 25 }}
             overflow='hidden'
-          >
+            size={{
+              xs: 12,
+              sm: 6,
+              md: 4,
+              lg: 3,
+              xl: 2.5
+            }}>
             {<Switcher setSwitch={(sw) => setSwitch(sw)} isSwitch={isSwitch}/>}
             {isSwitch === 'insert' ? <GeneratePanel /> : <InserPanel />}
           </Grid>

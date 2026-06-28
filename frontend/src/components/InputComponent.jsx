@@ -7,7 +7,7 @@ import {
   IconButton,
   Grid,
 } from '@mui/material';
-import { styled } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import MathDialog from './MathDialog';
 import { FunctionsRounded } from '@mui/icons-material';
 
@@ -38,7 +38,12 @@ const Input = (props) => {
         flexDirection='row'
         alignItems='center'
       >
-        <Grid item xs={12} md={12} mr={5}>
+        <Grid
+          mr={5}
+          size={{
+            xs: 12,
+            md: 12
+          }}>
           <StyledInput
             endAdornment={
               <IconButton onClick={() => setOpen(true)}>

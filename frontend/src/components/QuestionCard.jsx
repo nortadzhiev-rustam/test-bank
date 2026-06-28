@@ -25,7 +25,7 @@ const QuestionCard = ({ question, answer, img }) => {
             ))}
 
           <Grid container sx={{ display: 'flex', flexDirection: 'row' }}>
-            <Grid item sx={{ flex: 1 }}>
+            <Grid sx={{ flex: 1 }}>
               <Box
                 sx={{
                   display: 'flex',
@@ -57,7 +57,7 @@ const QuestionCard = ({ question, answer, img }) => {
                 </MathJax>
               </Box>
             </Grid>
-            <Grid item sx={{ flex: 1 }}>
+            <Grid sx={{ flex: 1 }}>
               <Box
                 sx={{
                   display: 'flex',

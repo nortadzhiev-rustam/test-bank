@@ -1,7 +1,7 @@
 import React from 'react';
 import Paper from '@mui/material/Paper';
 import { Grid } from '@mui/material';
-import { styled } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 const GridContainer = styled(Grid)({
   display: 'flex',
   flexDirection: 'row',
@@ -40,7 +40,7 @@ const Switcher = ({ setSwitch, isSwitch }) => {
       onMouseLeave={() => setMouseIn(false)}
     >
       <GridContainer container>
-        <Grid item xs={6}>
+        <Grid size={6}>
           <TextDiv
             style={{
               backgroundColor: isSwitch === 'generate' ? '#006064' : 'white',
@@ -50,7 +50,7 @@ const Switcher = ({ setSwitch, isSwitch }) => {
             <h2 style={{ color: isSwitch === 'generate' && '#fff' }}>Insert</h2>
           </TextDiv>
         </Grid>
-        <Grid item xs={6}>
+        <Grid size={6}>
           <TextDiv
             style={{
               backgroundColor: isSwitch === 'insert' ? '#006064' : 'white',

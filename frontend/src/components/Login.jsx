@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 import {
   Box,
   FormControl,
@@ -18,35 +18,32 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading, login } from "../store/userSlice";
 import { useNavigate } from "react-router-dom";
-const useStyles = makeStyles({
-  root: {
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    overflow: "hidden",
+const Root = styled(Box)({
+  height: "100vh",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  overflow: "hidden",
+});
+
+const StyledForm = styled("form")({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  backgroundColor: "rgb(255,255,255)",
+  paddingBlock: 50,
+  paddingInline: 20,
+  borderRadius: 10,
+  width: 300,
+  transition: "all 0.7s ease-in-out",
+  "&:hover": {
+    boxShadow: "0px 0px 20px 10px rgba(0,0,0,0.2)",
+    transform: "translate3D(0, -10px, 20px)",
   },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    backgroundColor: "rgb(255,255,255)",
-    paddingBlock: 50,
-    paddingInline: 20,
-    borderRadius: 10,
-    width: 300,
-    transition: "all 0.7s ease-in-out",
-    "&:hover": {
-      boxShadow: "0px 0px 20px 10px rgba(0,0,0,0.2)",
-      transform: "translate3D(0, -10px, 20px)",
-    },
-  },
-  textField: { marginBlock: 10, color: "#fff" },
 });
 
 const Login = ({ history }) => {
-  const classes = useStyles();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
@@ -78,7 +75,7 @@ const Login = ({ history }) => {
     dispatch(setLoading(true));
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/v1/login",
+        "http://localhost:5001/api/v1/login",
         {
           email,
           password,
@@ -108,7 +105,7 @@ const Login = ({ history }) => {
   };
 
   return (
-    <Box className={classes.root}>
+    <Root>
       {error !== "" && (
         <Alert className='animate__animated animate__fadeIn' severity='error'>
           {error}
@@ -136,9 +133,9 @@ const Login = ({ history }) => {
         >
           Login
         </Typography>
-        <form onSubmit={handleSubmit} className={classes.form}>
+        <StyledForm onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <FormControl
                 variant='filled'
                 fullWidth
@@ -155,7 +152,7 @@ const Login = ({ history }) => {
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <FormControl
                 fullWidth
                 variant='filled'
@@ -187,11 +184,7 @@ const Login = ({ history }) => {
             </Grid>
           </Grid>
           <Grid container spacing={1}>
-            <Grid
-              item
-              xs={12}
-              sx={{ display: "flex", justifyContent: "center" }}
-            >
+            <Grid sx={{ display: "flex", justifyContent: "center" }} size={12}>
               <Button
                 variant='standart'
                 size='small'
@@ -208,19 +201,15 @@ const Login = ({ history }) => {
                 </Box>
               </Button>
             </Grid>
-            <Grid
-              item
-              xs={12}
-              sx={{ display: "flex", justifyContent: "center" }}
-            >
+            <Grid sx={{ display: "flex", justifyContent: "center" }} size={12}>
               <Button type='submit' variant='contained'>
                 Sign in
               </Button>
             </Grid>
           </Grid>
-        </form>
+        </StyledForm>
       </Paper>
-    </Box>
+    </Root>
   );
 };
 

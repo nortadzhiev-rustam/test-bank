@@ -1,13 +1,17 @@
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 
-// This project came from Create React App: many source files use the `.js`
-// extension but contain JSX. `include` tells @vitejs/plugin-react to run the
-// React/JSX transform on `.js` files too (Vite's esbuild step ignores `.js`
-// by default, so Babel handles them here). `optimizeDeps` covers the rare
-// dependency that ships JSX in a `.js` file.
+// This project was migrated from Create React App. JSX-containing source files
+// use the `.jsx` extension so Vite/Rolldown parse them as JSX by extension
+// (both the dev oxc transform and the production Rolldown build). Pure-JS files
+// (store, slices, utils) keep `.js`.
 export default defineConfig({
-  plugins: [react({ include: /\.(js|jsx)$/, exclude: /node_modules/ })],
+  plugins: [react()],
+  // Some legacy deps (draft-js/fbjs) reference Node's `global`. Map it to the
+  // browser global so they run in Vite's browser bundle.
+  define: {
+    global: "globalThis",
+  },
   server: {
     port: 3000,
     open: true,
@@ -15,11 +19,6 @@ export default defineConfig({
   build: {
     // Match CRA's output directory (already in .gitignore).
     outDir: "build",
-  },
-  optimizeDeps: {
-    esbuildOptions: {
-      loader: { ".js": "jsx" },
-    },
   },
   test: {
     globals: true,
