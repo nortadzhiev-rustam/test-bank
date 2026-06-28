@@ -33,7 +33,7 @@ function EditorV2(props) {
           // },
           // ckfinder: {
           //   //ckfinder options
-          //   uploadUrl: "http://localhost:5000/api/v1/upload", //define the url of the upload script
+          //   uploadUrl: "http://localhost:5001/api/v1/upload", //define the url of the upload script
           // },
           placeholder: `${props.placeholder || "Digite aqui..."}`,
           language: "en-gb",

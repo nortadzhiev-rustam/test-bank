@@ -3,7 +3,7 @@ import { Paper, Box, Checkbox, IconButton, Tooltip } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan, faCamera } from "@fortawesome/free-solid-svg-icons";
 import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
-import { styled } from "@mui/styles";
+import { styled } from '@mui/material/styles';
 import { Functions } from "@mui/icons-material";
 import InputEditor from "./Editor";
 import "./style.css";

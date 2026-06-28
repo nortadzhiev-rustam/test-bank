@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,33 +22,30 @@ import {
 } from '@mui/material';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 
-const useStyles = makeStyles({
-  root: {
-    height: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
+const Root = styled(Box)({
+  height: '100vh',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  overflow: 'hidden',
+});
+
+const StyledForm = styled('form')({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  backgroundColor: 'rgb(255,255,255)',
+  padding: 20,
+  borderRadius: 10,
+  transition: 'all 0.7s ease-in-out',
+  '&:hover': {
+    boxShadow: '0px 0px 20px 10px rgba(0,0,0,0.2)',
+    transform: 'translate3D(0, -10px, 20px)',
   },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    backgroundColor: 'rgb(255,255,255)',
-    padding: 20,
-    borderRadius: 10,
-    transition: 'all 0.7s ease-in-out',
-    '&:hover': {
-      boxShadow: '0px 0px 20px 10px rgba(0,0,0,0.2)',
-      transform: 'translate3D(0, -10px, 20px)',
-    },
-  },
-  textField: { marginBlock: 10, color: '#fff' },
 });
 
 const Register = ({ setIsLogin, history }) => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const departments = useSelector((state) => state.department.department);
   const [values, setValues] = React.useState({
@@ -90,7 +87,7 @@ const Register = ({ setIsLogin, history }) => {
     } else {
       try {
         const res = await axios.post(
-          'http://localhost:5000/api/v1/register',
+          'http://localhost:5001/api/v1/register',
           {
             firstName,
             lastName,
@@ -153,7 +150,7 @@ const Register = ({ setIsLogin, history }) => {
   return (
     //form for register with material-ui
 
-    <Box component='div' className={classes.root}>
+    <Root component='div'>
       {error !== '' && (
         <Alert
           className='animate__animated animate__fadeIn'
@@ -185,9 +182,13 @@ const Register = ({ setIsLogin, history }) => {
         >
           Sign-up
         </Typography>
-        <form noValidate className={classes.form} onSubmit={handleSubmit}>
-          <Grid container spacing={1} className={classes.textField}>
-            <Grid item xs={12} sm={6}>
+        <StyledForm noValidate onSubmit={handleSubmit}>
+          <Grid container spacing={1} sx={{ marginBlock: '10px', color: '#fff' }}>
+            <Grid
+              size={{
+                xs: 12,
+                sm: 6
+              }}>
               <TextField
                 color='success'
                 size='small'
@@ -198,7 +199,11 @@ const Register = ({ setIsLogin, history }) => {
                 variant='filled'
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid
+              size={{
+                xs: 12,
+                sm: 6
+              }}>
               <TextField
                 color='success'
                 size='small'
@@ -210,8 +215,8 @@ const Register = ({ setIsLogin, history }) => {
               />
             </Grid>
           </Grid>
-          <Grid container spacing={1} className={classes.textField}>
-            <Grid item xs={12}>
+          <Grid container spacing={1} sx={{ marginBlock: '10px', color: '#fff' }}>
+            <Grid size={12}>
               <TextField
                 color='success'
                 type='email'
@@ -225,8 +230,12 @@ const Register = ({ setIsLogin, history }) => {
               />
             </Grid>
           </Grid>
-          <Grid container spacing={1} className={classes.textField}>
-            <Grid item xs={12} sm={6}>
+          <Grid container spacing={1} sx={{ marginBlock: '10px', color: '#fff' }}>
+            <Grid
+              size={{
+                xs: 12,
+                sm: 6
+              }}>
               <FormControl
                 size='small'
                 sx={{ width: '100%' }}
@@ -262,7 +271,11 @@ const Register = ({ setIsLogin, history }) => {
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid
+              size={{
+                xs: 12,
+                sm: 6
+              }}>
               <FormControl
                 size='small'
                 fullWidth
@@ -299,8 +312,12 @@ const Register = ({ setIsLogin, history }) => {
               </FormControl>
             </Grid>
           </Grid>
-          <Grid container spacing={1} className={classes.textField}>
-            <Grid item xs={12} sm={6}>
+          <Grid container spacing={1} sx={{ marginBlock: '10px', color: '#fff' }}>
+            <Grid
+              size={{
+                xs: 12,
+                sm: 6
+              }}>
               <FormControl
                 fullWidth
                 size='small'
@@ -328,11 +345,7 @@ const Register = ({ setIsLogin, history }) => {
           </Grid>
 
           <Grid container spacing={1}>
-            <Grid
-              item
-              xs={12}
-              sx={{ display: 'flex', justifyContent: 'center' }}
-            >
+            <Grid sx={{ display: 'flex', justifyContent: 'center' }} size={12}>
               <Button
                 onClick={() => navigate('/login')}
                 variant='standart'
@@ -347,11 +360,7 @@ const Register = ({ setIsLogin, history }) => {
                 </Box>
               </Button>
             </Grid>
-            <Grid
-              item
-              xs={12}
-              sx={{ display: 'flex', justifyContent: 'center' }}
-            >
+            <Grid sx={{ display: 'flex', justifyContent: 'center' }} size={12}>
               <Button
                 variant='contained'
                 sx={{ bgcolor: '#006064', '&:hover': { bgcolor: '#004d40' } }}
@@ -361,9 +370,9 @@ const Register = ({ setIsLogin, history }) => {
               </Button>
             </Grid>
           </Grid>
-        </form>
+        </StyledForm>
       </Paper>
-    </Box>
+    </Root>
   );
 };
 

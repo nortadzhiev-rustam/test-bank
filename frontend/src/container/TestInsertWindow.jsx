@@ -9,7 +9,7 @@ import {
   IconButton,
   useMediaQuery,
 } from "@mui/material";
-import { styled } from "@mui/styles";
+import { styled } from '@mui/material/styles';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch, useSelector } from "react-redux";
 import { setFull, setVisible } from "../store/questionTypeSlice";
@@ -101,7 +101,12 @@ const InsertWindow = () => {
   };
 
   return (
-    <Grid item xs={12} sm={12} md={isFull ? 12 : 8}>
+    <Grid
+      size={{
+        xs: 12,
+        sm: 12,
+        md: isFull ? 12 : 8
+      }}>
       <PaperContainer
         elevation={isHover ? 10 : 2}
         onMouseEnter={() => setHover(true)}
@@ -212,7 +217,7 @@ const InsertWindow = () => {
               >
                 <Grid container spacing={3}>
                   {options.map((option, idx) => (
-                    <Grid key={option.key} item xs={matches ? 6 : 12}>
+                    <Grid key={option.key} size={matches ? 6 : 12}>
                       <AnswersCard
                         matches={matches}
                         option={option}
@@ -223,7 +228,7 @@ const InsertWindow = () => {
                     </Grid>
                   ))}
                   {counter !== 5 && (
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                       <Tooltip
                         placement='top'
                         title={

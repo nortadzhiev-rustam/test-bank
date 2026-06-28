@@ -18,7 +18,7 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import { MeetingRoom } from "@mui/icons-material";
 import { useSelector, useDispatch } from "react-redux";
 import logo from "../logo.svg";
-import { withRouter } from "../components/withRouter.js";
+import { withRouter } from "../components/withRouter";
 import { logout } from "../store/userSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -140,7 +140,7 @@ const NavBar = (props) => {
   const handleLogOut = async () => {
     dispatch(logout());
     handleMenuClose();
-    const res = await axios.get("http://localhost:5000/api/v1/logout", {
+    const res = await axios.get("http://localhost:5001/api/v1/logout", {
       withCredentials: true,
     });
     if (res.status === 200) {

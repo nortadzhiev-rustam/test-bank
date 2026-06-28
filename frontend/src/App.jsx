@@ -19,7 +19,7 @@ function App() {
 
   React.useEffect(() => {
     const fetchLogin = async () => {
-      const res = await axios.get("http://localhost:5000/api/v1/isAuth", {
+      const res = await axios.get("http://localhost:5001/api/v1/isAuth", {
         withCredentials: true,
       });
       if (res.data.user) {
@@ -39,7 +39,7 @@ function App() {
   }, []);
   React.useEffect(() => {
     const fetchDepartments = async () => {
-      const res = await axios.get("http://localhost:5000/api/v1/departments", {
+      const res = await axios.get("http://localhost:5001/api/v1/departments", {
         withCredentials: true,
       });
       dispatch(getDepartmentSuccess(res.data));
