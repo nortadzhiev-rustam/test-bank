@@ -98,7 +98,7 @@ function DropzoneComponent({ open, setImage, image }) {
         <div
           style={{
             cursor: "pointer",
-            diplay: "flex",
+            display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
