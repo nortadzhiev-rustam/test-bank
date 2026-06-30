@@ -57,12 +57,7 @@ export default function TesteditDialog({
 
       const res = await axios.post(
         "http://localhost:5001/api/v1/upload",
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        data
       );
 
       setImg(res.data);
