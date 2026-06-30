@@ -59,14 +59,14 @@ const Routess = () => {
             exact
             path='/settings'
             element={
-              user && user.role.toLowerCase() !== "system admin" ? (
+              user && user.role?.toLowerCase() !== "system admin" ? (
                 <Settings setShowNav={setShowNav} showNav={showNav} />
               ) : (
                 <Admin setShowNav={setShowNav} showNav={showNav} />
               )
             }
           />
-          {user && user.role.toLowerCase() === "system admin" && (
+          {user && user.role?.toLowerCase() === "system admin" && (
             <Route exact path='/admin/dashboard' element={<Admin />} />
           )}
         </Route>
