@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Grid,
   Paper,
@@ -8,11 +8,11 @@ import {
   Tooltip,
   IconButton,
   useMediaQuery,
-} from "@mui/material";
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useDispatch, useSelector } from "react-redux";
-import { setFull, setVisible } from "../store/questionTypeSlice";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFull, setVisible } from '../store/questionTypeSlice';
 import {
   faCircle,
   faMinus,
@@ -20,11 +20,11 @@ import {
   faUpRightAndDownLeftFromCenter,
   faPlusCircle,
   faDownLeftAndUpRightToCenter,
-} from "@fortawesome/free-solid-svg-icons";
+} from '@fortawesome/free-solid-svg-icons';
 
-import AnswersCard from "../components/AnswersCard";
+import AnswersCard from '../components/AnswersCard';
 
-import EditorV2 from "../components/EditorV2";
+import EditorV2 from '../components/EditorV2';
 
 const InsertWindow = () => {
   const [mouseIn, setMouseIn] = React.useState(false);
@@ -44,7 +44,7 @@ const InsertWindow = () => {
       key: 1,
     },
   ]);
-  const matches = useMediaQuery("(min-width:600px)");
+  const matches = useMediaQuery('(min-width:600px)');
   const getRandomOption = () => {
     const set = new Set();
     let randomNumber = Math.floor(Math.random() * 5) + 1;
@@ -97,7 +97,7 @@ const InsertWindow = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e)
+    console.log(e);
   };
 
   return (
@@ -105,8 +105,9 @@ const InsertWindow = () => {
       size={{
         xs: 12,
         sm: 12,
-        md: isFull ? 12 : 8
-      }}>
+        md: isFull ? 12 : 8,
+      }}
+    >
       <PaperContainer
         elevation={isHover ? 10 : 2}
         onMouseEnter={() => setHover(true)}
@@ -116,7 +117,7 @@ const InsertWindow = () => {
         <StyledBox>
           <FormPaper>
             <div
-              style={{ display: "flex" }}
+              style={{ display: 'flex' }}
               onMouseLeave={() => setMouseIn(false)}
               onMouseOver={() => setMouseIn(true)}
             >
@@ -126,7 +127,7 @@ const InsertWindow = () => {
                     icon={faTimes}
                     size='sm'
                     style={{
-                      borderRadius: "50%",
+                      borderRadius: '50%',
                     }}
                     color='#fff'
                   />
@@ -155,7 +156,7 @@ const InsertWindow = () => {
                       icon={faUpRightAndDownLeftFromCenter}
                       size='xs'
                       style={{
-                        borderRadius: "30%",
+                        borderRadius: '30%',
                       }}
                       color='#fff'
                     />
@@ -164,7 +165,7 @@ const InsertWindow = () => {
                       icon={faDownLeftAndUpRightToCenter}
                       size='xs'
                       style={{
-                        borderRadius: "30%",
+                        borderRadius: '30%',
                       }}
                       color='#fff'
                     />
@@ -208,16 +209,16 @@ const InsertWindow = () => {
               </QuestionPaper>
               <Box
                 sx={{
-                  display: { md: "flex", sm: "block" },
-                  flexDirectoin: "row",
-                  flexWrap: "wrap",
-                  justifyContent: "space-around",
+                  display: { md: 'flex', sm: 'block' },
+                  flexDirectoin: 'row',
+                  flexWrap: 'wrap',
+                  justifyContent: 'space-around',
                   paddingTop: 5,
                 }}
               >
-                <Grid container spacing={3}>
+                <Grid container spacing={7}>
                   {options.map((option, idx) => (
-                    <Grid key={option.key} size={matches ? 6 : 12}>
+                    <Grid key={option.key} item xs={12}>
                       <AnswersCard
                         matches={matches}
                         option={option}
@@ -228,24 +229,24 @@ const InsertWindow = () => {
                     </Grid>
                   ))}
                   {counter !== 5 && (
-                    <Grid size={12}>
+                    <Grid item size={12}>
                       <Tooltip
                         placement='top'
                         title={
                           counter === 5
-                            ? "You can not add more then five options"
-                            : ""
+                            ? 'You can not add more then five options'
+                            : ''
                         }
                       >
                         <Paper
                           elevation={isCardHover && counter !== 5 ? 5 : 0}
                           style={{
                             height: 150,
-                            width: "100%",
+                            width: '100%',
                             margin: 5,
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
                             marginBlock: 20,
                             borderRadius: 20,
                           }}
@@ -277,87 +278,84 @@ const InsertWindow = () => {
 };
 
 const StyledBox = styled(Box)({
-  display: "flex",
-  position: "relative",
+  display: 'flex',
+  position: 'relative',
   margin: 0,
   padding: 0,
 });
 
 const FormPaper = styled(Paper)({
-  width: "100%",
+  width: '100%',
   minHeight: 70,
-  backgroundColor: "#eceff1",
-  textAlign: "start",
+  backgroundColor: '#eceff1',
+  textAlign: 'start',
   borderTopRightRadius: 13,
   borderTopLeftRadius: 13,
   borderBottomRightRadius: 0,
   borderBottomLeftRadius: 0,
   paddingInline: 20,
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
 });
-
-
 
 const PaperContainer = styled(Paper)({
   borderRadius: 12,
-  transition: "all 0.3s ease-in-out",
-  width: "100%",
+  transition: 'all 0.3s ease-in-out',
+  width: '100%',
   paddingBottom: 30,
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
 });
 
-const InputContainer = styled("div")({
-  display: "flex",
-  flexDirection: "row-reverse",
-  justifyContent: "center",
-  alignItems: "center",
-  height: "100%",
+const InputContainer = styled('div')({
+  display: 'flex',
+  flexDirection: 'row-reverse',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100%',
   paddingInline: 10,
 });
 
-
 const QuestionPaper = styled(Paper)({
-  borderRadius: "10px",
-  marginInline: "2px",
+  borderRadius: '10px',
+  marginInline: '2px',
   height: 250,
-  backgroundColor: "#006064",
+  backgroundColor: '#006064',
 });
 
-const CloseButton = styled("div")({
-  display: "inline-flex",
-  backgroundColor: "#e63946",
-  borderRadius: "50%",
+const CloseButton = styled('div')({
+  display: 'inline-flex',
+  backgroundColor: '#e63946',
+  borderRadius: '50%',
   height: 20,
   width: 20,
-  justifyContent: "center",
-  alignItems: "center",
+  justifyContent: 'center',
+  alignItems: 'center',
 });
 
-const MinusButton = styled("div")({
-  display: "inline-flex",
-  backgroundColor: "#ee9b00",
-  borderRadius: "50%",
+const MinusButton = styled('div')({
+  display: 'inline-flex',
+  backgroundColor: '#ee9b00',
+  borderRadius: '50%',
   marginLeft: 5,
   height: 20,
   width: 20,
-  justifyContent: "center",
-  alignItems: "center",
+  justifyContent: 'center',
+  alignItems: 'center',
 });
 
-const FullScreenButton = styled("div")({
-  display: "inline-flex",
-  backgroundColor: "#43aa8b",
+const FullScreenButton = styled('div')({
+  display: 'inline-flex',
+  backgroundColor: '#43aa8b',
   marginLeft: 5,
-  borderRadius: "50%",
+  borderRadius: '50%',
   height: 20,
   width: 20,
-  justifyContent: "center",
-  alignItems: "center",
+  justifyContent: 'center',
+  alignItems: 'center',
 });
 
 export default InsertWindow;

@@ -4,7 +4,6 @@ import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
@@ -17,7 +16,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { MeetingRoom } from "@mui/icons-material";
 import { useSelector, useDispatch } from "react-redux";
-import logo from "../logo.svg";
+import { TestlyLogo } from "../components/TestlyLogo";
 import { withRouter } from "../components/withRouter";
 import { logout } from "../store/userSlice";
 import axios from "axios";
@@ -255,7 +254,7 @@ const NavBar = (props) => {
       {!isFull && (
         <>
           <HideOnScroll {...props}>
-            <AppBar position='fixed' color='secondary' elevation={10}>
+            <AppBar position='fixed' color='info' elevation={10}>
               <Toolbar>
                 <div
                   style={{
@@ -265,15 +264,7 @@ const NavBar = (props) => {
                   }}
                   onClick={() => history("/")}
                 >
-                  <img src={logo} width='30' height='30' alt='logo' />
-                  <Typography
-                    sx={{ marginLeft: 2 }}
-                    variant='h6'
-                    noWrap
-                    component='div'
-                  >
-                    Test Generator
-                  </Typography>
+                  <TestlyLogo size={40} showWordmark />
                 </div>
 
                 <Box sx={{ flexGrow: 1 }} />

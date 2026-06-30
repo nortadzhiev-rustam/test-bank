@@ -7,11 +7,6 @@ import react from "@vitejs/plugin-react";
 // (store, slices, utils) keep `.js`.
 export default defineConfig({
   plugins: [react()],
-  // Some legacy deps (draft-js/fbjs) reference Node's `global`. Map it to the
-  // browser global so they run in Vite's browser bundle.
-  define: {
-    global: "globalThis",
-  },
   server: {
     port: 3000,
     open: true,

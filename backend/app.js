@@ -17,7 +17,11 @@ const app = express();
 app.use(morgan('dev'));
 app.use(helmet());
 app.use(cors({
-  origin: "http://localhost:3000",
+  // Allow any localhost port in dev so the frontend works whether Vite binds
+  // 3000, 3001, etc. Lock this down to an explicit origin in production.
+  origin: process.env.NODE_ENV === 'production'
+    ? "http://localhost:3000"
+    : [/^http:\/\/localhost:\d+$/],
   methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD"],
   credentials: true,
 }));
