@@ -38,7 +38,7 @@ router.post("/question", async (req, res) => {
         userId,
         departmentId,
         testId,
-        matches,
+        matches: req.body.matches,
       });
 
       res.status(200).json({
