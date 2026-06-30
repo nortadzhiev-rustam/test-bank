@@ -125,9 +125,8 @@ const InsertPanel = ({
           Cancel
         </Button>
         <Button
-          variant='contained'
           disabled={
-            (testName === "" && selectedDepartment !== undefined) || isLoading
+            testName === "" || selectedDepartment === undefined || isLoading
           }
           color='info'
           onClick={!isEditing ? () => createTest() : () => updateSettings()}
