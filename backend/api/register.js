@@ -14,9 +14,7 @@ router.post("/register", async (req, res) => {
       }
     );
 
-    const userDepartment = await Department.findOne({
-      where: { departmentId },
-    }).catch((err) => {
+    const userDepartment = await Department.findByPk(departmentId).catch((err) => {
       console.log("Error: ", err);
     });
 
@@ -34,10 +32,14 @@ router.post("/register", async (req, res) => {
       departmentId,
     });
     const jwtToken = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
-    req.session.user = {
-      ...user.get({ plain: true }),
-      department: userDepartment ? userDepartment.get({ plain: true }) : null,
-    };
+    req.session.user = {
+
+      ...user.get({ plain: true }),
+
+      department: userDepartment ? userDepartment.get({ plain: true }) : null,
+
+    };
+
     res.json({ message: "User created successfully!", token: jwtToken });
   } catch (error) {
     res.status(500).json({ message: error.message });
