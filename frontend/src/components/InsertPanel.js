@@ -53,7 +53,7 @@ const InsertPanel = ({
     };
     try {
       const req = await axios.post(
-        "https://www.backend.rustamnortadzhiev.com/api/v1/test",
+        "http://localhost:5001/api/v1/test",
         data
       );
       if (req.status === 200) {
@@ -71,7 +71,7 @@ const InsertPanel = ({
     setLoading(true);
     try {
       const res = await axios.put(
-        `https://www.backend.rustamnortadzhiev.com/api/v1/test/${id}?name=${testName}&departmentId=${selectedDepartment.id}`
+        `http://localhost:5001/api/v1/test/${id}?name=${testName}&departmentId=${selectedDepartment.id}`
       );
       setEditing(false);
       setTimeout(() => {

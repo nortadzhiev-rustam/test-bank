@@ -75,7 +75,7 @@ const QuestionInput = ({
 
   const handleDelete = async () => {
     const res = await axios.delete(
-      "https://backend.rustamnortadzhiev.com/api/v1/files/" + image
+      "http://localhost:5001/api/v1/files/" + image
     );
     setMessage(res.data.message);
     setImage("");
