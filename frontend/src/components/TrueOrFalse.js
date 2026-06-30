@@ -11,7 +11,7 @@ export default function TrueOrFalse({
   const [selected, setSelected] = React.useState("");
   const options = React.useMemo(() => [
     { content: { text: "True" }, key: 0 },
-    { content: { text: "Flase" }, key: 1 },
+    { content: { text: "False" }, key: 1 },
   ],[]);
 
   const handleClick = (item) => {
