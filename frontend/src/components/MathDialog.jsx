@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -6,18 +6,13 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Paper from "@mui/material/Paper";
 import Draggable from "react-draggable";
-import {
-  addStyles,
-  EditableMathField,
-  StaticMathField,
-  MathField,
-} from "react-mathquill";
+import { convertLatexToMarkup } from "mathlive";
+import "mathlive/fonts.css";
+import "mathlive/static.css";
 import { formulas } from "../constants/formulas";
-import { IconButton, Typography, Box, TextField } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import { CancelRounded } from "@mui/icons-material";
-import PropTypes from "prop-types";
-import { MathJax, MathJaxContext } from "better-react-mathjax";
-addStyles();
+
 function PaperComponent(props) {
   return (
     <Draggable
@@ -30,38 +25,40 @@ function PaperComponent(props) {
 }
 
 export default function MathDialog({ open, setOpen, latex, setLatex }) {
-  const [formule, setFormule] = React.useState("");
-  const [formuleLatex, setFormuleLatex] = React.useState("");
-  const [ltx, setLtx] = React.useState("");
-  const inputRef = useRef(null);
-  React.useEffect(() => {
-    if (latex) {
-      setFormule(latex);
-    } else setFormule("");
+  const mathfieldRef = useRef(null);
+  const [value, setValue] = useState(latex || "");
+
+  // Wire the mathlive <math-field> web component: seed it with the incoming
+  // latex, focus it, and mirror edits back into React state.
+  useEffect(() => {
+    const mf = mathfieldRef.current;
+    if (!mf) return;
+    mf.value = latex || "";
+    setValue(latex || "");
+    const handleInput = (e) => setValue(e.target.value);
+    mf.addEventListener("input", handleInput);
+    mf.focus();
+    return () => mf.removeEventListener("input", handleInput);
   }, [latex]);
 
   const handleClose = () => {
-    setFormule("");
-    setOpen(false);
+    setOpen?.(false);
   };
 
   const handleSubmit = () => {
-    setLatex(formule);
-    setFormule("");
-    setOpen(false);
+    setLatex?.(value);
+    setOpen?.(false);
   };
 
-  const handleChange = (value) => {
-    setFormule(value);
+  // Insert a formula snippet from the palette at the cursor.
+  const handleInsert = (snippet) => {
+    const mf = mathfieldRef.current;
+    if (!mf) return;
+    mf.insert(snippet);
+    setValue(mf.value);
+    mf.focus();
   };
 
-  const handleMathType = (e, type) => {
-    e.preventDefault();
-
-    inputRef.current = type;
-
-    console.log(inputRef);
-  };
   return (
     <div>
       <Dialog
@@ -86,49 +83,22 @@ export default function MathDialog({ open, setOpen, latex, setLatex }) {
           >
             Formula
           </Typography>{" "}
-          <IconButton onClick={() => setOpen(false)}>
+          <IconButton onClick={handleClose}>
             <CancelRounded color='error' />
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          <EditableMathField
-            config={`spaceBehavesLikeTab: true,
-          leftRightIntoCmdGoes: 'up',
-          restrictMismatchedBrackets: true,
-          sumStartsWithNEquals: true,
-          supSubsRequireOperand: true,
-          charsThatBreakOutOfSupSub: '+-=<>',
-          autoSubscriptNumerals: true,
-          autoCommands: 'pi theta sqrt sum',
-          autoOperatorNames: 'sin cos',
-          maxDepth: 10,
-          substituteTextarea: function() {
-            return document.createElement('textarea');
-          },
-          handlers: {
-            edit: function(mathField) { ... },
-            upOutOf: function(mathField) { ... },
-            moveOutOf: function(dir, mathField) { if (dir === MQ.L) ... else ... }
-          }`}
-            mathquillDidMount={(mathField) => {
-              mathField.focus();
-            }}
-            id='math-field'
-            ref={inputRef}
+          <math-field
+            ref={mathfieldRef}
             style={{
               width: "98%",
-              height: "60px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: 5,
-              borderRadius: 10,
+              minWidth: "320px",
+              fontSize: "24px",
+              padding: "8px",
+              borderRadius: "10px",
+              border: "1px solid #ccc",
             }}
-            latex={formuleLatex}
-            onChange={(mathField) => {
-              setFormuleLatex(mathField.latex());
-            }}
-          />
+          ></math-field>
           <Paper
             style={{
               marginBlock: 20,
@@ -144,24 +114,25 @@ export default function MathDialog({ open, setOpen, latex, setLatex }) {
                 style={{
                   height: 40,
                   width: 40,
-                  textTransform: "lowerCase",
+                  textTransform: "lowercase",
                   fontSize: formula.fontSize,
                   marginInline: 2,
                   borderRadius: 5,
                   marginBlock: 5,
-                  dispaly: "flex",
+                  display: "flex",
                   alignItems: "center",
                   padding: 0,
                   cursor: "pointer",
                 }}
                 size='large'
-                onClick={(e) => {
-                  handleMathType(e, formula.latex);
-                }}
+                onClick={() => handleInsert(formula.latex)}
               >
-                <StaticMathField style={{ cursor: "pointer" }}>
-                  {formula.formula}
-                </StaticMathField>
+                <span
+                  style={{ pointerEvents: "none" }}
+                  dangerouslySetInnerHTML={{
+                    __html: convertLatexToMarkup(formula.formula),
+                  }}
+                />
               </Button>
             ))}
           </Paper>
@@ -176,10 +147,3 @@ export default function MathDialog({ open, setOpen, latex, setLatex }) {
     </div>
   );
 }
-
-// MathDialog.propTypes = {
-//   open: PropTypes.bool.isRequired,
-//   setOpen: PropTypes.func.isRequired,
-//   latex: PropTypes.string.isRequired,
-//   setLatex: PropTypes.func.isRequired,
-// };

@@ -11,7 +11,9 @@ import SearchWindow from "./components/searchWindow";
 import Profile from "./container/Profile";
 import axios from "axios";
 import { getDepartmentSuccess } from "./store/departmentSlice";
-import MathDialog from "./components/MathDialog";
+// Code-split: MathDialog pulls in mathlive (a heavy math editor), so keep it
+// out of the initial bundle and load it on demand.
+const MathDialog = React.lazy(() => import("./components/MathDialog"));
 import EditorV2 from './components/EditorV2';
 function App() {
   const [openSearch, setOpenSearch] = React.useState(false);
@@ -58,7 +60,15 @@ function App() {
           <Route exact path='/' element={<ProtectedRoute component={Home} />} />
           <Route exact path='/login' element={<Login />} />
           <Route exact path='/register' element={<Register />} />
-          <Route exact path='/math' element={<MathDialog />} />
+          <Route
+            exact
+            path='/math'
+            element={
+              <React.Suspense fallback={null}>
+                <MathDialog />
+              </React.Suspense>
+            }
+          />
           <Route exact path='/editor' element={<EditorV2 />} />
           <Route
             path='/profile'

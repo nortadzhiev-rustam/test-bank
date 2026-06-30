@@ -9,6 +9,11 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
     <title>Test Generator</title>
+    <!-- Some legacy deps (draft-js/fbjs) reference Node's `global`. Alias it to
+         the browser window before any module loads. -->
+    <script>
+      window.global = window;
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

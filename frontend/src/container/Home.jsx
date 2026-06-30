@@ -35,7 +35,11 @@ const Home = () => {
 
   return (
     <BoxContainer>
-      <Grid container justifyContent={isVisible && 'space-around'} spacing={1}>
+      <Grid
+        container
+        style={{ justifyContent: isVisible ? 'space-around' : 'flex-start' }}
+        spacing={1}
+      >
         {!isFull && (
           <Grid
             style={{ paddingInline: 20, paddingBottom: 25 }}
@@ -45,9 +49,10 @@ const Home = () => {
               sm: 6,
               md: 4,
               lg: 3,
-              xl: 2.5
-            }}>
-            {<Switcher setSwitch={(sw) => setSwitch(sw)} isSwitch={isSwitch}/>}
+              xl: 2.5,
+            }}
+          >
+            {<Switcher setSwitch={(sw) => setSwitch(sw)} isSwitch={isSwitch} />}
             {isSwitch === 'insert' ? <GeneratePanel /> : <InserPanel />}
           </Grid>
         )}
