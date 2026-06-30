@@ -1,10 +1,9 @@
-const express = require('express');
-const { User } = require('../models/');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const express = require("express");
+const { User } = require("../models/");
+const bcrypt = require("bcryptjs");
 const router = express.Router();
-const { Department } = require('../models');
-router.post('/login', async (req, res) => {
+const { Department } = require("../models");
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   const userWithEmail = await User.findOne({
@@ -12,12 +11,12 @@ router.post('/login', async (req, res) => {
     include: [
       {
         model: Department,
-        as: 'department',
-        attributes: ['name'],
+        as: "department",
+        attributes: ["name"],
       },
     ],
   }).catch((err) => {
-    console.log('Error: ', err);
+    console.log("Error: ", err);
   });
 
   if (!userWithEmail)
@@ -35,8 +34,16 @@ router.post('/login', async (req, res) => {
 
   res.json({
     message: `Welcome Back! ${userWithEmail.firstName}`,
-    user: userWithEmail,
+    user: {
+      firstName: userWithEmail.firstName,
+      lastName: userWithEmail.lastName,
+      createdAt: userWithEmail.createdAt,
+      role: userWithEmail.role,
+      department: userWithEmail.department,
+      id: userWithEmail.id
+    },
     isAuth: req.session.isAuth,
+    loading: false,
   });
 });
 

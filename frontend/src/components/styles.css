@@ -1,0 +1,5 @@
+.inline-math {
+    border: dashed blue;
+    display: inline-block;
+    /* white-space: pre;   */
+  }

@@ -1,0 +1,47 @@
+.DraftEditor-root {
+  min-height: 150px;
+  margin-top: 5px;
+  margin-bottom: 20;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 10px;
+  text-overflow: ellipsis;
+  padding-inline: 2px;
+  white-space: normal;
+  overflow: auto;
+  padding-block: 5px;
+  color: white;
+}
+
+.DraftEditor-root:focus {
+  border: solid 4px #00000048;
+  background-color: rgba(49, 49, 49, 0.493);
+}
+
+[data-placeholder]:empty:before {
+  content: attr(data-placeholder);
+  color: rgb(255, 255, 255);
+  font-style: italic;
+}
+[contenteditable]:focus {
+  outline: 0px solid transparent;
+}
+
+.math {
+  cursor: pointer;
+  padding: 5px 20px;
+  border: #888 1px dashed;
+  border-radius: 5px;
+}
+
+.close {
+  position: absolute;
+
+  top: -20px;
+  right: -20px;
+  color: #ffffff;
+}
+
+
