@@ -1,28 +1,16 @@
 require('dotenv').config();
 
+const config = {
+  username: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASS,
+  database: process.env.DB_NAME,
+  host: process.env.MYSQL_HOST || '127.0.0.1',
+  port: process.env.MYSQL_PORT || 3306,
+  dialect: 'mysql',
+};
+
 module.exports = {
-  development: {
-    username: proccess.env.MYSQL_USER,
-    password: proccess.env.MYSQL_PASS,
-    database: proccess.env.MYSQL_DATABASE,
-    host: proccess.env.MYSQL_HOST,
-    port: proccess.env.MYSQL_PORT,
-    dialect: mysql
-  },
-  test: {
-    username: proccess.env.MYSQL_USER,
-    password: proccess.env.MYSQL_PASS,
-    database: proccess.env.MYSQL_DATABASE,
-    host: proccess.env.MYSQL_HOST,
-    port: proccess.env.MYSQL_PORT,
-    dialect: mysql
-  },
-  production: {
-    username: proccess.env.MYSQL_USER,
-    password: proccess.env.MYSQL_PASS,
-    database: proccess.env.MYSQL_DATABASE,
-    host: proccess.env.MYSQL_HOST,
-    port: proccess.env.MYSQL_PORT,
-    dialect: mysql
-  }
-}
+  development: { ...config },
+  test: { ...config },
+  production: { ...config },
+};
