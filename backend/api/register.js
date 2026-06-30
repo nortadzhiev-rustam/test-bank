@@ -34,8 +34,10 @@ router.post("/register", async (req, res) => {
       departmentId,
     });
     const jwtToken = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
-    req.session.user = { ...user, department: userDepartment };
-    req.session.isAuth = true;
+    req.session.user = {
+      ...user.get({ plain: true }),
+      department: userDepartment ? userDepartment.get({ plain: true }) : null,
+    };
     res.json({ message: "User created successfully!", token: jwtToken });
   } catch (error) {
     res.status(500).json({ message: error.message });
