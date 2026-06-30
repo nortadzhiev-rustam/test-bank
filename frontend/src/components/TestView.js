@@ -82,11 +82,11 @@ const TestView = ({
     if (newCollection !== "") {
       try {
         const res = await axios.post(
-          `https://backend.rustamnortadzhiev.com/api/v1/collection`,
+          `http://localhost:5001/api/v1/collection`,
           data
         );
         const res2 = await axios.put(
-          `https://backend.rustamnortadzhiev.com/api/v1/test/${testData.id}?collectionId=${res.data.collection.id}`
+          `http://localhost:5001/api/v1/test/${testData.id}?collectionId=${res.data.collection.id}`
         );
         console.log(res2.data.message);
         handleSaveDialogOpen();
@@ -102,7 +102,7 @@ const TestView = ({
     setCollectionId(Number(event.target.value));
     try {
       const res = await axios.put(
-        `https://backend.rustamnortadzhiev.com/api/v1/test/${
+        `http://localhost:5001/api/v1/test/${
           testData.id
         }?collectionId=${Number(event.target.value)}`
       );

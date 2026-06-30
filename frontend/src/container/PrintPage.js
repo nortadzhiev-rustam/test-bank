@@ -105,7 +105,7 @@ const PrintPage = ({ showNav, setShowNav }) => {
 
   useEffect(() => {
     axios
-      .get(`https://backend.rustamnortadzhiev.com/api/v1/test/${id}`)
+      .get(`http://localhost:5001/api/v1/test/${id}`)
       .then((res) => {
         if (res.status === 200) {
           setData(res.data);

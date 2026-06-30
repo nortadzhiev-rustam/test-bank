@@ -116,7 +116,7 @@ function LongMenu({ id, collection, setCollection, openEditDialog }) {
   const deleteCollection = async (id) => {
     try {
       const res = await axios.delete(
-        `https://backend.rustamnortadzhiev.com/api/v1/collection/${id}`
+        `http://localhost:5001/api/v1/collection/${id}`
       );
 
       console.log(res.data.message);
@@ -191,11 +191,13 @@ const Profile = ({ showNav, setShowNav }) => {
   React.useEffect(() => {
     if (!isEditing) {
       axios
-        .get("https://backend.rustamnortadzhiev.com/api/v1/collections")
+        .get("http://localhost:5001/api/v1/collections")
         .then((res) => {
           setCollections(res.data);
-          setSelectedCollection(res.data[0].name);
-          setSelected(res.data[0].id);
+          if (res.data.length > 0) {
+            setSelectedCollection(res.data[0].name);
+            setSelected(res.data[0].id);
+          }
         });
     }
   }, [isEditing]);
@@ -218,7 +220,7 @@ const Profile = ({ showNav, setShowNav }) => {
   let search = searchParams.get("section");
   const getTests = async () => {
     const res = await axios.get(
-      "https://backend.rustamnortadzhiev.com/api/v1/tests"
+      "http://localhost:5001/api/v1/tests"
     );
     if (res.status === 200) {
       setTests(res.data);
@@ -227,7 +229,7 @@ const Profile = ({ showNav, setShowNav }) => {
 
   const getQuestions = async () => {
     const res = await axios.get(
-      "https://backend.rustamnortadzhiev.com/api/v1/questions"
+      "http://localhost:5001/api/v1/questions"
     );
     if (res.status === 200) {
       setQuestions(res.data);
@@ -237,7 +239,7 @@ const Profile = ({ showNav, setShowNav }) => {
   const updateCollection = async () => {
     try {
       const res = await axios.put(
-        `https://backend.rustamnortadzhiev.com/api/v1/collection/${selected}?name=${collectionName}&visibility=${visibility}`
+        `http://localhost:5001/api/v1/collection/${selected}?name=${collectionName}&visibility=${visibility}`
       );
       console.log(res.data.message);
       handleDialogOpen();
@@ -254,7 +256,7 @@ const Profile = ({ showNav, setShowNav }) => {
     };
     try {
       const res = await axios.post(
-        `https://backend.rustamnortadzhiev.com/api/v1/collection`,
+        `http://localhost:5001/api/v1/collection`,
         data
       );
       setCollections((prevState) => [...prevState, res.data.collection]);

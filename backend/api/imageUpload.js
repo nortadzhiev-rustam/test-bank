@@ -1,15 +1,7 @@
 const express = require("express");
-const cors = require("cors");
 const router = express.Router();
 const multer = require("multer");
 const controller = require("../controller/file-controller");
-
-const corsOptions = {
-  origin: "*", // allow requests from any origin
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // allow these methods
-  preflightContinue: false,
-  optionsSuccessStatus: 204
-};
 
 let storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -21,7 +13,6 @@ let storage = multer.diskStorage({
 });
 let upload = multer({ storage: storage });
 
-router.use(cors(corsOptions)); // add CORS middleware to router
 router.use(express.static(__dirname + "/public"));
 router.use("/uploads", express.static("uploads"));
 router.delete("/files/:name", controller.remove);
