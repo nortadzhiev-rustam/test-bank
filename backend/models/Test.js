@@ -1,66 +1,47 @@
 module.exports = (sequelize, DataTypes) => {
-  const Test = sequelize.define('Test', {
+  const Test = sequelize.define("Test", {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       primaryKey: true,
-      autoIncrement: true,
     },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    question: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    answerA: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    answerB: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    answerC: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    answerD: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    correctAnswer: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    difficulty: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     grade: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
-    mark : {
-      type: DataTypes.STRING,
-      allowNull: false
-    }, 
-    image: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    image: { type: DataTypes.STRING, allowNull: true },
+    isEditing: { type: DataTypes.BOOLEAN, allowNull: true },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
     },
   });
-  Test.associate = (models) => {
+
+  Test.associate = function (models) {
     Test.belongsTo(models.User, {
-      foreignKey: 'userId',
-      as: 'user',
+      foreignKey: "userId",
+      as: "user",
+    });
+    Test.hasMany(models.Question, {
+      foreignKey: "testId",
+      as: "questions",
     });
     Test.belongsTo(models.Department, {
-      foreignKey: 'departmentId',
-      as: 'department',
+      foreignKey: "departmentId",
+      as: "department",
+    });
+    Test.belongsTo(models.Collection, {
+      foreignKey: "collectionId",
+      as: "collection",
     });
   };
 
-  
   return Test;
 };

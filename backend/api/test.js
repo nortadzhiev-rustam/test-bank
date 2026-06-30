@@ -1,85 +1,106 @@
-const express = require('express');
-const { Department, User, Test } = require('../models/');
+const express = require("express");
+const { Question, Test, Department, User } = require("../models/");
 const router = express.Router();
-const multer = require('multer');
-const FroalaEditor = require('wysiwyg-editor-node-sdk/lib/froalaEditor.js');
 
-//route to store input and upload image
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './fronend/public/uploads/');
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
+//route that posts test
+router.post("/test", async (req, res) => {
+  try {
+    const { id, userId, departmentId, name } = req.body;
+    const newTest = await Test.create(
+      { id, name, userId, departmentId },
+      { include: [{ model: Question, as: "questions" }] }
+    );
+
+    res
+      .status(200)
+      .json({ message: "Test was successfully created", test: newTest });
+  } catch (err) {
+    res.status(500).json({ message: `Something went wrong: ${err}` });
+  }
 });
 
-router.use(express.static(__dirname + '/public'));
-router.use('/uploads', express.static('uploads'));
-
-router.post(
-  '/questions',
-  multer({ storage: storage }).single('image'),
-  async (req, res) => {
-    FroalaEditor.Image.upload(req, async (err, data) => {
-      if (err) {
-        return res.send(JSON.stringify(err));
-      }
-      const {
-        title,
-        question,
-        answer,
-        grade,
-        difficulty,
-        correctAnswer,
-        mark,
-        departmentId,
-        userId,
-      } = req.body;
-      const { image } = data;
-      const newQuestion = await Test.create({
-        title,
-        question,
-        answerA:answer.a,
-        answerB:answer.b,
-        answerC:answer.c,
-        answerD:answer.d,
-        grade,
-        difficulty,
-        correctAnswer,
-        mark,
-        departmentId,
-        userId,
-        image,
-
-      });
-      res.send(newQuestion);
+router.put("/test/:id", async (req, res) => {
+  console.log(req.query);
+  try {
+    const updatedTest = await Test.update(req.query, {
+      returning: true,
+      where: { id: req.params.id },
     });
+    res
+      .status(200)
+      .json({ message: "Test was updated successfully", updatedTest });
+  } catch (err) {
+    res.status(500).json({ message: `Something went wrong: ${err}` });
   }
-);
+});
 
-//route to get all questions
-router.get('/questions', async (req, res) => {
+//route to get all tests
+router.get("/tests", async (req, res) => {
   try {
     const test = await Test.findAll({
       include: [
         {
           model: User,
-          as: 'user',
-          attributes: ['id', 'name'],
+          as: "user",
+          attributes: ["id", "firstName", "lastName"],
         },
         {
           model: Department,
-          as: 'department',
-          attributes: ['id', 'name'],
+          as: "department",
+          attributes: ["id", "name"],
+        },
+        {
+          model: Question,
+          as: "questions",
         },
       ],
     });
-    res.json(test);
-  } catch (error) {
-    res.status(400).json({
-      error: error.message,
+    res.status(200).json(test);
+  } catch (err) {
+    res.status(500).json({ message: `Something went wrong: ${err}` });
+  }
+});
+
+router.delete("/test/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const test = await Test.destroy({ where: { id: id }, force: true });
+    res.status(200).json({
+      data: test,
+      message: "Test was deleted successfully ",
     });
+  } catch (err) {
+    res.send("Something went wrong ", err);
+  }
+});
+
+router.get("/test/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const test = await Test.findOne({
+      where: {
+        id: id,
+      },
+      include: [
+        {
+          model: User,
+          as: "user",
+          attributes: ["id", "firstName", "lastName"],
+        },
+        {
+          model: Department,
+          as: "department",
+          attributes: ["id", "name"],
+        },
+        {
+          model: Question,
+          as: "questions",
+        },
+      ],
+    });
+    res.status(200).json(test);
+  } catch (err) {
+    res.status(500).json({ message: `Something went wrong: ${err}` });
   }
 });
 
