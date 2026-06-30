@@ -29,7 +29,7 @@ router.post("/login", async (req, res) => {
       .status(404)
       .json({ message: "couldn't find user with this credentials" });
 
-  req.session.user = userWithEmail;
+  req.session.user = userWithEmail.get({ plain: true });
   req.session.isAuth = true;
 
   res.json({
