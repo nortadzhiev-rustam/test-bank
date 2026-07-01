@@ -1,5 +1,5 @@
 // import Swiper core and required modules
-import { Navigation, Pagination, Autoplay } from "swiper";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import React from "react";
 import { useMediaQuery } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
